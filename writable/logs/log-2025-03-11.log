@@ -1,0 +1,781 @@
+WARNING - 2025-03-11 05:58:02 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 17.
+ 1 APPPATH\Views\utama_v.php(17): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 05:58:02 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 19.
+ 1 APPPATH\Views\utama_v.php(19): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-03-11 05:58:03 --> mysqli_sql_exception: Unknown column 'user.tanggal_masuk' in 'where clause' in C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\hrd\app\Views\utama_v.php(37): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\View\View.php(234): include('C:\\xampp\\htdocs...')
+#6 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Common.php(1171): CodeIgniter\View\View->render('utama_v', Array, true)
+#8 C:\xampp\htdocs\hrd\app\Controllers\utama.php(21): view('utama_v')
+#9 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\utama->index()
+#10 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+#11 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\xampp\htdocs\hrd\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 {main}
+CRITICAL - 2025-03-11 05:58:03 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'user.tanggal_masuk' in 'where clause'
+[Method: GET, Route: utama]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= :user.tanggal_masuk:
+AND `user`.`tanggal_masuk` <= :user.tanggal_masuk.1:', [...], false)
+ 2 APPPATH\Views\utama_v.php(37): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 4 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 5 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 6 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 05:58:03 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'user.tanggal_masuk' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= :user.tanggal_masuk:
+AND `user`.`tanggal_masuk` <= :user.tanggal_masuk.1:', [...], false)
+ 4 APPPATH\Views\utama_v.php(37): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 6 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 7 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 8 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 9 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+10 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+11 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 05:58:03 --> [Caused by] mysqli_sql_exception: Unknown column 'user.tanggal_masuk' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= :user.tanggal_masuk:
+AND `user`.`tanggal_masuk` <= :user.tanggal_masuk.1:', [...], false)
+ 5 APPPATH\Views\utama_v.php(37): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 7 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 9 APPPATH\Controllers\utama.php(21): view('utama_v')
+10 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+11 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+12 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+15 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 06:03:52 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 17.
+ 1 APPPATH\Views\utama_v.php(17): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 06:03:52 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 19.
+ 1 APPPATH\Views\utama_v.php(19): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+ERROR - 2025-03-11 06:03:52 --> mysqli_sql_exception: Unknown column 'user.tanggal_masuk' in 'where clause' in C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\hrd\app\Views\utama_v.php(37): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\View\View.php(234): include('C:\\xampp\\htdocs...')
+#6 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Common.php(1171): CodeIgniter\View\View->render('utama_v', Array, true)
+#8 C:\xampp\htdocs\hrd\app\Controllers\utama.php(21): view('utama_v')
+#9 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\utama->index()
+#10 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+#11 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\xampp\htdocs\hrd\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 {main}
+CRITICAL - 2025-03-11 06:03:52 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'user.tanggal_masuk' in 'where clause'
+[Method: GET, Route: utama]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= :user.tanggal_masuk:
+AND `user`.`tanggal_masuk` <= :user.tanggal_masuk.1:', [...], false)
+ 2 APPPATH\Views\utama_v.php(37): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 4 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 5 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 6 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 06:03:52 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'user.tanggal_masuk' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= :user.tanggal_masuk:
+AND `user`.`tanggal_masuk` <= :user.tanggal_masuk.1:', [...], false)
+ 4 APPPATH\Views\utama_v.php(37): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 6 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 7 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 8 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 9 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+10 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+11 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 06:03:52 --> [Caused by] mysqli_sql_exception: Unknown column 'user.tanggal_masuk' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= \'2025-03-11\'
+AND `user`.`tanggal_masuk` <= \'2025-03-11\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `user`
+WHERE `user`.`tanggal_masuk` >= :user.tanggal_masuk:
+AND `user`.`tanggal_masuk` <= :user.tanggal_masuk.1:', [...], false)
+ 5 APPPATH\Views\utama_v.php(37): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 7 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 9 APPPATH\Controllers\utama.php(21): view('utama_v')
+10 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+11 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+12 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+15 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 06:04:06 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 17.
+ 1 APPPATH\Views\utama_v.php(17): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 06:04:06 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 19.
+ 1 APPPATH\Views\utama_v.php(19): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 06:04:21 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 17.
+ 1 APPPATH\Views\utama_v.php(17): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 06:04:21 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 19.
+ 1 APPPATH\Views\utama_v.php(19): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 06:06:39 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 19.
+ 1 APPPATH\Views\utama_v.php(19): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+WARNING - 2025-03-11 06:07:27 --> [DEPRECATED] ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in APPPATH\Views\utama_v.php on line 19.
+ 1 APPPATH\Views\utama_v.php(19): ucfirst(null)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\utama_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('utama_v', [], true)
+ 5 APPPATH\Controllers\utama.php(21): view('utama_v')
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\utama->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\utama))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 00:01:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:02:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:02:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:02:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:04:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:05:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:06:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:06:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:10:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:10:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:10:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:11:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:11:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 00:14:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:36:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:36:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:37:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:51:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:51:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:51:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:52:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:52:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:52:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 01:57:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-03-11 08:57:42 --> ErrorException: Undefined variable $user_payrolltype
+[Method: POST, Route: mjamkerja]
+in APPPATH\Views\master\mjamkerja_v.php on line 75.
+ 1 APPPATH\Views\master\mjamkerja_v.php(75): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $user_payrolltype', 'C:\\xampp\\htdocs\\hrd\\app\\Views\\master\\mjamkerja_v.php', 75)
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\master\\mjamkerja_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('master/mjamkerja_v', [], true)
+ 5 APPPATH\Controllers\master\mjamkerja.php(23): view('master/mjamkerja_v', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 01:58:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:10:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:13:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:13:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:18:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:18:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:19:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:20:55 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:23:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:24:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 02:56:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-03-11 09:56:30 --> mysqli_sql_exception: Unknown column 'jamkerja_position' in 'where clause' in C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\hrd\app\Views\master\mjamkerja_v.php(151): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\View\View.php(234): include('C:\\xampp\\htdocs...')
+#6 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Common.php(1171): CodeIgniter\View\View->render('master/mjamkerj...', Array, true)
+#8 C:\xampp\htdocs\hrd\app\Controllers\master\mjamkerja.php(23): view('master/mjamkerj...', Array)
+#9 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+#10 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+#11 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#13 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#14 C:\xampp\htdocs\hrd\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#15 {main}
+CRITICAL - 2025-03-11 09:56:30 --> CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'jamkerja_position' in 'where clause'
+[Method: POST, Route: mjamkerja]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `position`
+WHERE `jamkerja_position` != :jamkerja_position:
+ORDER BY `position_name` ASC', [...], false)
+ 2 APPPATH\Views\master\mjamkerja_v.php(151): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\master\\mjamkerja_v.php')
+ 4 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 5 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('master/mjamkerja_v', [], true)
+ 6 APPPATH\Controllers\master\mjamkerja.php(23): view('master/mjamkerja_v', [...])
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 09:56:30 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Unknown column 'jamkerja_position' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `position`
+WHERE `jamkerja_position` != \'1\'
+ORDER BY `position_name` ASC')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `position`
+WHERE `jamkerja_position` != \'1\'
+ORDER BY `position_name` ASC')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `position`
+WHERE `jamkerja_position` != :jamkerja_position:
+ORDER BY `position_name` ASC', [...], false)
+ 4 APPPATH\Views\master\mjamkerja_v.php(151): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\master\\mjamkerja_v.php')
+ 6 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 7 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('master/mjamkerja_v', [], true)
+ 8 APPPATH\Controllers\master\mjamkerja.php(23): view('master/mjamkerja_v', [...])
+ 9 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+10 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+11 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+13 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+14 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 09:56:30 --> [Caused by] mysqli_sql_exception: Unknown column 'jamkerja_position' in 'where clause'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('SELECT *
+FROM `position`
+WHERE `jamkerja_position` != \'1\'
+ORDER BY `position_name` ASC', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `position`
+WHERE `jamkerja_position` != \'1\'
+ORDER BY `position_name` ASC')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `position`
+WHERE `jamkerja_position` != \'1\'
+ORDER BY `position_name` ASC')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1636): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `position`
+WHERE `jamkerja_position` != :jamkerja_position:
+ORDER BY `position_name` ASC', [...], false)
+ 5 APPPATH\Views\master\mjamkerja_v.php(151): CodeIgniter\Database\BaseBuilder->get()
+ 6 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\master\\mjamkerja_v.php')
+ 7 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 8 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('master/mjamkerja_v', [], true)
+ 9 APPPATH\Controllers\master\mjamkerja.php(23): view('master/mjamkerja_v', [...])
+10 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+11 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+12 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+14 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+15 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 02:58:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 04:23:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-03-11 04:23:18 --> mysqli_sql_exception: Operand should contain 1 column(s) in C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('INSERT INTO `ja...', 0)
+#1 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ja...')
+#2 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ja...')
+#3 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ja...', Array, false)
+#4 C:\xampp\htdocs\hrd\app\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 C:\xampp\htdocs\hrd\app\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+#6 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+#7 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+#8 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\xampp\htdocs\hrd\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2025-03-11 04:23:18 --> CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+[Method: POST, Route: mjamkerja]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 2 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 3 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 5 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 6 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 04:23:18 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 4 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 5 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 04:23:18 --> [Caused by] mysqli_sql_exception: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 5 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 04:34:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-03-11 04:34:31 --> mysqli_sql_exception: Operand should contain 1 column(s) in C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('INSERT INTO `ja...', 0)
+#1 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ja...')
+#2 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ja...')
+#3 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ja...', Array, false)
+#4 C:\xampp\htdocs\hrd\app\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 C:\xampp\htdocs\hrd\app\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+#6 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+#7 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+#8 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\xampp\htdocs\hrd\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2025-03-11 04:34:31 --> CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+[Method: POST, Route: mjamkerja]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 2 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 3 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 5 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 6 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 04:34:31 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 4 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 5 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 04:34:31 --> [Caused by] mysqli_sql_exception: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 5 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 04:43:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-03-11 04:43:18 --> mysqli_sql_exception: Operand should contain 1 column(s) in C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('INSERT INTO `ja...', 0)
+#1 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ja...')
+#2 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ja...')
+#3 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ja...', Array, false)
+#4 C:\xampp\htdocs\hrd\app\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 C:\xampp\htdocs\hrd\app\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+#6 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+#7 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+#8 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\xampp\htdocs\hrd\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2025-03-11 04:43:18 --> CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+[Method: POST, Route: mjamkerja]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 2 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 3 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 5 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 6 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 04:43:18 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 4 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 5 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 04:43:18 --> [Caused by] mysqli_sql_exception: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 5 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 04:43:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-03-11 04:43:41 --> mysqli_sql_exception: Operand should contain 1 column(s) in C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('INSERT INTO `ja...', 0)
+#1 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ja...')
+#2 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ja...')
+#3 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ja...', Array, false)
+#4 C:\xampp\htdocs\hrd\app\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert(Array)
+#5 C:\xampp\htdocs\hrd\app\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+#6 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+#7 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+#8 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\xampp\htdocs\hrd\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2025-03-11 04:43:41 --> CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+[Method: POST, Route: mjamkerja]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 2 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 3 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 5 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 6 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 04:43:41 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 4 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 5 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 04:43:41 --> [Caused by] mysqli_sql_exception: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (\'Normal\', \'normal\', \'11:22\', \'05:22\', \'\', \'5000\', (\'83\',\'84\',\'85\'), (\'0\',\'2\'))')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2332): CodeIgniter\Database\BaseConnection->query('INSERT INTO `jamkerja` (`jamkerja_name`, `jamkerja_type`, `jamkerja_awal`, `jamkerja_akhir`, `jamkerja_lpengali`, `jamkerja_lnominal`, `jamkerja_position`, `jamkerja_hari`) VALUES (:jamkerja_name:, :jamkerja_type:, :jamkerja_awal:, :jamkerja_akhir:, :jamkerja_lpengali:, :jamkerja_lnominal:, :jamkerja_position:, :jamkerja_hari:)', [...], false)
+ 5 APPPATH\Models\master\mjamkerja_m.php(59): CodeIgniter\Database\BaseBuilder->insert([...])
+ 6 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 04:44:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 04:47:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 04:47:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 06:19:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2025-03-11 13:19:45 --> TypeError: in_array(): Argument #2 ($haystack) must be of type array, string given
+[Method: POST, Route: mjamkerja]
+in APPPATH\Views\master\mjamkerja_v.php on line 157.
+ 1 APPPATH\Views\master\mjamkerja_v.php(157): in_array('1', '83,84,85')
+ 2 SYSTEMPATH\View\View.php(234): include('C:\\xampp\\htdocs\\hrd\\app\\Views\\master\\mjamkerja_v.php')
+ 3 SYSTEMPATH\View\View.php(237): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+ 4 SYSTEMPATH\Common.php(1171): CodeIgniter\View\View->render('master/mjamkerja_v', [], true)
+ 5 APPPATH\Controllers\master\mjamkerja.php(23): view('master/mjamkerja_v', [...])
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 06:23:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:20:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:20:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-03-11 07:20:26 --> mysqli_sql_exception: Operand should contain 1 column(s) in C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('UPDATE `jamkerj...', 0)
+#1 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `jamkerj...')
+#2 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `jamkerj...')
+#3 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(2508): CodeIgniter\Database\BaseConnection->query('UPDATE `jamkerj...', Array, false)
+#4 C:\xampp\htdocs\hrd\app\Models\master\mjamkerja_m.php(78): CodeIgniter\Database\BaseBuilder->update(Array, Array)
+#5 C:\xampp\htdocs\hrd\app\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+#6 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+#7 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+#8 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#10 C:\xampp\htdocs\hrd\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 C:\xampp\htdocs\hrd\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2025-03-11 07:20:26 --> CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+[Method: POST, Route: mjamkerja]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2508): CodeIgniter\Database\BaseConnection->query('UPDATE `jamkerja` SET `jamkerja_name` = :jamkerja_name:, `jamkerja_type` = :jamkerja_type:, `jamkerja_awal` = :jamkerja_awal:, `jamkerja_akhir` = :jamkerja_akhir:, `jamkerja_lpengali` = :jamkerja_lpengali:, `jamkerja_lnominal` = :jamkerja_lnominal:, `jamkerja_position` = :jamkerja_position:, `jamkerja_hari` = :jamkerja_hari:, `jamkerja_id` = :jamkerja_id:
+WHERE `jamkerja_id` = :jamkerja_id.1:', [...], false)
+ 2 APPPATH\Models\master\mjamkerja_m.php(78): CodeIgniter\Database\BaseBuilder->update([...], [...])
+ 3 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 5 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 6 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 07:20:26 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `jamkerja` SET `jamkerja_name` = \'Normal\', `jamkerja_type` = \'normal\', `jamkerja_awal` = \'11:22:00\', `jamkerja_akhir` = \'05:22:00\', `jamkerja_lpengali` = \'\', `jamkerja_lnominal` = \'5000\', `jamkerja_position` = (\'83\',\'84\',\'85\'), `jamkerja_hari` = (\'0\',\'3\'), `jamkerja_id` = \'1\'
+WHERE `jamkerja_id` = \'1\'')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `jamkerja` SET `jamkerja_name` = \'Normal\', `jamkerja_type` = \'normal\', `jamkerja_awal` = \'11:22:00\', `jamkerja_akhir` = \'05:22:00\', `jamkerja_lpengali` = \'\', `jamkerja_lnominal` = \'5000\', `jamkerja_position` = (\'83\',\'84\',\'85\'), `jamkerja_hari` = (\'0\',\'3\'), `jamkerja_id` = \'1\'
+WHERE `jamkerja_id` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2508): CodeIgniter\Database\BaseConnection->query('UPDATE `jamkerja` SET `jamkerja_name` = :jamkerja_name:, `jamkerja_type` = :jamkerja_type:, `jamkerja_awal` = :jamkerja_awal:, `jamkerja_akhir` = :jamkerja_akhir:, `jamkerja_lpengali` = :jamkerja_lpengali:, `jamkerja_lnominal` = :jamkerja_lnominal:, `jamkerja_position` = :jamkerja_position:, `jamkerja_hari` = :jamkerja_hari:, `jamkerja_id` = :jamkerja_id:
+WHERE `jamkerja_id` = :jamkerja_id.1:', [...], false)
+ 4 APPPATH\Models\master\mjamkerja_m.php(78): CodeIgniter\Database\BaseBuilder->update([...], [...])
+ 5 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2025-03-11 07:20:26 --> [Caused by] mysqli_sql_exception: Operand should contain 1 column(s)
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('UPDATE `jamkerja` SET `jamkerja_name` = \'Normal\', `jamkerja_type` = \'normal\', `jamkerja_awal` = \'11:22:00\', `jamkerja_akhir` = \'05:22:00\', `jamkerja_lpengali` = \'\', `jamkerja_lnominal` = \'5000\', `jamkerja_position` = (\'83\',\'84\',\'85\'), `jamkerja_hari` = (\'0\',\'3\'), `jamkerja_id` = \'1\'
+WHERE `jamkerja_id` = \'1\'', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('UPDATE `jamkerja` SET `jamkerja_name` = \'Normal\', `jamkerja_type` = \'normal\', `jamkerja_awal` = \'11:22:00\', `jamkerja_akhir` = \'05:22:00\', `jamkerja_lpengali` = \'\', `jamkerja_lnominal` = \'5000\', `jamkerja_position` = (\'83\',\'84\',\'85\'), `jamkerja_hari` = (\'0\',\'3\'), `jamkerja_id` = \'1\'
+WHERE `jamkerja_id` = \'1\'')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('UPDATE `jamkerja` SET `jamkerja_name` = \'Normal\', `jamkerja_type` = \'normal\', `jamkerja_awal` = \'11:22:00\', `jamkerja_akhir` = \'05:22:00\', `jamkerja_lpengali` = \'\', `jamkerja_lnominal` = \'5000\', `jamkerja_position` = (\'83\',\'84\',\'85\'), `jamkerja_hari` = (\'0\',\'3\'), `jamkerja_id` = \'1\'
+WHERE `jamkerja_id` = \'1\'')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2508): CodeIgniter\Database\BaseConnection->query('UPDATE `jamkerja` SET `jamkerja_name` = :jamkerja_name:, `jamkerja_type` = :jamkerja_type:, `jamkerja_awal` = :jamkerja_awal:, `jamkerja_akhir` = :jamkerja_akhir:, `jamkerja_lpengali` = :jamkerja_lpengali:, `jamkerja_lnominal` = :jamkerja_lnominal:, `jamkerja_position` = :jamkerja_position:, `jamkerja_hari` = :jamkerja_hari:, `jamkerja_id` = :jamkerja_id:
+WHERE `jamkerja_id` = :jamkerja_id.1:', [...], false)
+ 5 APPPATH\Models\master\mjamkerja_m.php(78): CodeIgniter\Database\BaseBuilder->update([...], [...])
+ 6 APPPATH\Controllers\master\mjamkerja.php(22): App\Models\master\mjamkerja_m->data()
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\master\mjamkerja->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\master\mjamkerja))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2025-03-11 07:21:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:21:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:21:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:21:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:21:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:22:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:23:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:23:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:31:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:45:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 07:45:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:27:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:27:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:28:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:28:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:29:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:29:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:29:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:31:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:31:02 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:31:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:31:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:31:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:31:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:31:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:31:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:50:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:51:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:51:57 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:51:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:52:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:52:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:53:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:57:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:57:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:57:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:59:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-03-11 23:59:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

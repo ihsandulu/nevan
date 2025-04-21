@@ -1,0 +1,170 @@
+INFO - 2024-08-08 00:19:56 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:20:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:20:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:20:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:20:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:20:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:38:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:48:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:48:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:49:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:53:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:53:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:53:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:54:06 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:54:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:55:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:55:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:55:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:55:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:55:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:56:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:56:33 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:56:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:57:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:57:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:58:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 00:58:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 07:59:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 07:59:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 01:00:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2024-08-08 01:00:14 --> mysqli_sql_exception: Table 'sawitci4.t_material' doesn't exist in D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php:312
+Stack trace:
+#0 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\Database\MySQLi\Connection.php(312): mysqli->query('SELECT *\nFROM `...', 0)
+#1 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\Database\BaseBuilder.php(1774): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 D:\xampp\htdocs\sawitci4\app\Models\transaction\synchron_m.php(29): CodeIgniter\Database\BaseBuilder->getWhere(Array)
+#5 D:\xampp\htdocs\sawitci4\app\Controllers\transaction\synchron.php(22): App\Models\transaction\synchron_m->data()
+#6 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\CodeIgniter.php(933): App\Controllers\transaction\synchron->index()
+#7 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\transaction\synchron))
+#8 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\Boot.php(325): CodeIgniter\CodeIgniter->run()
+#10 D:\xampp\htdocs\sawitci4\vendor\codeigniter4\framework\system\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+#11 D:\xampp\htdocs\sawitci4\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+#12 {main}
+CRITICAL - 2024-08-08 01:00:14 --> CodeIgniter\Database\Exceptions\DatabaseException: Table 'sawitci4.t_material' doesn't exist
+[Method: GET, Route: synchron]
+in SYSTEMPATH\Database\BaseConnection.php on line 688.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1774): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `sptbs`
+LEFT JOIN `t_user` ON `t_user`.`user_id`=`sptbs`.`sptbs_createdby`
+LEFT JOIN `t_vendor` ON `t_vendor`.`ID_vendor`=`sptbs`.`sptbs_vendor`
+LEFT JOIN `t_material` ON `t_material`.`ID_material`=`sptbs`.`sptbs_material`
+LEFT JOIN `t_asal` ON `t_asal`.`id_asal`=`sptbs`.`sptbs_kecamatan`
+LEFT JOIN `t_trukpenerimaan` ON `t_trukpenerimaan`.`no_polisi`=`sptbs`.`sptbs_plat`
+LEFT JOIN `t_driver` ON `t_driver`.`ID_driver`=`sptbs`.`sptbs_driver`
+LEFT JOIN `estate` ON `estate`.`estate_id`=`sptbs`.`estate_id`
+LEFT JOIN `divisi` ON `divisi`.`divisi_id`=`sptbs`.`divisi_id`
+WHERE `sptbs_id` = :sptbs_id:', [...], false)
+ 2 APPPATH\Models\transaction\synchron_m.php(29): CodeIgniter\Database\BaseBuilder->getWhere([...])
+ 3 APPPATH\Controllers\transaction\synchron.php(22): App\Models\transaction\synchron_m->data()
+ 4 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\transaction\synchron->index()
+ 5 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\transaction\synchron))
+ 6 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+ 9 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-08 01:00:14 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Table 'sawitci4.t_material' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 317.
+ 1 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `sptbs`
+LEFT JOIN `t_user` ON `t_user`.`user_id`=`sptbs`.`sptbs_createdby`
+LEFT JOIN `t_vendor` ON `t_vendor`.`ID_vendor`=`sptbs`.`sptbs_vendor`
+LEFT JOIN `t_material` ON `t_material`.`ID_material`=`sptbs`.`sptbs_material`
+LEFT JOIN `t_asal` ON `t_asal`.`id_asal`=`sptbs`.`sptbs_kecamatan`
+LEFT JOIN `t_trukpenerimaan` ON `t_trukpenerimaan`.`no_polisi`=`sptbs`.`sptbs_plat`
+LEFT JOIN `t_driver` ON `t_driver`.`ID_driver`=`sptbs`.`sptbs_driver`
+LEFT JOIN `estate` ON `estate`.`estate_id`=`sptbs`.`estate_id`
+LEFT JOIN `divisi` ON `divisi`.`divisi_id`=`sptbs`.`divisi_id`
+WHERE `sptbs_id` = -1')
+ 2 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `sptbs`
+LEFT JOIN `t_user` ON `t_user`.`user_id`=`sptbs`.`sptbs_createdby`
+LEFT JOIN `t_vendor` ON `t_vendor`.`ID_vendor`=`sptbs`.`sptbs_vendor`
+LEFT JOIN `t_material` ON `t_material`.`ID_material`=`sptbs`.`sptbs_material`
+LEFT JOIN `t_asal` ON `t_asal`.`id_asal`=`sptbs`.`sptbs_kecamatan`
+LEFT JOIN `t_trukpenerimaan` ON `t_trukpenerimaan`.`no_polisi`=`sptbs`.`sptbs_plat`
+LEFT JOIN `t_driver` ON `t_driver`.`ID_driver`=`sptbs`.`sptbs_driver`
+LEFT JOIN `estate` ON `estate`.`estate_id`=`sptbs`.`estate_id`
+LEFT JOIN `divisi` ON `divisi`.`divisi_id`=`sptbs`.`divisi_id`
+WHERE `sptbs_id` = -1')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1774): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `sptbs`
+LEFT JOIN `t_user` ON `t_user`.`user_id`=`sptbs`.`sptbs_createdby`
+LEFT JOIN `t_vendor` ON `t_vendor`.`ID_vendor`=`sptbs`.`sptbs_vendor`
+LEFT JOIN `t_material` ON `t_material`.`ID_material`=`sptbs`.`sptbs_material`
+LEFT JOIN `t_asal` ON `t_asal`.`id_asal`=`sptbs`.`sptbs_kecamatan`
+LEFT JOIN `t_trukpenerimaan` ON `t_trukpenerimaan`.`no_polisi`=`sptbs`.`sptbs_plat`
+LEFT JOIN `t_driver` ON `t_driver`.`ID_driver`=`sptbs`.`sptbs_driver`
+LEFT JOIN `estate` ON `estate`.`estate_id`=`sptbs`.`estate_id`
+LEFT JOIN `divisi` ON `divisi`.`divisi_id`=`sptbs`.`divisi_id`
+WHERE `sptbs_id` = :sptbs_id:', [...], false)
+ 4 APPPATH\Models\transaction\synchron_m.php(29): CodeIgniter\Database\BaseBuilder->getWhere([...])
+ 5 APPPATH\Controllers\transaction\synchron.php(22): App\Models\transaction\synchron_m->data()
+ 6 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\transaction\synchron->index()
+ 7 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\transaction\synchron))
+ 8 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+11 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+CRITICAL - 2024-08-08 01:00:14 --> [Caused by] mysqli_sql_exception: Table 'sawitci4.t_material' doesn't exist
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 312.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(312): mysqli->query('SELECT *
+FROM `sptbs`
+LEFT JOIN `t_user` ON `t_user`.`user_id`=`sptbs`.`sptbs_createdby`
+LEFT JOIN `t_vendor` ON `t_vendor`.`ID_vendor`=`sptbs`.`sptbs_vendor`
+LEFT JOIN `t_material` ON `t_material`.`ID_material`=`sptbs`.`sptbs_material`
+LEFT JOIN `t_asal` ON `t_asal`.`id_asal`=`sptbs`.`sptbs_kecamatan`
+LEFT JOIN `t_trukpenerimaan` ON `t_trukpenerimaan`.`no_polisi`=`sptbs`.`sptbs_plat`
+LEFT JOIN `t_driver` ON `t_driver`.`ID_driver`=`sptbs`.`sptbs_driver`
+LEFT JOIN `estate` ON `estate`.`estate_id`=`sptbs`.`estate_id`
+LEFT JOIN `divisi` ON `divisi`.`divisi_id`=`sptbs`.`divisi_id`
+WHERE `sptbs_id` = -1', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(734): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *
+FROM `sptbs`
+LEFT JOIN `t_user` ON `t_user`.`user_id`=`sptbs`.`sptbs_createdby`
+LEFT JOIN `t_vendor` ON `t_vendor`.`ID_vendor`=`sptbs`.`sptbs_vendor`
+LEFT JOIN `t_material` ON `t_material`.`ID_material`=`sptbs`.`sptbs_material`
+LEFT JOIN `t_asal` ON `t_asal`.`id_asal`=`sptbs`.`sptbs_kecamatan`
+LEFT JOIN `t_trukpenerimaan` ON `t_trukpenerimaan`.`no_polisi`=`sptbs`.`sptbs_plat`
+LEFT JOIN `t_driver` ON `t_driver`.`ID_driver`=`sptbs`.`sptbs_driver`
+LEFT JOIN `estate` ON `estate`.`estate_id`=`sptbs`.`estate_id`
+LEFT JOIN `divisi` ON `divisi`.`divisi_id`=`sptbs`.`divisi_id`
+WHERE `sptbs_id` = -1')
+ 3 SYSTEMPATH\Database\BaseConnection.php(648): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *
+FROM `sptbs`
+LEFT JOIN `t_user` ON `t_user`.`user_id`=`sptbs`.`sptbs_createdby`
+LEFT JOIN `t_vendor` ON `t_vendor`.`ID_vendor`=`sptbs`.`sptbs_vendor`
+LEFT JOIN `t_material` ON `t_material`.`ID_material`=`sptbs`.`sptbs_material`
+LEFT JOIN `t_asal` ON `t_asal`.`id_asal`=`sptbs`.`sptbs_kecamatan`
+LEFT JOIN `t_trukpenerimaan` ON `t_trukpenerimaan`.`no_polisi`=`sptbs`.`sptbs_plat`
+LEFT JOIN `t_driver` ON `t_driver`.`ID_driver`=`sptbs`.`sptbs_driver`
+LEFT JOIN `estate` ON `estate`.`estate_id`=`sptbs`.`estate_id`
+LEFT JOIN `divisi` ON `divisi`.`divisi_id`=`sptbs`.`divisi_id`
+WHERE `sptbs_id` = -1')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(1774): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `sptbs`
+LEFT JOIN `t_user` ON `t_user`.`user_id`=`sptbs`.`sptbs_createdby`
+LEFT JOIN `t_vendor` ON `t_vendor`.`ID_vendor`=`sptbs`.`sptbs_vendor`
+LEFT JOIN `t_material` ON `t_material`.`ID_material`=`sptbs`.`sptbs_material`
+LEFT JOIN `t_asal` ON `t_asal`.`id_asal`=`sptbs`.`sptbs_kecamatan`
+LEFT JOIN `t_trukpenerimaan` ON `t_trukpenerimaan`.`no_polisi`=`sptbs`.`sptbs_plat`
+LEFT JOIN `t_driver` ON `t_driver`.`ID_driver`=`sptbs`.`sptbs_driver`
+LEFT JOIN `estate` ON `estate`.`estate_id`=`sptbs`.`estate_id`
+LEFT JOIN `divisi` ON `divisi`.`divisi_id`=`sptbs`.`divisi_id`
+WHERE `sptbs_id` = :sptbs_id:', [...], false)
+ 5 APPPATH\Models\transaction\synchron_m.php(29): CodeIgniter\Database\BaseBuilder->getWhere([...])
+ 6 APPPATH\Controllers\transaction\synchron.php(22): App\Models\transaction\synchron_m->data()
+ 7 SYSTEMPATH\CodeIgniter.php(933): App\Controllers\transaction\synchron->index()
+ 8 SYSTEMPATH\CodeIgniter.php(509): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\transaction\synchron))
+ 9 SYSTEMPATH\CodeIgniter.php(355): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 SYSTEMPATH\Boot.php(325): CodeIgniter\CodeIgniter->run()
+11 SYSTEMPATH\Boot.php(67): CodeIgniter\Boot::runCodeIgniter(Object(CodeIgniter\CodeIgniter))
+12 FCPATH\index.php(56): CodeIgniter\Boot::bootWeb(Object(Config\Paths))
+INFO - 2024-08-08 08:00:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 01:00:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 01:00:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 01:00:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 01:01:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2024-08-08 08:01:42 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
