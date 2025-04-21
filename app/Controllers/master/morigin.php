@@ -3,7 +3,7 @@
 namespace App\Controllers\master;
 
 
-use App\Controllers\baseController;
+use App\Controllers\BaseController;
 
 class morigin extends BaseController
 {

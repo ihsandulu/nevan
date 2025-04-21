@@ -3,7 +3,7 @@
 namespace App\Controllers\transaction;
 
 
-use App\Controllers\baseController;
+use App\Controllers\BaseController;
 
 class lembur extends BaseController
 {
