@@ -217,7 +217,7 @@
                 ) { ?>
                     <li class="nav-label">Transaksi</li>
                     
-                    <?php
+                   <!--  <?php
                     if (
                         (
                             isset(session()->get("position_id")[0][0])
@@ -253,7 +253,7 @@
                         <li>
                             <a class="  " href="<?= base_url("lembur"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Lembur</span></a>
                         </li>
-                    <?php } ?>
+                    <?php } ?> -->
 
 
 
@@ -289,7 +289,7 @@
                     <li class="nav-label">Laporan</li>
 
                     
-                    <?php
+                    <!-- <?php
                     if (
                         (
                             isset(session()->get("position_id")[0][0])
@@ -306,7 +306,7 @@
                         <li>
                             <a class="  " href="<?= base_url("rabsend"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Rangkuman Absensi</span></a>
                         </li>
-                    <?php } ?>
+                    <?php } ?> -->
 
                 <?php } ?>
 
