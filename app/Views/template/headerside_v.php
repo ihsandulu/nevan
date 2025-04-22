@@ -194,6 +194,44 @@
                             <a class="  " href="<?= base_url("mdestination"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Destination</span></a>
                         </li>
                     <?php } ?>   
+                    
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['100']['act_read'])
+                            && session()->get("halaman")['100']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="  " href="<?= base_url("msatuan"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Satuan</span></a>
+                        </li>
+                    <?php } ?>    
+                    
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['100']['act_read'])
+                            && session()->get("halaman")['100']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="  " href="<?= base_url("mvessel"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Vessel</span></a>
+                        </li>
+                    <?php } ?>   
 
                 <?php } ?>
 

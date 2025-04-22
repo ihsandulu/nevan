@@ -22,6 +22,8 @@ $routes->add('/mvendor', 'master\mvendor::index');
 $routes->add('/mcustomer', 'master\mcustomer::index');
 $routes->add('/morigin', 'master\morigin::index');
 $routes->add('/mdestination', 'master\mdestination::index');
+$routes->add('/msatuan', 'master\msatuan::index');
+$routes->add('/mvessel', 'master\mvessel::index');
 $routes->add('/synchron', 'transaction\synchron::index');
 $routes->add('/lembur', 'transaction\lembur::index');
 $routes->add('/cutihutang', 'transaction\cutihutang::index');
