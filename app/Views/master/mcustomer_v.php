@@ -64,25 +64,31 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="customer_name">Nama Customer:</label>
                                     <div class="col-sm-10">
-                                        <input required type="text" autofocus class="form-control" id="customer_name" name="customer_name" placeholder="" value="<?= $customer_name; ?>">
+                                        <input required autofocus type="text"  class="form-control" id="customer_name" name="customer_name" placeholder="" value="<?= $customer_name; ?>">
+                                    </div>
+                                </div>                                                    
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="customer_singkatan">Singkatan Customer (Untuk Penomoran Invoice):</label>
+                                    <div class="col-sm-10">
+                                        <input required type="text"  class="form-control" id="customer_singkatan" name="customer_singkatan" placeholder="" value="<?= $customer_singkatan; ?>">
                                     </div>
                                 </div>                                                      
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="customer_address">Alamat:</label>
                                     <div class="col-sm-10">
-                                        <input  type="text" autofocus class="form-control" id="customer_address" name="customer_address" placeholder="" value="<?= $customer_address; ?>">
+                                        <input  type="text"  class="form-control" id="customer_address" name="customer_address" placeholder="" value="<?= $customer_address; ?>">
                                     </div>
                                 </div>                                                      
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="customer_npwp">NPWP:</label>
                                     <div class="col-sm-10">
-                                        <input  type="text" autofocus class="form-control" id="customer_npwp" name="customer_npwp" placeholder="" value="<?= $customer_npwp; ?>">
+                                        <input  type="text"  class="form-control" id="customer_npwp" name="customer_npwp" placeholder="" value="<?= $customer_npwp; ?>">
                                     </div>
                                 </div>                                                      
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="customer_phone">Phone:</label>
                                     <div class="col-sm-10">
-                                        <input  type="text" autofocus class="form-control" id="customer_phone" name="customer_phone" placeholder="" value="<?= $customer_phone; ?>">
+                                        <input  type="text"  class="form-control" id="customer_phone" name="customer_phone" placeholder="" value="<?= $customer_phone; ?>">
                                     </div>
                                 </div>  
 
