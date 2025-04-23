@@ -130,6 +130,27 @@
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
+                                                <?php 
+                                                    if (
+                                                        (
+                                                            isset(session()->get("position_administrator")[0][0]) 
+                                                            && (
+                                                                session()->get("position_administrator") == "1" 
+                                                                || session()->get("position_administrator") == "2"
+                                                            )
+                                                        ) ||
+                                                        (
+                                                            isset(session()->get("halaman")['49']['act_update']) 
+                                                            && session()->get("halaman")['49']['act_update'] == "1"
+                                                        )
+                                                    ) { ?>
+                                                    <form method="get" target="_self" class="btn-action" action="<?=base_url("mvendortruck");?>">
+                                                        <button class="btn btn-sm btn-info " ><span class="fa fa-truck" style="color:white;"></span> </button>
+                                                        <input type="hidden" name="vendor_id" value="<?= $usr->vendor_id; ?>" />
+                                                        <input type="hidden" name="vendor_name" value="<?= $usr->vendor_name; ?>" />
+                                                    </form>
+                                                    <?php }?>
+
                                                     <?php 
                                                     if (
                                                         (
