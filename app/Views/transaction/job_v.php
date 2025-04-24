@@ -132,7 +132,13 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="job_qty">QTY:</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_qty" name="job_qty" placeholder="" value="<?= $job_qty; ?>">
+                                        <input onchange="totalsell()" type="number" class="form-control" id="job_qty" name="job_qty" placeholder="" value="<?= $job_qty; ?>">
+                                        <script>function totalsell(){
+                                            let qty = $("#job_qty").val();
+                                            let sell = $("#job_sell").val();
+                                            let total = qty * sell;
+                                            $("#job_total").val(total);
+                                        }</script>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -242,7 +248,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="job_sell">SELL RPRICE:</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
+                                        <input onchange="totalsell()" type="number" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
