@@ -152,45 +152,7 @@
                                     </div>
                                 </div>
 
-                                <script>
-                                    $(document).ready(function() {
-                                        metode(); // jalankan saat halaman dimuat
-
-                                        $("#job_qty").attr("readonly", true);
-                                        $("#job_cbm").attr("readonly", true);
-                                    });
-
-                                    function metode() {
-                                        let metode = $("#job_methode").val();
-                                        if (metode == "cbm") {
-                                            $("#job_qty").attr("readonly", true).val("0");
-                                            $("#job_cbm").attr("readonly", false).val("");
-                                            setTimeout(function(){
-                                                $("#job_cbm").focus();
-                                            },100);
-                                            
-                                        } else if (metode == "lumpsum") {
-                                            $("#job_qty").attr("readonly", false).val("");
-                                            setTimeout(function(){
-                                                $("#job_qty").focus();
-                                            },100);
-                                            $("#job_cbm").attr("readonly", true).val("0");
-                                        }
-                                    }
-
-                                    function totalsell(a) {
-                                        let cbm = $("#job_cbm").val();
-                                        let qty = $("#job_qty").val();
-                                        let sell = $("#job_sell").val();
-                                        let total = 0;
-                                        if (a == "cbm") {
-                                            total = cbm * sell;
-                                        } else {
-                                            total = qty * sell;
-                                        }
-                                        $("#job_total").val(total);
-                                    }
-                                </script>
+                                
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="job_satuan">SATUAN:</label>
                                     <div class="col-sm-10">
@@ -298,19 +260,19 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="job_total">TOTAL PRICE:</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
+                                        <input onchange="profit()" type="number" onchange="tprice()" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="job_cost">COST:</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
+                                        <input onchange="profit()" type="number" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="job_refund">REFUND:</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
+                                        <input onchange="profit()" type="number" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -322,7 +284,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="job_profit">PROFIT:</label>
                                     <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
+                                        <input onchange="fee()" type="number" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -361,6 +323,70 @@
                                         <input type="text" class="form-control" id="job_explanation" name="job_explanation" placeholder="" value="<?= $job_explanation; ?>">
                                     </div>
                                 </div>
+
+                                <script>
+                                    $(document).ready(function() {
+                                        metode(); // jalankan saat halaman dimuat
+
+                                        $("#job_qty").attr("readonly", true);
+                                        $("#job_cbm").attr("readonly", true);
+                                    });
+
+                                    function metode() {
+                                        let metode = $("#job_methode").val();
+                                        if (metode == "cbm") {
+                                            $("#job_qty").attr("readonly", true).val("0");
+                                            $("#job_cbm").attr("readonly", false).val("");
+                                            setTimeout(function() {
+                                                $("#job_cbm").focus();
+                                            }, 100);
+                                            totalsell('cbm');
+                                        } else if (metode == "lumpsum") {
+                                            $("#job_qty").attr("readonly", false).val("");
+                                            setTimeout(function() {
+                                                $("#job_qty").focus();
+                                            }, 100);
+                                            $("#job_cbm").attr("readonly", true).val("0");
+                                            totalsell('lumpsum');
+                                        }
+                                    }
+
+                                    function totalsell(a) {
+                                        let cbm = $("#job_cbm").val();
+                                        let qty = $("#job_qty").val();
+                                        let sell = $("#job_sell").val();
+                                        let total = 0;
+                                        if (a == "cbm") {
+                                            total = cbm * sell;
+                                        } else {
+                                            total = qty * sell;
+                                        }
+                                        $("#job_total").val(total);
+                                        tprice();
+                                    }
+
+                                    function tprice() {
+                                        let job_total = $("#job_total").val();
+                                        let pph = job_total * 2 / 100;
+                                        $("#job_pph").val(pph);
+                                        profit();
+                                    }
+
+                                    function profit(){
+                                        let job_total = $("#job_total").val();
+                                        let job_cost = $("#job_cost").val();
+                                        let job_refund = $("#job_refund").val();
+                                        let profit = (parseInt(job_total) - parseInt(job_cost) - parseInt(job_refund));
+                                        $("#job_profit").val(profit);
+                                        fee();
+                                    }
+
+                                    function fee(){
+                                        let job_profit = $("#job_profit").val();
+                                        let fee = parseInt(job_profit) * 15/100;
+                                        $("#job_fee").val(fee);
+                                    }
+                                </script>
 
                                 <input type="hidden" name="job_id" value="<?= $job_id; ?>" />
                                 <div class="form-group">
