@@ -99,7 +99,7 @@
                             </ul>
                         </li>
                     <?php } ?>
-                    
+
                     <?php
                     if (
                         (
@@ -117,8 +117,8 @@
                         <li>
                             <a class="  " href="<?= base_url("mdepartemen"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Departemen</span></a>
                         </li>
-                    <?php } ?>    
-                    
+                    <?php } ?>
+
                     <?php
                     if (
                         (
@@ -136,8 +136,8 @@
                         <li>
                             <a class="  " href="<?= base_url("mvendor"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Vendor</span></a>
                         </li>
-                    <?php } ?>   
-                    
+                    <?php } ?>
+
                     <?php
                     if (
                         (
@@ -155,8 +155,8 @@
                         <li>
                             <a class="  " href="<?= base_url("mcustomer"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Customer</span></a>
                         </li>
-                    <?php } ?>   
-                    
+                    <?php } ?>
+
                     <?php
                     if (
                         (
@@ -174,8 +174,8 @@
                         <li>
                             <a class="  " href="<?= base_url("morigin"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Origin</span></a>
                         </li>
-                    <?php } ?>   
-                    
+                    <?php } ?>
+
                     <?php
                     if (
                         (
@@ -193,8 +193,8 @@
                         <li>
                             <a class="  " href="<?= base_url("mdestination"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Destination</span></a>
                         </li>
-                    <?php } ?>   
-                    
+                    <?php } ?>
+
                     <?php
                     if (
                         (
@@ -212,8 +212,8 @@
                         <li>
                             <a class="  " href="<?= base_url("msatuan"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Satuan</span></a>
                         </li>
-                    <?php } ?>    
-                    
+                    <?php } ?>
+
                     <?php
                     if (
                         (
@@ -231,8 +231,8 @@
                         <li>
                             <a class="  " href="<?= base_url("mvessel"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Vessel</span></a>
                         </li>
-                    <?php } ?>    
-                    
+                    <?php } ?>
+
                     <?php
                     if (
                         (
@@ -250,7 +250,7 @@
                         <li>
                             <a class="  " href="<?= base_url("mservice"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Service</span></a>
                         </li>
-                    <?php } ?>   
+                    <?php } ?>
 
                 <?php } ?>
 
@@ -273,44 +273,6 @@
                     )
                 ) { ?>
                     <li class="nav-label">Transaksi</li>
-                    
-                   <!--  <?php
-                    if (
-                        (
-                            isset(session()->get("position_id")[0][0])
-                            && (
-                                session()->get("position_id") == "1"
-                                || session()->get("position_id") == "2"
-                            )
-                        ) ||
-                        (
-                            isset(session()->get("halaman")['95']['act_read'])
-                            && session()->get("halaman")['95']['act_read'] == "1"
-                        )
-                    ) { ?>
-                        <li>
-                            <a class="  " href="<?= base_url("cutihutang"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Hutang Cuti</span></a>
-                        </li>
-                    <?php } ?>
-                    
-                    <?php
-                    if (
-                        (
-                            isset(session()->get("position_id")[0][0])
-                            && (
-                                session()->get("position_id") == "1"
-                                || session()->get("position_id") == "2"
-                            )
-                        ) ||
-                        (
-                            isset(session()->get("halaman")['92']['act_read'])
-                            && session()->get("halaman")['92']['act_read'] == "1"
-                        )
-                    ) { ?>
-                        <li>
-                            <a class="  " href="<?= base_url("lembur"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Lembur</span></a>
-                        </li>
-                    <?php } ?> -->
 
                     <?php
                     if (
@@ -328,6 +290,25 @@
                     ) { ?>
                         <li>
                             <a class="  " href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Job</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['104']['act_read'])
+                            && session()->get("halaman")['104']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="  " href="<?= base_url("cppn"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Customer PPN</span></a>
                         </li>
                     <?php } ?>
 
@@ -364,21 +345,21 @@
                 ) { ?>
                     <li class="nav-label">Laporan</li>
 
-                    
+
                     <!-- <?php
-                    if (
-                        (
-                            isset(session()->get("position_id")[0][0])
-                            && (
-                                session()->get("position_id") == "1"
-                                || session()->get("position_id") == "2"
-                            )
-                        ) ||
-                        (
-                            isset(session()->get("halaman")['74']['act_read'])
-                            && session()->get("halaman")['74']['act_read'] == "1"
-                        )
-                    ) { ?>
+                            if (
+                                (
+                                    isset(session()->get("position_id")[0][0])
+                                    && (
+                                        session()->get("position_id") == "1"
+                                        || session()->get("position_id") == "2"
+                                    )
+                                ) ||
+                                (
+                                    isset(session()->get("halaman")['74']['act_read'])
+                                    && session()->get("halaman")['74']['act_read'] == "1"
+                                )
+                            ) { ?>
                         <li>
                             <a class="  " href="<?= base_url("rabsend"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Rangkuman Absensi</span></a>
                         </li>

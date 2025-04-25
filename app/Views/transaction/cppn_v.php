@@ -52,253 +52,74 @@
                         <div class="">
                             <?php if (isset($_POST['edit'])) {
                                 $namabutton = 'name="change"';
-                                $judul = "Update Job";
+                                $judul = "Update Customer PPN";
                             } else {
                                 $namabutton = 'name="create"';
-                                $judul = "Tambah Job";
+                                $judul = "Tambah Customer PPN";
                             } ?>
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
                             <form class="form-horizontal" method="post" enctype="multipart/form-data">
+                                
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_shipmentdate">SHIPMENT DATE:</label>
+                                    <label class="control-label col-sm-2" for="job_id">DA NO.:</label>
                                     <div class="col-sm-10">
-                                        <input type="date" autofocus class="form-control" id="job_shipmentdate" name="job_shipmentdate" placeholder="" value="<?= $job_shipmentdate; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="customer_id">SHIPPER NAME:</label>
-                                    <div class="col-sm-10">
-                                        <select onchange="isisingkatan()" class="form-control select" id="customer_id" name="customer_id">
+                                        <select onchange="isidata()" class="form-control select" id="job_id" name="job_id">
                                             <option value="">--Select--</option>
                                             <?php
                                             $usr = $this->db
-                                                ->table("customer")
-                                                ->orderBy("customer_name", "ASC")
+                                                ->table("job")
+                                                ->orderBy("job_name", "ASC")
                                                 ->get();
                                             foreach ($usr->getResult() as $usr) { ?>
-                                                <option data-singkatan="<?= $usr->customer_singkatan; ?>" value="<?= $usr->customer_id; ?>" <?= ($customer_id == $usr->customer_id) ? "selected" : ""; ?>><?= $usr->customer_name; ?></option>
+                                                <option data-cbm="<?= $usr->job_cbm; ?>" data-sell="<?= $usr->job_sell; ?>" data-total="<?= $usr->job_total; ?>"  value="<?= $usr->job_id; ?>" <?= ($job_id == $usr->job_id) ? "selected" : ""; ?>><?= $usr->job_dano; ?></option>
                                             <?php } ?>
                                         </select>
                                         <script>
-                                            function isisingkatan() {
-                                                let singkatan = $("#customer_id option:selected").data("singkatan");
+                                            function isidata() {
+                                                let ppn = $("#job_id option:selected").data("total");
+                                                ppn = ppn * 0.11;
                                                 // alert(singkatan);
-                                                $("#customer_singkatan").val(singkatan);
+                                                $("#job_ppn").val(ppn);
+
+                                                
+                                                let sell = $("#job_id option:selected").data("sell");
+                                                $("#job_sell").val(sell);
+
+                                                let cbm = $("#job_id option:selected").data("cbm");
+                                                $("#job_cbm").val(cbm);
+
+                                                let totalsell = cbm*sell;
+                                                $("#job_totalsell").val(totalsell);
                                             }
                                         </script>
-                                        <input type="hidden" id="customer_singkatan" name="customer_singkatan" value="<?= $customer_singkatan; ?>" />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="origin_id">ORIGIN:</label>
+                                    <label class="control-label col-sm-2" for="job_cbm">CBM:</label>
                                     <div class="col-sm-10">
-                                        <select class="form-control select" id="origin_id" name="origin_id">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("origin")
-                                                ->orderBy("origin_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->origin_id; ?>" <?= ($origin_id == $usr->origin_id) ? "selected" : ""; ?>><?= $usr->origin_name; ?></option>
-                                            <?php } ?>
-                                        </select>
+                                        <input readonly type="number" class="form-control" id="job_cbm" name="job_cbm" placeholder="" value="<?= $job_cbm; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="destination_id">DESTINATION:</label>
+                                    <label class="control-label col-sm-2" for="job_sell">Price:</label>
                                     <div class="col-sm-10">
-                                        <select class="form-control select" id="destination_id" name="destination_id">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("destination")
-                                                ->orderBy("destination_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->destination_id; ?>" <?= ($destination_id == $usr->destination_id) ? "selected" : ""; ?>><?= $usr->destination_name; ?></option>
-                                            <?php } ?>
-                                        </select>
+                                        <input readonly type="number" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_descgood">DESCRIPTION OF GOODS:</label>
+                                    <label class="control-label col-sm-2" for="job_ppn">PPN:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="job_descgood" name="job_descgood" placeholder="" value="<?= $job_descgood; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_methode">Metode:</label>
-                                    <div class="col-sm-10">
-                                        <select onchange="metode()" class="form-control select" id="job_methode" name="job_methode">
-                                            <option value="">--Select--</option>
-                                            <option value="lumpsum" <?= ($job_methode == "lumpsum") ? "selected" : ""; ?>>Lumpsum</option>
-                                            <option value="cbm" <?= ($job_methode == "cbm") ? "selected" : ""; ?>>CBM</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_qty">QTY:</label>
-                                    <div class="col-sm-10">
-                                        <input onchange="totalsell('qty')" type="number" class="form-control" id="job_qty" name="job_qty" placeholder="" value="<?= $job_qty; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_cbm">CBM / KGS:</label>
-                                    <div class="col-sm-10">
-                                        <input onchange="totalsell('cbm')" type="number" class="form-control" id="job_cbm" name="job_cbm" placeholder="" value="<?= $job_cbm; ?>">
+                                        <input type="number" class="form-control" id="job_ppn" name="job_ppn" placeholder="" value="<?= $job_ppn; ?>">
                                     </div>
                                 </div>
 
-                                <script>
-                                    $(document).ready(function() {
-                                        metode(); // jalankan saat halaman dimuat
 
-                                        $("#job_qty").attr("readonly", true);
-                                        $("#job_cbm").attr("readonly", true);
-                                    });
-
-                                    function metode() {
-                                        let metode = $("#job_methode").val();
-                                        if (metode == "cbm") {
-                                            $("#job_qty").attr("readonly", true).val("0");
-                                            $("#job_cbm").attr("readonly", false).val("");
-                                            setTimeout(function(){
-                                                $("#job_cbm").focus();
-                                            },100);
-                                            
-                                        } else if (metode == "lumpsum") {
-                                            $("#job_qty").attr("readonly", false).val("");
-                                            setTimeout(function(){
-                                                $("#job_qty").focus();
-                                            },100);
-                                            $("#job_cbm").attr("readonly", true).val("0");
-                                        }
-                                    }
-
-                                    function totalsell(a) {
-                                        let cbm = $("#job_cbm").val();
-                                        let qty = $("#job_qty").val();
-                                        let sell = $("#job_sell").val();
-                                        let total = 0;
-                                        if (a == "cbm") {
-                                            total = cbm * sell;
-                                        } else {
-                                            total = qty * sell;
-                                        }
-                                        $("#job_total").val(total);
-                                    }
-                                </script>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_satuan">SATUAN:</label>
+                                    <label class="control-label col-sm-2" for="job_totalsell">TOTAL SELL:</label>
                                     <div class="col-sm-10">
-                                        <select class="form-control select" id="job_satuan" name="job_satuan">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("satuan")
-                                                ->orderBy("satuan_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->satuan_name; ?>" <?= ($job_satuan == $usr->satuan_name) ? "selected" : ""; ?>><?= $usr->satuan_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="service_id">SERVICE:</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control select" id="service_id" name="service_id">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("service")
-                                                ->orderBy("service_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->service_id; ?>" <?= ($service_id == $usr->service_id) ? "selected" : ""; ?>><?= $usr->service_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="vendortruck_id">TRUCKING:</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control select" id="vendortruck_id" name="vendortruck_id">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("vendortruck")
-                                                ->join("vendor", "vendor.vendor_id = vendortruck.vendor_id", "left")
-                                                ->orderBy("vendortruck_name", "ASC")
-                                                ->orderBy("vendor_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->vendortruck_id; ?>" <?= ($vendortruck_id == $usr->vendortruck_id) ? "selected" : ""; ?>><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="vessel_id">VESSEL:</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control select" id="vessel_id" name="vessel_id">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("vessel")
-                                                ->orderBy("vessel_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->vessel_id; ?>" <?= ($vessel_id == $usr->vessel_id) ? "selected" : ""; ?>><?= $usr->vessel_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="vendor_id">VENDOR / PELAYARAN:</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control select" id="vendor_id" name="vendor_id">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("vendor")
-                                                ->orderBy("vendor_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->vendor_id; ?>" <?= ($vendor_id == $usr->vendor_id) ? "selected" : ""; ?>><?= $usr->vendor_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_dooring">DOORING:</label>
-                                    <div class="col-sm-10">
-                                        <select class="form-control select" id="job_dooring" name="job_dooring">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("vendor")
-                                                ->orderBy("vendor_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->vendor_id; ?>" <?= ($job_dooring == $usr->vendor_id) ? "selected" : ""; ?>><?= $usr->vendor_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_sell">SELL RPRICE:</label>
-                                    <div class="col-sm-10">
-                                        <input onchange="totalsell()" type="number" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_total">TOTAL PRICE:</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
+                                        <input type="number" class="form-control" id="job_totalsell" name="job_totalsell" placeholder="" value="<?= $job_totalsell; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -388,7 +209,6 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>Methode</th>
                                         <th>Shipment Date</th>
                                         <th>DA Number</th>
                                         <th>Shipper Name</th>
@@ -480,7 +300,6 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->job_methode; ?></td>
                                             <td><?= $usr->job_shipmentdate; ?></td>
                                             <td><?= $usr->job_dano; ?></td>
                                             <td><?= $usr->customer_name; ?></td>
@@ -521,7 +340,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Master Job";
+    var title = "Master Customer PPN";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
