@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 $this->session = \Config\Services::session();
 $this->request = \Config\Services::request();
 
@@ -9,6 +10,13 @@ if ($this->session->get('user_id') == "") {
     $this->session->setFlashdata("message", "Selamat Datang !");
     header('Location:' . base_url('login?message=Silahkan Login !'));
     exit;
+}
+$icon = "";
+$nama = "";
+$identity = $this->db->table("identity")->get();
+foreach($identity->getResult() as $identity){
+    $icon = $identity->identity_logo;
+    $nama = $identity->identity_name;
 }
 ?>
 <!DOCTYPE html>
@@ -22,8 +30,8 @@ if ($this->session->get('user_id') == "") {
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="images/icons/logo.png">
-    <title>POS</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="images/identity_logo/<?=$icon;?>">
+    <title><?=$nama;?></title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/lib/bootstrap/bootstrap.min.4.5.2.css" rel="stylesheet">
@@ -51,12 +59,19 @@ if ($this->session->get('user_id') == "") {
     <script src="js/lib/toastr/toastr.min.js"></script>
     <script src="js/lib/toastr/toastr.init.js"></script>
 
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+    </script>
+
 
     <!--Custom JavaScript -->
     <script src="js/custom.min.js"></script>
 
     <!--Fungsi Pemisah Ribuan -->
     <script src="js/pemisah_ribuan.js"></script>
+
+    <script id="tinymce1" src="tinymce/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>tinymce.init({selector:'textarea'});</script>
 
     <style>
         .toast {
@@ -120,9 +135,41 @@ if ($this->session->get('user_id') == "") {
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
         }
+        .hide{display: none !important;}
+        .container-fluid{
+            padding:5px;
+            margin:0px;
+        }
+        .page-titles{
+            margin-bottom:-13px;
+        }
+        .tunjuk{
+            cursor:pointer;
+        }
+        .navitem{
+            padding:0px;
+            font-size:30px!important;
+        }
+        .navlink{
+            margin:0px !important; 
+            padding:0px !important;
+            padding-left:10px !important;
+            font-size:30px!important;
+        }
+        .navlink::after {
+            content: "Menu";
+            color: rgba(128, 128, 128, 0.6); 
+            font-weight: bold;
+            font-size:15px!important;
+            position: absolute; 
+            top: 50%; 
+            transform: translate(10px,-50%); 
+        }
+        #logotop{height: 50px; width: auto;}
+        .table-responsive{overflow-x: auto; cursor: grab;}
     </style>
     
 
 </head>
 
-<body class="fix-header fix-sidebar">    
+<body class="fix-header fix-sidebar">

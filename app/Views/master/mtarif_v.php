@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <div class="row">
                         <?php if (!isset($_GET['user_id']) && !isset($_POST['new']) && !isset($_POST['edit'])) {
-                            $coltitle = "col-md-10";
+                            $coltitle = "col-md-8";
                         } else {
                             $coltitle = "col-md-8";
                         } ?>
@@ -38,6 +38,12 @@
                                     && session()->get("halaman")['49']['act_create'] == "1"
                                 )
                             ) { ?>
+                            <form method="post" target="_blank" class="col-md-2" action="<?= base_url("rtarif"); ?>">
+                                <h1 class="page-header col-md-12">
+                                    <button class="btn btn-info btn-block btn-lg" value="OK" style="">Catalog</button>
+                                    <input type="hidden" name="tarif_id" />
+                                </h1>
+                            </form>
                             <form method="post" class="col-md-2">
                                 <h1 class="page-header col-md-12">
                                     <button name="new" class="btn btn-info btn-block btn-lg" value="OK" style="">New</button>

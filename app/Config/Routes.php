@@ -35,3 +35,4 @@ $routes->add('/job', 'transaction\job::index');
 $routes->add('/cppn', 'transaction\cppn::index');
 
 $routes->add('/rabsend', 'report\rabsend::index');
+$routes->add('/rtarif', 'report\rtarif::index');
