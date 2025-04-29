@@ -26,9 +26,12 @@ $routes->add('/msatuan', 'master\msatuan::index');
 $routes->add('/mvessel', 'master\mvessel::index');
 $routes->add('/mvendortruck', 'master\mvendortruck::index');
 $routes->add('/mservice', 'master\mservice::index');
+$routes->add('/mtarif', 'master\mtarif::index');
+
 $routes->add('/synchron', 'transaction\synchron::index');
 $routes->add('/lembur', 'transaction\lembur::index');
 $routes->add('/cutihutang', 'transaction\cutihutang::index');
 $routes->add('/job', 'transaction\job::index');
 $routes->add('/cppn', 'transaction\cppn::index');
+
 $routes->add('/rabsend', 'report\rabsend::index');

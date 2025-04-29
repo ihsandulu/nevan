@@ -85,9 +85,19 @@
                     }
                 },
                 {
-                    extend: 'pdf',
+                    extend: 'pdfHtml5',
                     exportOptions: {
                         columns: ':not(:first-child)'
+                    },
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    customize: function(doc) {
+                        // Tambah jarak antara title dan tabel
+                        doc.content[1].margin = [0, 20, 0, 0]; // [left, top, right, bottom]
+
+                        // Biar kolom rata dan memenuhi lebar
+                        doc.content[1].table.widths =
+                            Array(doc.content[1].table.body[0].length + 1).join('*').split('');
                     }
                 },
                 {
@@ -209,6 +219,9 @@
 <script src="js/lib/datatables/cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script> -->
 <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
 <script src="js/lib/datatables/cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+
 <script src="js/lib/datatables/datatables-init.js"></script>
 
 <script src="js/lib/toastr/toastr.min.js"></script>
