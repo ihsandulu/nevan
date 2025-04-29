@@ -262,6 +262,25 @@
                             )
                         ) ||
                         (
+                            isset(session()->get("halaman")['106']['act_read'])
+                            && session()->get("halaman")['106']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="  " href="<?= base_url("msatuantarif"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Satuan Tarif</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
                             isset(session()->get("halaman")['105']['act_read'])
                             && session()->get("halaman")['105']['act_read'] == "1"
                         )

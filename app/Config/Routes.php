@@ -26,6 +26,7 @@ $routes->add('/msatuan', 'master\msatuan::index');
 $routes->add('/mvessel', 'master\mvessel::index');
 $routes->add('/mvendortruck', 'master\mvendortruck::index');
 $routes->add('/mservice', 'master\mservice::index');
+$routes->add('/msatuantarif', 'master\msatuantarif::index');
 $routes->add('/mtarif', 'master\mtarif::index');
 
 $routes->add('/synchron', 'transaction\synchron::index');
