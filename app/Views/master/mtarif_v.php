@@ -40,7 +40,7 @@
                             ) { ?>
                             <form method="post" target="_blank" class="col-md-2" action="<?= base_url("rtarif"); ?>">
                                 <h1 class="page-header col-md-12">
-                                    <button class="btn btn-info btn-block btn-lg" value="OK" style="">Catalog</button>
+                                    <button class="btn btn-warning btn-block btn-lg" value="OK" style="">Catalog</button>
                                     <input type="hidden" name="tarif_id" />
                                 </h1>
                             </form>
