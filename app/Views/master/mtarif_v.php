@@ -94,15 +94,22 @@
                                     </div>
                                 </div>                                                       
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="tarif_price">Tarif/kg:</label>
+                                    <label class="control-label col-sm-2" for="tarif_price">Tarif:</label>
                                     <div class="col-sm-10">
                                         <input required type="number"  class="form-control" id="tarif_price" name="tarif_price" placeholder="" value="<?= $tarif_price; ?>">
                                     </div>
                                 </div>                                                       
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="tarif_kg">Berat:</label>
+                                    <label class="control-label col-sm-2" for="satuantarif_id">Berat:</label>
                                     <div class="col-sm-10">
-                                        <input required type="number"  class="form-control" id="tarif_kg" name="tarif_kg" placeholder="" value="<?= $tarif_kg; ?>">
+                                    <select required  autofocus class="form-control select" id="satuantarif_id" name="satuantarif_id">
+                                            <option value="">Pilih Tujuan</option>
+                                            <?php
+                                            $satuantarif = $this->db->table("satuantarif")->orderBy("satuantarif_name", "ASC")->get();
+                                            foreach ($satuantarif->getResult() as $row) {?>
+                                                <option <?=($row->satuantarif_id == $satuantarif_id)?"selected":"";?> value="<?= $row->satuantarif_id;?>"><?=$row->satuantarif_name ;?></option>
+                                            <?php }?>
+                                        </select>
                                     </div>
                                 </div>    
 
@@ -134,14 +141,15 @@
                                         <!-- <th>No.</th> -->
                                         <th>Asal</th>
                                         <th>Tujuan</th>
-                                        <th>Harga/kg</th>
-                                        <th>Berat</th>
+                                        <th>Satuan</th>
+                                        <th>Harga</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $usr = $this->db
                                         ->table("tarif")
+                                        ->join("satuantarif", "satuantarif.satuantarif_id = tarif.satuantarif_id")
                                         ->join("origin", "origin.origin_id = tarif.origin_id")
                                         ->join("destination", "destination.destination_id = tarif.destination_id")
                                         ->orderBy("tarif_id", "DESC")
@@ -196,8 +204,8 @@
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td class="text-left"><?= $usr->origin_name; ?></td>
                                             <td class="text-left"><?= $usr->destination_name; ?></td>
+                                            <td class="text-left"><?= $usr->satuantarif_name; ?></td>
                                             <td class="text-left"><?= number_format($usr->tarif_price,0,",","."); ?></td>
-                                            <td class="text-left"><?= number_format($usr->tarif_kg,0,",","."); ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>

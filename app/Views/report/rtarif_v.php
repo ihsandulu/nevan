@@ -73,12 +73,12 @@
                             </li>
 
                             <li>
-                                <hr/>
-                                <div  class="p-3" style="color:rgba(0,0,0,0.5);">
-                                021-4393 8026<br />
-                                Jl. Manggar Raya. No. 21, Tugu Utara, Koja - Jakarta Utara<br />
-                                cs@nevankiranalogistik.co.id<br />
-                                08:00 - 17:00
+                                <hr />
+                                <div class="p-3" style="color:rgba(0,0,0,0.5);">
+                                    021-4393 8026<br />
+                                    Jl. Manggar Raya. No. 21, Tugu Utara, Koja - Jakarta Utara<br />
+                                    cs@nevankiranalogistik.co.id<br />
+                                    08:00 - 17:00
                                 </div>
                             </li>
                         </ul>
@@ -121,14 +121,15 @@
                                     <tr>
                                         <th>Asal</th>
                                         <th>Tujuan</th>
-                                        <th>Harga/kg</th>
-                                        <th>Berat</th>
+                                        <th>Satuan</th>
+                                        <th>Harga</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
                                     $usr = $this->db
                                         ->table("tarif")
+                                        ->join("satuantarif", "satuantarif.satuantarif_id = tarif.satuantarif_id")
                                         ->join("origin", "origin.origin_id = tarif.origin_id")
                                         ->join("destination", "destination.destination_id = tarif.destination_id")
                                         ->orderBy("tarif_id", "DESC")
@@ -139,8 +140,15 @@
                                         <tr>
                                             <td class="text-left"><?= $usr->origin_name; ?></td>
                                             <td class="text-left"><?= $usr->destination_name; ?></td>
-                                            <td class="text-right"><?= number_format($usr->tarif_price, 0, ",", "."); ?></td>
-                                            <td class="text-right"><?= number_format($usr->tarif_kg, 0, ",", "."); ?></td>
+                                            <td class="text-right"><?= $usr->satuantarif_name; ?></td>
+                                            <td class="row p-0" style="margin:0px; padding:0px; border:none;">
+                                                <div class="col-2 m-0" style="margin:0px; padding:0px; border:none;">
+                                                    <span class="currency">Rp.</span>
+                                                </div>
+                                                <div class="col-10 m-0 text-right pr-2" style="margin:0px; padding:0px; border:none;">
+                                                    <?= number_format($usr->tarif_price, 0, ",", "."); ?>
+                                                </div>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
