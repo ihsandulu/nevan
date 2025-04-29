@@ -6,11 +6,7 @@ $this->request = \Config\Services::request();
 use Config\Database;
 
 $this->db = Database::connect("default");
-if ($this->session->get('user_id') == "") {
-    $this->session->setFlashdata("message", "Selamat Datang !");
-    header('Location:' . base_url('login?message=Silahkan Login !'));
-    exit;
-}
+
 $icon = "";
 $nama = "";
 $identity = $this->db->table("identity")->get();
