@@ -43,7 +43,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("midentity"); ?>" aria-expanded="false"><i class="fa fa-tree"></i><span class="hide-menu">Identitas</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'midentity' ? 'active' : ''; ?>" href="<?= base_url("midentity"); ?>" aria-expanded="false"><i class="fa fa-tree"></i><span class="hide-menu">Identitas</span></a>
                         </li>
                     <?php } ?>
 
@@ -115,7 +115,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("mdepartemen"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Departemen</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mdepartemen' ? 'active' : ''; ?>" href="<?= base_url("mdepartemen"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Departemen</span></a>
                         </li>
                     <?php } ?>
 
@@ -134,7 +134,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("mvendor"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Vendor</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mvendor' ? 'active' : ''; ?>" href="<?= base_url("mvendor"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Vendor</span></a>
                         </li>
                     <?php } ?>
 
@@ -153,7 +153,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("mcustomer"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Customer</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mcustomer' ? 'active' : ''; ?>" href="<?= base_url("mcustomer"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Customer</span></a>
                         </li>
                     <?php } ?>
 
@@ -172,7 +172,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("morigin"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Origin</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'morigin' ? 'active' : ''; ?>" href="<?= base_url("morigin"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Origin</span></a>
                         </li>
                     <?php } ?>
 
@@ -191,7 +191,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("mdestination"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Destination</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mdestination' ? 'active' : ''; ?>" href="<?= base_url("mdestination"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Destination</span></a>
                         </li>
                     <?php } ?>
 
@@ -210,7 +210,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("msatuan"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Satuan</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'msatuan' ? 'active' : ''; ?>" href="<?= base_url("msatuan"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Satuan</span></a>
                         </li>
                     <?php } ?>
 
@@ -229,7 +229,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("mvessel"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Vessel</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mvessel' ? 'active' : ''; ?>" href="<?= base_url("mvessel"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Vessel</span></a>
                         </li>
                     <?php } ?>
 
@@ -248,7 +248,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("mservice"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Service</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mservice' ? 'active' : ''; ?>" href="<?= base_url("mservice"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Service</span></a>
                         </li>
                     <?php } ?>
 
@@ -267,7 +267,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("msatuantarif"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Satuan Tarif</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'msatuantarif' ? 'active' : ''; ?>" href="<?= base_url("msatuantarif"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Satuan Tarif</span></a>
                         </li>
                     <?php } ?>
 
@@ -286,7 +286,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("mtarif"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Tarif</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mtarif' ? 'active' : ''; ?>" href="<?= base_url("mtarif"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Tarif</span></a>
                         </li>
                     <?php } ?>
 
@@ -327,7 +327,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Job</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'job' ? 'active' : ''; ?>" href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Job</span></a>
                         </li>
                     <?php } ?>
 
@@ -346,7 +346,45 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("cppn"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Customer PPN</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'cppn' ? 'active' : ''; ?>" href="<?= base_url("cppn"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Customer PPN</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['107']['act_read'])
+                            && session()->get("halaman")['107']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'nppn' ? 'active' : ''; ?>" href="<?= base_url("nppn"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Customer Non PPN</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['108']['act_read'])
+                            && session()->get("halaman")['108']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'cost' ? 'active' : ''; ?>" href="<?= base_url("cost"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Cost</span></a>
                         </li>
                     <?php } ?>
 
@@ -399,7 +437,7 @@
                                 )
                             ) { ?>
                         <li>
-                            <a class="  " href="<?= base_url("rabsend"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Rangkuman Absensi</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'rabsend' ? 'active' : ''; ?>" href="<?= base_url("rabsend"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Rangkuman Absensi</span></a>
                         </li>
                     <?php } ?> -->
 

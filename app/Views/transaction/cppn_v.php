@@ -70,7 +70,7 @@
                                             <?php
                                             $usr = $this->db
                                                 ->table("job")
-                                                ->orderBy("job_name", "ASC")
+                                                ->orderBy("job_id", "DESC")
                                                 ->get();
                                             foreach ($usr->getResult() as $usr) { ?>
                                                 <option data-cbm="<?= $usr->job_cbm; ?>" data-sell="<?= $usr->job_sell; ?>" data-total="<?= $usr->job_total; ?>"  value="<?= $usr->job_id; ?>" <?= ($job_id == $usr->job_id) ? "selected" : ""; ?>><?= $usr->job_dano; ?></option>
@@ -78,20 +78,7 @@
                                         </select>
                                         <script>
                                             function isidata() {
-                                                let ppn = $("#job_id option:selected").data("total");
-                                                ppn = ppn * 0.11;
-                                                // alert(singkatan);
-                                                $("#job_ppn").val(ppn);
-
                                                 
-                                                let sell = $("#job_id option:selected").data("sell");
-                                                $("#job_sell").val(sell);
-
-                                                let cbm = $("#job_id option:selected").data("cbm");
-                                                $("#job_cbm").val(cbm);
-
-                                                let totalsell = cbm*sell;
-                                                $("#job_totalsell").val(totalsell);
                                             }
                                         </script>
                                     </div>
@@ -144,30 +131,6 @@
                                     <label class="control-label col-sm-2" for="job_profit">PROFIT:</label>
                                     <div class="col-sm-10">
                                         <input type="number" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_gp">GP %:</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_gp" name="job_gp" placeholder="" value="<?= $job_gp; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_sell2">SELL2:</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_sell2" name="job_sell2" placeholder="" value="<?= $job_sell2; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_vat">VAT:</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_vat" name="job_vat" placeholder="" value="<?= $job_vat; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-2" for="job_pph">PPH 2%:</label>
-                                    <div class="col-sm-10">
-                                        <input type="number" class="form-control" id="job_pph" name="job_pph" placeholder="" value="<?= $job_pph; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -231,8 +194,6 @@
                                         <th>Profit</th>
                                         <th>GP%</th>
                                         <th>Invoice No.</th>
-                                        <th>Sell2</th>
-                                        <th>Vat</th>
                                         <th>PPH2%</th>
                                         <th>Admission</th>
                                         <th>Explanation</th>
@@ -322,8 +283,6 @@
                                             <td><?= $usr->job_profit; ?></td>
                                             <td><?= $usr->job_gp; ?></td>
                                             <td><?= $usr->job_invoice; ?></td>
-                                            <td><?= $usr->job_sell2; ?></td>
-                                            <td><?= $usr->job_vat; ?></td>
                                             <td><?= $usr->job_pph; ?></td>
                                             <td><?= $usr->job_admission; ?></td>
                                             <td><?= $usr->job_explanation; ?></td>

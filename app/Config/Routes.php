@@ -33,7 +33,9 @@ $routes->add('/synchron', 'transaction\synchron::index');
 $routes->add('/lembur', 'transaction\lembur::index');
 $routes->add('/cutihutang', 'transaction\cutihutang::index');
 $routes->add('/job', 'transaction\job::index');
-$routes->add('/cppn', 'transaction\cppn::index');
+$routes->add('/cppn', 'transaction\job::ppn');
+$routes->add('/nppn', 'transaction\job::nppn');
+$routes->add('/cost', 'transaction\cost::index');
 
 $routes->add('/rabsend', 'report\rabsend::index');
 $routes->add('/rtarif', 'report\rtarif::index');
