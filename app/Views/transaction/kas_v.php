@@ -379,13 +379,13 @@
                                             <td><?= $usr->kas_type; ?></td>
                                             <td><?= $debettype[$usr->kas_debettype]; ?></td>
                                             <td><?= $usr->job_dano; ?></td>
-                                            <td><?= $usr->kas_uraian; ?></td>
+                                            <td class="text-left"><?= $usr->kas_uraian; ?></td>
                                             <td><?= number_format($usr->kas_qty, 0, ",", "."); ?></td>
                                             <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
                                             <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td>
-                                            <td><?= $usr->rekdari; ?></td>
-                                            <td><?= $usr->rekke; ?></td>
-                                            <td><?= $usr->kas_keterangan; ?></td>
+                                            <td class="text-left"><?= $usr->rekdari; ?></td>
+                                            <td class="text-left"><?= $usr->rekke; ?></td>
+                                            <td class="text-left"><?= $usr->kas_keterangan; ?></td>
                                             <td><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
                                             <td><?= number_format($usr->kas_bigcash, 0, ",", "."); ?></td>
                                             <td><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
