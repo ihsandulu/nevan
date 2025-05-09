@@ -1,0 +1,185 @@
+<?php
+
+namespace App\Models\transaction;
+
+use App\Models\core_m;
+
+class kas_m extends core_m
+{
+    public function data()
+    {
+        $data = array();
+        $data["message"] = "";
+        //cek kas
+        if ($this->request->getVar("kas_id")) {
+            $kasd["kas_id"] = $this->request->getVar("kas_id");
+        } else {
+            $kasd["kas_id"] = -1;
+        }
+        $us = $this->db
+            ->table("kas")
+            ->getWhere($kasd);
+        /* echo $this->db->getLastquery();
+        die; */
+        $larang = array("log_id", "id", "user_id", "action", "data", "kas_id_dep", "trx_id", "trx_code");
+        if ($us->getNumRows() > 0) {
+            foreach ($us->getResult() as $kas) {
+                foreach ($this->db->getFieldNames('kas') as $field) {
+                    if (!in_array($field, $larang)) {
+                        $data[$field] = $kas->$field;
+                    }
+                }
+            }
+        } else {
+            foreach ($this->db->getFieldNames('kas') as $field) {
+                $data[$field] = "";
+            }
+        }
+
+
+
+        //delete
+        if ($this->request->getPost("delete") == "OK") {
+            $kas_id =   $this->request->getPost("kas_id");
+            $this->db
+                ->table("kas")
+                ->delete(array("kas_id" =>  $kas_id));
+            $data["message"] = "Delete Success";
+        }
+
+        //insert
+        if ($this->request->getPost("create") == "OK") {
+            foreach ($this->request->getPost() as $e => $f) {
+                if ($e != 'create' && $e != 'kas_id') {
+                    $input[$e] = $this->request->getPost($e);
+                }
+            }
+
+            $kas = $this->db->table("kas")->orderBy("kas_id", "desc")->limit("1")->get();
+            $saldo = 0;
+            $bigcash = 0;
+            $pettycash = 0;
+            foreach ($kas->getResult() as $kas) {
+                if ($input["kas_type"] == "Debet") {
+                    $saldo = $kas->kas_saldo + $input["kas_total"];
+                    if ($input["kas_debettype"] == "bigcash") {
+                        $bigcash = $kas->kas_bigcash + $input["kas_total"];
+                        $pettycash = $kas->kas_pettycash;
+                    }
+                    if ($input["kas_debettype"] == "pettycash") {
+                        $pettycash = $kas->kas_pettycash + $input["kas_total"];
+                        $bigcash = $kas->kas_bigcash;
+                    }
+                } else {
+                    $saldo = $kas->kas_saldo - $input["kas_total"];
+                    if ($input["kas_debettype"] == "bigcash") {
+                        $bigcash = $kas->kas_bigcash - $input["kas_total"];
+                        $pettycash = $kas->kas_pettycash;
+                    }
+                    if ($input["kas_debettype"] == "pettycash") {
+                        $pettycash = $kas->kas_pettycash - $input["kas_total"];
+                        $bigcash = $kas->kas_bigcash;
+                    }
+                }
+            }
+            $input["kas_saldo"] = $saldo;
+            $input["kas_bigcash"] = $bigcash;
+            $input["kas_pettycash"] = $pettycash;
+
+            $builder = $this->db->table('kas');
+            $builder->insert($input);
+            // echo $this->db->getLastQuery(); die;
+            $kas_id = $this->db->insertID();
+
+            $data["message"] = "Insert Data Success";
+        }
+        //echo $_POST["create"];die;
+
+        //update
+        if ($this->request->getPost("change") == "OK") {
+            foreach ($this->request->getPost() as $e => $f) {
+                if ($e != 'change' && $e != 'kas_picture') {
+                    $input[$e] = $this->request->getPost($e);
+                }
+            }
+
+            $kas_id = $this->request->getPost("kas_id");
+            $kas = $this->db->table("kas")->where("kas_id", $kas_id)->get();
+            
+            $saldo = 0;
+            $bigcash = 0;
+            $pettycash = 0;
+            foreach ($kas->getResult() as $kas) {
+                $kas_id = $kas->kas_id;
+                $kas_totalawal = $kas->kas_total;
+                $kas_saldo = $kas->kas_saldo;
+                $kas_bigcash = $kas->kas_bigcash;
+                $kas_pettycash = $kas->kas_pettycash;
+                if ($input["kas_type"] == "Debet") {
+                    $saldoawal = $kas_saldo - $kas_totalawal;
+                    $saldo = $saldoawal + $input["kas_total"];
+                    if ($input["kas_debettype"] == "bigcash") {
+                        $bigcashawal = $kas_bigcash - $kas_totalawal;
+                        $bigcash = $bigcashawal + $input["kas_total"];
+                        $pettycash = $kas->kas_pettycash;
+                    }
+                    if ($input["kas_debettype"] == "pettycash") {
+                        $pettycashawal = $kas_pettycash - $kas_totalawal;
+                        $pettycash = $pettycashawal + $input["kas_total"];
+                        $bigcash = $kas->kas_bigcash;
+                    }
+                } else {
+                    $saldoawal = $kas_saldo + $kas_totalawal;
+                    $saldo =  $saldoawal - $input["kas_total"];
+                    if ($input["kas_debettype"] == "bigcash") {
+                        $bigcashawal = $kas_bigcash + $kas_totalawal;
+                        $bigcash = $bigcashawal - $input["kas_total"];
+                        $pettycash = $kas->kas_pettycash;
+                    }
+                    if ($input["kas_debettype"] == "pettycash") {
+                        $pettycashawal = $kas_pettycash + $kas_totalawal;
+                        $pettycash = $pettycashawal - $input["kas_total"];
+                        $bigcash = $kas->kas_bigcash;
+                    }
+                }
+            }
+            $input["kas_saldo"] = $saldo;
+            $input["kas_bigcash"] = $bigcash;
+            $input["kas_pettycash"] = $pettycash;
+
+            $this->db->table('kas')->update($input, array("kas_id" => $kas_id));
+
+            $kas = $this->db->table("kas")->where("kas_id >", $kas_id)->orderBy("kas_id", "ASC")->get();
+            // echo $this->db->getLastQuery(); die;
+            foreach ($kas->getResult() as $kas) {               
+                if ($kas->kas_type == "Debet") {
+                    $saldo = $saldo + $kas->kas_total;
+                    if ($kas->kas_debettype == "bigcash") {
+                        $bigcash = $bigcash + $kas->kas_total;
+                    }
+                    if ($kas->kas_debettype == "pettycash") {
+                        $pettycash = $pettycash + $kas->kas_total;
+                    }
+                } else {
+                    $saldo = $saldo - $kas->kas_total;
+                    if ($kas->kas_debettype == "bigcash") {
+                        $bigcash = $bigcash - $kas->kas_total;
+                    }
+                    if ($kas->kas_debettype == "pettycash") {
+                        $pettycash = $pettycash - $kas->kas_total;
+                    }
+                }
+                $input2["kas_saldo"] = $saldo;
+                $input2["kas_bigcash"] = $bigcash;
+                $input2["kas_pettycash"] = $pettycash;
+                $kas_id=$kas->kas_id;
+                $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
+                // echo $this->db->getLastQuery(); die;
+            }
+
+            $data["message"] = "Update Success";
+            //echo $this->db->last_query();die;
+        }
+        return $data;
+    }
+}

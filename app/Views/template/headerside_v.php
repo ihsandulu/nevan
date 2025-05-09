@@ -290,6 +290,44 @@
                         </li>
                     <?php } ?>
 
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['110']['act_read'])
+                            && session()->get("halaman")['110']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mbank' ? 'active' : ''; ?>" href="<?= base_url("mbank"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Bank</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['109']['act_read'])
+                            && session()->get("halaman")['109']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mrekening' ? 'active' : ''; ?>" href="<?= base_url("mrekening"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Rekening</span></a>
+                        </li>
+                    <?php } ?>
+
                 <?php } ?>
 
 
@@ -384,7 +422,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'cost' ? 'active' : ''; ?>" href="<?= base_url("cost"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Cost</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'kas' ? 'active' : ''; ?>" href="<?= base_url("kas"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Kas</span></a>
                         </li>
                     <?php } ?>
 

@@ -44,7 +44,7 @@
                             ) { ?>
                                 <?php if ($ppn != 0) { ?>
                                     <div class="col-4 text-right">
-                                        <form method="post" class="form-inline">
+                                        <form method="post" class="form-inline" style="position: relative; top: -10px;">
                                             <div class="form-group">
                                                 <label class="control-label" for="job_id">DA Number : &nbsp;</label>
                                                 <select required name="job_id" value="<?= $job_id; ?>" class="form-control select">
@@ -65,7 +65,7 @@
                                 <?php } else { ?>
                                     <form method="post" class="col-md-2">
                                         <h1 class="page-header col-md-12">
-                                            <button name="new" class="btn btn-info btn-block btn-lg" value="OK" style="">New</button>
+                                            <button name="new" class="btn btn-info btn-block btn-sm" value="OK" style="">New</button>
                                             <input type="hidden" name="job_id" />
                                         </h1>
                                     </form>
@@ -559,6 +559,46 @@
                             </div>
                         <?php } ?>
 
+
+                        <form method="get">
+                            <div class="row alert alert-dark">
+                                <?php
+                                $dari = date("Y-m-d");
+                                $ke = date("Y-m-d");
+                                $idepartemen = 0;
+                                if (isset($_GET["dari"])) {
+                                    $dari = $_GET["dari"];
+                                }
+                                if (isset($_GET["ke"])) {
+                                    $ke = $_GET["ke"];
+                                }
+                                ?>
+                                <div class="col-3 ">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="text-dark">Dari :</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3 row ">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="text-dark">Ke :</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                </div>
+                            </div>
+                        </form>
+
                         <div class="table-responsive m-t-40">
                             <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
@@ -637,6 +677,7 @@
                                     if ($ppn != 0) {
                                         $build->where("job_ppntype", $ppn);
                                     }
+                                    $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     $usr = $build
                                         ->orderBy("job_id", "ASC")
                                         ->get();
@@ -752,7 +793,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Master <?= $title; ?>";
+    var title = "<?= $title; ?>";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);

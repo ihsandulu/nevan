@@ -28,6 +28,8 @@ $routes->add('/mvendortruck', 'master\mvendortruck::index');
 $routes->add('/mservice', 'master\mservice::index');
 $routes->add('/msatuantarif', 'master\msatuantarif::index');
 $routes->add('/mtarif', 'master\mtarif::index');
+$routes->add('/mrekening', 'master\mrekening::index');
+$routes->add('/mbank', 'master\mbank::index');
 
 $routes->add('/synchron', 'transaction\synchron::index');
 $routes->add('/lembur', 'transaction\lembur::index');
@@ -35,7 +37,7 @@ $routes->add('/cutihutang', 'transaction\cutihutang::index');
 $routes->add('/job', 'transaction\job::index');
 $routes->add('/cppn', 'transaction\job::ppn');
 $routes->add('/nppn', 'transaction\job::nppn');
-$routes->add('/cost', 'transaction\cost::index');
+$routes->add('/kas', 'transaction\kas::index');
 
 $routes->add('/rabsend', 'report\rabsend::index');
 $routes->add('/rtarif', 'report\rtarif::index');

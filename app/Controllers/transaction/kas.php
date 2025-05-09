@@ -5,7 +5,7 @@ namespace App\Controllers\transaction;
 
 use App\Controllers\BaseController;
 
-class job extends BaseController
+class kas extends BaseController
 {
 
     protected $sesi_user;
@@ -18,9 +18,9 @@ class job extends BaseController
 
     public function index()
     {
-        $data = new \App\Models\transaction\job_m();
+        $data = new \App\Models\transaction\kas_m();
         $data = $data->data();
-        $data["title"]="Cost";
-        return view('transaction/job_v', $data);
+        $data["title"]="Kas";
+        return view('transaction/kas_v', $data);
     }
 }
