@@ -386,11 +386,11 @@
                                             <td class="text-left"><?= $usr->rekdari; ?></td>
                                             <td class="text-left"><?= $usr->rekke; ?></td>
                                             <td class="text-left"><?= $usr->kas_keterangan; ?></td>
-                                            <td><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
-                                            <td><?= number_format($usr->kas_bigcash, 0, ",", "."); ?></td>
-                                            <td><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
+                                            <td class="text-right"><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
+                                            <td class="text-right"><?= number_format($usr->kas_bigcash, 0, ",", "."); ?></td>
+                                            <td class="text-right"><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
                                             <?php if (isset($_GET["kas_type"]) &&  $_GET["kas_type"] != "Debet") { ?>
-                                                <td><?= $usr->vendor_name; ?></td>
+                                                <td class="text-left"><?= $usr->vendor_name; ?></td>
                                             <?php } ?>
                                         </tr>
                                     <?php } ?>
