@@ -180,7 +180,7 @@
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_cbm">CBM / KGS:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="totalsell('cbm')" type="number" class="form-control" id="job_cbm" name="job_cbm" placeholder="" value="<?= $job_cbm; ?>">
+                                            <input onchange="totalsell('cbm')" type="text" class="form-control" id="job_cbm" name="job_cbm" placeholder="" value="<?= $job_cbm; ?>">
                                         </div>
                                     </div>
 
@@ -742,7 +742,7 @@
                                                 <td style="white-space:nowrap;"><?= $usr->job_descgood; ?></td>
                                                 <td><?= number_format($usr->job_qty, 0, ",", "."); ?></td>
                                                 <td><?= $usr->job_satuan; ?></td>
-                                                <td><?= number_format($usr->job_cbm, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_cbm, 3, ",", "."); ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->service_name; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name2; ?></td>
                                                 <td><?= $usr->vessel_id; ?></td>
