@@ -57,10 +57,10 @@
                         <div class="">
                             <?php if (isset($_POST['edit'])) {
                                 $namabutton = 'name="change"';
-                                $judul = "Update kas";
+                                $judul = "Update Kas";
                             } else {
                                 $namabutton = 'name="create"';
-                                $judul = "Tambah kas";
+                                $judul = "Tambah Kas";
                             } ?>
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
@@ -70,7 +70,7 @@
 
 
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="kas_date">SHIPMENT DATE:</label>
+                                    <label class="control-label col-sm-12" for="kas_date">DATE:</label>
                                     <div class="col-sm-12">
                                         <input required type="date" autofocus class="form-control" id="kas_date" name="kas_date" placeholder="" value="<?= ($kas_date == "") ? date("Y-m-d") : $kas_date; ?>">
                                     </div>
@@ -138,6 +138,7 @@
                                 <script>
                                     function pilihtype() {
                                         var kas_type = $("#kas_type").val();
+                                        var kas_debettype = $("#kas_debettype").val();
                                         if (kas_type == "Debet") {
                                             $(".kredit").hide();
                                             $(".debet").show();
@@ -145,6 +146,11 @@
                                         } else {
                                             $(".kredit").show();
                                             $(".debet").hide();
+                                        }
+                                        if (kas_type == "Debet" && kas_debettype == "pettycash") {
+                                            $(".rekke").hide();
+                                        } else {
+                                            $(".rekke").show();
                                         }
                                     }
                                     $(document).ready(function() {
@@ -173,7 +179,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12 rekke">
                                     <label class="control-label col-sm-12" for="kas_rekke">Rekening Ke:</label>
                                     <div class="col-sm-12">
                                         <select name="kas_rekke" value="<?= $kas_rekke; ?>" class="form-control select">
@@ -328,7 +334,7 @@
 
                                     //echo $this->db->getLastquery();
                                     $no = 1;
-                                    $debettype=array("pettycash"=>"Petty Cash","bigcash"=>"Big Cash");
+                                    $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
                                     foreach ($usr->getResult() as $usr) { ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
