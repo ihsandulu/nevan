@@ -32,12 +32,11 @@ $routes->add('/mrekening', 'master\mrekening::index');
 $routes->add('/mbank', 'master\mbank::index');
 
 $routes->add('/synchron', 'transaction\synchron::index');
-$routes->add('/lembur', 'transaction\lembur::index');
-$routes->add('/cutihutang', 'transaction\cutihutang::index');
 $routes->add('/job', 'transaction\job::index');
 $routes->add('/cppn', 'transaction\job::ppn');
 $routes->add('/nppn', 'transaction\job::nppn');
 $routes->add('/kas', 'transaction\kas::index');
+$routes->add('/inv', 'transaction\inv::index');
 
 $routes->add('/rabsend', 'report\rabsend::index');
 $routes->add('/rtarif', 'report\rtarif::index');

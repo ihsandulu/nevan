@@ -5,7 +5,7 @@ namespace App\Controllers\transaction;
 
 use App\Controllers\BaseController;
 
-class cppn extends BaseController
+class inv extends BaseController
 {
 
     protected $sesi_user;
@@ -18,8 +18,9 @@ class cppn extends BaseController
 
     public function index()
     {
-        $data = new \App\Models\transaction\cppn_m();
+        $data = new \App\Models\transaction\inv_m();
         $data = $data->data();
-        return view('transaction/cppn_v', $data);
+        $data["title"]="Invoice";
+        return view('transaction/inv_v', $data);
     }
 }

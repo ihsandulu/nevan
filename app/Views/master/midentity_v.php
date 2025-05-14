@@ -52,28 +52,37 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_address">Alamat:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" autofocus class="form-control" id="identity_address" name="identity_address" placeholder="" value="<?= $identity_address; ?>">
+                                        <input type="text"  class="form-control" id="identity_address" name="identity_address" placeholder="" value="<?= $identity_address; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_owner">Owner:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" autofocus class="form-control" id="identity_owner" name="identity_owner" placeholder="" value="<?= $identity_owner; ?>">
+                                        <input type="text"  class="form-control" id="identity_owner" name="identity_owner" placeholder="" value="<?= $identity_owner; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_phone">Phone:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" autofocus class="form-control" id="identity_phone" name="identity_phone" placeholder="" value="<?= $identity_phone; ?>">
+                                        <input type="text"  class="form-control" id="identity_phone" name="identity_phone" placeholder="" value="<?= $identity_phone; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_wa">Whatsapp:</label>
                                     <div class="col-sm-10">
-                                        <input type="text" autofocus class="form-control" id="identity_wa" name="identity_wa" placeholder="" value="<?= $identity_wa; ?>">
+                                        <input type="text"  class="form-control" id="identity_wa" name="identity_wa" placeholder="" value="<?= $identity_wa; ?>">
+                                    </div>
+                                </div>
+
+                                
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="identity_payment">Payment:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="identity_payment" name="identity_payment" placeholder="" value="<?= $identity_payment; ?>">
                                     </div>
                                 </div>
 
@@ -87,7 +96,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-12" for="identity_logo">Logo: (Max 134 X 134)</label>
                                     <div class="col-sm-12">
-                                        <input type="file" autofocus class="form-control" id="identity_logo" name="identity_logo" placeholder="" value="<?= $identity_logo; ?>">
+                                        <input type="file"  class="form-control" id="identity_logo" name="identity_logo" placeholder="" value="<?= $identity_logo; ?>">
                                         <?php if ($identity_logo != "") {
                                             $user_image = "images/identity_logo/" . $identity_logo;
                                         } else {

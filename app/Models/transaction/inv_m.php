@@ -4,34 +4,34 @@ namespace App\Models\transaction;
 
 use App\Models\core_m;
 
-class cppn_m extends core_m
+class inv_m extends core_m
 {
     public function data()
     {
         $data = array();
         $data["message"] = "";
-        //cek job
-        if ($this->request->getVar("job_id")) {
-            $jobd["job_id"] = $this->request->getVar("job_id");
+        //cek inv
+        if ($this->request->getVar("inv_id")) {
+            $invd["inv_id"] = $this->request->getVar("inv_id");
         } else {
-            $jobd["job_id"] = -1;
+            $invd["inv_id"] = -1;
         }
         $us = $this->db
-            ->table("job")
-            ->getWhere($jobd);
+            ->table("inv")
+            ->getWhere($invd);
         /* echo $this->db->getLastquery();
         die; */
-        $larang = array("log_id", "id", "user_id", "action", "data", "job_id_dep", "trx_id", "trx_code");
+        $larang = array("log_id", "id", "user_id", "action", "data", "inv_id_dep", "trx_id", "trx_code");
         if ($us->getNumRows() > 0) {
-            foreach ($us->getResult() as $job) {
-                foreach ($this->db->getFieldNames('job') as $field) {
+            foreach ($us->getResult() as $inv) {
+                foreach ($this->db->getFieldNames('inv') as $field) {
                     if (!in_array($field, $larang)) {
-                        $data[$field] = $job->$field;
+                        $data[$field] = $inv->$field;
                     }
                 }
             }
         } else {
-            foreach ($this->db->getFieldNames('job') as $field) {
+            foreach ($this->db->getFieldNames('inv') as $field) {
                 $data[$field] = "";
             }
         }
@@ -40,42 +40,42 @@ class cppn_m extends core_m
 
         //delete
         if ($this->request->getPost("delete") == "OK") {
-            $job_id =   $this->request->getPost("job_id");
+            $inv_id =   $this->request->getPost("inv_id");
             $this->db
-                ->table("job")
-                ->delete(array("job_id" =>  $job_id));
+                ->table("inv")
+                ->delete(array("inv_id" =>  $inv_id));
             $data["message"] = "Delete Success";
         }
 
         //insert
         if ($this->request->getPost("create") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'create' && $e != 'job_id') {
+                if ($e != 'create' && $e != 'inv_id') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
             $cekdano = $this->db
-                ->table("job")
-                ->orderBy("job_dano", "desc")
+                ->table("inv")
+                ->orderBy("inv_dano", "desc")
                 ->limit(1)
                 ->get();
             $dano = 250001;
             foreach ($cekdano->getResult() as $dano) {
-                $dano = $dano->job_dano + 1;
+                $dano = $dano->inv_dano + 1;
             }
-            $input["job_dano"] = $dano;
+            $input["inv_dano"] = $dano;
 
             $cekinv = $this->db
-                ->table("job")
-                ->orderBy("job_invoice", "desc")
+                ->table("inv")
+                ->orderBy("inv_invoice", "desc")
                 ->limit(1)
                 ->get();
-            $job_invoice = 1;
+            $inv_invoice = 1;
             foreach ($cekinv->getResult() as $cekinv) {
-                $ajob_invoice = explode("/", $cekinv->job_invoice);
-                $job_invoice = $ajob_invoice[0] + 1;
+                $ainv_invoice = explode("/", $cekinv->inv_invoice);
+                $inv_invoice = $ainv_invoice[0] + 1;
             }
-            $job_invoice = str_pad($job_invoice, 3, "0", STR_PAD_LEFT);
+            $inv_invoice = str_pad($inv_invoice, 3, "0", STR_PAD_LEFT);
 
             $bulan = date("n"); // angka bulan 1-12
 
@@ -94,14 +94,14 @@ class cppn_m extends core_m
                 12 => 'XII',
             ];
 
-            $job_invoice = $job_invoice . "/INV/NKL-" . $input["customer_singkatan"] . "/" .$romawi[$bulan]."/". date("Y");
-            $input["job_invoice"] = $job_invoice;
-            $input["job_date"] = date("Y-m-d");
-            $builder = $this->db->table('job');
+            $inv_invoice = $inv_invoice . "/INV/NKL-" . $input["customer_singkatan"] . "/" .$romawi[$bulan]."/". date("Y");
+            $input["inv_invoice"] = $inv_invoice;
+            $input["inv_date"] = date("Y-m-d");
+            $builder = $this->db->table('inv');
             $builder->insert($input);
             /* echo $this->db->getLastQuery();
             die; */
-            $job_id = $this->db->insertID();
+            $inv_id = $this->db->insertID();
 
             $data["message"] = "Insert Data Success";
         }
@@ -110,11 +110,11 @@ class cppn_m extends core_m
         //update
         if ($this->request->getPost("change") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'change' && $e != 'job_picture') {
+                if ($e != 'change' && $e != 'inv_picture') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-            $this->db->table('job')->update($input, array("job_id" => $this->request->getPost("job_id")));
+            $this->db->table('inv')->update($input, array("inv_id" => $this->request->getPost("inv_id")));
             $data["message"] = "Update Success";
             //echo $this->db->last_query();die;
         }
