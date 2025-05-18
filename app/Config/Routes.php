@@ -37,6 +37,7 @@ $routes->add('/cppn', 'transaction\job::ppn');
 $routes->add('/nppn', 'transaction\job::nppn');
 $routes->add('/kas', 'transaction\kas::index');
 $routes->add('/inv', 'transaction\inv::index');
+$routes->add('/invd', 'transaction\invd::index');
 
 $routes->add('/rabsend', 'report\rabsend::index');
 $routes->add('/rtarif', 'report\rtarif::index');
