@@ -132,6 +132,14 @@ class invd_m extends core_m
                 ->where('inv_no', $invNo)
                 ->update($inputad);
             // echo $this->db->getLastQuery(); die;
+
+            $inputjob["inv_no"] = $input["inv_no"];
+            $this->db
+                ->table('job')
+                ->whereIn('job_dano', $jobdano)
+                ->update($inputjob);
+
+
             $data["message"] = "Insert Data Success";
             header('Location: ' . base_url('inv'));
             exit;
