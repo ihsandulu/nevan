@@ -170,9 +170,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         && session()->get("halaman")['111']['act_update'] == "1"
                                                     )
                                                 ) { ?>
-                                                    <form method="get" class="btn-action" style="">
+                                                    <form target="_self" method="get" class="btn-action" style="" action="<?=base_url("invd");?>">
                                                         <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
                                                         <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
+                                                        <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
                                                     </form>
                                                 <?php } ?>
 
