@@ -47,7 +47,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 data-bs-toggle="popover"
                                 data-bs-content="Pilih tanggal invoice"
                                 data-bs-trigger="manual"
-                                data-bs-placement="top">
+                                data-bs-placement="top"
+                                value="<?=$inv_date;?>"
+                                >
                         </div>
                         <script>
                             $(function() {
@@ -71,7 +73,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 data-bs-toggle="popover"
                                 data-bs-content="Pilih tanggal jatuh tempo"
                                 data-bs-trigger="manual"
-                                data-bs-placement="top">
+                                data-bs-placement="top"
+                                value="<?=$inv_duedate;?>"
+                                >
                         </div>
                         <script>
                             $(function() {
@@ -86,17 +90,17 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             });
                         </script>
                         <div class="form-group">
-                            <input type="text" class="form-control" style="width: 100px;" id="inv_discount" name="inv_discount" placeholder="Discount">
+                            <input type="text" class="form-control" style="width: 100px;" id="inv_discount" name="inv_discount" placeholder="Discount" value="<?=$inv_discount;?>">
                         </div>
                         <div class="form-group">
                             <select required onchange="singkatan()" class="form-control" id="customer_id" name="customer_id">
-                                <option value="" data-singkatan="">Customer</option>
+                                <option value="" data-singkatan="" <?=($customer_id=="")?"selected":"";?>>Customer</option>
                                 <?php $customer = $this->db->table("customer")
                                     ->orderBy("customer_name", "ASC")
                                     ->get();
                                 foreach ($customer->getResult() as $customer) {
                                 ?>
-                                    <option value="<?= $customer->customer_id; ?>" data-singkatan="<?= $customer->customer_singkatan; ?>"><?= $customer->customer_name; ?></option>
+                                    <option value="<?= $customer->customer_id; ?>" data-singkatan="<?= $customer->customer_singkatan; ?>" <?=($customer_id==$customer->customer_id)?"selected":"";?>><?= $customer->customer_name; ?></option>
                                 <?php } ?>
                                 <script>
                                     function singkatan() {
@@ -108,19 +112,19 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;1.1%&nbsp;</label>
-                            <input type="checkbox" class="" style="" id="inv_ppn1k1" name="inv_ppn1k1" value="1">
+                            <input <?=($inv_ppn1k1==1)?"checked":"";?> type="checkbox" class="" style="" id="inv_ppn1k1" name="inv_ppn1k1" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;11%&nbsp;</label>
-                            <input type="checkbox" class="" style="" id="inv_ppn11" name="inv_ppn11" value="1">
+                            <input <?=($inv_ppn11==1)?"checked":"";?> type="checkbox" class="" style="" id="inv_ppn11" name="inv_ppn11" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;12%&nbsp;</label>
-                            <input type="checkbox" class="" style="" id="inv_ppn12" name="inv_ppn12" value="1">
+                            <input <?=($inv_ppn12==1)?"checked":"";?> type="checkbox" class="" style="" id="inv_ppn12" name="inv_ppn12" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;PPH&nbsp;</label>
-                            <input type="checkbox" class="" style="" id="inv_pph" name="inv_pph" value="1">
+                            <input <?=($inv_pph==1)?"checked":"";?> type="checkbox" class="" style="" id="inv_pph" name="inv_pph" value="1">
                         </div>
 
                         <input type="hidden" id="user_id" name="user_id" value="<?= session('user_id'); ?>" />
@@ -135,6 +139,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <option value="">Pilih Da Number</option>
                                 <?php $job = $this->db->table("job")
                                     ->where("inv_no", "")
+                                    ->orWhere("inv_no", $inv_no)
                                     ->orderBy("job_dano", "ASC")
                                     ->get();
                                 foreach ($job->getResult() as $job) {
@@ -259,6 +264,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                         <input type="hidden" name="invd_id" value="<?= $usr->invd_id; ?>" />
+                                                        <input type="hidden" name="inv_no" value="<?= $inv_no; ?>" />
                                                     </form>
                                                 <?php } ?>
                                             </td>

@@ -43,6 +43,25 @@ class invd_m extends core_m
         //delete
         if ($this->request->getPost("delete") == "OK") {
             $invd_id =   $this->request->getPost("invd_id");
+            $inv_no =   $this->request->getPost("inv_no");
+            $invd = $this->db->table('invd')
+                ->where("inv_no", $inv_no)
+                ->where("invd_id !=", $invd_id)
+                ->get();
+            $total = 0;
+            $jobdano      = array();
+            foreach ($invd->getResult() as $rinvd) {
+                $total += $rinvd->invd_total;
+                if ($rinvd->job_dano !== '' && ! in_array($rinvd->job_dano, $jobdano)) {
+                    $jobdano[] = $rinvd->job_dano;
+                }
+            }
+            $jobdanos      = implode(', ', $jobdano);
+            $inputi["job_dano"] = $jobdanos;
+            $inputi["inv_tagihan"] = $total;
+            $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
+            // echo $this->db->getLastQuery();die;
+
             $this->db
                 ->table("invd")
                 ->delete(array("invd_id" =>  $invd_id));
@@ -62,6 +81,23 @@ class invd_m extends core_m
             die; */
             $invd_id = $this->db->insertID();
 
+            //update invoice
+            if ($this->request->getGet("editinv") == "OK") {
+                $inv_no =   $this->request->getGet("inv_no");
+                $invd = $this->db->table('invd')->where("inv_no", $inv_no)->get();
+                $total = 0;
+                $jobdano      = array();
+                foreach ($invd->getResult() as $rinvd) {
+                    $total += $rinvd->invd_total;
+                    if ($rinvd->job_dano !== '' && ! in_array($rinvd->job_dano, $jobdano)) {
+                        $jobdano[] = $rinvd->job_dano;
+                    }
+                }
+                $jobdanos      = implode(', ', $jobdano);
+                $inputi["job_dano"] = $jobdanos;
+                $inputi["inv_tagihan"] = $total;
+                $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
+            }
             $data["message"] = "Insert Data Success";
         }
         //echo $_POST["create"];die;
@@ -83,7 +119,9 @@ class invd_m extends core_m
             $jobdano      = array();
             foreach ($invd->getResult() as $rinvd) {
                 $total += $rinvd->invd_total;
-                $jobdano[] = $rinvd->job_dano;
+                if ($rinvd->job_dano !== '' && ! in_array($rinvd->job_dano, $jobdano)) {
+                    $jobdano[] = $rinvd->job_dano;
+                }
             }
             $jobdanos      = implode(', ', $jobdano);
             $input["job_dano"] = $jobdanos;

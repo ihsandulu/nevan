@@ -441,7 +441,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'inv' ? 'active' : ''; ?>" href="<?= base_url("inv"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Invoice</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == ('inv'||'invd') ? 'active' : ''; ?>" href="<?= base_url("inv"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Invoice</span></a>
                         </li>
                     <?php } ?>
 
