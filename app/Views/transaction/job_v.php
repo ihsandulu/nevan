@@ -381,12 +381,12 @@
                                         </div>
                                     <?php } ?>
                                 <?php } ?>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="job_invoice">Invoice No:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="job_invoice" name="job_invoice" placeholder="" value="<?= $job_invoice; ?>">
                                     </div>
-                                </div>
+                                </div> -->
                                 <?php if ($ppn == 1) { ?>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_bupot">Bupot No:</label>
@@ -767,7 +767,7 @@
                                                     <td style="white-space:nowrap;"><?= $usr->job_invdate; ?></td>
                                                 <?php } ?>
                                             <?php } ?>
-                                            <td style="white-space:nowrap;"><?= $usr->job_invoice; ?></td>
+                                            <td style="white-space:nowrap;"><?= $usr->inv_no; ?></td>
                                             <?php if ($ppn == 1) { ?>
                                                 <td style="white-space:nowrap;"><?= $usr->job_bupot; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->job_npwp; ?></td>

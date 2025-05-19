@@ -41,6 +41,31 @@ class inv_m extends core_m
         //delete
         if ($this->request->getPost("delete") == "OK") {
             $inv_id =   $this->request->getPost("inv_id");
+
+             //update job
+            $inv_no =   $this->request->getPost("inv_no");
+            $invd = $this->db->table('invd')
+                ->where("inv_id", $inv_id)
+                ->get();
+            $jobdano      = array();
+            foreach ($invd->getResult() as $rinvd) {
+                if ($rinvd->job_dano !== '' && ! in_array($rinvd->job_dano, $jobdano)) {
+                    $jobdano[] = $rinvd->job_dano;
+                }
+            }
+            $inputjob["inv_no"] = "";
+            $this->db
+                ->table('job')
+                ->whereIn('job_dano', $jobdano)
+                ->update($inputjob);
+            // echo $this->db->getLastQuery();die;
+
+           //delete invd
+            $this->db
+                ->table("invd")
+                ->delete(array("inv_id" =>  $inv_id));
+
+            //delete inv
             $this->db
                 ->table("inv")
                 ->delete(array("inv_id" =>  $inv_id));

@@ -48,8 +48,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 data-bs-content="Pilih tanggal invoice"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top"
-                                value="<?=$inv_date;?>"
-                                >
+                                value="<?= $inv_date; ?>">
                         </div>
                         <script>
                             $(function() {
@@ -74,8 +73,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 data-bs-content="Pilih tanggal jatuh tempo"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top"
-                                value="<?=$inv_duedate;?>"
-                                >
+                                value="<?= $inv_duedate; ?>">
                         </div>
                         <script>
                             $(function() {
@@ -90,17 +88,17 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             });
                         </script>
                         <div class="form-group">
-                            <input type="text" class="form-control" style="width: 100px;" id="inv_discount" name="inv_discount" placeholder="Discount" value="<?=$inv_discount;?>">
+                            <input type="text" class="form-control" style="width: 100px;" id="inv_discount" name="inv_discount" placeholder="Discount" value="<?= $inv_discount; ?>">
                         </div>
                         <div class="form-group">
                             <select required onchange="singkatan()" class="form-control" id="customer_id" name="customer_id">
-                                <option value="" data-singkatan="" <?=($customer_id=="")?"selected":"";?>>Customer</option>
+                                <option value="" data-singkatan="" <?= ($customer_id == "") ? "selected" : ""; ?>>Customer</option>
                                 <?php $customer = $this->db->table("customer")
                                     ->orderBy("customer_name", "ASC")
                                     ->get();
                                 foreach ($customer->getResult() as $customer) {
                                 ?>
-                                    <option value="<?= $customer->customer_id; ?>" data-singkatan="<?= $customer->customer_singkatan; ?>" <?=($customer_id==$customer->customer_id)?"selected":"";?>><?= $customer->customer_name; ?></option>
+                                    <option value="<?= $customer->customer_id; ?>" data-singkatan="<?= $customer->customer_singkatan; ?>" <?= ($customer_id == $customer->customer_id) ? "selected" : ""; ?>><?= $customer->customer_name; ?></option>
                                 <?php } ?>
                                 <script>
                                     function singkatan() {
@@ -112,26 +110,34 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;1.1%&nbsp;</label>
-                            <input <?=($inv_ppn1k1==1)?"checked":"";?> type="checkbox" class="" style="" id="inv_ppn1k1" name="inv_ppn1k1" value="1">
+                            <input <?= ($inv_ppn1k1 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="inv_ppn1k1" name="inv_ppn1k1" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;11%&nbsp;</label>
-                            <input <?=($inv_ppn11==1)?"checked":"";?> type="checkbox" class="" style="" id="inv_ppn11" name="inv_ppn11" value="1">
+                            <input <?= ($inv_ppn11 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="inv_ppn11" name="inv_ppn11" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;12%&nbsp;</label>
-                            <input <?=($inv_ppn12==1)?"checked":"";?> type="checkbox" class="" style="" id="inv_ppn12" name="inv_ppn12" value="1">
+                            <input <?= ($inv_ppn12 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="inv_ppn12" name="inv_ppn12" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;PPH&nbsp;</label>
-                            <input <?=($inv_pph==1)?"checked":"";?> type="checkbox" class="" style="" id="inv_pph" name="inv_pph" value="1">
+                            <input <?= ($inv_pph == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="inv_pph" name="inv_pph" value="1">
                         </div>
 
                         <input type="hidden" id="user_id" name="user_id" value="<?= session('user_id'); ?>" />
                         <input type="hidden" id="inv_no" name="inv_no" value="<?= $inv_no; ?>" />
                         <input type="hidden" id="inv_id" name="inv_id" value="<?= $inv_id; ?>" />
                         <input type="hidden" id="customer_singkatan" name="customer_singkatan" value="" />
-                        &nbsp;&nbsp;<button type="submit" name="createinv" value="OK" class="btn btn-primary">Submit</button>
+
+                        <?php
+                        if (isset($_GET["editinv"])) {
+                            $namebtninv = 'name="changeinv"';
+                        } else {
+                            $namebtninv = 'name="createinv"';
+                        }
+                        ?>
+                        &nbsp;&nbsp;<button type="submit" <?= $namebtninv; ?> value="OK" class="btn btn-primary">Submit</button>
                     </form>
                     <form method="post" class="form-inline alert alert-info" action="">
                         <div class="form-group">
@@ -191,7 +197,12 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <input type="hidden" id="job_dano" name="job_dano" value="" />
                         <input type="hidden" id="inv_no" name="inv_no" value="<?= $inv_no; ?>" />
                         <input type="hidden" id="inv_id" name="inv_id" value="<?= $inv_id; ?>" />
-                        &nbsp;&nbsp;<button type="submit" name="create" value="OK" class="btn btn-primary">Submit</button>
+                        <input type="hidden" id="invd_id" name="invd_id" value="" />
+                        <?php if (isset($_GET["editinv"])) { ?>
+                            <input type="hidden" id="invd_date" name="invd_date" value="<?= $inv_date; ?>" />
+                        <?php } ?>
+
+                        &nbsp;&nbsp;<button id="btninvd" type="submit" name="create" value="OK" class="btn btn-primary">Submit</button>
                     </form>
 
                     <div class="table-responsive ">
@@ -222,7 +233,6 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
                                 //echo $this->db->getLastquery();
                                 $no = 1;
-                                $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
@@ -241,9 +251,20 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         && session()->get("halaman")['111']['act_update'] == "1"
                                                     )
                                                 ) { ?>
-                                                    <form method="post" class="btn-action" style="">
-                                                        <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
+                                                    <form method="post" class="btn-action" >
+                                                        <button type="button" onclick="editinvd('<?= $usr->invd_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
+                                                            <span class="fa fa-edit" style="color:white;"></span>
+                                                        </button>
+                                                        <input type="hidden" id="job_dano<?= $usr->invd_id; ?>" name="job_dano" value="<?= $usr->job_dano; ?>" />
+                                                        <input type="hidden" id="inv_no<?= $usr->invd_id; ?>" name="inv_no" value="<?= $usr->inv_no; ?>" />
+                                                        <input type="hidden" id="inv_id<?= $usr->invd_id; ?>" name="inv_id" value="<?= $usr->inv_id; ?>" />
+                                                        <input type="hidden" id="invd_total<?= $usr->invd_id; ?>" name="invd_total" value="<?= $usr->invd_total; ?>" />
+                                                        <input type="hidden" id="invd_price<?= $usr->invd_id; ?>" name="invd_price" value="<?= $usr->invd_price; ?>" />
+                                                        <input type="hidden" id="invd_satuan<?= $usr->invd_id; ?>" name="invd_satuan" value="<?= $usr->invd_satuan; ?>" />
+                                                        <input type="hidden" id="invd_qty<?= $usr->invd_id; ?>" name="invd_qty" value="<?= $usr->invd_qty; ?>" />
+                                                        <input type="hidden" id="invd_description<?= $usr->invd_id; ?>" name="invd_description" value="<?= $usr->invd_description; ?>" />
+                                                        <input type="hidden" id="job_id<?= $usr->invd_id; ?>" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                        <input type="hidden" id="invd_id<?= $usr->invd_id; ?>" name="invd_id" value="<?= $usr->invd_id; ?>" />
                                                     </form>
                                                 <?php } ?>
 
@@ -265,6 +286,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                         <input type="hidden" name="invd_id" value="<?= $usr->invd_id; ?>" />
                                                         <input type="hidden" name="inv_no" value="<?= $inv_no; ?>" />
+                                                        <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                     </form>
                                                 <?php } ?>
                                             </td>
@@ -280,6 +302,34 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <?php } ?>
                             </tbody>
                         </table>
+
+                        <script>
+                            function editinvd(invd_id) {
+                                let job_dano = $("#job_dano" + invd_id).val();
+                                let inv_no = $("#inv_no" + invd_id).val();
+                                let inv_id = $("#inv_id" + invd_id).val();
+                                let invd_total = $("#invd_total" + invd_id).val();
+                                let invd_price = $("#invd_price" + invd_id).val();
+                                let invd_satuan = $("#invd_satuan" + invd_id).val();
+                                let invd_qty = $("#invd_qty" + invd_id).val();
+                                let invd_description = $("#invd_description" + invd_id).val();
+                                let job_id = $("#job_id" + invd_id).val();
+                                let invdid = $("#invd_id" + invd_id).val();
+
+                                $("#job_dano").val(job_dano);
+                                $("#inv_no").val(inv_no);
+                                $("#inv_id").val(inv_id);
+                                $("#invd_total").val(invd_total);
+                                $("#invd_price").val(invd_price);
+                                $("#invd_satuan").val(invd_satuan);
+                                $("#invd_qty").val(invd_qty);
+                                $("#invd_description").val(invd_description);
+                                $("#job_id").val(job_id);
+                                $("#invd_id").val(invdid);
+
+                                $("#btninvd").attr("name", "change");
+                            }
+                        </script>
                     </div>
                 </div>
             </div>

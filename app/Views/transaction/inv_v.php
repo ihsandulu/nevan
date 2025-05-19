@@ -128,6 +128,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <th>DA Number</th>
                                     <th>Customer</th>
                                     <th>Tagihan</th>
+                                    <th>Discount</th>
                                     <th>Pembayaran</th>
                                     <th>Sisa Hutang</th>
                                 </tr>
@@ -201,11 +202,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->inv_date; ?></td>
                                         <td><?= $usr->inv_no; ?></td>
-                                        <td><?php $jobDano = $ainvd[$usr->inv_id]["job_dano"];
-                                            $hasil = implode(", ", $jobDano);
-                                            echo $hasil; ?></td>
+                                        <td><?= $usr->job_dano; ?></td>
                                         <td class="text-left"><?= $usr->customer_name; ?></td>
                                         <td><?= number_format($usr->inv_tagihan, 0, ",", "."); ?></td>
+                                        <td><?= number_format($usr->inv_discount, 0, ",", "."); ?></td>
                                         <td><?= number_format($usr->inv_payment, 0, ",", "."); ?></td>
                                         <td><?= number_format($usr->inv_tagihan - $usr->inv_payment, 0, ",", "."); ?></td>
                                     </tr>

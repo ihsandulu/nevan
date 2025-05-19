@@ -43,6 +43,7 @@ class invd_m extends core_m
         //delete
         if ($this->request->getPost("delete") == "OK") {
             $invd_id =   $this->request->getPost("invd_id");
+            //update invoice
             $inv_no =   $this->request->getPost("inv_no");
             $invd = $this->db->table('invd')
                 ->where("inv_no", $inv_no)
@@ -62,9 +63,18 @@ class invd_m extends core_m
             $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
             // echo $this->db->getLastQuery();die;
 
+            //update invoice table job   
+            if ($this->request->getPost("job_id") != "0") {
+                $job_id = $this->request->getPost("job_id");
+                $inputj["inv_no"] = "";
+                $this->db->table('job')->update($inputj, array("job_id" => $job_id));
+            }
+
+            //delete invd
             $this->db
                 ->table("invd")
                 ->delete(array("invd_id" =>  $invd_id));
+
             $data["message"] = "Delete Success";
         }
 
@@ -81,9 +91,9 @@ class invd_m extends core_m
             die; */
             $invd_id = $this->db->insertID();
 
+            $inv_no =   $this->request->getGet("inv_no");
             //update invoice
             if ($this->request->getGet("editinv") == "OK") {
-                $inv_no =   $this->request->getGet("inv_no");
                 $invd = $this->db->table('invd')->where("inv_no", $inv_no)->get();
                 $total = 0;
                 $jobdano      = array();
@@ -97,6 +107,13 @@ class invd_m extends core_m
                 $inputi["job_dano"] = $jobdanos;
                 $inputi["inv_tagihan"] = $total;
                 $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
+            }
+
+            //update invoice table job   
+            if ($this->request->getPost("job_id") != "0") {
+                $job_id = $this->request->getPost("job_id");
+                $inputj["inv_no"] = $inv_no;
+                $this->db->table('job')->update($inputj, array("job_id" => $job_id));
             }
             $data["message"] = "Insert Data Success";
         }
@@ -171,6 +188,7 @@ class invd_m extends core_m
                 ->update($inputad);
             // echo $this->db->getLastQuery(); die;
 
+            //tambahkan nomor invoice di job
             $inputjob["inv_no"] = $input["inv_no"];
             $this->db
                 ->table('job')
@@ -192,8 +210,91 @@ class invd_m extends core_m
                 }
             }
             $this->db->table('invd')->update($input, array("invd_id" => $this->request->getPost("invd_id")));
+
+            $inv_no =   $this->request->getGet("inv_no");
+            //update invoice
+            if ($this->request->getGet("editinv") == "OK") {
+                $invd = $this->db->table('invd')->where("inv_no", $inv_no)->get();
+                $total = 0;
+                $jobdano      = array();
+                foreach ($invd->getResult() as $rinvd) {
+                    $total += $rinvd->invd_total;
+                    if ($rinvd->job_dano !== '' && ! in_array($rinvd->job_dano, $jobdano)) {
+                        $jobdano[] = $rinvd->job_dano;
+                    }
+                }
+                $jobdanos      = implode(', ', $jobdano);
+                $inputi["job_dano"] = $jobdanos;
+                $inputi["inv_tagihan"] = $total;
+                $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
+            }
+
+            //update invoice table job   
+            if ($this->request->getPost("job_id") != "0") {
+                $job_id = $this->request->getPost("job_id");
+                $inputj["inv_no"] = $inv_no;
+                $this->db->table('job')->update($inputj, array("job_id" => $job_id));
+            }
+
+
             $data["message"] = "Update Success";
             //echo $this->db->last_query();die;
+        }
+
+        //update invoice
+        if ($this->request->getPost("changeinv") == "OK") {
+            $input["inv_ppn1k1"] = 0;
+            $input["inv_ppn11"] = 0;
+            $input["inv_ppn12"] = 0;
+            $input["inv_pph"] = 0;
+            foreach ($this->request->getPost() as $e => $f) {
+                if ($e != 'changeinv' && $e != 'customer_singkatan') {
+                    $input[$e] = $this->request->getPost($e);
+                }
+            }
+            // dd($input);die;
+            $invNo = $input["inv_no"];
+            $invd  = $this->db
+                ->table('invd')
+                ->where('inv_no', $invNo)
+                ->get();
+            $total = 0;
+            $jobdano      = array();
+            foreach ($invd->getResult() as $rinvd) {
+                $total += $rinvd->invd_total;
+                if ($rinvd->job_dano !== '' && ! in_array($rinvd->job_dano, $jobdano)) {
+                    $jobdano[] = $rinvd->job_dano;
+                }
+            }
+
+            $jobdanos      = implode(', ', $jobdano);
+            $input["job_dano"] = $jobdanos;
+            $input["inv_tagihan"] = $total;
+
+            $this->db->table('inv')->update($input, array("inv_id" => $this->request->getPost("inv_id")));
+
+
+            //updane nomor invoice invd
+            $inputad["invd_date"] = $input["inv_date"];
+            $this->db
+                ->table('invd')
+                ->where('inv_no', $invNo)
+                ->update($inputad);
+            // echo $this->db->getLastQuery(); die;
+
+
+
+            //update job
+            $inputjob["inv_no"] = $input["inv_no"];
+            $this->db
+                ->table('job')
+                ->whereIn('job_dano', $jobdano)
+                ->update($inputjob);
+
+
+            $data["message"] = "Insert Data Success";
+            header('Location: ' . base_url('inv'));
+            exit;
         }
         return $data;
     }
