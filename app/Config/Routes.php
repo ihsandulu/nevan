@@ -43,3 +43,4 @@ $routes->add('/invpayment', 'transaction\invpayment::index');
 
 $routes->add('/rabsend', 'report\rabsend::index');
 $routes->add('/rtarif', 'report\rtarif::index');
+$routes->add('/invprint', 'report\invprint::index');

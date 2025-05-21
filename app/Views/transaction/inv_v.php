@@ -80,7 +80,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                     <form method="get">
                         <div class="row alert alert-dark">
                             <?php
-                            $dari = date("Y-m-d",strtotime("-1 week", strtotime( date("Y-m-d"))));
+                            $dari = date("Y-m-d", strtotime("-1 week", strtotime(date("Y-m-d"))));
                             $ke = date("Y-m-d");
                             if (isset($_GET["dari"])) {
                                 $dari = $_GET["dari"];
@@ -171,7 +171,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         && session()->get("halaman")['111']['act_update'] == "1"
                                                     )
                                                 ) { ?>
-                                                    <form target="_self" method="get" class="btn-action" style="" action="<?=base_url("invd");?>">
+                                                    <form target="_self" method="get" class="btn-action" style="" action="<?= base_url("invd"); ?>">
                                                         <button class="btn btn-sm btn-warning " name="editinv" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
                                                         <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
                                                         <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
@@ -212,7 +212,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         && session()->get("halaman")['111']['act_delete'] == "1"
                                                     )
                                                 ) { ?>
-                                                    <form method="get" class="btn-action" style="" action="<?=base_url("invpayment");?>">
+                                                    <form method="get" class="btn-action" style="" action="<?= base_url("invpayment"); ?>">
                                                         <button class="btn btn-sm btn-success" name="payment" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
                                                         <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
                                                         <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
@@ -220,6 +220,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" name="customer_name" value="<?= $usr->customer_name; ?>" />
                                                     </form>
                                                 <?php } ?>
+                                                <form method="get" class="btn-action" style="" action="<?= base_url("invprint"); ?>">
+                                                    <button class="btn btn-sm btn-warning" name="print" value="OK"><span class="fa fa-print" style="color:white;"></span> </button>
+                                                    <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
+                                                    <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
+                                                    <input type="hidden" name="customer_id" value="<?= $usr->customer_id; ?>" />
+                                                    <input type="hidden" name="customer_name" value="<?= $usr->customer_name; ?>" />
+                                                </form>
                                             </td>
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
