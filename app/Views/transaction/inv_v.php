@@ -80,7 +80,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                     <form method="get">
                         <div class="row alert alert-dark">
                             <?php
-                            $dari = date("Y-m-d");
+                            $dari = date("Y-m-d",strtotime("-1 week", strtotime( date("Y-m-d"))));
                             $ke = date("Y-m-d");
                             if (isset($_GET["dari"])) {
                                 $dari = $_GET["dari"];
@@ -195,6 +195,29 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                         <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
+                                                    </form>
+                                                <?php } ?>
+
+                                                <?php
+                                                if (
+                                                    (
+                                                        isset(session()->get("position_administrator")[0][0])
+                                                        && (
+                                                            session()->get("position_administrator") == "1"
+                                                            || session()->get("position_administrator") == "2"
+                                                        )
+                                                    ) ||
+                                                    (
+                                                        isset(session()->get("halaman")['111']['act_delete'])
+                                                        && session()->get("halaman")['111']['act_delete'] == "1"
+                                                    )
+                                                ) { ?>
+                                                    <form method="get" class="btn-action" style="" action="<?=base_url("invpayment");?>">
+                                                        <button class="btn btn-sm btn-success" name="payment" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
+                                                        <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
+                                                        <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
+                                                        <input type="hidden" name="customer_id" value="<?= $usr->customer_id; ?>" />
+                                                        <input type="hidden" name="customer_name" value="<?= $usr->customer_name; ?>" />
                                                     </form>
                                                 <?php } ?>
                                             </td>
