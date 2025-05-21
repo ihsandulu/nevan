@@ -274,7 +274,7 @@ function terbilang($angka)
                                             </tr>
                                         <?php } ?>
                                         <tr>
-                                            <td class="text-left" rowspan="5" colspan="3">
+                                            <td class="text-left" rowspan="8" colspan="3">
                                                 <i>Terbilang :</i><br />
                                                 <i id="terbilang"></i>
                                             </td>
