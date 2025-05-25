@@ -75,6 +75,59 @@ class invpayment_m extends core_m
                 ->where("inv_no", $inv_no)
                 ->update($inputi);
 
+            //delete kas
+            $kas = $this->db->table('kas')
+                ->where("invpayment_id", $invpayment_id)
+                ->get();
+            if ($kas->getNumRows() > 0) {
+                foreach ($kas->getResult() as $kas) {
+                    $kas_id =   $kas->kas_id;
+                    $this->db
+                        ->table("kas")
+                        ->delete(array("kas_id" =>  $kas_id));
+
+                    $kassebelumnya = $this->db->table("kas")->where("kas_id <", $kas_id)->limit(1)->orderBy("kas_id", "DESC")->get();
+                    // echo $this->db->getLastQuery(); die;
+                    $saldo = 0;
+                    $bigcash = 0;
+                    $pettycash = 0;
+                    foreach ($kassebelumnya->getResult() as $kas) {
+                        $saldo = $kas->kas_saldo;
+                        $bigcash = $kas->kas_bigcash;
+                        $pettycash = $kas->kas_pettycash;
+                    }
+
+                    // echo $saldo;die;
+                    $kas = $this->db->table("kas")->where("kas_id >", $kas_id)->orderBy("kas_id", "ASC")->get();
+                    // echo $this->db->getLastQuery(); die;
+                    foreach ($kas->getResult() as $kas) {
+                        if ($kas->kas_type == "Debet") {
+                            $saldo = $saldo + $kas->kas_total;
+                            if ($kas->kas_debettype == "bigcash") {
+                                $bigcash = $bigcash + $kas->kas_total;
+                            }
+                            if ($kas->kas_debettype == "pettycash") {
+                                $pettycash = $pettycash + $kas->kas_total;
+                            }
+                        } else {
+                            $saldo = $saldo - $kas->kas_total;
+                            if ($kas->kas_debettype == "bigcash") {
+                                $bigcash = $bigcash - $kas->kas_total;
+                            }
+                            if ($kas->kas_debettype == "pettycash") {
+                                $pettycash = $pettycash - $kas->kas_total;
+                            }
+                        }
+                        $input2["kas_saldo"] = $saldo;
+                        $input2["kas_bigcash"] = $bigcash;
+                        $input2["kas_pettycash"] = $pettycash;
+                        $kas_id = $kas->kas_id;
+                        $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
+                        // echo $this->db->getLastQuery(); die;
+                    }
+                }
+            }
+
             $data["message"] = "Delete Success";
         }
 
@@ -94,15 +147,15 @@ class invpayment_m extends core_m
 
             // Hitung total pembayaran dari invpayment
             $inv_no = $this->request->getGet("inv_no");
-            $invpayment_total = $this->db
+            $invpaymenttotal = $this->db
                 ->table("invpayment")
-                ->select("SUM(invpayment_total) AS inv_payment")
+                ->select("SUM(invpayment_total) AS invpaymenttotal")
                 ->where("inv_no", $inv_no)
                 ->get()
                 ->getRow();
 
             // Pastikan hasil tidak null
-            $inv_payment = $invpayment_total ? $invpayment_total->inv_payment : 0;
+            $inv_payment = $invpaymenttotal ? $invpaymenttotal->invpaymenttotal : 0;
 
             // Siapkan data update
             $inputi = [
@@ -114,6 +167,58 @@ class invpayment_m extends core_m
                 ->table("inv")
                 ->where("inv_no", $inv_no)
                 ->update($inputi);
+
+            //input kas
+            $invd = $this->db->table('invd')
+                ->where("inv_no", $inv_no)
+                ->get();
+            $jobdano      = array();
+            foreach ($invd->getResult() as $rinvd) {
+                if ($rinvd->job_dano !== '' && ! in_array($rinvd->job_dano, $jobdano)) {
+                    $jobdano[] = $rinvd->job_dano;
+                }
+            }
+            $jobdanos      = implode(', ', $jobdano);
+            if ($input["invpayment_to"] == "-1") {
+                $kas_debettype = "pettycash";
+            } else {
+                $kas_debettype = "bigcash";
+            }
+            $kas = $this->db->table("kas")->orderBy("kas_id", "desc")->limit("1")->get();
+            $saldo = 0;
+            $bigcash = 0;
+            $pettycash = 0;
+            foreach ($kas->getResult() as $kas) {
+                $saldo = $kas->kas_saldo + $input["invpayment_total"];
+                if ($kas_debettype == "bigcash") {
+                    $bigcash = $kas->kas_bigcash + $input["invpayment_total"];
+                    $pettycash = $kas->kas_pettycash;
+                }
+                if ($kas_debettype == "pettycash") {
+                    $pettycash = $kas->kas_pettycash + $input["invpayment_total"];
+                    $bigcash = $kas->kas_bigcash;
+                }
+            }
+            $inputkas[] = array(
+                "kas_date" => $input["invpayment_date"],
+                "job_dano" => $jobdanos,
+                "kas_uraian" => $inv_no,
+                "kas_qty" => $input["invpayment_qty"],
+                "kas_nominal" => $input["invpayment_price"],
+                "kas_total" => $input["invpayment_total"],
+                "kas_rekdari" => $input["invpayment_from"],
+                "kas_rekke" => $input["invpayment_to"],
+                "kas_keterangan" => $input["invpayment_keterangan"],
+                "kas_type" => "Debet",
+                "kas_debettype" => $kas_debettype,
+                "kas_saldo" => $saldo,
+                "kas_bigcash" => $bigcash,
+                "kas_pettycash" => $pettycash,
+                "vendor_id" => 0,
+                "kas_vendorsaldo" => 0,
+                "invpayment_id" => $invpayment_id,
+            );
+            $this->db->table('kas')->insertBatch($inputkas);
 
 
             $data["message"] = "Insert Data Success";
@@ -126,22 +231,24 @@ class invpayment_m extends core_m
         if ($this->request->getPost("change") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
                 if ($e != 'change' && $e != 'invpayment_picture') {
-                    $input[$e] = $this->request->getPost($e);
+                    $inputp[$e] = $this->request->getPost($e);
                 }
             }
-            $this->db->table('invpayment')->update($input, array("invpayment_id" => $this->request->getPost("invpayment_id")));
+            // dd($inputp);
+            $invpayment_id = $this->request->getPost("invpayment_id");
+            $this->db->table('invpayment')->update($inputp, array("invpayment_id" => $invpayment_id));
 
             // Hitung total pembayaran dari invpayment
             $inv_no = $this->request->getGet("inv_no");
-            $invpayment_total = $this->db
+            $invpaymenttotal = $this->db
                 ->table("invpayment")
-                ->select("SUM(invpayment_total) AS inv_payment")
+                ->select("SUM(invpayment_total) AS invpaymenttotal")
                 ->where("inv_no", $inv_no)
                 ->get()
                 ->getRow();
 
             // Pastikan hasil tidak null
-            $inv_payment = $invpayment_total ? $invpayment_total->inv_payment : 0;
+            $inv_payment = $invpaymenttotal ? $invpaymenttotal->invpaymenttotal : 0;
 
             // Siapkan data update
             $inputi = [
@@ -154,68 +261,82 @@ class invpayment_m extends core_m
                 ->where("inv_no", $inv_no)
                 ->update($inputi);
 
+            //input kas
+            $kas = $this->db->table('kas')
+                ->where("invpayment_id", $invpayment_id)
+                ->get();
+            $saldo = 0;
+            $bigcash = 0;
+            $pettycash = 0;
+            $kas_id = 0;
+            $invpayment_total = $inputp["invpayment_total"];
+            foreach ($kas->getResult() as $kas) {
+                $kas_id = $kas->kas_id;
+                $kas_totalawal = $kas->kas_total;
+                $kas_saldo = $kas->kas_saldo;
+                $kas_bigcash = $kas->kas_bigcash;
+                $kas_pettycash = $kas->kas_pettycash;
 
+                $saldoawal = $kas_saldo - $kas_totalawal;
+                $saldo = $saldoawal + $invpayment_total;
+
+                if ($input["invpayment_to"] == "-1") {
+                    $kas_debettype = "pettycash";
+                } else {
+                    $kas_debettype = "bigcash";
+                }
+
+                if ($kas_debettype == "bigcash") {
+                    $bigcashawal = $kas_bigcash - $kas_totalawal;
+                    $bigcash = $bigcashawal + $invpayment_total;
+                    $pettycash = $kas->kas_pettycash;
+                }
+                if ($kas_debettype == "pettycash") {
+                    $pettycashawal = $kas_pettycash - $kas_totalawal;
+                    $pettycash = $pettycashawal + $invpayment_total;
+                    $bigcash = $kas->kas_bigcash;
+                }
+            }
+            $input["kas_saldo"] = $saldo;
+            $input["kas_bigcash"] = $bigcash;
+            $input["kas_pettycash"] = $pettycash;
+
+            $this->db->table('kas')->update($input, array("kas_id" => $kas_id));
+
+            $kas = $this->db->table("kas")->where("kas_id >", $kas_id)->orderBy("kas_id", "ASC")->get();
+            // echo $this->db->getLastQuery(); die;
+            foreach ($kas->getResult() as $kas) {
+                if ($kas->kas_type == "Debet") {
+                    $saldo = $saldo + $kas->kas_total;
+                    if ($kas->kas_debettype == "bigcash") {
+                        $bigcash = $bigcash + $kas->kas_total;
+                    }
+                    if ($kas->kas_debettype == "pettycash") {
+                        $pettycash = $pettycash + $kas->kas_total;
+                    }
+                } else {
+                    $saldo = $saldo - $kas->kas_total;
+                    if ($kas->kas_debettype == "bigcash") {
+                        $bigcash = $bigcash - $kas->kas_total;
+                    }
+                    if ($kas->kas_debettype == "pettycash") {
+                        $pettycash = $pettycash - $kas->kas_total;
+                    }
+                }
+                $input2["kas_saldo"] = $saldo;
+                $input2["kas_bigcash"] = $bigcash;
+                $input2["kas_pettycash"] = $pettycash;
+                $kas_id = $kas->kas_id;
+                $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
+                // echo $this->db->getLastQuery(); die;
+            }
 
 
             $data["message"] = "Update Success";
             //echo $this->db->last_query();die;
         }
 
-        //update invoice
-        if ($this->request->getPost("changeinv") == "OK") {
-            $input["inv_ppn1k1"] = 0;
-            $input["inv_ppn11"] = 0;
-            $input["inv_ppn12"] = 0;
-            $input["inv_pph"] = 0;
-            foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'changeinv' && $e != 'customer_singkatan') {
-                    $input[$e] = $this->request->getPost($e);
-                }
-            }
-            // dd($input);die;
-            $invNo = $input["inv_no"];
-            $invpayment  = $this->db
-                ->table('invpayment')
-                ->where('inv_no', $invNo)
-                ->get();
-            $total = 0;
-            $jobdano      = array();
-            foreach ($invpayment->getResult() as $rinvpayment) {
-                $total += $rinvpayment->invpayment_total;
-                if ($rinvpayment->job_dano !== '' && ! in_array($rinvpayment->job_dano, $jobdano)) {
-                    $jobdano[] = $rinvpayment->job_dano;
-                }
-            }
 
-            $jobdanos      = implode(', ', $jobdano);
-            $input["job_dano"] = $jobdanos;
-            $input["inv_tagihan"] = $total;
-
-            $this->db->table('inv')->update($input, array("inv_id" => $this->request->getPost("inv_id")));
-
-
-            //updane nomor invoice invpayment
-            $inputad["invpayment_date"] = $input["inv_date"];
-            $this->db
-                ->table('invpayment')
-                ->where('inv_no', $invNo)
-                ->update($inputad);
-            // echo $this->db->getLastQuery(); die;
-
-
-
-            //update job
-            $inputjob["inv_no"] = $input["inv_no"];
-            $this->db
-                ->table('job')
-                ->whereIn('job_dano', $jobdano)
-                ->update($inputjob);
-
-
-            $data["message"] = "Insert Data Success";
-            header('Location: ' . base_url('inv'));
-            exit;
-        }
         return $data;
     }
 }

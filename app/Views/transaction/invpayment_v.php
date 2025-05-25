@@ -85,10 +85,11 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <div class="form-group">
                             <select style="width: 100px;" class="form-control" id="invpayment_from" name="invpayment_from" placeholder="From"
                                 data-bs-toggle="popover"
-                                data-bs-content="Rek.Asal"
+                                data-bs-content="Asal"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top">
                                 <option value="">From</option>
+                                <option value="-1">Pettycash</option>
                                 <?php $rekening = $this->db->table("rekening")
                                     ->orderBy("rekening_no", "ASC")
                                     ->get();
@@ -101,7 +102,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $(function() {
                                     $('#invpayment_from')
                                         .popover({
-                                            content: 'Rek.Asal',
+                                            content: 'Asal',
                                             trigger: 'manual',
                                             placement: 'top',
                                             template: '<div class="popover bs-popover-top" role="tooltip"><div class="arrow"></div><div class="popover-body"></div></div>'
@@ -113,10 +114,11 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <div class="form-group">
                             <select style="width: 100px;" class="form-control" id="invpayment_to" name="invpayment_to" placeholder="To"
                                 data-bs-toggle="popover"
-                                data-bs-content="Rek.Tujuan"
+                                data-bs-content="Tujuan"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top">
                                 <option value="">To</option>
+                                <option value="-1">Pettycash</option>
                                 <?php $rekening = $this->db->table("rekening")
                                     ->orderBy("rekening_no", "ASC")
                                     ->get();
@@ -129,7 +131,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $(function() {
                                     $('#invpayment_to')
                                         .popover({
-                                            content: 'Rek.Tujuan',
+                                            content: 'Tujuan',
                                             trigger: 'manual',
                                             placement: 'top',
                                             template: '<div class="popover bs-popover-top" role="tooltip"><div class="arrow"></div><div class="popover-body"></div></div>'

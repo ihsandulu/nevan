@@ -306,12 +306,12 @@
                                         <th>Qty</th>
                                         <th>Nominal</th>
                                         <th>Total</th>
-                                        <th>Dari Rek</th>
-                                        <th>Ke Rek</th>
-                                        <th>Keterangan</th>
                                         <th>Saldo</th>
                                         <th>Big Cash</th>
                                         <th>Petty Cash</th>
+                                        <th>Dari Rek</th>
+                                        <th>Ke Rek</th>
+                                        <th>Keterangan</th>
                                         <?php if (isset($_GET["kas_type"]) &&  $_GET["kas_type"] != "Debet") { ?>
                                             <th>Vendor</th>
                                         <?php } ?>
@@ -340,43 +340,45 @@
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
                                                     <?php
-                                                    if (
-                                                        (
-                                                            isset(session()->get("position_administrator")[0][0])
-                                                            && (
-                                                                session()->get("position_administrator") == "1"
-                                                                || session()->get("position_administrator") == "2"
+                                                    if ($usr->invpayment_id == 0) {
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['49']['act_update'])
+                                                                && session()->get("halaman")['49']['act_update'] == "1"
                                                             )
-                                                        ) ||
-                                                        (
-                                                            isset(session()->get("halaman")['49']['act_update'])
-                                                            && session()->get("halaman")['49']['act_update'] == "1"
-                                                        )
-                                                    ) { ?>
-                                                        <form method="post" class="btn-action" style="">
-                                                            <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                            <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
-                                                        </form>
-                                                    <?php } ?>
+                                                        ) { ?>
+                                                            <form method="post" class="btn-action" style="">
+                                                                <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                            </form>
+                                                        <?php } ?>
 
-                                                    <?php
-                                                    if (
-                                                        (
-                                                            isset(session()->get("position_administrator")[0][0])
-                                                            && (
-                                                                session()->get("position_administrator") == "1"
-                                                                || session()->get("position_administrator") == "2"
+                                                        <?php
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['49']['act_delete'])
+                                                                && session()->get("halaman")['49']['act_delete'] == "1"
                                                             )
-                                                        ) ||
-                                                        (
-                                                            isset(session()->get("halaman")['49']['act_delete'])
-                                                            && session()->get("halaman")['49']['act_delete'] == "1"
-                                                        )
-                                                    ) { ?>
-                                                        <form method="post" class="btn-action" style="">
-                                                            <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                            <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
-                                                        </form>
+                                                        ) { ?>
+                                                            <form method="post" class="btn-action" style="">
+                                                                <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                            </form>
+                                                        <?php } ?>
                                                     <?php } ?>
                                                 </td>
                                             <?php } ?>
@@ -389,12 +391,12 @@
                                             <td><?= number_format($usr->kas_qty, 0, ",", "."); ?></td>
                                             <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
                                             <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td>
-                                            <td class="text-left"><?= $usr->rekdari; ?></td>
-                                            <td class="text-left"><?= $usr->rekke; ?></td>
-                                            <td class="text-left"><?= $usr->kas_keterangan; ?></td>
                                             <td class="text-right"><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
                                             <td class="text-right"><?= number_format($usr->kas_bigcash, 0, ",", "."); ?></td>
                                             <td class="text-right"><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
+                                            <td class="text-left"><?= $usr->rekdari; ?></td>
+                                            <td class="text-left"><?= $usr->rekke; ?></td>
+                                            <td class="text-left"><?= $usr->kas_keterangan; ?></td>
                                             <?php if (isset($_GET["kas_type"]) &&  $_GET["kas_type"] != "Debet") { ?>
                                                 <td class="text-left"><?= $usr->vendor_name; ?></td>
                                             <?php } ?>

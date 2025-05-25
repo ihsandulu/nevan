@@ -44,6 +44,46 @@ class kas_m extends core_m
             $this->db
                 ->table("kas")
                 ->delete(array("kas_id" =>  $kas_id));
+
+            $kassebelumnya = $this->db->table("kas")->where("kas_id <", $kas_id)->limit(1)->orderBy("kas_id", "DESC")->get();
+            // echo $this->db->getLastQuery(); die;
+            $saldo = 0;
+            $bigcash = 0;
+            $pettycash = 0;
+            foreach ($kassebelumnya->getResult() as $kas) {
+                $saldo = $kas->kas_saldo;
+                $bigcash = $kas->kas_bigcash;
+                $pettycash = $kas->kas_pettycash;
+            }
+
+            // echo $saldo;die;
+            $kas = $this->db->table("kas")->where("kas_id >", $kas_id)->orderBy("kas_id", "ASC")->get();
+            // echo $this->db->getLastQuery(); die;
+            foreach ($kas->getResult() as $kas) {
+                if ($kas->kas_type == "Debet") {
+                    $saldo = $saldo + $kas->kas_total;
+                    if ($kas->kas_debettype == "bigcash") {
+                        $bigcash = $bigcash + $kas->kas_total;
+                    }
+                    if ($kas->kas_debettype == "pettycash") {
+                        $pettycash = $pettycash + $kas->kas_total;
+                    }
+                } else {
+                    $saldo = $saldo - $kas->kas_total;
+                    if ($kas->kas_debettype == "bigcash") {
+                        $bigcash = $bigcash - $kas->kas_total;
+                    }
+                    if ($kas->kas_debettype == "pettycash") {
+                        $pettycash = $pettycash - $kas->kas_total;
+                    }
+                }
+                $input2["kas_saldo"] = $saldo;
+                $input2["kas_bigcash"] = $bigcash;
+                $input2["kas_pettycash"] = $pettycash;
+                $kas_id = $kas->kas_id;
+                $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
+                // echo $this->db->getLastQuery(); die;
+            }
             $data["message"] = "Delete Success";
         }
 
@@ -105,7 +145,7 @@ class kas_m extends core_m
 
             $kas_id = $this->request->getPost("kas_id");
             $kas = $this->db->table("kas")->where("kas_id", $kas_id)->get();
-            
+
             $saldo = 0;
             $bigcash = 0;
             $pettycash = 0;
@@ -151,7 +191,7 @@ class kas_m extends core_m
 
             $kas = $this->db->table("kas")->where("kas_id >", $kas_id)->orderBy("kas_id", "ASC")->get();
             // echo $this->db->getLastQuery(); die;
-            foreach ($kas->getResult() as $kas) {               
+            foreach ($kas->getResult() as $kas) {
                 if ($kas->kas_type == "Debet") {
                     $saldo = $saldo + $kas->kas_total;
                     if ($kas->kas_debettype == "bigcash") {
@@ -172,7 +212,7 @@ class kas_m extends core_m
                 $input2["kas_saldo"] = $saldo;
                 $input2["kas_bigcash"] = $bigcash;
                 $input2["kas_pettycash"] = $pettycash;
-                $kas_id=$kas->kas_id;
+                $kas_id = $kas->kas_id;
                 $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
                 // echo $this->db->getLastQuery(); die;
             }
