@@ -285,15 +285,31 @@ function terbilang($angka)
                                                 <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_tagihan, 2, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td class="text-left">
+                                                Discount
+                                            </td>
+                                            <td>
+                                                <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_discount, 2, ",", "."); ?></span></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left">
+                                                Setelah Discount
+                                            </td>
+                                            <td>
+                                                <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_dtagihan, 2, ",", "."); ?></span></span>
+                                            </td>
+                                        </tr>
                                         <?php 
-                                            $tagihan= $inv->inv_tagihan;
+                                            $dtagihan= $inv->inv_dtagihan;
                                             $ppn1k1=0;
                                             $ppn11=0;
                                             $ppn12=0;
                                             $pph=0;
                                             ?>
                                         <?php if($inv->inv_ppn1k1>0){
-                                            $ppn1k1 = 1.1/100;
+                                            $ppn1k1 = $dtagihan*1.1/100;
                                             ?>
                                         <tr>                                            
                                             <td class="text-left">
@@ -305,7 +321,7 @@ function terbilang($angka)
                                         </tr>
                                         <?php }?>
                                         <?php if($inv->inv_ppn11>0){
-                                            $ppn11 = $tagihan*11/100;
+                                            $ppn11 = $dtagihan*11/100;
                                             ?>
                                         <tr>                                            
                                             <td class="text-left">
@@ -317,7 +333,7 @@ function terbilang($angka)
                                         </tr>
                                         <?php }?>
                                         <?php if($inv->inv_ppn12>0){
-                                            $ppn12 = $tagihan*12/100;
+                                            $ppn12 = $dtagihan*12/100;
                                             ?>
                                         <tr>                                            
                                             <td class="text-left">
@@ -329,7 +345,7 @@ function terbilang($angka)
                                         </tr>
                                         <?php }?>
                                         <?php if($inv->inv_pph>0){
-                                            $pph=$tagihan*2/100;
+                                            $pph=$dtagihan*2/100;
                                             ?>
                                         <tr>                                            
                                             <td class="text-left">
@@ -346,7 +362,7 @@ function terbilang($angka)
                                             </td>
                                             <td>
                                                 <?php 
-                                            $tharga= $tagihan+$ppn1k1+$ppn11+$ppn12;
+                                            $tharga= $dtagihan+$ppn1k1+$ppn11+$ppn12;
                                             $grand=$tharga-$pph;
                                             ?>
                                                 <span class="uang"><span>IDR</span><span><?= number_format($grand, 2, ",", "."); ?></span></span>
@@ -439,4 +455,5 @@ function terbilang($angka)
             searching: true
         });
     });
+    print();
 </script>

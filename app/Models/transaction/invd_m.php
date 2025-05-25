@@ -104,8 +104,14 @@ class invd_m extends core_m
                     }
                 }
                 $jobdanos      = implode(', ', $jobdano);
+                $inv = $this->db->table('inv')->where("inv_no", $inv_no)->get();
+                $diskon = 0;
+                foreach ($inv->getResult() as $rinv) {
+                    $diskon = $rinv->inv_discount;
+                }
                 $inputi["job_dano"] = $jobdanos;
                 $inputi["inv_tagihan"] = $total;
+                $inputi["inv_dtagihan"] = $total - $diskon;
                 $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
             }
 
@@ -172,7 +178,7 @@ class invd_m extends core_m
             $singkatan = $this->request->getPost("customer_singkatan");
             $invNon = $noinv . "/INV/NKL-" . $singkatan . "/" . $romawi[$bulan] . "/" . date("Y", strtotime($input["inv_date"]));
             $input["inv_no"] = $invNon;
-
+            $input["inv_dtagihan"] = $input["inv_tagihan"] - $input["inv_discount"];
             // dd($input);
             $this->db->table('inv')->insert($input);
             // echo $this->db->getLastQuery(); die;
@@ -226,6 +232,12 @@ class invd_m extends core_m
                 $jobdanos      = implode(', ', $jobdano);
                 $inputi["job_dano"] = $jobdanos;
                 $inputi["inv_tagihan"] = $total;
+                $inv = $this->db->table('inv')->where("inv_no", $inv_no)->get();
+                $diskon = 0;
+                foreach ($inv->getResult() as $rinv) {
+                    $diskon = $rinv->inv_discount;
+                }
+                $inputi["inv_dtagihan"] = $total - $diskon;
                 $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
             }
 
@@ -270,7 +282,7 @@ class invd_m extends core_m
             $jobdanos      = implode(', ', $jobdano);
             $input["job_dano"] = $jobdanos;
             $input["inv_tagihan"] = $total;
-
+            $input["inv_dtagihan"] = $input["inv_tagihan"] - $input["inv_discount"];
             $this->db->table('inv')->update($input, array("inv_id" => $this->request->getPost("inv_id")));
 
 
