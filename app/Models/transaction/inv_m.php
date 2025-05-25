@@ -42,7 +42,7 @@ class inv_m extends core_m
         if ($this->request->getPost("delete") == "OK") {
             $inv_id =   $this->request->getPost("inv_id");
 
-             //update job
+            //update job
             $inv_no =   $this->request->getPost("inv_no");
             $invd = $this->db->table('invd')
                 ->where("inv_id", $inv_id)
@@ -54,13 +54,16 @@ class inv_m extends core_m
                 }
             }
             $inputjob["inv_no"] = "";
-            $this->db
-                ->table('job')
-                ->whereIn('job_dano', $jobdano)
-                ->update($inputjob);
-            // echo $this->db->getLastQuery();die;
 
-           //delete invd
+            if (!empty($jobdano)) {
+                $this->db
+                    ->table('job')
+                    ->whereIn('job_dano', $jobdano)
+                    ->update($inputjob);
+                // echo $this->db->getLastQuery();die;
+            }
+
+            //delete invd
             $this->db
                 ->table("invd")
                 ->delete(array("inv_id" =>  $inv_id));
@@ -119,7 +122,7 @@ class inv_m extends core_m
                 12 => 'XII',
             ];
 
-            $inv_invoice = $inv_invoice . "/INV/NKL-" . $input["customer_singkatan"] . "/" .$romawi[$bulan]."/". date("Y");
+            $inv_invoice = $inv_invoice . "/INV/NKL-" . $input["customer_singkatan"] . "/" . $romawi[$bulan] . "/" . date("Y");
             $input["inv_invoice"] = $inv_invoice;
             $input["inv_date"] = date("Y-m-d");
             $builder = $this->db->table('inv');

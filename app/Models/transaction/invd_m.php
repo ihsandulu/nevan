@@ -196,11 +196,14 @@ class invd_m extends core_m
 
             //tambahkan nomor invoice di job
             $inputjob["inv_no"] = $input["inv_no"];
-            $this->db
-                ->table('job')
-                ->whereIn('job_dano', $jobdano)
-                ->update($inputjob);
-
+            // dd($jobdano);
+            if (!empty($jobdano)) {
+                $this->db
+                    ->table('job')
+                    ->whereIn('job_dano', $jobdano)
+                    ->update($inputjob);
+                // echo $this->db->getLastQuery(); die;
+            }
 
             $data["message"] = "Insert Data Success";
             header('Location: ' . base_url('inv'));
@@ -298,11 +301,12 @@ class invd_m extends core_m
 
             //update job
             $inputjob["inv_no"] = $input["inv_no"];
-            $this->db
-                ->table('job')
-                ->whereIn('job_dano', $jobdano)
-                ->update($inputjob);
-
+            if (!empty($jobdano)) {
+                $this->db
+                    ->table('job')
+                    ->whereIn('job_dano', $jobdano)
+                    ->update($inputjob);
+            }
 
             $data["message"] = "Insert Data Success";
             header('Location: ' . base_url('inv'));
