@@ -150,7 +150,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     ->get();
                                 foreach ($job->getResult() as $job) {
                                 ?>
-                                    <option value="<?= $job->job_id; ?>" data-des="<?= $job->job_descgood; ?>" data-dano="<?= $job->job_dano; ?>"><?= $job->job_dano; ?></option>
+                                    <option value="<?= $job->job_id; ?>" data-des="<?= $job->job_descgood; ?>" data-dano="<?= $job->job_dano; ?>" data-qty="<?= $job->job_qty; ?>" data-satuan="<?= $job->job_satuan; ?>" data-price="<?= $job->job_sell; ?>"><?= $job->job_dano; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -183,8 +183,15 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let selected = $("#job_id option:selected");
                                 let dano = selected.data("dano");
                                 let des = selected.data("des");
+                                let qty = selected.data("qty");
+                                let satuan = selected.data("satuan");
+                                let price = selected.data("price");
                                 $("#job_dano").val(dano);
                                 $("#invd_description").val(des);
+                                $("#invd_qty").val(qty);
+                                $("#invd_satuan").val(satuan);
+                                $("#invd_price").val(price);
+                                kali();
                             }
 
                             function kali() {
