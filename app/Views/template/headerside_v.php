@@ -388,7 +388,7 @@
                         </li>
                     <?php } ?>
 
-                    <?php
+                    <!-- <?php
                     if (
                         (
                             isset(session()->get("position_id")[0][0])
@@ -405,9 +405,9 @@
                         <li>
                             <a class="<?= current_url(true)->getSegment(1) == 'cppn' ? 'active' : ''; ?>" href="<?= base_url("cppn"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Customer PPN</span></a>
                         </li>
-                    <?php } ?>
+                    <?php } ?> -->
 
-                    <?php
+                    <!-- <?php
                     if (
                         (
                             isset(session()->get("position_id")[0][0])
@@ -424,7 +424,7 @@
                         <li>
                             <a class="<?= current_url(true)->getSegment(1) == 'nppn' ? 'active' : ''; ?>" href="<?= base_url("nppn"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Customer Non PPN</span></a>
                         </li>
-                    <?php } ?>
+                    <?php } ?> -->
 
                     <?php
                     if (
