@@ -167,20 +167,20 @@
                                             <select onchange="metode()" class="form-control select" id="job_methode" name="job_methode">
                                                 <option value="">--Select--</option>
                                                 <option value="lumpsum" <?= ($job_methode == "lumpsum") ? "selected" : ""; ?>>Lumpsum</option>
-                                                <option value="cbm" <?= ($job_methode == "cbm") ? "selected" : ""; ?>>CBM</option>
+                                                <option value="cbm" <?= ($job_methode == "cbm") ? "selected" : ""; ?>>CBM / KGS</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_qty">QTY:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="totalsell('qty')" type="number" class="form-control" id="job_qty" name="job_qty" placeholder="" value="<?= $job_qty; ?>">
+                                            <input onchange="totalsell()" type="number" class="form-control" id="job_qty" name="job_qty" placeholder="" value="<?= $job_qty; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_cbm">CBM / KGS:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="totalsell('cbm')" type="text" class="form-control" id="job_cbm" name="job_cbm" placeholder="" value="<?= $job_cbm; ?>">
+                                            <input onchange="totalsell()" type="text" class="form-control" id="job_cbm" name="job_cbm" placeholder="" value="<?= $job_cbm; ?>">
                                         </div>
                                     </div>
 
@@ -475,7 +475,7 @@
                                                 $("#job_qty").val("0");
                                                 $("#job_cbm").focus();
                                             }, 1000);
-                                            totalsell('cbm');
+                                            totalsell();
                                         } else if (metode == "lumpsum") {
                                             $("#job_qty").attr("readonly", false);
                                             $("#job_cbm").attr("readonly", true);
@@ -483,18 +483,19 @@
                                                 $("#job_cbm").val("0");
                                                 $("#job_qty").focus();
                                             }, 1000);
-                                            totalsell('lumpsum');
+                                            totalsell();
                                         } else {
                                             $("#job_qty").attr("readonly", true);
                                             $("#job_cbm").attr("readonly", true);
                                         }
                                     }
 
-                                    function totalsell(a) {
+                                    function totalsell() {
                                         let cbm = $("#job_cbm").val();
                                         let qty = $("#job_qty").val();
                                         let sell = $("#job_sell").val();
                                         let total = 0;
+                                        let a = $("#job_methode").val();
                                         if (a == "cbm") {
                                             total = cbm * sell;
                                         } else {
