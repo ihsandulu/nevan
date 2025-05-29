@@ -34,12 +34,14 @@ $routes->add('/mmethodpayment', 'master\mmethodpayment::index');
 
 $routes->add('/synchron', 'transaction\synchron::index');
 $routes->add('/job', 'transaction\job::index');
+$routes->add('/quotation', 'transaction\job::index');
 $routes->add('/cppn', 'transaction\job::ppn');
 $routes->add('/nppn', 'transaction\job::nppn');
 $routes->add('/kas', 'transaction\kas::index');
 $routes->add('/inv', 'transaction\inv::index');
 $routes->add('/invd', 'transaction\invd::index');
 $routes->add('/invpayment', 'transaction\invpayment::index');
+$routes->add('/cost', 'transaction\cost::index');
 
 $routes->add('/rabsend', 'report\rabsend::index');
 $routes->add('/rtarif', 'report\rtarif::index');

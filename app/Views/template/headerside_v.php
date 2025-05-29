@@ -384,7 +384,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'job' ? 'active' : ''; ?>" href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Job</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'job' ? 'active' : ''; ?>" href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Quotation</span></a>
                         </li>
                     <?php } ?>
 

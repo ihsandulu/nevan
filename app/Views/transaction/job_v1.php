@@ -20,7 +20,7 @@
                             <!-- <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6> -->
                         </div>
 
-                        <?php if (!isset($_POST['new']) && !isset($_POST['edit']) && !isset($_GET['report']) && !isset($_GET['t'])) { ?>
+                        <?php if (!isset($_POST['new']) && !isset($_POST['edit']) && !isset($_GET['report'])) { ?>
                             <?php if (isset($_GET["user_id"])) { ?>
                                 <form action="<?= base_url("user"); ?>" method="get" class="col-md-2">
                                     <h1 class="page-header col-md-12">
@@ -74,9 +74,7 @@
                         <?php } ?>
                     </div>
 
-                    <?php if (
-                        isset($_POST['new']) || isset($_POST['edit']) || (isset($_GET["t"]) && $_GET["t"] == "ec")
-                    ) { ?>
+                    <?php if (isset($_POST['new']) || isset($_POST['edit'])) { ?>
                         <div class="">
                             <?php if (isset($_POST['edit'])) {
                                 $namabutton = 'name="change"';
@@ -88,7 +86,7 @@
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal row" method="post" enctype="multipart/form-data" action="<?= base_url("quotation"); ?>">
+                            <form class="form-horizontal row" method="post" enctype="multipart/form-data">
 
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="job_shipmentdate">SHIPMENT DATE:</label>
@@ -297,13 +295,13 @@
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_total">TOTAL PRICE:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="profit(); " type="number" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
+                                            <input onchange="profit(); totalinv();" type="number" onchange="tprice()" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_total">Cost:</label>
+                                        <label class="control-label col-sm-12" for="job_cost">COST:</label>
                                         <div class="col-sm-12">
-                                            <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp); ?>" class="btn btn-warning">Cost List</a>
+                                            <input onchange="profit()" type="number" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
@@ -313,21 +311,15 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_cost">Cost:</label>
+                                        <label class="control-label col-sm-12" for="job_fee"> MARKET FEE 15%:</label>
                                         <div class="col-sm-12">
-                                            <input readonly onchange="profit()" type="number" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
+                                            <input type="number" class="form-control" id="job_fee" name="job_fee" placeholder="" value="<?= $job_fee; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_profit">PROFIT:</label>
                                         <div class="col-sm-12">
                                             <input onchange="fee()" type="number" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_fee"> MARKET FEE 15%:</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="job_fee" name="job_fee" placeholder="" value="<?= $job_fee; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
@@ -340,7 +332,30 @@
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">&nbsp;
                                         </div>
                                     <?php } ?>
-
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_ppn1k1">PPN 1.1%:</label>
+                                        <div class="col-sm-12">
+                                            <input onchange="totalinv()" type="number" class="form-control" id="job_ppn1k1" name="job_ppn1k1" placeholder="" value="<?= $job_ppn1k1; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_ppn11">PPN 11%:</label>
+                                        <div class="col-sm-12">
+                                            <input type="number" class="form-control" id="job_ppn11" name="job_ppn11" placeholder="" value="<?= $job_ppn11; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_ppn12">PPN 12%:</label>
+                                        <div class="col-sm-12">
+                                            <input type="number" class="form-control" id="job_ppn12" name="job_ppn12" placeholder="" value="<?= $job_ppn12; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_pph">PPH 2%:</label>
+                                        <div class="col-sm-12">
+                                            <input onchange="dp()" type="number" class="form-control" id="job_pph" name="job_pph" placeholder="" value="<?= $job_pph; ?>">
+                                        </div>
+                                    </div>
                                     <?php if ($ppn == 1) { ?>
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                             <label class="control-label col-sm-12" for="vendor_id">Payment Methode:</label>
@@ -394,10 +409,49 @@
                                             <input type="date" class="form-control" id="job_duedate" name="job_duedate" placeholder="" value="<?= $job_duedate; ?>">
                                         </div>
                                     </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_totalinv">Total INV:</label>
+                                        <div class="col-sm-12">
+                                            <input onchange="dp()" type="number" class="form-control" id="job_totalinv" name="job_totalinv" placeholder="" value="<?= $job_totalinv; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_dp">DP:</label>
+                                        <div class="col-sm-12">
+                                            <input onchange="dp()" type="text" class="form-control" id="job_dp" name="job_dp" placeholder="" value="<?= $job_dp; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_repayment">Repayment:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="job_repayment" name="job_repayment" placeholder="" value="<?= $job_repayment; ?>">
+                                        </div>
+                                    </div>
+                                    <script>
+                                        function totalinv() {
+                                            let job_ppn1k1 = $("#job_ppn1k1").val();
+                                            let job_total = $("#job_total").val();
+                                            let job_totalinv = parseInt(job_total) * parseInt(job_ppn1k1) / 100;
+                                            $("#job_totalinv").val(job_totalinv);
+                                            dp();
+                                        }
 
-
-
+                                        function dp() {
+                                            let job_dp = $("#job_dp").val();
+                                            let job_totalinv = $("#job_totalinv").val();
+                                            let job_pph = $("#job_pph").val();
+                                            let total = parseInt(job_totalinv) - parseInt(job_pph) - parseInt(job_dp);
+                                            $("#job_repayment").val(total);
+                                            $("#job_admission").val(total);
+                                        }
+                                    </script>
                                 <?php } ?>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_admission">ADMISSION:</label>
+                                    <div class="col-sm-12">
+                                        <input type="number" class="form-control" id="job_admission" name="job_admission" placeholder="" value="<?= $job_admission; ?>">
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="job_explanation">EXPLANATION:</label>
                                     <div class="col-sm-12">
@@ -448,10 +502,24 @@
                                             total = qty * sell;
                                         }
                                         $("#job_total").val(total);
-
+                                        tprice();
+                                        totalinv();
                                     }
 
-
+                                    function tprice() {
+                                        let job_total = $("#job_total").val();
+                                        let ppn1k1 = job_total * 1.1 / 100;
+                                        let ppn11 = job_total * 11 / 100;
+                                        let ppn12 = job_total * 12 / 100;
+                                        let pph = job_total * 2 / 100;
+                                        $("#job_ppn1k1").val(ppn1k1);
+                                        $("#job_ppn11").val(ppn11);
+                                        $("#job_ppn12").val(ppn12);
+                                        $("#job_pph").val(pph);
+                                        profit();
+                                        totalinv();
+                                        dp();
+                                    }
 
                                     function profit() {
                                         let job_total = $("#job_total").val();
@@ -476,11 +544,10 @@
 
                                 <input type="hidden" name="job_ppntype" value="<?= $ppn; ?>" />
                                 <input type="hidden" name="job_id" value="<?= $job_id; ?>" />
-                                <input type="hidden" name="job_temp" value="<?= $job_temp; ?>" />
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?=base_url("quotation");?>">Back</a>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="javascript:history.back()">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -570,6 +637,10 @@
                                             <th>Market Fee 15%</th>
                                             <th>Profit</th>
                                             <th>GP%</th>
+                                            <th>PPN 1,1%</th>
+                                            <th>PPN 11%</th>
+                                            <th>PPN 12%</th>
+                                            <th>PPH 2%</th>
                                             <?php if ($ppn == 1) { ?>
                                                 <th>Payment Methode</th>
                                                 <th>Tax No.</th>
@@ -577,10 +648,18 @@
                                             <?php } ?>
                                         <?php } ?>
 
+                                        <th>Invoice No.</th>
                                         <?php if ($ppn == 1) { ?>
                                             <th>Bupot No.</th>
                                             <th>NPWP</th>
                                         <?php } ?>
+                                        <?php if ($ppn != 0) { ?>
+                                            <th>Due Date</th>
+                                            <th>Total INV</th>
+                                            <th>DP</th>
+                                            <th>Repayment</th>
+                                        <?php } ?>
+                                        <th>Admission</th>
                                         <th>Explanation</th>
                                     </tr>
                                 </thead>
@@ -588,7 +667,6 @@
                                     <?php
                                     $build = $this->db
                                         ->table("job")
-                                        ->join("(SELECT SUM(cost_total)AS costtotal, job_temp FROM cost GROUP BY job_temp) AS cost", "cost.job_temp = job.job_temp", "left")
                                         ->join("customer", "customer.customer_id = job.customer_id", "left")
                                         ->join("origin", "origin.origin_id = job.origin_id", "left")
                                         ->join("destination", "destination.destination_id = job.destination_id", "left")
@@ -675,22 +753,33 @@
                                                 <?php } ?>
                                                 <td><?= number_format($usr->job_sell, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_total, 0, ",", "."); ?></td>
-                                                <td><?= number_format($usr->costtotal, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_cost, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_refund, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_fee, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_profit, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_gp, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_ppn1k1, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_ppn11, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_ppn12, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_pph, 0, ",", "."); ?></td>
                                                 <?php if ($ppn == 1) { ?>
                                                     <td><?= $usr->job_paynom; ?> <?= $usr->job_payunit; ?></td>
                                                     <td><?= $usr->job_taxno; ?></td>
                                                     <td style="white-space:nowrap;"><?= $usr->job_invdate; ?></td>
                                                 <?php } ?>
                                             <?php } ?>
+                                            <td style="white-space:nowrap;"><?= $usr->inv_no; ?></td>
                                             <?php if ($ppn == 1) { ?>
                                                 <td style="white-space:nowrap;"><?= $usr->job_bupot; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->job_npwp; ?></td>
                                             <?php } ?>
-
+                                            <?php if ($ppn != 0) { ?>
+                                                <td style="white-space:nowrap;"><?= $usr->job_duedate; ?></td>
+                                                <td><?= number_format($usr->job_totalinv, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_dp, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_repayment, 0, ",", "."); ?></td>
+                                            <?php } ?>
+                                            <td style="white-space:nowrap;"><?= $usr->job_admission; ?></td>
                                             <td style="white-space:nowrap;"><?= $usr->job_explanation; ?></td>
                                         </tr>
                                     <?php } ?>

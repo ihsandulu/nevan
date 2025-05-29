@@ -34,8 +34,35 @@ class job_m extends core_m
             foreach ($this->db->getFieldNames('job') as $field) {
                 $data[$field] = "";
             }
+            $data["job_temp"] = date("YmdHis");
+            $data["job_sell"] = 0;
+            $data["job_total"] = 0;
+            $data["job_refund"] = 0;
+            $data["job_profit"] = 0;
+            $data["job_fee"] = 0;
+            $data["job_gp"] = 0;
         }
 
+
+
+        if (isset($_GET["temp"])) {
+            $data["job_temp"] = $_GET["temp"];
+        }
+        $us = $this->db
+            ->table("cost")
+            ->where("job_temp", $data["job_temp"])
+            ->get();
+        // echo $this->db->getLastQuery();die;
+        $job_cost = 0;
+        if ($us->getNumRows() > 0) {
+            foreach ($us->getResult() as $cost) {
+                $job_cost += $cost->cost_total;
+            }
+        } else {
+            $job_cost = 0;
+        }
+
+        $data["job_cost"] = $job_cost;
 
 
         //delete
@@ -94,7 +121,7 @@ class job_m extends core_m
                 12 => 'XII',
             ];
 
-            $job_invoice = $job_invoice . "/INV/NKL-" . $input["customer_singkatan"] . "/" .$romawi[$bulan]."/". date("Y");
+            $job_invoice = $job_invoice . "/INV/NKL-" . $input["customer_singkatan"] . "/" . $romawi[$bulan] . "/" . date("Y");
             $input["job_invoice"] = $job_invoice;
             $input["job_date"] = date("Y-m-d");
             $builder = $this->db->table('job');
