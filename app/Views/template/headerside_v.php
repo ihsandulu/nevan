@@ -281,25 +281,6 @@
                             )
                         ) ||
                         (
-                            isset(session()->get("halaman")['105']['act_read'])
-                            && session()->get("halaman")['105']['act_read'] == "1"
-                        )
-                    ) { ?>
-                        <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'mtarif' ? 'active' : ''; ?>" href="<?= base_url("mtarif"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Tarif</span></a>
-                        </li>
-                    <?php } ?>
-
-                    <?php
-                    if (
-                        (
-                            isset(session()->get("position_id")[0][0])
-                            && (
-                                session()->get("position_id") == "1"
-                                || session()->get("position_id") == "2"
-                            )
-                        ) ||
-                        (
                             isset(session()->get("halaman")['110']['act_read'])
                             && session()->get("halaman")['110']['act_read'] == "1"
                         )
@@ -368,6 +349,25 @@
                     )
                 ) { ?>
                     <li class="nav-label">Transaksi</li>
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['105']['act_read'])
+                            && session()->get("halaman")['105']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'mtarif' ? 'active' : ''; ?>" href="<?= base_url("mtarif"); ?>" aria-expanded="false"><i class="fa fa-building"></i><span class="hide-menu">Price List</span></a>
+                        </li>
+                    <?php } ?>
 
                     <?php
                     if (
