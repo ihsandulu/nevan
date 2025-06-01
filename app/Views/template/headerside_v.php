@@ -379,12 +379,31 @@
                             )
                         ) ||
                         (
+                            isset(session()->get("halaman")['113']['act_read'])
+                            && session()->get("halaman")['113']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'quotation' ? 'active' : ''; ?>" href="<?= base_url("quotation"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Quotation</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
                             isset(session()->get("halaman")['102']['act_read'])
                             && session()->get("halaman")['102']['act_read'] == "1"
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'job' ? 'active' : ''; ?>" href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Quotation</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'job' ? 'active' : ''; ?>" href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Job</span></a>
                         </li>
                     <?php } ?>
 

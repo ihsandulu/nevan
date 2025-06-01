@@ -34,7 +34,8 @@ $routes->add('/mmethodpayment', 'master\mmethodpayment::index');
 
 $routes->add('/synchron', 'transaction\synchron::index');
 $routes->add('/job', 'transaction\job::index');
-$routes->add('/quotation', 'transaction\job::index');
+$routes->add('/quotation', 'transaction\quotation::index');
+$routes->add('/quotationd', 'transaction\quotationd::index');
 $routes->add('/cppn', 'transaction\job::ppn');
 $routes->add('/nppn', 'transaction\job::nppn');
 $routes->add('/kas', 'transaction\kas::index');
@@ -46,3 +47,4 @@ $routes->add('/cost', 'transaction\cost::index');
 $routes->add('/rabsend', 'report\rabsend::index');
 $routes->add('/rtarif', 'report\rtarif::index');
 $routes->add('/invprint', 'report\invprint::index');
+$routes->add('/quotationprint', 'report\quotationprint::index');

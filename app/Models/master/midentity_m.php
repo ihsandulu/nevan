@@ -35,6 +35,50 @@ class midentity_m extends core_m
                 $data[$field] = "";
             }
         }
+        //upload image quotation
+        $data['uploadidentity_quotationsign'] = "";
+        if (isset($_FILES['identity_quotationsign']) && $_FILES['identity_quotationsign']['name'] != "") {
+            // $request = \Config\Services::request();
+            $file = $this->request->getFile('identity_quotationsign');
+            $name = $file->getName(); // Mengetahui Nama File
+            $originalName = $file->getClientName(); // Mengetahui Nama Asli
+            $tempfile = $file->getTempName(); // Mengetahui Nama TMP File name
+            $ext = $file->getClientExtension(); // Mengetahui extensi File
+            $type = $file->getClientMimeType(); // Mengetahui Mime File
+            $size_kb = $file->getSize('kb'); // Mengetahui Ukuran File dalam kb
+            $size_mb = $file->getSize('mb'); // Mengetahui Ukuran File dalam mb
+
+
+            //$namabaru = $file->getRandomName();//define nama fiel yang baru secara acak
+
+            if ($type == 'image/jpg'||$type == 'image/jpeg'||$type == 'image/png') //cek mime file
+            {    // File Tipe Sesuai   
+                helper('filesystem'); // Load Helper File System
+                $direktori = 'images/identity_quotationsign'; //definisikan direktori upload            
+                $identity_quotationsign = str_replace(' ', '_', $name);
+                $identity_quotationsign = date("H_i_s_") . $identity_quotationsign; //definisikan nama fiel yang baru
+                $map = directory_map($direktori, FALSE, TRUE); // List direktori
+
+                //Cek File apakah ada 
+                foreach ($map as $key) {
+                    if ($key == $identity_quotationsign) {
+                        delete_files($direktori, $identity_quotationsign); //Hapus terlebih dahulu jika file ada
+                    }
+                }
+                //Metode Upload Pilih salah satu
+                //$path = $this->request->getFile('uploadedFile')->identity($direktori, $namabaru);
+                //$file->move($direktori, $namabaru)
+                if ($file->move($direktori, $identity_quotationsign)) {
+                    $data['uploadidentity_quotationsign'] = "Upload Success !";
+                    $input['identity_quotationsign'] = $identity_quotationsign;
+                } else {
+                    $data['uploadidentity_quotationsign'] = "Upload Gagal !";
+                }
+            } else {
+                // File Tipe Tidak Sesuai
+                $data['uploadidentity_quotationsign'] = "Format File Salah !";
+            }
+        } 
 
         //upload image
         $data['uploadidentity_logo'] = "";

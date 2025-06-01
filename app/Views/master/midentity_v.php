@@ -123,6 +123,43 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="identity_quotationprepared">Quotation Prepared By:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="identity_quotationprepared" name="identity_quotationprepared" placeholder="" value="<?= $identity_quotationprepared; ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="identity_quotationsign">Quotation Stamp and Signature: (Max 134 X 134)</label>
+                                    <div class="col-sm-12">
+                                        <input type="file"  class="form-control" id="identity_quotationsign" name="identity_quotationsign" placeholder="" value="<?= $identity_quotationsign; ?>">
+                                        <?php if ($identity_quotationsign != "") {
+                                            $user_image = "images/identity_quotationsign/" . $identity_quotationsign;
+                                        } else {
+                                            $user_image = "images/identity_quotationsign/no_image.png";
+                                        } ?>
+                                        <img id="identity_quotationsign_image" width="100" height="100" src="<?= base_url($user_image); ?>" />
+                                        <script>
+                                            function readURL(input) {
+                                                if (input.files && input.files[0]) {
+                                                    var reader = new FileReader();
+
+                                                    reader.onload = function(e) {
+                                                        $('#identity_quotationsign_image').attr('src', e.target.result);
+                                                    }
+
+                                                    reader.readAsDataURL(input.files[0]);
+                                                }
+                                            }
+
+                                            $("#identity_quotationsign").change(function() {
+                                                readURL(this);
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+
                                 <input type="hidden" name="identity_id" value="<?= $identity_id; ?>" />
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
