@@ -1,4 +1,14 @@
 <?php echo $this->include("template/header_v"); ?>
+<style>
+    #example23 th:nth-child(1),
+    #example23 td:nth-child(1) {
+        width: 500px !important;
+        max-width: 500px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
 
 <div class='container-fluid'>
     <div class='row'>
@@ -325,42 +335,44 @@
                                             <input onchange="profit(); " type="text" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_total">Cost:</label>
-                                        <div class="col-sm-12">
-                                            <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp); ?>" class="btn btn-warning">Cost List</a>
+                                    <?php if ($job_cost > 0) { ?>
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_total">Cost:</label>
+                                            <div class="col-sm-12">
+                                                <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp); ?>" class="btn btn-warning">Cost List</a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_refund">REFUND:</label>
-                                        <div class="col-sm-12">
-                                            <input onchange="profit()" type="text" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_cost">Cost:</label>
+                                            <div class="col-sm-12">
+                                                <input readonly onchange="profit()" type="text" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_cost">Cost:</label>
-                                        <div class="col-sm-12">
-                                            <input readonly onchange="profit()" type="text" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_refund">REFUND:</label>
+                                            <div class="col-sm-12">
+                                                <input onchange="profit()" type="text" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_profit">PROFIT:</label>
-                                        <div class="col-sm-12">
-                                            <input onchange="fee()" type="text" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_profit">PROFIT:</label>
+                                            <div class="col-sm-12">
+                                                <input onchange="fee()" type="text" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_fee"> MARKET FEE 15%:</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="job_fee" name="job_fee" placeholder="" value="<?= $job_fee; ?>">
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_fee"> MARKET FEE 15%:</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" id="job_fee" name="job_fee" placeholder="" value="<?= $job_fee; ?>">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_gp">GP %:</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="job_gp" name="job_gp" placeholder="" value="<?= $job_gp; ?>">
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_gp">GP %:</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" id="job_gp" name="job_gp" placeholder="" value="<?= $job_gp; ?>">
+                                            </div>
                                         </div>
-                                    </div>
+                                    <?php } ?>
                                     <?php if ($ppn == 0) { ?>
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">&nbsp;
                                         </div>
@@ -614,7 +626,6 @@
                                     <?php
                                     $build = $this->db
                                         ->table("job")
-                                        ->join("(SELECT SUM(cost_total)AS costtotal, job_temp FROM cost GROUP BY job_temp) AS cost", "cost.job_temp = job.job_temp", "left")
                                         ->join("customer", "customer.customer_id = job.customer_id", "left")
                                         ->join("origin", "origin.origin_id = job.origin_id", "left")
                                         ->join("destination", "destination.destination_id = job.destination_id", "left")
@@ -636,6 +647,27 @@
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
+                                                    <?php
+                                                    if (
+                                                        (
+                                                            isset(session()->get("position_administrator")[0][0])
+                                                            && (
+                                                                session()->get("position_administrator") == "1"
+                                                                || session()->get("position_administrator") == "2"
+                                                            )
+                                                        ) ||
+                                                        (
+                                                            isset(session()->get("halaman")['49']['act_update'])
+                                                            && session()->get("halaman")['49']['act_update'] == "1"
+                                                        )
+                                                    ) { ?>
+                                                        <form method="get" class="btn-action" style="" action="<?=base_url("cost");?>">
+                                                            <button title="Costing" class="btn btn-sm btn-info " name="cost" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                            <input type="hidden" name="t" value="jc" />
+                                                            <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
+                                                        </form>
+                                                    <?php } ?>
                                                     <?php
                                                     if (
                                                         (
@@ -702,7 +734,7 @@
                                                 <?php } ?>
                                                 <td><?= number_format($usr->job_sell, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_total, 0, ",", "."); ?></td>
-                                                <td><?= number_format($usr->costtotal, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_cost, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_refund, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_fee, 0, ",", "."); ?></td>
                                                 <td><?= number_format($usr->job_profit, 0, ",", "."); ?></td>

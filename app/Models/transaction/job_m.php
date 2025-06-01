@@ -35,6 +35,7 @@ class job_m extends core_m
                 $data[$field] = "";
             }
             $data["job_temp"] = date("YmdHis");
+            $data["job_shipmentdate"] = date("Y-m-d");
             $data["job_sell"] = 0;
             $data["job_total"] = 0;
             $data["job_refund"] = 0;

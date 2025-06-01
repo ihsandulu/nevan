@@ -227,7 +227,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     </div>
 </div>
 <script>
-    let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("quotation?t=ec&temp=" . $job_temp); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Quotation</a>';
+    let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("job?t=" . $_GET["t"]."&temp=" . $job_temp); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Quotation</a>';
     $(document).ready(function() {
         $("#page-title").append(pagetitle);
     });

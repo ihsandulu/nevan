@@ -23,6 +23,14 @@ class cost_m extends core_m
                 ->table("cost")
                 ->delete(array("cost_id" =>  $cost_id));
 
+            //edit job
+            $jobtemp = $this->request->getGet("temp");
+            $usr = $this->db->table("cost")->select("SUM(cost_total)AS total")->where("job_temp", $jobtemp)->get();
+            $total = 0;
+            foreach ($usr->getResult() as $row) {
+                $inputjob["job_cost"] = $row->total;
+                $this->db->table("job")->where("job_temp", $jobtemp)->update($inputjob);
+            }
             $data["message"] = "Delete Success";
         }
 
@@ -38,6 +46,16 @@ class cost_m extends core_m
             /* echo $this->db->getLastQuery();
             die; */
             $cost_id = $this->db->insertID();
+
+            //edit job
+            $jobtemp = $this->request->getGet("temp");
+            $usr = $this->db->table("cost")->select("SUM(cost_total)AS total")->where("job_temp", $jobtemp)->get();
+            // echo $this->db->getLastQuery();die;
+            $total = 0;
+            foreach ($usr->getResult() as $row) {
+                $inputjob["job_cost"] = $row->total;
+                $this->db->table("job")->where("job_temp", $jobtemp)->update($inputjob);
+            }
             $data["message"] = "Insert Data Success";
         }
         //echo $_POST["create"];die;
@@ -51,6 +69,15 @@ class cost_m extends core_m
             }
             $this->db->table('cost')->update($input, array("cost_id" => $this->request->getPost("cost_id")));
 
+            //edit job
+            $jobtemp = $this->request->getGet("temp");
+            $usr = $this->db->table("cost")->select("SUM(cost_total)AS total")->where("job_temp", $jobtemp)->get();
+            
+            $total = 0;
+            foreach ($usr->getResult() as $row) {
+                $inputjob["job_cost"] = $row->total;
+                $this->db->table("job")->where("job_temp", $jobtemp)->update($inputjob);               
+            }
 
             $data["message"] = "Update Success";
             //echo $this->db->last_query();die;
