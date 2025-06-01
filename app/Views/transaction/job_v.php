@@ -204,7 +204,7 @@
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_qty">QTY:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="totalsell()" type="number" class="form-control" id="job_qty" name="job_qty" placeholder="" value="<?= $job_qty; ?>">
+                                            <input onchange="totalsell()" type="text" class="form-control" id="job_qty" name="job_qty" placeholder="" value="<?= $job_qty; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
@@ -319,13 +319,13 @@
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_sell">SELL RPRICE:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="totalsell()" type="number" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
+                                            <input onchange="totalsell()" type="text" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_total">TOTAL PRICE:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="profit(); " type="number" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
+                                            <input onchange="profit(); " type="text" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
@@ -337,19 +337,19 @@
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_refund">REFUND:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="profit()" type="number" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
+                                            <input onchange="profit()" type="text" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_cost">Cost:</label>
                                         <div class="col-sm-12">
-                                            <input readonly onchange="profit()" type="number" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
+                                            <input readonly onchange="profit()" type="text" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_profit">PROFIT:</label>
                                         <div class="col-sm-12">
-                                            <input onchange="fee()" type="number" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
+                                            <input onchange="fee()" type="text" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
@@ -373,7 +373,7 @@
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                             <label class="control-label col-sm-12" for="vendor_id">Payment Methode:</label>
                                             <div class="col-sm-12">
-                                                <input type="number" min="1" class="form-control" id="job_paynom" name="job_paynom" placeholder="" value="<?= ($job_paynom > 0) ? $job_paynom : 1; ?>">
+                                                <input type="text" min="1" class="form-control" id="job_paynom" name="job_paynom" placeholder="" value="<?= ($job_paynom > 0) ? $job_paynom : 1; ?>">
                                                 <select class="form-control select" id="job_payunit" name="job_payunit">
                                                     <option value="WEEK" <?= ($job_payunit == "WEEK") ? "selected" : ""; ?>>WEEK</option>
                                                     <option value="MONTH" <?= ($job_payunit == "MONTH") ? "selected" : ""; ?>>MONTH</option>
