@@ -100,8 +100,8 @@
                                             <?php
                                             $usr = $this->db
                                                 ->table("user")
-                                                ->join("position","position.position_id=user.position_id","left")
-                                                ->where("position_name","SALES")
+                                                ->join("position", "position.position_id=user.position_id", "left")
+                                                ->where("position_name", "SALES")
                                                 ->orderBy("user_nama", "ASC")
                                                 ->get();
                                             foreach ($usr->getResult() as $usr) { ?>
@@ -187,9 +187,6 @@
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="job_descgood" name="job_descgood" placeholder="" value="<?= $job_descgood; ?>">
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        &nbsp;
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_methode">Metode:</label>
@@ -476,7 +473,7 @@
                                             total = qty * sell;
                                         }
                                         $("#job_total").val(total);
-
+                                        profit();
                                     }
 
 
@@ -525,7 +522,7 @@
                         <form method="get">
                             <div class="row alert alert-dark">
                                 <?php
-                                $dari = date("Y-m-d",strtotime("-5 days"));
+                                $dari = date("Y-m-d", strtotime("-5 days"));
                                 $ke = date("Y-m-d");
                                 $idepartemen = 0;
                                 if (isset($_GET["dari"])) {

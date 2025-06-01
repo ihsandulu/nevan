@@ -20,8 +20,13 @@ class job extends BaseController
     {
         $data = new \App\Models\transaction\job_m();
         $data = $data->data();
-        $data["ppn"]=0;
-        $data["title"]="Job";
+        $data["ppn"] = 0;
+        if (isset($_GET["report"])) {
+            $data["title"] = "Sales Report";
+        } else {
+            $data["title"] = "Job";
+        }
+
         return view('transaction/job_v', $data);
     }
 
@@ -30,8 +35,8 @@ class job extends BaseController
     {
         $data = new \App\Models\transaction\job_m();
         $data = $data->data();
-        $data["ppn"]=1;
-        $data["title"]="Customer PPN";
+        $data["ppn"] = 1;
+        $data["title"] = "Customer PPN";
         return view('transaction/job_v', $data);
     }
 
@@ -40,8 +45,8 @@ class job extends BaseController
     {
         $data = new \App\Models\transaction\job_m();
         $data = $data->data();
-        $data["ppn"]=2;
-        $data["title"]="Customer Non PPN";
+        $data["ppn"] = 2;
+        $data["title"] = "Customer Non PPN";
         return view('transaction/job_v', $data);
     }
 }
