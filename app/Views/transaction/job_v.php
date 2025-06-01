@@ -50,9 +50,12 @@
                                                 <select required name="job_id" value="<?= $job_id; ?>" class="form-control select">
                                                     <option value="">Select DA Number</option>
                                                     <?php
-                                                    $usr = $this->db
-                                                        ->table("job")
-                                                        ->orderBy("job_dano", "ASC")
+                                                    $builder = $this->db
+                                                        ->table("job");
+                                                    if ($this->session->get("position_name") == "SALES") {
+                                                        $builder->where("job_sales", $this->session->get("user_id"));
+                                                    }
+                                                    $usr = $builder->orderBy("job_dano", "ASC")
                                                         ->get();
                                                     foreach ($usr->getResult() as $usr) { ?>
                                                         <option value="<?= $usr->job_id; ?>" <?= ($job_id == $usr->job_id) ? "selected" : ""; ?>><?= $usr->job_dano; ?></option>
@@ -88,8 +91,33 @@
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal row" method="post" enctype="multipart/form-data" action="<?= base_url("quotation"); ?>">
-
+                            <form class="form-horizontal row" method="post" enctype="multipart/form-data" action="<?= base_url("job"); ?>">
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_sales">Marketer Name:</label>
+                                    <div class="col-sm-12">
+                                        <select onchange="namasales()" class="form-control select" id="job_sales" name="job_sales">
+                                            <option value="">--Select--</option>
+                                            <?php
+                                            $usr = $this->db
+                                                ->table("user")
+                                                ->join("position","position.position_id=user.position_id","left")
+                                                ->where("position_name","SALES")
+                                                ->orderBy("user_nama", "ASC")
+                                                ->get();
+                                            foreach ($usr->getResult() as $usr) { ?>
+                                                <option data-sales="<?= $usr->user_nama; ?>" value="<?= $usr->user_id; ?>" <?= ($job_sales == $usr->user_id) ? "selected" : ""; ?>><?= $usr->user_nama; ?> - <?= $usr->position_name; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <script>
+                                            function namasales() {
+                                                let namanya = $("#job_sales option:selected").data("sales");
+                                                // alert(namanya);
+                                                $("#job_salesname").val(namanya);
+                                            }
+                                        </script>
+                                        <input type="hidden" id="job_salesname" name="job_salesname" value="<?= $job_salesname; ?>" />
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="job_shipmentdate">SHIPMENT DATE:</label>
                                     <div class="col-sm-12">
@@ -480,7 +508,7 @@
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?=base_url("quotation");?>">Back</a>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url("job"); ?>">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -497,7 +525,7 @@
                         <form method="get">
                             <div class="row alert alert-dark">
                                 <?php
-                                $dari = date("Y-m-d");
+                                $dari = date("Y-m-d",strtotime("-5 days"));
                                 $ke = date("Y-m-d");
                                 $idepartemen = 0;
                                 if (isset($_GET["dari"])) {
@@ -547,6 +575,7 @@
                                         <?php } ?>
 
                                         <th>Shipment Date</th>
+                                        <th>Sales</th>
                                         <th>DA Number</th>
                                         <th>Shipper Name</th>
                                         <?php if ($ppn != 2) { ?>
@@ -656,6 +685,7 @@
                                                 <td><?= $usr->job_methode; ?></td>
                                             <?php } ?>
                                             <td style="white-space:nowrap;"><?= $usr->job_shipmentdate; ?></td>
+                                            <td style="white-space:nowrap;"><?= $usr->job_salesname; ?></td>
                                             <td><?= $usr->job_dano; ?></td>
                                             <td style="white-space:nowrap;"><?= $usr->customer_name; ?></td>
 
