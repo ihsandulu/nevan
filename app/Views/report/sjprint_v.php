@@ -217,23 +217,30 @@ function terbilang($angka)
                             Kepada Yth
                         </div>
                         <div class="col-9">
-                            : <?= $job->customer_name; ?>
+                            : <b><?= $job->job_kepada; ?></b><br/>
+                            <?= $job->job_kepadaaddress; ?>
                         </div>
                     </div>
                 </div>
                 <div class="col-5">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-4">
                             No. Polisi
                         </div>
-                        <div class="col-9">
+                        <div class="col-8">
                             : <?= $job->job_nopol; ?>
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             Pengirim
                         </div>
-                        <div class="col-9">
+                        <div class="col-8">
                             : <?= $job->job_handover; ?>
+                        </div>
+                        <div class="col-4">
+                            DA Number
+                        </div>
+                        <div class="col-8">
+                            : <?= $job->job_dano; ?>
                         </div>
                     </div>
                 </div>
