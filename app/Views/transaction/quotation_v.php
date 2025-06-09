@@ -141,11 +141,11 @@
                                 </div>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="quotation_greeting">Greeting:</label>
-                                    <div class="col-sm-12"><?php if($quotation_greeting==""){
-                                        $quotation_greeting="With refer to above subject, here with we would like to send you our quotation for your shipment with detailsas follow :";
-                                    }
-                                    ?>
-                                        <textarea name="quotation_greeting" id="quotation_greeting"><?=$quotation_greeting;?></textarea>
+                                    <div class="col-sm-12"><?php if ($quotation_greeting == "") {
+                                                                $quotation_greeting = "With refer to above subject, here with we would like to send you our quotation for your shipment with detailsas follow :";
+                                                            }
+                                                            ?>
+                                        <textarea name="quotation_greeting" id="quotation_greeting"><?= $quotation_greeting; ?></textarea>
                                         <script>
                                             CKEDITOR.replace('quotation_greeting');
                                         </script>
@@ -154,11 +154,11 @@
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="quotation_termcondition">Term Condition:</label>
                                     <div class="col-sm-12">
-                                    <?php if($quotation_termcondition==""){
-                                        $quotation_termcondition="Term Condition :<br/>- Port to Door ( Free On Truck )<br/>- Exclude Insurance<br/>- Exclude PPN / PPH";
-                                    }
-                                    ?>
-                                        <textarea name="quotation_termcondition" id="quotation_termcondition"><?=$quotation_termcondition;?></textarea>
+                                        <?php if ($quotation_termcondition == "") {
+                                            $quotation_termcondition = "Term Condition :<br/>- Port to Door ( Free On Truck )<br/>- Exclude Insurance<br/>- Exclude PPN / PPH";
+                                        }
+                                        ?>
+                                        <textarea name="quotation_termcondition" id="quotation_termcondition"><?= $quotation_termcondition; ?></textarea>
                                         <script>
                                             CKEDITOR.replace('quotation_termcondition');
                                         </script>
@@ -166,12 +166,12 @@
                                 </div>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="quotation_termpayment">Term Payment:</label>
-                                    <?php if($quotation_termpayment==""){
-                                        $quotation_termpayment="Term Of Payment :<br/>- Dp 50% - PO / SPK di terima<br/>- Pelunasan 50%<br/>- Setelah BAST di Tandatangani oleh penerima di Lokasi tujuan";
+                                    <?php if ($quotation_termpayment == "") {
+                                        $quotation_termpayment = "Term Of Payment :<br/>- Dp 50% - PO / SPK di terima<br/>- Pelunasan 50%<br/>- Setelah BAST di Tandatangani oleh penerima di Lokasi tujuan";
                                     }
                                     ?>
                                     <div class="col-sm-12">
-                                        <textarea name="quotation_termpayment" id="quotation_termpayment"><?=$quotation_termpayment;?></textarea>
+                                        <textarea name="quotation_termpayment" id="quotation_termpayment"><?= $quotation_termpayment; ?></textarea>
                                         <script>
                                             CKEDITOR.replace('quotation_termpayment');
                                         </script>
@@ -179,12 +179,12 @@
                                 </div>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="quotation_closing">Closing:</label>
-                                    <?php if($quotation_closing==""){
-                                        $quotation_closing="If you need more information about our quotation and our services, please do not hesitate to contact us.<br/>Thank you for your kind attention and opportunity has you gave to us";
+                                    <?php if ($quotation_closing == "") {
+                                        $quotation_closing = "If you need more information about our quotation and our services, please do not hesitate to contact us.<br/>Thank you for your kind attention and opportunity has you gave to us";
                                     }
                                     ?>
                                     <div class="col-sm-12">
-                                        <textarea name="quotation_closing" id="quotation_closing"><?=$quotation_closing;?></textarea>
+                                        <textarea name="quotation_closing" id="quotation_closing"><?= $quotation_closing; ?></textarea>
                                         <script>
                                             CKEDITOR.replace('quotation_closing');
                                         </script>
@@ -195,7 +195,7 @@
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?=base_url("quotation");?>">Back</a>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url("quotation"); ?>">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -271,7 +271,9 @@
                                         ->join("origin", "origin.origin_id = quotation.origin_id", "left")
                                         ->join("destination", "destination.destination_id = quotation.destination_id", "left")
                                         ->join("user", "user.user_id = quotation.user_id", "left");
-
+                                    if ($this->session->get("position_name") == "SALES") {
+                                        $build->where("user_id", $this->session->get("user_id"));
+                                    }
                                     $build->where("quotation_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     $usr = $build->orderBy("quotation.quotation_id", "DESC")
                                         ->get();

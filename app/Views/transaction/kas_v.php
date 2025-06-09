@@ -222,7 +222,7 @@
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="javascript:history.back()">Back</a>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?=base_url("kas");?>">Back</a>
                                     </div>
                                 </div>
                             </form>

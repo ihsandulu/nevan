@@ -4,7 +4,7 @@ namespace App\Models\transaction;
 
 use App\Models\core_m;
 
-class cost_m extends core_m
+class jobd_m extends core_m
 {
     public function data()
     {
@@ -16,12 +16,12 @@ class cost_m extends core_m
 
         //delete
         if ($this->request->getPost("delete") == "OK") {
-            $cost_id =   $this->request->getPost("cost_id");
+            $jobd_id =   $this->request->getPost("jobd_id");
 
-            //delete cost
+            //delete jobd
             $this->db
-                ->table("cost")
-                ->delete(array("cost_id" =>  $cost_id));
+                ->table("jobd")
+                ->delete(array("jobd_id" =>  $jobd_id));
 
             //edit job
             $jobtemp = $this->request->getGet("temp");
@@ -67,15 +67,15 @@ class cost_m extends core_m
         //insert
         if ($this->request->getPost("create") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'create' && $e != 'cost_id') {
+                if ($e != 'create' && $e != 'jobd_id') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
             // dd($input);
-            $this->db->table('cost')->insert($input);
+            $this->db->table('jobd')->insert($input);
             /* echo $this->db->getLastQuery();
             die; */
-            $cost_id = $this->db->insertID();
+            $jobd_id = $this->db->insertID();
 
             //edit job
             $jobtemp = $this->request->getGet("temp");
@@ -122,11 +122,11 @@ class cost_m extends core_m
         //update
         if ($this->request->getPost("change") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'change' && $e != 'cost_picture') {
+                if ($e != 'change' && $e != 'jobd_picture') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-            $this->db->table('cost')->update($input, array("cost_id" => $this->request->getPost("cost_id")));
+            $this->db->table('jobd')->update($input, array("jobd_id" => $this->request->getPost("jobd_id")));
 
             //edit job
             $jobtemp = $this->request->getGet("temp");

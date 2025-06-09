@@ -99,26 +99,51 @@ class kas_m extends core_m
             $saldo = 0;
             $bigcash = 0;
             $pettycash = 0;
-            foreach ($kas->getResult() as $kas) {
+
+            if ($kas->getNumRows() > 0) {
+                foreach ($kas->getResult() as $kas) {
+                    if ($input["kas_type"] == "Debet") {
+                        $saldo = $kas->kas_saldo + $input["kas_total"];
+                        if ($input["kas_debettype"] == "bigcash") {
+                            $bigcash = $kas->kas_bigcash + $input["kas_total"];
+                            $pettycash = $kas->kas_pettycash;
+                        }
+                        if ($input["kas_debettype"] == "pettycash") {
+                            $pettycash = $kas->kas_pettycash + $input["kas_total"];
+                            $bigcash = $kas->kas_bigcash;
+                        }
+                    } else {
+                        $saldo = $kas->kas_saldo - $input["kas_total"];
+                        if ($input["kas_debettype"] == "bigcash") {
+                            $bigcash = $kas->kas_bigcash - $input["kas_total"];
+                            $pettycash = $kas->kas_pettycash;
+                        }
+                        if ($input["kas_debettype"] == "pettycash") {
+                            $pettycash = $kas->kas_pettycash - $input["kas_total"];
+                            $bigcash = $kas->kas_bigcash;
+                        }
+                    }
+                }
+            } else {
                 if ($input["kas_type"] == "Debet") {
-                    $saldo = $kas->kas_saldo + $input["kas_total"];
+                    $saldo = 0 + $input["kas_total"];
                     if ($input["kas_debettype"] == "bigcash") {
-                        $bigcash = $kas->kas_bigcash + $input["kas_total"];
-                        $pettycash = $kas->kas_pettycash;
+                        $bigcash = 0 + $input["kas_total"];
+                        $pettycash = 0;
                     }
                     if ($input["kas_debettype"] == "pettycash") {
-                        $pettycash = $kas->kas_pettycash + $input["kas_total"];
-                        $bigcash = $kas->kas_bigcash;
+                        $pettycash = 0 + $input["kas_total"];
+                        $bigcash = 0;
                     }
                 } else {
-                    $saldo = $kas->kas_saldo - $input["kas_total"];
+                    $saldo = 0 - $input["kas_total"];
                     if ($input["kas_debettype"] == "bigcash") {
-                        $bigcash = $kas->kas_bigcash - $input["kas_total"];
-                        $pettycash = $kas->kas_pettycash;
+                        $bigcash = 0 - $input["kas_total"];
+                        $pettycash = 0;
                     }
                     if ($input["kas_debettype"] == "pettycash") {
-                        $pettycash = $kas->kas_pettycash - $input["kas_total"];
-                        $bigcash = $kas->kas_bigcash;
+                        $pettycash = 0 - $input["kas_total"];
+                        $bigcash = 0;
                     }
                 }
             }

@@ -155,7 +155,7 @@
 
 
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="user_wa">Whatsapp:</label>
+                                    <label class="control-label col-sm-2" for="user_wa">Whatsapp/Phone:</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="user_wa" name="user_wa" placeholder="" value="<?= $user_wa; ?>">
                                     </div>

@@ -21,6 +21,7 @@ class login_m extends core_m
         if (isset($_POST["user_nik"]) && isset($_POST["password"])) {
             $builder = $this->db->table("user")
                 ->join("position", "position.position_id=user.position_id", "left")
+                ->join("departemen", "departemen.departemen_id=user.departemen_id", "left")
                 ->where("user_nik", $this->request->getVar("user_nik"));
             $user1 = $builder
                 ->get();
@@ -55,6 +56,8 @@ class login_m extends core_m
                         $this->session->set("position_administrator", $user->position_id);
                         $this->session->set("position_id", $user->position_id);
                         $this->session->set("position_name", $user->position_name);
+                        $this->session->set("departemen_id", $user->departemen_id);
+                        $this->session->set("departemen_name", $user->departemen_name);
                         $this->session->set("user_name", $user->user_name);
                         $this->session->set("user_nik", $user->user_nik);
                         $this->session->set("user_nama", $user->user_nama);
@@ -68,6 +71,10 @@ class login_m extends core_m
                         $this->session->set("identity_about", $identity->identity_about);
                         $this->session->set("identity_quotationprepared", $identity->identity_quotationprepared);
                         $this->session->set("identity_quotationsign", $identity->identity_quotationsign);
+                        $this->session->set("identity_stempelsj", $identity->identity_stempelsj);
+                        $this->session->set("identity_branch", $identity->identity_branch);
+                        $this->session->set("identity_email", $identity->identity_email);
+                        $this->session->set("identity_website", $identity->identity_website);
                         
 
                         //tambahkan modul di sini                         

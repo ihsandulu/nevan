@@ -119,6 +119,7 @@
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
                                         <th>Customer</th>
+                                        <th>Singkatan</th>
                                         <th>Alamat</th>
                                         <th>NPWP</th>
                                         <th>Phone</th>
@@ -179,6 +180,7 @@
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td class="text-left"><?= $usr->customer_name; ?></td>
+                                            <td class="text-left"><?= $usr->customer_singkatan; ?></td>
                                             <td class="text-left"><?= $usr->customer_address; ?></td>
                                             <td class="text-left"><?= $usr->customer_npwp; ?></td>
                                             <td class="text-left"><?= $usr->customer_phone; ?></td>

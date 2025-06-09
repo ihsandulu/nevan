@@ -76,12 +76,14 @@
                                         </form>
                                     </div>
                                 <?php } else { ?>
-                                    <form method="post" class="col-md-2">
-                                        <h1 class="page-header col-md-12">
-                                            <button name="new" class="btn btn-info btn-block btn-sm" value="OK" style="">New</button>
-                                            <input type="hidden" name="job_id" />
-                                        </h1>
-                                    </form>
+                                    <?php if ($posisi != "operasional") { ?>
+                                        <form method="post" class="col-md-2">
+                                            <h1 class="page-header col-md-12">
+                                                <button name="new" class="btn btn-info btn-block btn-sm" value="OK" style="">New</button>
+                                                <input type="hidden" name="job_id" />
+                                            </h1>
+                                        </form>
+                                    <?php } ?>
                                 <?php } ?>
                             <?php } ?>
                         <?php } ?>
@@ -101,104 +103,185 @@
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal row" method="post" enctype="multipart/form-data" action="<?= base_url("job"); ?>">
+                            <form class="form-horizontal row" method="post" enctype="multipart/form-data" action="<?= base_url($url); ?>">
+
+                                <?php if ($posisi != "operasional") { ?>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_sales">Marketer Name:</label>
+                                        <div class="col-sm-12">
+                                            <select onchange="namasales()" class="form-control select" id="job_sales" name="job_sales">
+                                                <option value="">--Select--</option>
+                                                <?php
+                                                $usr = $this->db
+                                                    ->table("user")
+                                                    ->join("position", "position.position_id=user.position_id", "left")
+                                                    ->where("position_name", "SALES")
+                                                    ->orderBy("user_nama", "ASC")
+                                                    ->get();
+                                                foreach ($usr->getResult() as $usr) { ?>
+                                                    <option data-sales="<?= $usr->user_nama; ?>" value="<?= $usr->user_id; ?>" <?= ($job_sales == $usr->user_id) ? "selected" : ""; ?>><?= $usr->user_nama; ?> - <?= $usr->position_name; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <script>
+                                                function namasales() {
+                                                    let namanya = $("#job_sales option:selected").data("sales");
+                                                    // alert(namanya);
+                                                    $("#job_salesname").val(namanya);
+                                                }
+                                            </script>
+                                            <input type="hidden" id="job_salesname" name="job_salesname" value="<?= $job_salesname; ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_shipmentdate">SHIPMENT DATE:</label>
+                                        <div class="col-sm-12">
+                                            <input type="date" autofocus class="form-control" id="job_shipmentdate" name="job_shipmentdate" placeholder="" value="<?= $job_shipmentdate; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="customer_id">SHIPPER NAME:</label>
+                                        <div class="col-sm-12">
+                                            <select onchange="isisingkatan()" class="form-control select" id="customer_id" name="customer_id">
+                                                <option value="">--Select--</option>
+                                                <?php
+                                                $usr = $this->db
+                                                    ->table("customer")
+                                                    ->orderBy("customer_name", "ASC")
+                                                    ->get();
+                                                foreach ($usr->getResult() as $usr) { ?>
+                                                    <option data-singkatan="<?= $usr->customer_singkatan; ?>" value="<?= $usr->customer_id; ?>" <?= ($customer_id == $usr->customer_id) ? "selected" : ""; ?>><?= $usr->customer_name; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <script>
+                                                function isisingkatan() {
+                                                    let singkatan = $("#customer_id option:selected").data("singkatan");
+                                                    // alert(singkatan);
+                                                    $("#customer_singkatan").val(singkatan);
+                                                }
+                                            </script>
+                                            <input type="hidden" id="customer_singkatan" name="customer_singkatan" value="<?= $customer_singkatan; ?>" />
+                                        </div>
+                                    </div>
+                                <?php } ?>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="job_sales">Marketer Name:</label>
+                                    <label class="control-label col-sm-12" for="job_pickupaddress">PICKUP ADDRESS:</label>
                                     <div class="col-sm-12">
-                                        <select onchange="namasales()" class="form-control select" id="job_sales" name="job_sales">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("user")
-                                                ->join("position", "position.position_id=user.position_id", "left")
-                                                ->where("position_name", "SALES")
-                                                ->orderBy("user_nama", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option data-sales="<?= $usr->user_nama; ?>" value="<?= $usr->user_id; ?>" <?= ($job_sales == $usr->user_id) ? "selected" : ""; ?>><?= $usr->user_nama; ?> - <?= $usr->position_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <script>
-                                            function namasales() {
-                                                let namanya = $("#job_sales option:selected").data("sales");
-                                                // alert(namanya);
-                                                $("#job_salesname").val(namanya);
-                                            }
-                                        </script>
-                                        <input type="hidden" id="job_salesname" name="job_salesname" value="<?= $job_salesname; ?>" />
+                                        <input type="TEXT" autofocus class="form-control" id="job_pickupaddress" name="job_pickupaddress" placeholder="" value="<?= $job_pickupaddress; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="job_shipmentdate">SHIPMENT DATE:</label>
+                                    <label class="control-label col-sm-12" for="job_tujuan">Nama Tujuan:</label>
                                     <div class="col-sm-12">
-                                        <input type="date" autofocus class="form-control" id="job_shipmentdate" name="job_shipmentdate" placeholder="" value="<?= $job_shipmentdate; ?>">
+                                        <input type="TEXT" autofocus class="form-control" id="job_tujuan" name="job_tujuan" placeholder="" value="<?= $job_tujuan; ?>">
+                                    </div>
+                                </div>
+                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_tujuanphone">Telpon Tujuan:</label>
+                                    <div class="col-sm-12">
+                                        <input type="TEXT" autofocus class="form-control" id="job_tujuanphone" name="job_tujuanphone" placeholder="" value="<?= $job_tujuanphone; ?>">
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="customer_id">SHIPPER NAME:</label>
+                                    <label class="control-label col-sm-12" for="job_tujuanaddress">Alamat Tujuan:</label>
                                     <div class="col-sm-12">
-                                        <select onchange="isisingkatan()" class="form-control select" id="customer_id" name="customer_id">
-                                            <option value="">--Select--</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("customer")
-                                                ->orderBy("customer_name", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option data-singkatan="<?= $usr->customer_singkatan; ?>" value="<?= $usr->customer_id; ?>" <?= ($customer_id == $usr->customer_id) ? "selected" : ""; ?>><?= $usr->customer_name; ?></option>
-                                            <?php } ?>
-                                        </select>
-                                        <script>
-                                            function isisingkatan() {
-                                                let singkatan = $("#customer_id option:selected").data("singkatan");
-                                                // alert(singkatan);
-                                                $("#customer_singkatan").val(singkatan);
-                                            }
-                                        </script>
-                                        <input type="hidden" id="customer_singkatan" name="customer_singkatan" value="<?= $customer_singkatan; ?>" />
+                                        <input type="TEXT" autofocus class="form-control" id="job_tujuanaddress" name="job_tujuanaddress" placeholder="" value="<?= $job_tujuanaddress; ?>">
                                     </div>
                                 </div>
 
                                 <?php if ($ppn != 2) { ?>
+                                    <?php if ($posisi != "operasional") { ?>
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="origin_id">ORIGIN:</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control select" id="origin_id" name="origin_id">
+                                                    <option value="">--Select--</option>
+                                                    <?php
+                                                    $usr = $this->db
+                                                        ->table("origin")
+                                                        ->orderBy("origin_name", "ASC")
+                                                        ->get();
+                                                    foreach ($usr->getResult() as $usr) { ?>
+                                                        <option value="<?= $usr->origin_id; ?>" <?= ($origin_id == $usr->origin_id) ? "selected" : ""; ?>><?= $usr->origin_name; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="destination_id">DESTINATION:</label>
+                                            <div class="col-sm-12">
+                                                <select class="form-control select" id="destination_id" name="destination_id">
+                                                    <option value="">--Select--</option>
+                                                    <?php
+                                                    $usr = $this->db
+                                                        ->table("destination")
+                                                        ->orderBy("destination_name", "ASC")
+                                                        ->get();
+                                                    foreach ($usr->getResult() as $usr) { ?>
+                                                        <option value="<?= $usr->destination_id; ?>" <?= ($destination_id == $usr->destination_id) ? "selected" : ""; ?>><?= $usr->destination_name; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_descgood">DESCRIPTION OF GOODS:</label>
+                                            <div class="col-sm-12">
+                                                <input type="text" class="form-control" id="job_descgood" name="job_descgood" placeholder="" value="<?= $job_descgood; ?>">
+                                            </div>
+                                        </div> -->
+                                    <?php } ?>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="origin_id">ORIGIN:</label>
+                                        <label class="control-label col-sm-12" for="job_pickup">Pickup Date:</label>
                                         <div class="col-sm-12">
-                                            <select class="form-control select" id="origin_id" name="origin_id">
+                                            <input type="date" autofocus class="form-control" id="job_pickup" name="job_pickup" placeholder="" value="<?= $job_pickup; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_pickupuser">Operational Officer:</label>
+                                        <div class="col-sm-12">
+                                            <select onchange="namapetugas()" class="form-control select" id="job_pickupuser" name="job_pickupuser">
                                                 <option value="">--Select--</option>
                                                 <?php
                                                 $usr = $this->db
-                                                    ->table("origin")
-                                                    ->orderBy("origin_name", "ASC")
+                                                    ->table("user")
+                                                    ->join("departemen", "departemen.departemen_id=user.departemen_id", "left")
+                                                    ->join("position", "position.position_id=user.position_id", "left")
+                                                    ->where("departemen_name", "OPERATION")
+                                                    ->orderBy("user_nama", "ASC")
                                                     ->get();
+                                                if ($this->session->get("departemen_name") == "OPERATION") {
+                                                    $job_pickupuser = $this->session->get("user_id");
+                                                }
                                                 foreach ($usr->getResult() as $usr) { ?>
-                                                    <option value="<?= $usr->origin_id; ?>" <?= ($origin_id == $usr->origin_id) ? "selected" : ""; ?>><?= $usr->origin_name; ?></option>
+                                                    <option data-petugas="<?= $usr->user_nama; ?>" value="<?= $usr->user_id; ?>" <?= ($job_pickupuser == $usr->user_id) ? "selected" : ""; ?>><?= $usr->user_nama; ?> - <?= $usr->position_name; ?></option>
                                                 <?php } ?>
+                                            </select>
+                                            <script>
+                                                function namapetugas() {
+                                                    let namanya = $("#job_pickupuser option:selected").data("petugas");
+                                                    // alert(namanya);
+                                                    $("#job_pickupusername").val(namanya);
+                                                }
+                                            </script>
+                                            <input type="hidden" id="job_pickupusername" name="job_pickupusername" value="<?= $job_pickupusername; ?>" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_handover">Hand Over:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="job_handover" name="job_handover" placeholder="Penyerah Barang" value="<?= $job_handover; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_pickupstatus">Pickup Status:</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="job_pickupstatus" name="job_pickupstatus">
+                                                <option value="0" <?= ($job_pickupstatus == "0") ? "selected" : ""; ?>>--Select--</option>
+                                                <option value="1" <?= ($job_pickupstatus == "1") ? "selected" : ""; ?>>Done</option>
+                                                <option value="2" <?= ($job_pickupstatus == "2") ? "selected" : ""; ?>>Pending</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="destination_id">DESTINATION:</label>
-                                        <div class="col-sm-12">
-                                            <select class="form-control select" id="destination_id" name="destination_id">
-                                                <option value="">--Select--</option>
-                                                <?php
-                                                $usr = $this->db
-                                                    ->table("destination")
-                                                    ->orderBy("destination_name", "ASC")
-                                                    ->get();
-                                                foreach ($usr->getResult() as $usr) { ?>
-                                                    <option value="<?= $usr->destination_id; ?>" <?= ($destination_id == $usr->destination_id) ? "selected" : ""; ?>><?= $usr->destination_name; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_descgood">DESCRIPTION OF GOODS:</label>
-                                        <div class="col-sm-12">
-                                            <input type="text" class="form-control" id="job_descgood" name="job_descgood" placeholder="" value="<?= $job_descgood; ?>">
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_methode">Metode:</label>
                                         <div class="col-sm-12">
                                             <select onchange="metode()" class="form-control select" id="job_methode" name="job_methode">
@@ -207,22 +290,22 @@
                                                 <option value="cbm" <?= ($job_methode == "cbm") ? "selected" : ""; ?>>CBM / KGS</option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    </div> -->
+                                    <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_qty">QTY:</label>
                                         <div class="col-sm-12">
                                             <input onchange="totalsell()" type="text" class="form-control" id="job_qty" name="job_qty" placeholder="" value="<?= $job_qty; ?>">
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    </div> -->
+                                    <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_cbm">CBM / KGS:</label>
                                         <div class="col-sm-12">
                                             <input onchange="totalsell()" type="text" class="form-control" id="job_cbm" name="job_cbm" placeholder="" value="<?= $job_cbm; ?>">
                                         </div>
-                                    </div>
+                                    </div> -->
 
 
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_satuan">SATUAN:</label>
                                         <div class="col-sm-12">
                                             <select class="form-control select" id="job_satuan" name="job_satuan">
@@ -237,7 +320,7 @@
                                                 <?php } ?>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="service_id">SERVICE:</label>
                                         <div class="col-sm-12">
@@ -254,128 +337,136 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="vendortruck_id">TRUCKING:</label>
-                                        <div class="col-sm-12">
-                                            <select class="form-control select" id="vendortruck_id" name="vendortruck_id">
-                                                <option value="">--Select--</option>
-                                                <?php
-                                                $usr = $this->db
-                                                    ->table("vendortruck")
-                                                    ->join("vendor", "vendor.vendor_id = vendortruck.vendor_id", "left")
-                                                    ->orderBy("vendortruck_name", "ASC")
-                                                    ->orderBy("vendor_name", "ASC")
-                                                    ->get();
-                                                foreach ($usr->getResult() as $usr) { ?>
-                                                    <option value="<?= $usr->vendortruck_id; ?>" <?= ($vendortruck_id == $usr->vendortruck_id) ? "selected" : ""; ?>><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="vessel_id">VESSEL:</label>
-                                        <div class="col-sm-12">
-                                            <select class="form-control select" id="vessel_id" name="vessel_id">
-                                                <option value="">--Select--</option>
-                                                <?php
-                                                $usr = $this->db
-                                                    ->table("vessel")
-                                                    ->orderBy("vessel_name", "ASC")
-                                                    ->get();
-                                                foreach ($usr->getResult() as $usr) { ?>
-                                                    <option value="<?= $usr->vessel_id; ?>" <?= ($vessel_id == $usr->vessel_id) ? "selected" : ""; ?>><?= $usr->vessel_name; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <?php if ($ppn == 0) { ?>
-                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="vendor_id">VENDOR / PELAYARAN:</label>
-                                            <div class="col-sm-12">
-                                                <select class="form-control select" id="vendor_id" name="vendor_id">
-                                                    <option value="">--Select--</option>
-                                                    <?php
-                                                    $usr = $this->db
-                                                        ->table("vendor")
-                                                        ->orderBy("vendor_name", "ASC")
-                                                        ->get();
-                                                    foreach ($usr->getResult() as $usr) { ?>
-                                                        <option value="<?= $usr->vendor_id; ?>" <?= ($vendor_id == $usr->vendor_id) ? "selected" : ""; ?>><?= $usr->vendor_name; ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="job_dooring">DOORING:</label>
-                                            <div class="col-sm-12">
-                                                <select class="form-control select" id="job_dooring" name="job_dooring">
-                                                    <option value="">--Select--</option>
-                                                    <?php
-                                                    $usr = $this->db
-                                                        ->table("vendor")
-                                                        ->orderBy("vendor_name", "ASC")
-                                                        ->get();
-                                                    foreach ($usr->getResult() as $usr) { ?>
-                                                        <option value="<?= $usr->vendor_id; ?>" <?= ($job_dooring == $usr->vendor_id) ? "selected" : ""; ?>><?= $usr->vendor_name; ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div>
 
-                                    <?php } ?>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_sell">SELL RPRICE:</label>
-                                        <div class="col-sm-12">
-                                            <input onchange="totalsell()" type="text" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_total">TOTAL PRICE:</label>
-                                        <div class="col-sm-12">
-                                            <input onchange="profit(); " type="text" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
-                                        </div>
-                                    </div>
-                                    <?php if ($job_cost > 0) { ?>
+                                    <?php if ($posisi != "operasional") { ?>
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="job_total">Cost:</label>
+                                            <label class="control-label col-sm-12" for="vendortruck_id">TRUCKING:</label>
                                             <div class="col-sm-12">
-                                                <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp); ?>" class="btn btn-warning">Cost List</a>
+                                                <select class="form-control select" id="vendortruck_id" name="vendortruck_id">
+                                                    <option value="">--Select--</option>
+                                                    <?php
+                                                    $usr = $this->db
+                                                        ->table("vendortruck")
+                                                        ->join("vendor", "vendor.vendor_id = vendortruck.vendor_id", "left")
+                                                        ->orderBy("vendortruck_name", "ASC")
+                                                        ->orderBy("vendor_name", "ASC")
+                                                        ->get();
+                                                    foreach ($usr->getResult() as $usr) { ?>
+                                                        <option value="<?= $usr->vendortruck_id; ?>" <?= ($vendortruck_id == $usr->vendortruck_id) ? "selected" : ""; ?>><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="job_cost">Cost:</label>
+                                            <label class="control-label col-sm-12" for="vessel_id">VESSEL:</label>
                                             <div class="col-sm-12">
-                                                <input readonly onchange="profit()" type="text" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="job_refund">REFUND:</label>
-                                            <div class="col-sm-12">
-                                                <input onchange="profit()" type="text" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="job_profit">PROFIT:</label>
-                                            <div class="col-sm-12">
-                                                <input onchange="fee()" type="text" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="job_fee"> MARKET FEE 15%:</label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="job_fee" name="job_fee" placeholder="" value="<?= $job_fee; ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="job_gp">GP %:</label>
-                                            <div class="col-sm-12">
-                                                <input type="text" class="form-control" id="job_gp" name="job_gp" placeholder="" value="<?= $job_gp; ?>">
+                                                <select class="form-control select" id="vessel_id" name="vessel_id">
+                                                    <option value="">--Select--</option>
+                                                    <?php
+                                                    $usr = $this->db
+                                                        ->table("vessel")
+                                                        ->orderBy("vessel_name", "ASC")
+                                                        ->get();
+                                                    foreach ($usr->getResult() as $usr) { ?>
+                                                        <option value="<?= $usr->vessel_id; ?>" <?= ($vessel_id == $usr->vessel_id) ? "selected" : ""; ?>><?= $usr->vessel_name; ?></option>
+                                                    <?php } ?>
+                                                </select>
                                             </div>
                                         </div>
                                     <?php } ?>
                                     <?php if ($ppn == 0) { ?>
-                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">&nbsp;
-                                        </div>
+                                        <?php if ($posisi != "operasional") { ?>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="vendor_id">VENDOR / PELAYARAN:</label>
+                                                <div class="col-sm-12">
+                                                    <select class="form-control select" id="vendor_id" name="vendor_id">
+                                                        <option value="">--Select--</option>
+                                                        <?php
+                                                        $usr = $this->db
+                                                            ->table("vendor")
+                                                            ->orderBy("vendor_name", "ASC")
+                                                            ->get();
+                                                        foreach ($usr->getResult() as $usr) { ?>
+                                                            <option value="<?= $usr->vendor_id; ?>" <?= ($vendor_id == $usr->vendor_id) ? "selected" : ""; ?>><?= $usr->vendor_name; ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_dooring">DOORING:</label>
+                                                <div class="col-sm-12">
+                                                    <select class="form-control select" id="job_dooring" name="job_dooring">
+                                                        <option value="">--Select--</option>
+                                                        <?php
+                                                        $usr = $this->db
+                                                            ->table("vendor")
+                                                            ->orderBy("vendor_name", "ASC")
+                                                            ->get();
+                                                        foreach ($usr->getResult() as $usr) { ?>
+                                                            <option value="<?= $usr->vendor_id; ?>" <?= ($job_dooring == $usr->vendor_id) ? "selected" : ""; ?>><?= $usr->vendor_name; ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php if ($posisi != "operasional") { ?>
+                                        <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_sell">SELL RPRICE:</label>
+                                            <div class="col-sm-12">
+                                                <input onchange="totalsell()" type="text" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
+                                            </div>
+                                        </div> -->
+                                        <?php if ($posisi != "sales") { ?>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_total">TOTAL PRICE:</label>
+                                                <div class="col-sm-12">
+                                                    <input onchange="profit(); " type="text" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                        <?php if ($job_cost > 0) { ?>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_total">Cost:</label>
+                                                <div class="col-sm-12">
+                                                    <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp . "&url=" . $url); ?>" class="btn btn-warning">Cost List</a>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_cost">Cost:</label>
+                                                <div class="col-sm-12">
+                                                    <input readonly onchange="profit()" type="text" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_refund">REFUND:</label>
+                                                <div class="col-sm-12">
+                                                    <input onchange="profit()" type="text" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_profit">PROFIT:</label>
+                                                <div class="col-sm-12">
+                                                    <input onchange="fee()" type="text" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_fee"> MARKET FEE 15%:</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="job_fee" name="job_fee" placeholder="" value="<?= $job_fee; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_gp">GP %:</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="job_gp" name="job_gp" placeholder="" value="<?= $job_gp; ?>">
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php if ($ppn == 0) { ?>
+                                        <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">&nbsp;
+                                        </div> -->
                                     <?php } ?>
 
                                     <?php if ($ppn == 1) { ?>
@@ -441,6 +532,117 @@
                                         <input type="text" class="form-control" id="job_explanation" name="job_explanation" placeholder="" value="<?= $job_explanation; ?>">
                                     </div>
                                 </div>
+                                <?php if ($posisi == "operasional") { ?>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_pengemudi">Pengemudi:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="job_pengemudi" name="job_pengemudi" placeholder="" value="<?= $job_pengemudi; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_pengemudiphone">Whatsapp Pemgemudi:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="job_pengemudiphone" name="job_pengemudiphone" placeholder="" value="<?= $job_pengemudiphone; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_nopol">No. Polisi:</label>
+                                        <div class="col-sm-12">
+                                            <input type="text" class="form-control" id="job_nopol" name="job_nopol" placeholder="" value="<?= $job_nopol; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="job_supervisi">Supervisi:</label>
+                                        <div class="col-sm-12">
+                                            <select class="form-control select" id="job_supervisi" name="job_supervisi">
+                                                <option value="">--Select--</option>
+                                                <?php
+                                                $usr = $this->db
+                                                    ->table("user")
+                                                    ->join("position", "position.position_id=user.position_id", "left")
+                                                    ->where("position_name", "SUPERVISOR")
+                                                    ->orderBy("user_nama", "ASC")
+                                                    ->get();
+                                                foreach ($usr->getResult() as $usr) { ?>
+                                                    <option value="<?= $usr->user_id; ?>" <?= ($job_supervisi == $usr->user_id) ? "selected" : ""; ?>><?= $usr->user_nama; ?> - <?= $usr->position_name; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-12" for="job_picture">Bukti</label>
+                                        <div class="col-sm-12">
+                                            <input type="file" class="form-control" id="job_picture" name="job_picture" placeholder="" value="<?= $job_picture; ?>">
+                                            <?php
+                                            if ($job_picture != "") {
+                                                $user_image = "images/job_picture/" . $job_picture;
+                                            } else {
+                                                $user_image = "images/job_picture/no_image.png";
+                                            }
+                                            ?>
+                                            <img id="job_picture_image" style="cursor:pointer;" width="100" height="100" src="<?= base_url($user_image); ?>" alt="Bukti" />
+
+                                            <!-- Modal untuk gambar besar -->
+                                            <div id="imgModal" style="
+                                            display:none; 
+                                            position:fixed; 
+                                            z-index:999; 
+                                            left:0; top:0; width:100%; height:100%; 
+                                            background-color: rgba(0,0,0,0.8);
+                                            align-items: center; 
+                                            justify-content: center;">
+                                                <span id="closeModal" style="
+                                                position:absolute; 
+                                                top:20px; right:35px; 
+                                                color:#fff; 
+                                                font-size:40px; 
+                                                font-weight:bold; 
+                                                cursor:pointer;">&times;</span>
+                                                <img id="modalImage" src="" style="max-width:90%; max-height:90%; margin:auto; display:block;" />
+                                            </div>
+
+                                            <script>
+                                                function readURL(input) {
+                                                    if (input.files && input.files[0]) {
+                                                        var reader = new FileReader();
+
+                                                        reader.onload = function(e) {
+                                                            $('#job_picture_image').attr('src', e.target.result);
+                                                        }
+
+                                                        reader.readAsDataURL(input.files[0]);
+                                                    }
+                                                }
+
+                                                $("#job_picture").change(function() {
+                                                    readURL(this);
+                                                });
+
+                                                // Event klik gambar untuk buka modal
+                                                const img = document.getElementById('job_picture_image');
+                                                const modal = document.getElementById('imgModal');
+                                                const modalImg = document.getElementById('modalImage');
+                                                const closeModal = document.getElementById('closeModal');
+
+                                                img.onclick = function() {
+                                                    modal.style.display = "flex";
+                                                    modalImg.src = this.src;
+                                                }
+
+                                                closeModal.onclick = function() {
+                                                    modal.style.display = "none";
+                                                }
+
+                                                // Klik di luar gambar modal juga bisa tutup modal
+                                                modal.onclick = function(event) {
+                                                    if (event.target == modal) {
+                                                        modal.style.display = "none";
+                                                    }
+                                                }
+                                            </script>
+                                        </div>
+                                    </div>
+                                <?php } ?>
 
                                 <script>
                                     $(document).ready(function() {
@@ -517,7 +719,7 @@
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url("job"); ?>">Back</a>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url($url); ?>">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -590,24 +792,37 @@
                                         <?php if ($ppn != 2) { ?>
                                             <th>Origin</th>
                                             <th>Destination</th>
-                                            <th>Description of Goods</th>
+                                            <th>Tujuan</th>
+                                            <th>Alamat Tujuan</th>
+                                            <!-- <th>Description of Goods</th>
                                             <th>Qty</th>
                                             <th>Satuan</th>
-                                            <th>CBM/MT</th>
+                                            <th>CBM/MT</th> -->
                                             <th>Service</th>
                                             <th>Trucking</th>
                                             <th>Vessel</th>
+                                            <th>Pickup Address</th>
+                                            <th>Pickup Date</th>
+                                            <th>Pickup Status</th>
+                                            <th>Petugas</th>
+                                            <th>Penyerah</th>
+                                            <th>Supervisi</th>
+                                            <th>Bukti</th>
+                                            <th>Nopol</th>
+                                            <th>Pengemudi</th>
                                             <?php if ($ppn == 0) { ?>
                                                 <th>Vendor/Pelayaran</th>
                                                 <th>Dooring</th>
                                             <?php } ?>
-                                            <th>Sell Price</th>
-                                            <th>Total Price</th>
-                                            <th>Cost</th>
-                                            <th>Refund</th>
-                                            <th>Market Fee 15%</th>
-                                            <th>Profit</th>
-                                            <th>GP%</th>
+                                            <?php if ($posisi != "operasional") { ?>
+                                                <!-- <th>Sell Price</th> -->
+                                                <th>Total Price</th>
+                                                <th>Cost</th>
+                                                <th>Refund</th>
+                                                <th>Market Fee 15%</th>
+                                                <th>Profit</th>
+                                                <th>GP%</th>
+                                            <?php } ?>
                                             <?php if ($ppn == 1) { ?>
                                                 <th>Payment Methode</th>
                                                 <th>Tax No.</th>
@@ -626,6 +841,7 @@
                                     <?php
                                     $build = $this->db
                                         ->table("job")
+                                        ->join("(SELECT user_id AS supervisi_id, user_nama as supervisi_name from user)AS supervisi", "supervisi.supervisi_id = job.job_supervisi", "left")
                                         ->join("customer", "customer.customer_id = job.customer_id", "left")
                                         ->join("origin", "origin.origin_id = job.origin_id", "left")
                                         ->join("destination", "destination.destination_id = job.destination_id", "left")
@@ -643,10 +859,24 @@
                                         ->get();
                                     //echo $this->db->getLastquery();
                                     $no = 1;
-                                    foreach ($usr->getResult() as $usr) { ?>
-                                        <tr>
+                                    $statuspickup = array("", "Done", "Pending");
+                                    foreach ($usr->getResult() as $usr) {
+                                        switch ($usr->job_pickupstatus) {
+                                            case "0":
+                                                $linestatus = "";
+                                                break;
+                                            case "1":
+                                                $linestatus = "bg-success";
+                                                break;
+                                            case "2":
+                                                $linestatus = "bg-warning";
+                                                break;
+                                        }
+                                    ?>
+                                        <tr class="<?= $linestatus; ?>">
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
+
                                                     <?php
                                                     if (
                                                         (
@@ -657,17 +887,16 @@
                                                             )
                                                         ) ||
                                                         (
-                                                            isset(session()->get("halaman")['49']['act_update'])
-                                                            && session()->get("halaman")['49']['act_update'] == "1"
+                                                            isset(session()->get("halaman")['49']['act_delete'])
+                                                            && session()->get("halaman")['49']['act_delete'] == "1"
                                                         )
                                                     ) { ?>
-                                                        <form method="get" class="btn-action" style="" action="<?=base_url("cost");?>">
-                                                            <button title="Costing" class="btn btn-sm btn-info " name="cost" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
+                                                        <form method="post" class="btn-action" style="">
+                                                            <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                             <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
-                                                            <input type="hidden" name="t" value="jc" />
-                                                            <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
                                                         </form>
                                                     <?php } ?>
+
                                                     <?php
                                                     if (
                                                         (
@@ -698,13 +927,62 @@
                                                             )
                                                         ) ||
                                                         (
-                                                            isset(session()->get("halaman")['49']['act_delete'])
-                                                            && session()->get("halaman")['49']['act_delete'] == "1"
+                                                            isset(session()->get("halaman")['49']['act_update'])
+                                                            && session()->get("halaman")['49']['act_update'] == "1"
                                                         )
                                                     ) { ?>
-                                                        <form method="post" class="btn-action" style="">
-                                                            <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                        <form method="get" class="btn-action" style="" action="<?= base_url("jobd"); ?>">
+                                                            <button title="Details" class="btn btn-sm btn-secondary " name="jobd" value="OK"><span class="fa fa-cubes" style=""></span> </button>
                                                             <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                            <input type="hidden" name="t" value="jc" />
+                                                            <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
+                                                            <input type="hidden" name="url" value="<?= $url; ?>" />
+                                                        </form>
+                                                    <?php } ?>
+
+                                                    <?php
+                                                    if (
+                                                        (
+                                                            isset(session()->get("position_administrator")[0][0])
+                                                            && (
+                                                                session()->get("position_administrator") == "1"
+                                                                || session()->get("position_administrator") == "2"
+                                                            )
+                                                        ) ||
+                                                        (
+                                                            isset(session()->get("halaman")['49']['act_update'])
+                                                            && session()->get("halaman")['49']['act_update'] == "1"
+                                                        )
+                                                    ) { ?>
+                                                        <form method="get" class="btn-action" style="" action="<?= base_url("cost"); ?>">
+                                                            <button title="Costing" class="btn btn-sm btn-info " name="cost" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                            <input type="hidden" name="t" value="jc" />
+                                                            <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
+                                                            <input type="hidden" name="url" value="<?= $url; ?>" />
+                                                        </form>
+                                                    <?php } ?>
+                                                    
+                                                    <?php
+                                                    if (
+                                                        (
+                                                            isset(session()->get("position_administrator")[0][0])
+                                                            && (
+                                                                session()->get("position_administrator") == "1"
+                                                                || session()->get("position_administrator") == "2"
+                                                            )
+                                                        ) ||
+                                                        (
+                                                            isset(session()->get("halaman")['49']['act_update'])
+                                                            && session()->get("halaman")['49']['act_update'] == "1"
+                                                        )
+                                                    ) { ?>
+                                                        <form target="_blank" method="get" class="btn-action" style="" action="<?= base_url("sjprint"); ?>">
+                                                            <button title="Surat Jalan" class="btn btn-sm btn-primary" name="sj" value="OK"><span class="fa fa-address-card-o" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                            <input type="hidden" name="t" value="jc" />
+                                                            <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
+                                                            <input type="hidden" name="url" value="<?= $url; ?>" />
                                                         </form>
                                                     <?php } ?>
                                                 </td>
@@ -721,24 +999,45 @@
                                             <?php if ($ppn != 2) { ?>
                                                 <td><?= $usr->origin_name; ?></td>
                                                 <td><?= $usr->destination_name; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_descgood; ?></td>
+                                                <td><?= $usr->job_tujuan; ?></td>
+                                                <td><?= $usr->job_tujuanaddress; ?></td>
+                                                <!-- <td style="white-space:nowrap;"><?= $usr->job_descgood; ?></td>
                                                 <td><?= number_format($usr->job_qty, 0, ",", "."); ?></td>
                                                 <td><?= $usr->job_satuan; ?></td>
-                                                <td><?= number_format($usr->job_cbm, 3, ",", "."); ?></td>
+                                                <td><?= number_format($usr->job_cbm, 3, ",", "."); ?></td> -->
                                                 <td style="white-space:nowrap;"><?= $usr->service_name; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name2; ?></td>
                                                 <td><?= $usr->vessel_id; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->job_pickup; ?></td>
+                                                <td style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->job_pickupusername; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->supervisi_name; ?></td>
+                                                <td style="white-space:nowrap;">
+                                                    <button
+                                                        class="btn btn-primary btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#gambarModal"
+                                                        onclick="setGambar('<?= base_url('images/job_picture/' . $usr->job_picture); ?>')">
+                                                        Lihat Bukti
+                                                    </button>
+                                                </td>
+                                                <td style="white-space:nowrap;"><?= $usr->job_nopol; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->job_pengemudi; ?></td>
                                                 <?php if ($ppn == 0) { ?>
                                                     <td><?= $usr->vendor_name; ?></td>
                                                     <td><?= $usr->job_dooring; ?></td>
                                                 <?php } ?>
-                                                <td><?= number_format($usr->job_sell, 0, ",", "."); ?></td>
-                                                <td><?= number_format($usr->job_total, 0, ",", "."); ?></td>
-                                                <td><?= number_format($usr->job_cost, 0, ",", "."); ?></td>
-                                                <td><?= number_format($usr->job_refund, 0, ",", "."); ?></td>
-                                                <td><?= number_format($usr->job_fee, 0, ",", "."); ?></td>
-                                                <td><?= number_format($usr->job_profit, 0, ",", "."); ?></td>
-                                                <td><?= number_format($usr->job_gp, 0, ",", "."); ?></td>
+                                                <?php if ($posisi != "operasional") { ?>
+                                                    <!-- <td><?= number_format($usr->job_sell, 0, ",", "."); ?></td> -->
+                                                    <td><?= number_format($usr->job_total, 0, ",", "."); ?></td>
+                                                    <td><?= number_format($usr->job_cost, 0, ",", "."); ?></td>
+                                                    <td><?= number_format($usr->job_refund, 0, ",", "."); ?></td>
+                                                    <td><?= number_format($usr->job_fee, 0, ",", "."); ?></td>
+                                                    <td><?= number_format($usr->job_profit, 0, ",", "."); ?></td>
+                                                    <td><?= number_format($usr->job_gp, 0, ",", "."); ?></td>
+                                                <?php } ?>
                                                 <?php if ($ppn == 1) { ?>
                                                     <td><?= $usr->job_paynom; ?> <?= $usr->job_payunit; ?></td>
                                                     <td><?= $usr->job_taxno; ?></td>
@@ -755,6 +1054,33 @@
                                     <?php } ?>
                                 </tbody>
                             </table>
+                            <!-- Modal Bootstrap -->
+                            <div class="modal fade" id="gambarModal" tabindex="-1" aria-labelledby="gambarModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content bg-dark">
+                                        <div class="modal-header border-0">
+                                            <h5 class="modal-title text-white" id="gambarModalLabel">Bukti Gambar</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <img id="modalGambarSrc" src="" alt="Gambar Bukti" class="img-fluid rounded" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                                function setGambar(src) {
+                                    document.getElementById('modalGambarSrc').src = src;
+
+                                    // Panggil modal secara manual via Bootstrap JS
+                                    const modalElement = document.getElementById('gambarModal');
+                                    const modal = new bootstrap.Modal(modalElement);
+                                    modal.show();
+                                }
+                            </script>
+
+
                         </div>
                     <?php } ?>
                 </div>

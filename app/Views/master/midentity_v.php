@@ -50,9 +50,30 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label col-sm-2" for="identity_address">Alamat:</label>
+                                    <label class="control-label col-sm-2" for="identity_address">Head Office:</label>
                                     <div class="col-sm-10">
                                         <input type="text"  class="form-control" id="identity_address" name="identity_address" placeholder="" value="<?= $identity_address; ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="identity_branch">Branch Office:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text"  class="form-control" id="identity_branch" name="identity_branch" placeholder="" value="<?= $identity_branch; ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="identity_email">Email:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text"  class="form-control" id="identity_email" name="identity_email" placeholder="" value="<?= $identity_email; ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="identity_website">Website:</label>
+                                    <div class="col-sm-10">
+                                        <input type="text"  class="form-control" id="identity_website" name="identity_website" placeholder="" value="<?= $identity_website; ?>">
                                     </div>
                                 </div>
 
@@ -154,6 +175,36 @@
                                             }
 
                                             $("#identity_quotationsign").change(function() {
+                                                readURL(this);
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="identity_stempelsj">Stempel SJ: (Max 134 X 134)</label>
+                                    <div class="col-sm-12">
+                                        <input type="file"  class="form-control" id="identity_stempelsj" name="identity_stempelsj" placeholder="" value="<?= $identity_stempelsj; ?>">
+                                        <?php if ($identity_stempelsj != "") {
+                                            $user_image = "images/identity_stempelsj/" . $identity_stempelsj;
+                                        } else {
+                                            $user_image = "images/identity_stempelsj/no_image.png";
+                                        } ?>
+                                        <img id="identity_stempelsj_image" width="100" height="100" src="<?= base_url($user_image); ?>" />
+                                        <script>
+                                            function readURL(input) {
+                                                if (input.files && input.files[0]) {
+                                                    var reader = new FileReader();
+
+                                                    reader.onload = function(e) {
+                                                        $('#identity_stempelsj_image').attr('src', e.target.result);
+                                                    }
+
+                                                    reader.readAsDataURL(input.files[0]);
+                                                }
+                                            }
+
+                                            $("#identity_stempelsj").change(function() {
                                                 readURL(this);
                                             });
                                         </script>

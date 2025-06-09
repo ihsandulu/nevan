@@ -349,7 +349,7 @@
                     )
                 ) { ?>
                     <li class="nav-label">Transaksi</li>
-
+                    <li class="nav-label">Sales</li>
                     <?php
                     if (
                         (
@@ -398,12 +398,12 @@
                             )
                         ) ||
                         (
-                            isset(session()->get("halaman")['102']['act_read'])
-                            && session()->get("halaman")['102']['act_read'] == "1"
+                            isset(session()->get("halaman")['116']['act_read'])
+                            && session()->get("halaman")['116']['act_read'] == "1"
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'job' ? 'active' : ''; ?>" href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Job</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'jobsales' ? 'active' : ''; ?>" href="<?= base_url("jobsales"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Leads Job</span></a>
                         </li>
                     <?php } ?>
 
@@ -482,6 +482,66 @@
                             <a class="<?= current_url(true)->getSegment(1) == ('inv'||'invd') ? 'active' : ''; ?>" href="<?= base_url("inv"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Invoice</span></a>
                         </li>
                     <?php } ?>
+
+                    <li class="nav-label">Operasional</li>
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['115']['act_read'])
+                            && session()->get("halaman")['115']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'joboperasional' ? 'active' : ''; ?>" href="<?= base_url("joboperasional"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Edit Qty/CBM</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <!-- <li class="nav-label">Purchasing</li>
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['102']['act_read'])
+                            && session()->get("halaman")['102']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'job' ? 'active' : ''; ?>" href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Job</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <li class="nav-label">Finance</li>
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['102']['act_read'])
+                            && session()->get("halaman")['102']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'job' ? 'active' : ''; ?>" href="<?= base_url("job"); ?>" aria-expanded="false"><i class="fa fa-users"></i><span class="hide-menu">Job</span></a>
+                        </li>
+                    <?php } ?> -->
 
 
 

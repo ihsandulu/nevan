@@ -14,7 +14,11 @@ class job_m extends core_m
         if ($this->request->getVar("job_id")) {
             $jobd["job_id"] = $this->request->getVar("job_id");
         } else {
-            $jobd["job_id"] = -1;
+            if ($this->request->getVar("temp")) {
+                $jobd["job_temp"] = $this->request->getVar("temp");
+            } else {
+                $jobd["job_id"] = -1;
+            }
         }
         $us = $this->db
             ->table("job")
@@ -74,6 +78,51 @@ class job_m extends core_m
                 ->delete(array("job_id" =>  $job_id));
             $data["message"] = "Delete Success";
         }
+
+        //upload image quotation
+        $data['uploadjob_picture'] = "";
+        if (isset($_FILES['job_picture']) && $_FILES['job_picture']['name'] != "") {
+            // $request = \Config\Services::request();
+            $file = $this->request->getFile('job_picture');
+            $name = $file->getName(); // Mengetahui Nama File
+            $originalName = $file->getClientName(); // Mengetahui Nama Asli
+            $tempfile = $file->getTempName(); // Mengetahui Nama TMP File name
+            $ext = $file->getClientExtension(); // Mengetahui extensi File
+            $type = $file->getClientMimeType(); // Mengetahui Mime File
+            $size_kb = $file->getSize('kb'); // Mengetahui Ukuran File dalam kb
+            $size_mb = $file->getSize('mb'); // Mengetahui Ukuran File dalam mb
+
+
+            //$namabaru = $file->getRandomName();//define nama fiel yang baru secara acak
+
+            if ($type == 'image/jpg'||$type == 'image/jpeg'||$type == 'image/png') //cek mime file
+            {    // File Tipe Sesuai   
+                helper('filesystem'); // Load Helper File System
+                $direktori = 'images/job_picture'; //definisikan direktori upload            
+                $job_picture = str_replace(' ', '_', $name);
+                $job_picture = date("H_i_s_") . $job_picture; //definisikan nama fiel yang baru
+                $map = directory_map($direktori, FALSE, TRUE); // List direktori
+
+                //Cek File apakah ada 
+                foreach ($map as $key) {
+                    if ($key == $job_picture) {
+                        delete_files($direktori, $job_picture); //Hapus terlebih dahulu jika file ada
+                    }
+                }
+                //Metode Upload Pilih salah satu
+                //$path = $this->request->getFile('uploadedFile')->identity($direktori, $namabaru);
+                //$file->move($direktori, $namabaru)
+                if ($file->move($direktori, $job_picture)) {
+                    $data['uploadjob_picture'] = "Upload Success !";
+                    $input['job_picture'] = $job_picture;
+                } else {
+                    $data['uploadjob_picture'] = "Upload Gagal !";
+                }
+            } else {
+                // File Tipe Tidak Sesuai
+                $data['uploadjob_picture'] = "Format File Salah !";
+            }
+        } 
 
         //insert
         if ($this->request->getPost("create") == "OK") {
