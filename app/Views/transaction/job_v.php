@@ -163,30 +163,8 @@
                                         </div>
                                     </div>
                                 <?php } ?>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="job_pickupaddress">PICKUP ADDRESS:</label>
-                                    <div class="col-sm-12">
-                                        <input type="TEXT" autofocus class="form-control" id="job_pickupaddress" name="job_pickupaddress" placeholder="" value="<?= $job_pickupaddress; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="job_tujuan">Nama Tujuan:</label>
-                                    <div class="col-sm-12">
-                                        <input type="TEXT" autofocus class="form-control" id="job_tujuan" name="job_tujuan" placeholder="" value="<?= $job_tujuan; ?>">
-                                    </div>
-                                </div>
-                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="job_tujuanphone">Telpon Tujuan:</label>
-                                    <div class="col-sm-12">
-                                        <input type="TEXT" autofocus class="form-control" id="job_tujuanphone" name="job_tujuanphone" placeholder="" value="<?= $job_tujuanphone; ?>">
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="job_tujuanaddress">Alamat Tujuan:</label>
-                                    <div class="col-sm-12">
-                                        <input type="TEXT" autofocus class="form-control" id="job_tujuanaddress" name="job_tujuanaddress" placeholder="" value="<?= $job_tujuanaddress; ?>">
-                                    </div>
-                                </div>
+
+
 
                                 <?php if ($ppn != 2) { ?>
                                     <?php if ($posisi != "operasional") { ?>
@@ -266,7 +244,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_handover">Hand Over:</label>
+                                        <label class="control-label col-sm-12" for="job_handover">Hand Over / Yang Menyerahkan Barang:</label>
                                         <div class="col-sm-12">
                                             <input type="text" class="form-control" id="job_handover" name="job_handover" placeholder="Penyerah Barang" value="<?= $job_handover; ?>">
                                         </div>
@@ -530,6 +508,45 @@
                                     <label class="control-label col-sm-12" for="job_explanation">EXPLANATION:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="job_explanation" name="job_explanation" placeholder="" value="<?= $job_explanation; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 label label-success">
+                                    <h2 class="text-white">Surat Jalan</h2>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_pickupaddress">PICKUP ADDRESS:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" autofocus class="form-control" id="job_pickupaddress" name="job_pickupaddress" placeholder="" value="<?= $job_pickupaddress; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_kepada">Kepada (di SJ):</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" autofocus class="form-control" id="job_kepada" name="job_kepada" placeholder="" value="<?= $job_kepada; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_kepadaaddress">Alamat Kepada (di SJ):</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" autofocus class="form-control" id="job_kepadaaddress" name="job_kepadaaddress" placeholder="" value="<?= $job_kepadaaddress; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_tujuan">Nama Tujuan:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" autofocus class="form-control" id="job_tujuan" name="job_tujuan" placeholder="" value="<?= $job_tujuan; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_tujuanphone">Telpon Tujuan:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" autofocus class="form-control" id="job_tujuanphone" name="job_tujuanphone" placeholder="" value="<?= $job_tujuanphone; ?>">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="job_tujuanaddress">Alamat Tujuan:</label>
+                                    <div class="col-sm-12">
+                                        <input type="text" autofocus class="form-control" id="job_tujuanaddress" name="job_tujuanaddress" placeholder="" value="<?= $job_tujuanaddress; ?>">
                                     </div>
                                 </div>
                                 <?php if ($posisi == "operasional") { ?>
@@ -806,6 +823,8 @@
                                             <th>Pickup Status</th>
                                             <th>Petugas</th>
                                             <th>Penyerah</th>
+                                            <th>Kepada (SJ)</th>
+                                            <th>Alamat Kepada</th>
                                             <th>Supervisi</th>
                                             <th>Bukti</th>
                                             <th>Nopol</th>
@@ -962,7 +981,7 @@
                                                             <input type="hidden" name="url" value="<?= $url; ?>" />
                                                         </form>
                                                     <?php } ?>
-                                                    
+
                                                     <?php
                                                     if (
                                                         (
@@ -1013,6 +1032,8 @@
                                                 <td style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->job_pickupusername; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->job_kepada; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->job_kepadaaddress; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->supervisi_name; ?></td>
                                                 <td style="white-space:nowrap;">
                                                     <button
