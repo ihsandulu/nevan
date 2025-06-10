@@ -53,6 +53,8 @@ class job_m extends core_m
         if (isset($_GET["temp"])) {
             $data["job_temp"] = $_GET["temp"];
         }
+        
+        //total cost
         $us = $this->db
             ->table("cost")
             ->where("job_temp", $data["job_temp"])
@@ -66,8 +68,23 @@ class job_m extends core_m
         } else {
             $job_cost = 0;
         }
-
         $data["job_cost"] = $job_cost;
+
+        //total description of goods
+        $goods = $this->db
+            ->table("jobd")
+            ->where("job_temp", $data["job_temp"])
+            ->get();
+        // echo $this->db->getLastQuery();die;
+        $job_total = 0;
+        if ($goods->getNumRows() > 0) {
+            foreach ($goods->getResult() as $jobds) {
+                $job_total += $jobds->jobd_total;
+            }
+        } else {
+            $job_total = 0;
+        }
+        $data["job_total"] = $job_total;
 
 
         //delete

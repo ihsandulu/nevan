@@ -63,13 +63,30 @@ class job extends BaseController
         return view('transaction/job_v', $data);
     }
 
+    public function purchasing()
+    {
+        $data = new \App\Models\transaction\job_m();
+        $data = $data->data();
+        $data["ppn"] = 0;
+        $data["posisi"] = "purchasing";
+        $data["url"] = "jobpurchasing";
+        if (isset($_GET["report"])) {
+            $data["title"] = "Sales Report";
+        } else {
+            $data["title"] = "Job";
+        }
+
+        return view('transaction/job_v', $data);
+    }
+
+
     public function finance()
     {
         $data = new \App\Models\transaction\job_m();
         $data = $data->data();
         $data["ppn"] = 0;
         $data["posisi"] = "finance";
-        $data["url"] = "job";
+        $data["url"] = "jobfinance";
         if (isset($_GET["report"])) {
             $data["title"] = "Sales Report";
         } else {

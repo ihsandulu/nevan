@@ -300,7 +300,7 @@
                                                         )
                                                     ) { ?>
                                                         <form method="post" class="btn-action" style="">
-                                                            <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                            <button title="Delete" data-bs-toggle="tooltip" class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                             <input type="hidden" name="quotation_id" value="<?= $usr->quotation_id; ?>" />
                                                         </form>
                                                     <?php } ?>
@@ -319,7 +319,7 @@
                                                         )
                                                     ) { ?>
                                                         <form method="post" class="btn-action" style="">
-                                                            <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                            <button title="Edit" data-bs-toggle="tooltip" class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
                                                             <input type="hidden" name="quotation_id" value="<?= $usr->quotation_id; ?>" />
                                                         </form>
                                                     <?php } ?>
@@ -339,7 +339,7 @@
                                                         )
                                                     ) { ?>
                                                         <form method="get" target="_self" action="<?= base_url("quotationd"); ?>" class="btn-action" style="">
-                                                            <button title="Detail" class="btn btn-sm btn-primary" name="detail" value="OK"><span class="fa fa-cubes" style="color:white;"></span> </button>
+                                                            <button title="Detail" data-bs-toggle="tooltip" class="btn btn-sm btn-primary" name="detail" value="OK"><span class="fa fa-cubes" style="color:white;"></span> </button>
                                                             <input type="hidden" name="quotation_id" value="<?= $usr->quotation_id; ?>" />
                                                         </form>
                                                     <?php } ?>
@@ -358,7 +358,7 @@
                                                         )
                                                     ) { ?>
                                                         <form method="get" target="_blank" action="<?= base_url("quotationprint"); ?>" class="btn-action" style="">
-                                                            <button class="btn btn-sm btn-success" name="print" value="OK"><span class="fa fa-print" style="color:white;"></span> </button>
+                                                            <button title="Print Quotation" data-bs-toggle="tooltip" class="btn btn-sm btn-success" name="print" value="OK"><span class="fa fa-print" style="color:white;"></span> </button>
                                                             <input type="hidden" name="quotation_id" value="<?= $usr->quotation_id; ?>" />
                                                         </form>
                                                     <?php } ?>

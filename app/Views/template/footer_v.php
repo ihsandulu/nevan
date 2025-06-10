@@ -209,6 +209,14 @@
     });
 </script>
 
+<script>
+    // Aktifkan semua tooltip di halaman
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+</script>
+
 
 
 <script src="js/lib/datatables/datatables.min.js"></script>
@@ -228,14 +236,16 @@
 <script src="js/lib/toastr/toastr.init.js"></script>
 
 <script>
-$(document).ready(function () {
-    var activeLink = $('.scroll-sidebar a.active');
-    if (activeLink.length) {
-        var container = $('.scroll-sidebar');
-        var scrollPosition = activeLink.offset().top - container.offset().top + container.scrollTop() - 100;
-        container.animate({ scrollTop: scrollPosition }, 500);
-    }
-});
+    $(document).ready(function() {
+        var activeLink = $('.scroll-sidebar a.active');
+        if (activeLink.length) {
+            var container = $('.scroll-sidebar');
+            var scrollPosition = activeLink.offset().top - container.offset().top + container.scrollTop() - 100;
+            container.animate({
+                scrollTop: scrollPosition
+            }, 500);
+        }
+    });
 </script>
 
 

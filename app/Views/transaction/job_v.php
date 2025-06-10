@@ -104,7 +104,74 @@
                                 <h3><?= $judul; ?></h3>
                             </div>
                             <form class="form-horizontal row" method="post" enctype="multipart/form-data" action="<?= base_url($url); ?>">
+                                <?php if ($posisi != "operasional") { ?>
+                                    <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_sell">SELL RPRICE:</label>
+                                            <div class="col-sm-12">
+                                                <input onchange="totalsell()" type="text" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
+                                            </div>
+                                        </div> -->
+                                    <?php if ($posisi == "sales" || $posisi == "finance") { ?>
+                                        <?php //if ($job_cost > 0) { 
+                                        ?>
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="">Cost:</label>
+                                            <div class="col-sm-12">
+                                                <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp . "&url=" . $url); ?>" class="btn btn-warning">Cost List</a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_cost">Cost:</label>
+                                            <div class="col-sm-12">
+                                                <input readonly onchange="profit()" type="text" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
+                                            </div>
+                                        </div>
+                                        <?php //} 
+                                        ?>
 
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="">Description of Goods:</label>
+                                            <div class="col-sm-12">
+                                                <a target="_self" href="<?= base_url("jobd?t=ec&temp=" . $job_temp . "&url=" . $url); ?>" class="btn btn-success">Description of Goods List</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                            <label class="control-label col-sm-12" for="job_total">TOTAL PRICE:</label>
+                                            <div class="col-sm-12">
+                                                <input readonly onchange="profit(); " type="text" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
+                                            </div>
+                                        </div>
+
+
+                                        <?php if ($job_total > 0) { ?>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_refund">REFUND:</label>
+                                                <div class="col-sm-12">
+                                                    <input onchange="profit()" type="text" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_profit">PROFIT:</label>
+                                                <div class="col-sm-12">
+                                                    <input onchange="fee()" type="text" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_fee"> MARKET FEE 15%:</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="job_fee" name="job_fee" placeholder="" value="<?= $job_fee; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                                <label class="control-label col-sm-12" for="job_gp">GP %:</label>
+                                                <div class="col-sm-12">
+                                                    <input type="text" class="form-control" id="job_gp" name="job_gp" placeholder="" value="<?= $job_gp; ?>">
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                <?php } ?>
                                 <?php if ($posisi != "operasional") { ?>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_sales">Marketer Name:</label>
@@ -388,60 +455,7 @@
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if ($posisi != "operasional") { ?>
-                                        <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                            <label class="control-label col-sm-12" for="job_sell">SELL RPRICE:</label>
-                                            <div class="col-sm-12">
-                                                <input onchange="totalsell()" type="text" class="form-control" id="job_sell" name="job_sell" placeholder="" value="<?= $job_sell; ?>">
-                                            </div>
-                                        </div> -->
-                                        <?php if ($posisi != "sales") { ?>
-                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                                <label class="control-label col-sm-12" for="job_total">TOTAL PRICE:</label>
-                                                <div class="col-sm-12">
-                                                    <input onchange="profit(); " type="text" class="form-control" id="job_total" name="job_total" placeholder="" value="<?= $job_total; ?>">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
-                                        <?php if ($job_cost > 0) { ?>
-                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                                <label class="control-label col-sm-12" for="job_total">Cost:</label>
-                                                <div class="col-sm-12">
-                                                    <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp . "&url=" . $url); ?>" class="btn btn-warning">Cost List</a>
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                                <label class="control-label col-sm-12" for="job_cost">Cost:</label>
-                                                <div class="col-sm-12">
-                                                    <input readonly onchange="profit()" type="text" class="form-control" id="job_cost" name="job_cost" placeholder="" value="<?= $job_cost; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                                <label class="control-label col-sm-12" for="job_refund">REFUND:</label>
-                                                <div class="col-sm-12">
-                                                    <input onchange="profit()" type="text" class="form-control" id="job_refund" name="job_refund" placeholder="" value="<?= $job_refund; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                                <label class="control-label col-sm-12" for="job_profit">PROFIT:</label>
-                                                <div class="col-sm-12">
-                                                    <input onchange="fee()" type="text" class="form-control" id="job_profit" name="job_profit" placeholder="" value="<?= $job_profit; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                                <label class="control-label col-sm-12" for="job_fee"> MARKET FEE 15%:</label>
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="job_fee" name="job_fee" placeholder="" value="<?= $job_fee; ?>">
-                                                </div>
-                                            </div>
-                                            <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                                <label class="control-label col-sm-12" for="job_gp">GP %:</label>
-                                                <div class="col-sm-12">
-                                                    <input type="text" class="form-control" id="job_gp" name="job_gp" placeholder="" value="<?= $job_gp; ?>">
-                                                </div>
-                                            </div>
-                                        <?php } ?>
-                                    <?php } ?>
+
                                     <?php if ($ppn == 0) { ?>
                                         <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">&nbsp;
                                         </div> -->
@@ -549,7 +563,7 @@
                                         <input type="text" autofocus class="form-control" id="job_tujuanaddress" name="job_tujuanaddress" placeholder="" value="<?= $job_tujuanaddress; ?>">
                                     </div>
                                 </div>
-                                <?php if ($posisi == "operasional") { ?>
+                                <?php if ($posisi == "operasional" && $posisi == "finance") { ?>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_pengemudi">Pengemudi:</label>
                                         <div class="col-sm-12">
@@ -728,6 +742,9 @@
                                         let fee = parseInt(job_profit) * 15 / 100;
                                         $("#job_fee").val(fee);
                                     }
+                                    $(document).ready(function() {
+                                        profit();
+                                    });
                                 </script>
 
                                 <input type="hidden" name="job_ppntype" value="<?= $ppn; ?>" />
@@ -897,44 +914,48 @@
                                                 <td style="padding-left:0px; padding-right:0px;">
 
                                                     <?php
-                                                    if (
-                                                        (
-                                                            isset(session()->get("position_administrator")[0][0])
-                                                            && (
-                                                                session()->get("position_administrator") == "1"
-                                                                || session()->get("position_administrator") == "2"
+                                                    if ($posisi != "purchasing" && $posisi != "operasional") {
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['49']['act_delete'])
+                                                                && session()->get("halaman")['49']['act_delete'] == "1"
                                                             )
-                                                        ) ||
-                                                        (
-                                                            isset(session()->get("halaman")['49']['act_delete'])
-                                                            && session()->get("halaman")['49']['act_delete'] == "1"
-                                                        )
-                                                    ) { ?>
-                                                        <form method="post" class="btn-action" style="">
-                                                            <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                            <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
-                                                        </form>
-                                                    <?php } ?>
+                                                        ) { ?>
+                                                            <form method="post" class="btn-action" style="">
+                                                                <button title="Delete" data-bs-toggle="tooltip" class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                            </form>
+                                                    <?php }
+                                                    } ?>
 
                                                     <?php
-                                                    if (
-                                                        (
-                                                            isset(session()->get("position_administrator")[0][0])
-                                                            && (
-                                                                session()->get("position_administrator") == "1"
-                                                                || session()->get("position_administrator") == "2"
+                                                    if ($posisi != "purchasing") {
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['49']['act_update'])
+                                                                && session()->get("halaman")['49']['act_update'] == "1"
                                                             )
-                                                        ) ||
-                                                        (
-                                                            isset(session()->get("halaman")['49']['act_update'])
-                                                            && session()->get("halaman")['49']['act_update'] == "1"
-                                                        )
-                                                    ) { ?>
-                                                        <form method="post" class="btn-action" style="">
-                                                            <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                            <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
-                                                        </form>
-                                                    <?php } ?>
+                                                        ) { ?>
+                                                            <form method="post" class="btn-action" style="">
+                                                                <button title="Edit" data-bs-toggle="tooltip" class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                            </form>
+                                                    <?php }
+                                                    } ?>
 
                                                     <?php
                                                     if (
@@ -951,7 +972,7 @@
                                                         )
                                                     ) { ?>
                                                         <form method="get" class="btn-action" style="" action="<?= base_url("jobd"); ?>">
-                                                            <button title="Details" class="btn btn-sm btn-secondary " name="jobd" value="OK"><span class="fa fa-cubes" style=""></span> </button>
+                                                            <button title="Details" data-bs-toggle="tooltip" class="btn btn-sm btn-secondary " name="jobd" value="OK"><span class="fa fa-cubes" style=""></span> </button>
                                                             <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                             <input type="hidden" name="t" value="jc" />
                                                             <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
@@ -974,7 +995,7 @@
                                                         )
                                                     ) { ?>
                                                         <form method="get" class="btn-action" style="" action="<?= base_url("cost"); ?>">
-                                                            <button title="Costing" class="btn btn-sm btn-info " name="cost" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
+                                                            <button title="Costing" data-bs-toggle="tooltip" class="btn btn-sm btn-info " name="cost" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
                                                             <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                             <input type="hidden" name="t" value="jc" />
                                                             <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
@@ -983,27 +1004,29 @@
                                                     <?php } ?>
 
                                                     <?php
-                                                    if (
-                                                        (
-                                                            isset(session()->get("position_administrator")[0][0])
-                                                            && (
-                                                                session()->get("position_administrator") == "1"
-                                                                || session()->get("position_administrator") == "2"
+                                                    if ($posisi == "operasional" || $posisi == "finance") {
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['49']['act_update'])
+                                                                && session()->get("halaman")['49']['act_update'] == "1"
                                                             )
-                                                        ) ||
-                                                        (
-                                                            isset(session()->get("halaman")['49']['act_update'])
-                                                            && session()->get("halaman")['49']['act_update'] == "1"
-                                                        )
-                                                    ) { ?>
-                                                        <form target="_blank" method="get" class="btn-action" style="" action="<?= base_url("sjprint"); ?>">
-                                                            <button title="Surat Jalan" class="btn btn-sm btn-primary" name="sj" value="OK"><span class="fa fa-address-card-o" style="color:white;"></span> </button>
-                                                            <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
-                                                            <input type="hidden" name="t" value="jc" />
-                                                            <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
-                                                            <input type="hidden" name="url" value="<?= $url; ?>" />
-                                                        </form>
-                                                    <?php } ?>
+                                                        ) { ?>
+                                                            <form target="_blank" method="get" class="btn-action" style="" action="<?= base_url("sjprint"); ?>">
+                                                                <button title="Surat Jalan" data-bs-toggle="tooltip" class="btn btn-sm btn-primary" name="sj" value="OK"><span class="fa fa-address-card-o" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                                <input type="hidden" name="t" value="jc" />
+                                                                <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
+                                                                <input type="hidden" name="url" value="<?= $url; ?>" />
+                                                            </form>
+                                                    <?php }
+                                                    } ?>
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
@@ -1026,7 +1049,7 @@
                                                 <td><?= number_format($usr->job_cbm, 3, ",", "."); ?></td> -->
                                                 <td style="white-space:nowrap;"><?= $usr->service_name; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name2; ?></td>
-                                                <td><?= $usr->vessel_id; ?></td>
+                                                <td style="white-space:nowrap;"><?= $usr->vessel_name; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td>
                                                 <td style="white-space:nowrap;"><?= $usr->job_pickup; ?></td>
                                                 <td style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>

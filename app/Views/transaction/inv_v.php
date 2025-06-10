@@ -184,7 +184,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     )
                                                 ) { ?>
                                                     <form target="_self" method="get" class="btn-action" style="" action="<?= base_url("invd"); ?>">
-                                                        <button class="btn btn-sm btn-warning " name="editinv" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                        <button title="Edit" data-bs-toggle="tooltip" class="btn btn-sm btn-warning " name="editinv" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
                                                         <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
                                                         <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
                                                     </form>
@@ -205,7 +205,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     )
                                                 ) { ?>
                                                     <form method="post" class="btn-action" style="">
-                                                        <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                        <button title="Delete" data-bs-toggle="tooltip" class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                         <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
                                                     </form>
                                                 <?php } ?>
@@ -225,7 +225,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     )
                                                 ) { ?>
                                                     <form method="get" class="btn-action" style="" action="<?= base_url("invpayment"); ?>">
-                                                        <button class="btn btn-sm btn-success" name="payment" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
+                                                        <button title="Pembayaran" data-bs-toggle="tooltip" class="btn btn-sm btn-success" name="payment" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
                                                         <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
                                                         <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
                                                         <input type="hidden" name="customer_id" value="<?= $usr->customer_id; ?>" />
@@ -233,7 +233,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     </form>
                                                 <?php } ?>
                                                 <form method="get" target="_blank" class="btn-action" style="" action="<?= base_url("invprint"); ?>">
-                                                    <button class="btn btn-sm btn-warning" name="print" value="OK"><span class="fa fa-print" style="color:white;"></span> </button>
+                                                    <button title="Print Invoice" data-bs-toggle="tooltip" class="btn btn-sm btn-warning" name="print" value="OK"><span class="fa fa-print" style="color:white;"></span> </button>
                                                     <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
                                                     <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
                                                     <input type="hidden" name="customer_id" value="<?= $usr->customer_id; ?>" />
