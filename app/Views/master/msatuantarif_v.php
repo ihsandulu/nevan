@@ -94,7 +94,7 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
-                                        <th>Satuan Tarif</th>
+                                        <th>Satuan Tarif / Weight</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -165,7 +165,7 @@
 </div>
 <script>
     $('.select').select2();
-    var title = "Master Satuan Tarif";
+    var title = "Master Satuan Tarif / Weight";
     $("title").text(title);
     $(".card-title").text(title);
     $("#page-title").text(title);
