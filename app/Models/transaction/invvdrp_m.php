@@ -4,80 +4,80 @@ namespace App\Models\transaction;
 
 use App\Models\core_m;
 
-class invpayment_m extends core_m
+class invvdrp_m extends core_m
 {
     public function data()
     {
         $data = array();
         $data["message"] = "";
-        //cek invpayment
-        if ($this->request->getVar("inv_id")) {
-            $invpaymentd["inv_id"] = $this->request->getVar("inv_id");
+        //cek invvdrp
+        if ($this->request->getVar("invvdr_id")) {
+            $invvdrpd["invvdr_id"] = $this->request->getVar("invvdr_id");
         } else {
-            $invpaymentd["inv_id"] = -1;
+            $invvdrpd["invvdr_id"] = -1;
         }
         $us = $this->db
-            ->table("inv")
-            ->getWhere($invpaymentd);
+            ->table("invvdr")
+            ->getWhere($invvdrpd);
         /* echo $this->db->getLastquery();
         die; */
-        $larang = array("log_id", "id", "user_id", "action", "data", "invpayment_id_dep", "trx_id", "trx_code");
+        $larang = array("log_id", "id", "user_id", "action", "data", "invvdrp_id_dep", "trx_id", "trx_code");
         if ($us->getNumRows() > 0) {
-            foreach ($us->getResult() as $inv) {
-                foreach ($this->db->getFieldNames('inv') as $field) {
+            foreach ($us->getResult() as $invvdr) {
+                foreach ($this->db->getFieldNames('invvdr') as $field) {
                     if (!in_array($field, $larang)) {
-                        $data[$field] = $inv->$field;
+                        $data[$field] = $invvdr->$field;
                     }
                 }
             }
         } else {
-            foreach ($this->db->getFieldNames('inv') as $field) {
+            foreach ($this->db->getFieldNames('invvdr') as $field) {
                 $data[$field] = "";
             }
         }
-        $data["inv_no"] = $this->request->getGet("inv_no");
-        $data["inv_id"] = $this->request->getGet("inv_id");
-        $data["customer_name"] = $this->request->getGet("customer_name");
-        $data["customer_id"] = $this->request->getGet("customer_id");
+        $data["invvdr_no"] = $this->request->getGet("invvdr_no");
+        $data["invvdr_id"] = $this->request->getGet("invvdr_id");
+        $data["vendor_name"] = $this->request->getGet("vendor_name");
+        $data["vendor_id"] = $this->request->getGet("vendor_id");
 
 
 
         //delete
         if ($this->request->getPost("delete") == "OK") {
-            $invpayment_id =   $this->request->getPost("invpayment_id");
+            $invvdrp_id =   $this->request->getPost("invvdrp_id");
 
-            //delete invpayment
+            //delete invvdrp
             $this->db
-                ->table("invpayment")
-                ->delete(array("invpayment_id" =>  $invpayment_id));
+                ->table("invvdrp")
+                ->delete(array("invvdrp_id" =>  $invvdrp_id));
 
 
-            // Hitung total pembayaran dari invpayment
-            $inv_no = $this->request->getGet("inv_no");
-            $invpayment_total = $this->db
-                ->table("invpayment")
-                ->select("SUM(invpayment_total) AS inv_payment")
-                ->where("inv_no", $inv_no)
+            // Hitung total pembayaran dari invvdrp
+            $invvdr_no = $this->request->getGet("invvdr_no");
+            $invvdrp_nominal = $this->db
+                ->table("invvdrp")
+                ->select("SUM(invvdrp_nominal) AS invvdr_payment")
+                ->where("invvdr_no", $invvdr_no)
                 ->get()
                 ->getRow();
 
             // Pastikan hasil tidak null
-            $inv_payment = $invpayment_total ? $invpayment_total->inv_payment : 0;
+            $invvdr_payment = $invvdrp_nominal ? $invvdrp_nominal->invvdr_payment : 0;
 
             // Siapkan data update
             $inputi = [
-                "inv_payment" => $inv_payment
+                "invvdr_payment" => $invvdr_payment
             ];
 
-            // Lakukan update pada tabel inv
+            // Lakukan update pada tabel invvdr
             $this->db
-                ->table("inv")
-                ->where("inv_no", $inv_no)
+                ->table("invvdr")
+                ->where("invvdr_no", $invvdr_no)
                 ->update($inputi);
 
             //delete kas
             $kas = $this->db->table('kas')
-                ->where("invpayment_id", $invpayment_id)
+                ->where("invvdrp_id", $invvdrp_id)
                 ->get();
             if ($kas->getNumRows() > 0) {
                 foreach ($kas->getResult() as $kas) {
@@ -134,52 +134,52 @@ class invpayment_m extends core_m
         //insert
         if ($this->request->getPost("create") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'create' && $e != 'invpayment_id') {
+                if ($e != 'create' && $e != 'invvdrp_id') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
             // dd($input);
-            $this->db->table('invpayment')->insert($input);
+            $this->db->table('invvdrp')->insert($input);
             /* echo $this->db->getLastQuery();
             die; */
-            $invpayment_id = $this->db->insertID();
+            $invvdrp_id = $this->db->insertID();
 
 
-            // Hitung total pembayaran dari invpayment
-            $inv_no = $this->request->getGet("inv_no");
-            $invpaymenttotal = $this->db
-                ->table("invpayment")
-                ->select("SUM(invpayment_total) AS invpaymenttotal")
-                ->where("inv_no", $inv_no)
+            // Hitung total pembayaran dari invvdrp
+            $invvdr_no = $this->request->getGet("invvdr_no");
+            $invvdrptotal = $this->db
+                ->table("invvdrp")
+                ->select("SUM(invvdrp_nominal) AS invvdrptotal")
+                ->where("invvdr_no", $invvdr_no)
                 ->get()
                 ->getRow();
 
             // Pastikan hasil tidak null
-            $inv_payment = $invpaymenttotal ? $invpaymenttotal->invpaymenttotal : 0;
+            $invvdr_payment = $invvdrptotal ? $invvdrptotal->invvdrptotal : 0;
 
             // Siapkan data update
             $inputi = [
-                "inv_payment" => $inv_payment
+                "invvdr_payment" => $invvdr_payment
             ];
 
-            // Lakukan update pada tabel inv
+            // Lakukan update pada tabel invvdr
             $this->db
-                ->table("inv")
-                ->where("inv_no", $inv_no)
+                ->table("invvdr")
+                ->where("invvdr_no", $invvdr_no)
                 ->update($inputi);
 
             //input kas
-            $invd = $this->db->table('invd')
-                ->where("inv_no", $inv_no)
+            $invvdrd = $this->db->table('invvdrd')
+                ->where("invvdr_no", $invvdr_no)
                 ->get();
             $jobdano      = array();
-            foreach ($invd->getResult() as $rinvd) {
-                if ($rinvd->job_dano !== '' && ! in_array($rinvd->job_dano, $jobdano)) {
-                    $jobdano[] = $rinvd->job_dano;
+            foreach ($invvdrd->getResult() as $rinvvdrd) {
+                if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
+                    $jobdano[] = $rinvvdrd->job_dano;
                 }
             }
             $jobdanos      = implode(', ', $jobdano);
-            if ($input["invpayment_to"] == "-1") {
+            if ($input["invvdrp_from"] == "-1") {
                 $kas_debettype = "pettycash";
             } else {
                 $kas_debettype = "bigcash";
@@ -189,34 +189,34 @@ class invpayment_m extends core_m
             $bigcash = 0;
             $pettycash = 0;
             foreach ($kas->getResult() as $kas) {
-                $saldo = $kas->kas_saldo + $input["invpayment_total"];
+                $saldo = $kas->kas_saldo - $input["invvdrp_nominal"];
                 if ($kas_debettype == "bigcash") {
-                    $bigcash = $kas->kas_bigcash + $input["invpayment_total"];
+                    $bigcash = $kas->kas_bigcash - $input["invvdrp_nominal"];
                     $pettycash = $kas->kas_pettycash;
                 }
                 if ($kas_debettype == "pettycash") {
-                    $pettycash = $kas->kas_pettycash + $input["invpayment_total"];
+                    $pettycash = $kas->kas_pettycash - $input["invvdrp_nominal"];
                     $bigcash = $kas->kas_bigcash;
                 }
             }
             $inputkas[] = array(
-                "kas_date" => $input["invpayment_date"],
+                "kas_date" => $input["invvdrp_date"],
                 "job_dano" => $jobdanos,
-                "kas_uraian" => $inv_no,
-                "kas_qty" => $input["invpayment_qty"],
-                "kas_nominal" => $input["invpayment_price"],
-                "kas_total" => $input["invpayment_total"],
-                "kas_rekdari" => $input["invpayment_from"],
-                "kas_rekke" => $input["invpayment_to"],
-                "kas_keterangan" => $input["invpayment_keterangan"],
-                "kas_type" => "Debet",
+                "kas_uraian" => $invvdr_no,
+                "kas_qty" => 1,
+                "kas_nominal" => $input["invvdrp_nominal"],
+                "kas_total" => $input["invvdrp_nominal"],
+                "kas_rekdari" => $input["invvdrp_from"],
+                "kas_rekke" => $input["invvdrp_to"],
+                "kas_keterangan" => $input["invvdrp_keterangan"],
+                "kas_type" => "Kredit",
                 "kas_debettype" => $kas_debettype,
                 "kas_saldo" => $saldo,
                 "kas_bigcash" => $bigcash,
                 "kas_pettycash" => $pettycash,
                 "vendor_id" => 0,
                 "kas_vendorsaldo" => 0,
-                "invpayment_id" => $invpayment_id,
+                "invvdrp_id" => $invvdrp_id,
             );
             $this->db->table('kas')->insertBatch($inputkas);
 
@@ -230,50 +230,50 @@ class invpayment_m extends core_m
         //update
         if ($this->request->getPost("change") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'change' && $e != 'invpayment_picture') {
+                if ($e != 'change' && $e != 'invvdrp_picture') {
                     $inputp[$e] = $this->request->getPost($e);
                 }
             }
 
-            if ($inputp["invpayment_to"] == "-1") {
+            if ($inputp["invvdrp_from"] == "-1") {
                 $kas_debettype = "pettycash";
             } else {
                 $kas_debettype = "bigcash";
             }
             $input["kas_debettype"]=$kas_debettype;
-            $input["kas_type"]="Debet";
-            $input["kas_total"]=$inputp["invpayment_total"];
+            $input["kas_type"]="Kredit";
+            $input["kas_total"]=$inputp["invvdrp_nominal"];
 
             // dd($inputp);
-            $invpayment_id = $this->request->getPost("invpayment_id");
-            $this->db->table('invpayment')->update($inputp, array("invpayment_id" => $invpayment_id));
+            $invvdrp_id = $this->request->getPost("invvdrp_id");
+            $this->db->table('invvdrp')->update($inputp, array("invvdrp_id" => $invvdrp_id));
 
-            // Hitung total pembayaran dari invpayment
-            $inv_no = $this->request->getGet("inv_no");
-            $invpaymenttotal = $this->db
-                ->table("invpayment")
-                ->select("SUM(invpayment_total) AS invpaymenttotal")
-                ->where("inv_no", $inv_no)
+            // Hitung total pembayaran dari invvdrp
+            $invvdr_no = $this->request->getGet("invvdr_no");
+            $invvdrptotal = $this->db
+                ->table("invvdrp")
+                ->select("SUM(invvdrp_nominal) AS invvdrptotal")
+                ->where("invvdr_no", $invvdr_no)
                 ->get()
                 ->getRow();
 
             // Pastikan hasil tidak null
-            $inv_payment = $invpaymenttotal ? $invpaymenttotal->invpaymenttotal : 0;
+            $invvdr_payment = $invvdrptotal ? $invvdrptotal->invvdrptotal : 0;
 
             // Siapkan data update
             $inputi = [
-                "inv_payment" => $inv_payment
+                "invvdr_payment" => $invvdr_payment
             ];
 
-            // Lakukan update pada tabel inv
+            // Lakukan update pada tabel invvdr
             $this->db
-                ->table("inv")
-                ->where("inv_no", $inv_no)
+                ->table("invvdr")
+                ->where("invvdr_no", $invvdr_no)
                 ->update($inputi);
 
             //input kas
             $kas = $this->db->table('kas')
-                ->where("invpayment_id", $invpayment_id)
+                ->where("invvdrp_id", $invvdrp_id)
                 ->get();
 
             $saldo = 0;

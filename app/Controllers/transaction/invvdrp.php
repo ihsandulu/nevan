@@ -5,7 +5,7 @@ namespace App\Controllers\transaction;
 
 use App\Controllers\BaseController;
 
-class invd extends BaseController
+class invvdrp extends BaseController
 {
 
     protected $sesi_user;
@@ -18,9 +18,9 @@ class invd extends BaseController
 
     public function index()
     {
-        $data = new \App\Models\transaction\invd_m();
+        $data = new \App\Models\transaction\invvdrp_m();
         $data = $data->data();
-        $data["title"]="Detail Invoice Customer";
-        return view('transaction/invd_v', $data);
+        $data["title"]="Detail Pembayaran";
+        return view('transaction/invvdrp_v', $data);
     }
 }

@@ -44,10 +44,15 @@ $routes->add('/quotationd', 'transaction\quotationd::index');
 $routes->add('/cppn', 'transaction\job::ppn');
 $routes->add('/nppn', 'transaction\job::nppn');
 $routes->add('/kas', 'transaction\kas::index');
+$routes->add('/bigcash', 'transaction\kas::bigcash');
+$routes->add('/pettycash', 'transaction\kas::pettycash');
 $routes->add('/inv', 'transaction\inv::index');
 $routes->add('/invd', 'transaction\invd::index');
 $routes->add('/invpayment', 'transaction\invpayment::index');
 $routes->add('/cost', 'transaction\cost::index');
+$routes->add('/invvdr', 'transaction\invvdr::index');
+$routes->add('/invvdrd', 'transaction\invvdrd::index');
+$routes->add('/invvdrp', 'transaction\invvdrp::index');
 
 $routes->add('/rabsend', 'report\rabsend::index');
 $routes->add('/rtarif', 'report\rtarif::index');

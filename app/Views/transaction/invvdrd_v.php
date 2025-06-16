@@ -41,20 +41,20 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <input type="date"
                                 class="form-control"
                                 style="width:200px;"
-                                id="inv_date"
-                                name="inv_date"
+                                id="invvdr_date"
+                                name="invvdr_date"
                                 placeholder="Tanggal Invoice"
                                 data-bs-toggle="popover"
-                                data-bs-content="Pilih tanggal invoice"
+                                data-bs-content="Pilih tanggal Invoice"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top"
-                                value="<?= $inv_date; ?>">
+                                value="<?= $invvdr_date; ?>">
                         </div>
                         <script>
                             $(function() {
-                                $('#inv_date')
+                                $('#invvdr_date')
                                     .popover({
-                                        content: 'Pilih tanggal invoice',
+                                        content: 'Pilih tanggal Invoice',
                                         trigger: 'manual',
                                         placement: 'top',
                                         template: '<div class="popover bs-popover-top" role="tooltip"><div class="arrow"></div><div class="popover-body"></div></div>'
@@ -66,18 +66,18 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <input type="date"
                                 class="form-control"
                                 style="width:200px;"
-                                id="inv_duedate"
-                                name="inv_duedate"
+                                id="invvdr_duedate"
+                                name="invvdr_duedate"
                                 placeholder="Due Date"
                                 data-bs-toggle="popover"
                                 data-bs-content="Pilih tanggal jatuh tempo"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top"
-                                value="<?= $inv_duedate; ?>">
+                                value="<?= $invvdr_duedate; ?>">
                         </div>
                         <script>
                             $(function() {
-                                $('#inv_duedate')
+                                $('#invvdr_duedate')
                                     .popover({
                                         content: 'Pilih tanggal jatuh tempo',
                                         trigger: 'manual',
@@ -88,64 +88,108 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             });
                         </script>
                         <div class="form-group">
-                            <input type="text" class="form-control" style="width: 100px;" id="inv_discount" name="inv_discount" placeholder="Discount" value="<?= $inv_discount; ?>">
-                        </div>
-                        <div class="form-group">
-                            <select required onchange="singkatan()" class="form-control" id="customer_id" name="customer_id">
-                                <option value="" data-singkatan="" <?= ($customer_id == "") ? "selected" : ""; ?>>Customer</option>
-                                <?php $customer = $this->db->table("customer")
-                                    ->orderBy("customer_name", "ASC")
+                            <select required class="form-control" id="vendor_id" name="vendor_id">
+                                <option value="" data-singkatan="" <?= ($vendor_id == "") ? "selected" : ""; ?>>Vendor</option>
+                                <?php $vendor = $this->db->table("vendor")
+                                    ->orderBy("vendor_name", "ASC")
                                     ->get();
-                                foreach ($customer->getResult() as $customer) {
+                                foreach ($vendor->getResult() as $vendor) {
                                 ?>
-                                    <option value="<?= $customer->customer_id; ?>" data-singkatan="<?= $customer->customer_singkatan; ?>" <?= ($customer_id == $customer->customer_id) ? "selected" : ""; ?>><?= $customer->customer_name; ?></option>
+                                    <option value="<?= $vendor->vendor_id; ?>" <?= ($vendor_id == $vendor->vendor_id) ? "selected" : ""; ?>><?= $vendor->vendor_name; ?></option>
                                 <?php } ?>
-                                <script>
-                                    function singkatan() {
-                                        let singkatan = $("#customer_id option:selected").data("singkatan");
-                                        $("#customer_singkatan").val(singkatan);
-                                    }
-                                </script>
                             </select>
                         </div>
                         <div class="form-group">
+                            <input type="text" class="form-control" style="width: 100px;" id="invvdr_no" name="invvdr_no" placeholder="Invoice No." value="<?= $invvdr_no; ?>">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="vessel_id" name="vessel_id">
+                                <option value="" data-singkatan="" <?= ($vessel_id == "") ? "selected" : ""; ?>>Vessel</option>
+                                <?php $vessel = $this->db->table("vessel")
+                                    ->orderBy("vessel_name", "ASC")
+                                    ->get();
+                                foreach ($vessel->getResult() as $vessel) {
+                                ?>
+                                    <option value="<?= $vessel->vessel_id; ?>" <?= ($vessel_id == $vessel->vessel_id) ? "selected" : ""; ?>><?= $vessel->vessel_name; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="origin_id" name="origin_id">
+                                <option value="" data-singkatan="" <?= ($origin_id == "") ? "selected" : ""; ?>>Origin</option>
+                                <?php $origin = $this->db->table("origin")
+                                    ->orderBy("origin_name", "ASC")
+                                    ->get();
+                                foreach ($origin->getResult() as $origin) {
+                                ?>
+                                    <option value="<?= $origin->origin_id; ?>" <?= ($origin_id == $origin->origin_id) ? "selected" : ""; ?>><?= $origin->origin_name; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="destination_id" name="destination_id">
+                                <option value="" data-singkatan="" <?= ($destination_id == "") ? "selected" : ""; ?>>Destination</option>
+                                <?php $destination = $this->db->table("destination")
+                                    ->orderBy("destination_name", "ASC")
+                                    ->get();
+                                foreach ($destination->getResult() as $destination) {
+                                ?>
+                                    <option value="<?= $destination->destination_id; ?>" <?= ($destination_id == $destination->destination_id) ? "selected" : ""; ?>><?= $destination->destination_name; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input onkeyup="dtagih()" type="text" class="form-control" style="width: 100px;" id="invvdr_tagihan" name="invvdr_tagihan" placeholder="Tagihan" value="<?= $invvdr_tagihan; ?>">
+                        </div>
+                        <div class="form-group">
+                            <input onkeyup="dtagih()" type="text" class="form-control" style="width: 100px;" id="invvdr_discount" name="invvdr_discount" placeholder="Discount" value="<?= $invvdr_discount; ?>">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" style="width: 100px;" id="invvdr_dtagihan" name="invvdr_dtagihan" placeholder="Stl Diskon" value="<?= $invvdr_dtagihan; ?>">
+                        </div>
+                        <script>
+                            function dtagih() {
+                                let tagihan = $("#invvdr_tagihan").val();
+                                let discount = $("#invvdr_discount").val();
+                                let dtagihan = tagihan - discount;
+                                $("#invvdr_dtagihan").val(dtagihan);
+                            }
+                        </script>
+                        <div class="form-group">
                             <label class="text-black">&nbsp;1.1%&nbsp;</label>
-                            <input <?= ($inv_ppn1k1 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="inv_ppn1k1" name="inv_ppn1k1" value="1">
+                            <input <?= ($invvdr_ppn1k1 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="invvdr_ppn1k1" name="invvdr_ppn1k1" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;11%&nbsp;</label>
-                            <input <?= ($inv_ppn11 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="inv_ppn11" name="inv_ppn11" value="1">
+                            <input <?= ($invvdr_ppn11 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="invvdr_ppn11" name="invvdr_ppn11" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;12%&nbsp;</label>
-                            <input <?= ($inv_ppn12 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="inv_ppn12" name="inv_ppn12" value="1">
+                            <input <?= ($invvdr_ppn12 == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="invvdr_ppn12" name="invvdr_ppn12" value="1">
                         </div>
                         <div class="form-group">
                             <label class="text-black">&nbsp;PPH&nbsp;</label>
-                            <input <?= ($inv_pph == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="inv_pph" name="inv_pph" value="1">
+                            <input <?= ($invvdr_pph == 1) ? "checked" : ""; ?> type="checkbox" class="" style="" id="invvdr_pph" name="invvdr_pph" value="1">
                         </div>
 
-                        <input type="hidden" id="user_id" name="user_id" value="<?= session('user_id'); ?>" />
-                        <input type="hidden" id="inv_no" name="inv_no" value="<?= $inv_no; ?>" />
-                        <input type="hidden" id="inv_id" name="inv_id" value="<?= $inv_id; ?>" />
-                        <input type="hidden" id="customer_singkatan" name="customer_singkatan" value="" />
+                        <input type="hidden" id="invvdr_id" name="invvdr_id" value="<?= $invvdr_id; ?>" />
 
                         <?php
-                        if (isset($_GET["editinv"])) {
-                            $namebtninv = 'name="changeinv"';
+                        if (isset($_GET["editinvvdr"])) {
+                            $namebtninvvdr = 'name="changeinvvdr"';
                         } else {
-                            $namebtninv = 'name="createinv"';
+                            $namebtninvvdr = 'name="createinvvdr"';
                         }
                         ?>
-                        &nbsp;&nbsp;<button type="submit" <?= $namebtninv; ?> value="OK" class="btn btn-primary">Submit</button>
+                        &nbsp;&nbsp;<button type="submit" <?= $namebtninvvdr; ?> value="OK" class="btn btn-primary">Submit</button>
                     </form>
                     <form method="post" class="form-inline alert alert-info" action="">
                         <div class="form-group">
                             <select onchange="pilihdano()" class="form-control select" id="job_id" name="job_id">
                                 <option value="">Pilih Da Number</option>
                                 <?php $job = $this->db->table("job")
-                                    // ->where("inv_no", "")
-                                    // ->orWhere("inv_no", $inv_no)
+                                    // ->where("invvdr_no", "")
+                                    // ->orWhere("invvdr_no", $invvdr_no)
                                     ->orderBy("job_dano", "ASC")
                                     ->get();
                                 foreach ($job->getResult() as $job) {
@@ -155,13 +199,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" style="width: 200px;" id="invd_description" name="invd_description" placeholder="Description">
+                            <input type="text" class="form-control" style="width: 200px;" id="invvdrd_description" name="invvdrd_description" placeholder="Description">
                         </div>
                         <div class="form-group">
-                            <input onkeyup="kali()" type="text" class="form-control" style="width: 80px;" id="invd_qty" name="invd_qty" placeholder="QTY">
+                            <input onkeyup="kali()" type="text" class="form-control" style="width: 80px;" id="invvdrd_qty" name="invvdrd_qty" placeholder="QTY">
                         </div>
                         <div class="form-group">
-                            <select required class="form-control" id="invd_satuan" name="invd_satuan">
+                            <select required class="form-control" id="invvdrd_satuan" name="invvdrd_satuan">
                                 <option value="">Pilih Satuan</option>
                                 <?php $satuan = $this->db->table("satuan")
                                     ->orderBy("satuan_name", "ASC")
@@ -172,12 +216,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <input onkeyup="kali()" type="text" class="form-control" style="width: 120px;" id="invd_price" name="invd_price" placeholder="Price">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" style="width: 120px;" id="invd_total" name="invd_total" placeholder="Total">
-                        </div>
+
                         <script>
                             function pilihdano() {
                                 let selected = $("#job_id option:selected");
@@ -185,31 +224,21 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let des = selected.data("des");
                                 let qty = selected.data("qty");
                                 let satuan = selected.data("satuan");
-                                let price = selected.data("price");
                                 $("#job_dano").val(dano);
-                                $("#invd_description").val(des);
-                                $("#invd_qty").val(qty);
-                                $("#invd_satuan").val(satuan);
-                                $("#invd_price").val(price);
-                                kali();
-                            }
-
-                            function kali() {
-                                let qty = $("#invd_qty").val();
-                                let price = $("#invd_price").val();
-                                let total = qty * price;
-                                $("#invd_total").val(total);
+                                $("#invvdrd_description").val(des);
+                                $("#invvdrd_qty").val(qty);
+                                $("#invvdrd_satuan").val(satuan);
                             }
                         </script>
                         <input type="hidden" id="job_dano" name="job_dano" value="" />
-                        <input type="hidden" id="inv_no" name="inv_no" value="<?= $inv_no; ?>" />
-                        <input type="hidden" id="inv_id" name="inv_id" value="<?= $inv_id; ?>" />
-                        <input type="hidden" id="invd_id" name="invd_id" value="" />
-                        <?php if (isset($_GET["editinv"])) { ?>
-                            <input type="hidden" id="invd_date" name="invd_date" value="<?= $inv_date; ?>" />
+                        <input type="hidden" id="invvdr_no" name="invvdr_no" value="<?= $invvdr_no; ?>" />
+                        <input type="hidden" id="invvdr_id" name="invvdr_id" value="<?= $invvdr_id; ?>" />
+                        <input type="hidden" id="invvdrd_id" name="invvdrd_id" value="" />
+                        <?php if (isset($_GET["editinvvdr"])) { ?>
+                            <input type="hidden" id="invvdrd_date" name="invvdrd_date" value="<?= $invvdr_date; ?>" />
                         <?php } ?>
 
-                        &nbsp;&nbsp;<button id="btninvd" type="submit" name="create" value="OK" class="btn btn-primary">Submit</button>
+                        &nbsp;&nbsp;<button id="btninvvdrd" type="submit" name="create" value="OK" class="btn btn-primary">Submit</button>
                     </form>
 
                     <div class="table-responsive ">
@@ -225,16 +254,14 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <th>Description</th>
                                     <th>QTY</th>
                                     <th>Satuan</th>
-                                    <th>Unit Price</th>
-                                    <th>Total</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
                                 $build = $this->db
-                                    ->table("invd");
-                                if (isset($_GET["inv_no"])) {
-                                    $build->where("inv_no", $inv_no);
+                                    ->table("invvdrd");
+                                if (isset($_GET["invvdr_no"])) {
+                                    $build->where("invvdr_no", $invvdr_no);
                                 }
                                 $usr = $build->get();
 
@@ -258,20 +285,19 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         && session()->get("halaman")['111']['act_update'] == "1"
                                                     )
                                                 ) { ?>
-                                                    <form method="post" class="btn-action" >
-                                                        <button type="button" onclick="editinvd('<?= $usr->invd_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
+                                                    <form method="post" class="btn-action">
+                                                        <button type="button" onclick="editinvvdrd('<?= $usr->invvdrd_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
                                                             <span class="fa fa-edit" style="color:white;"></span>
                                                         </button>
-                                                        <input type="hidden" id="job_dano<?= $usr->invd_id; ?>" name="job_dano" value="<?= $usr->job_dano; ?>" />
-                                                        <input type="hidden" id="inv_no<?= $usr->invd_id; ?>" name="inv_no" value="<?= $usr->inv_no; ?>" />
-                                                        <input type="hidden" id="inv_id<?= $usr->invd_id; ?>" name="inv_id" value="<?= $usr->inv_id; ?>" />
-                                                        <input type="hidden" id="invd_total<?= $usr->invd_id; ?>" name="invd_total" value="<?= $usr->invd_total; ?>" />
-                                                        <input type="hidden" id="invd_price<?= $usr->invd_id; ?>" name="invd_price" value="<?= $usr->invd_price; ?>" />
-                                                        <input type="hidden" id="invd_satuan<?= $usr->invd_id; ?>" name="invd_satuan" value="<?= $usr->invd_satuan; ?>" />
-                                                        <input type="hidden" id="invd_qty<?= $usr->invd_id; ?>" name="invd_qty" value="<?= $usr->invd_qty; ?>" />
-                                                        <input type="hidden" id="invd_description<?= $usr->invd_id; ?>" name="invd_description" value="<?= $usr->invd_description; ?>" />
-                                                        <input type="hidden" id="job_id<?= $usr->invd_id; ?>" name="job_id" value="<?= $usr->job_id; ?>" />
-                                                        <input type="hidden" id="invd_id<?= $usr->invd_id; ?>" name="invd_id" value="<?= $usr->invd_id; ?>" />
+                                                        <input type="hidden" id="job_dano<?= $usr->invvdrd_id; ?>" name="job_dano" value="<?= $usr->job_dano; ?>" />
+                                                        <input type="hidden" id="invvdr_no<?= $usr->invvdrd_id; ?>" name="invvdr_no" value="<?= $usr->invvdr_no; ?>" />
+                                                        <input type="hidden" id="invvdr_id<?= $usr->invvdrd_id; ?>" name="invvdr_id" value="<?= $usr->invvdr_id; ?>" />
+
+                                                        <input type="hidden" id="invvdrd_satuan<?= $usr->invvdrd_id; ?>" name="invvdrd_satuan" value="<?= $usr->invvdrd_satuan; ?>" />
+                                                        <input type="hidden" id="invvdrd_qty<?= $usr->invvdrd_id; ?>" name="invvdrd_qty" value="<?= $usr->invvdrd_qty; ?>" />
+                                                        <input type="hidden" id="invvdrd_description<?= $usr->invvdrd_id; ?>" name="invvdrd_description" value="<?= $usr->invvdrd_description; ?>" />
+                                                        <input type="hidden" id="job_id<?= $usr->invvdrd_id; ?>" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                        <input type="hidden" id="invvdrd_id<?= $usr->invvdrd_id; ?>" name="invvdrd_id" value="<?= $usr->invvdrd_id; ?>" />
                                                     </form>
                                                 <?php } ?>
 
@@ -291,8 +317,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                 ) { ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="invd_id" value="<?= $usr->invd_id; ?>" />
-                                                        <input type="hidden" name="inv_no" value="<?= $inv_no; ?>" />
+                                                        <input type="hidden" name="invvdrd_id" value="<?= $usr->invvdrd_id; ?>" />
+                                                        <input type="hidden" name="invvdr_no" value="<?= $invvdr_no; ?>" />
                                                         <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                     </form>
                                                 <?php } ?>
@@ -300,41 +326,35 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->job_dano; ?></td>
-                                        <td><?= $usr->invd_description; ?></td>
-                                        <td><?= number_format($usr->invd_qty, 0, ",", "."); ?></td>
-                                        <td><?= $usr->invd_satuan; ?></td>
-                                        <td><?= number_format($usr->invd_price, 0, ",", "."); ?></td>
-                                        <td><?= number_format($usr->invd_total, 0, ",", "."); ?></td>
+                                        <td><?= $usr->invvdrd_description; ?></td>
+                                        <td><?= number_format($usr->invvdrd_qty, 0, ",", "."); ?></td>
+                                        <td><?= $usr->invvdrd_satuan; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
                         </table>
 
                         <script>
-                            function editinvd(invd_id) {
-                                let job_dano = $("#job_dano" + invd_id).val();
-                                let inv_no = $("#inv_no" + invd_id).val();
-                                let inv_id = $("#inv_id" + invd_id).val();
-                                let invd_total = $("#invd_total" + invd_id).val();
-                                let invd_price = $("#invd_price" + invd_id).val();
-                                let invd_satuan = $("#invd_satuan" + invd_id).val();
-                                let invd_qty = $("#invd_qty" + invd_id).val();
-                                let invd_description = $("#invd_description" + invd_id).val();
-                                let job_id = $("#job_id" + invd_id).val();
-                                let invdid = $("#invd_id" + invd_id).val();
+                            function editinvvdrd(invvdrd_id) {
+                                let job_dano = $("#job_dano" + invvdrd_id).val();
+                                let invvdr_no = $("#invvdr_no" + invvdrd_id).val();
+                                let invvdr_id = $("#invvdr_id" + invvdrd_id).val();
+                                let invvdrd_satuan = $("#invvdrd_satuan" + invvdrd_id).val();
+                                let invvdrd_qty = $("#invvdrd_qty" + invvdrd_id).val();
+                                let invvdrd_description = $("#invvdrd_description" + invvdrd_id).val();
+                                let job_id = $("#job_id" + invvdrd_id).val();
+                                let invvdrdid = $("#invvdrd_id" + invvdrd_id).val();
 
                                 $("#job_dano").val(job_dano);
-                                $("#inv_no").val(inv_no);
-                                $("#inv_id").val(inv_id);
-                                $("#invd_total").val(invd_total);
-                                $("#invd_price").val(invd_price);
-                                $("#invd_satuan").val(invd_satuan);
-                                $("#invd_qty").val(invd_qty);
-                                $("#invd_description").val(invd_description);
+                                $("#invvdr_no").val(invvdr_no);
+                                $("#invvdr_id").val(invvdr_id);
+                                $("#invvdrd_satuan").val(invvdrd_satuan);
+                                $("#invvdrd_qty").val(invvdrd_qty);
+                                $("#invvdrd_description").val(invvdrd_description);
                                 $("#job_id").val(job_id);
-                                $("#invd_id").val(invdid);
+                                $("#invvdrd_id").val(invvdrdid);
 
-                                $("#btninvd").attr("name", "change");
+                                $("#btninvvdrd").attr("name", "change");
                             }
                         </script>
                     </div>
@@ -344,7 +364,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     </div>
 </div>
 <script>
-    let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("inv"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Invoice</a>';
+    let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("invvdr"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Invoice Vendor</a>';
     $(document).ready(function() {
         $("#page-title").append(pagetitle);
     });

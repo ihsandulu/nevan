@@ -563,7 +563,7 @@
                                         <input type="text" autofocus class="form-control" id="job_tujuanaddress" name="job_tujuanaddress" placeholder="" value="<?= $job_tujuanaddress; ?>">
                                     </div>
                                 </div>
-                                <?php if ($posisi == "operasional" && $posisi == "finance") { ?>
+                                <?php if ($posisi == "operasional" || $posisi == "finance") { ?>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                         <label class="control-label col-sm-12" for="job_pengemudi">Pengemudi:</label>
                                         <div class="col-sm-12">

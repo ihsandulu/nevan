@@ -524,7 +524,28 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == ('inv'||'invd') ? 'active' : ''; ?>" href="<?= base_url("inv"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Invoice</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == ('inv'||'invd') ? 'active' : ''; ?>" href="<?= base_url("inv"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Invoice Customer</span></a>
+                        </li>
+                    <?php } ?>
+
+                    
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['122']['act_read'])
+                            && session()->get("halaman")['122']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == ('invvdr'||'invvdrd') ? 'active' : ''; ?>" href="<?= base_url("invvdr"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Invoice Vendor</span></a>
                         </li>
                     <?php } ?>
 
@@ -538,12 +559,31 @@
                             )
                         ) ||
                         (
-                            isset(session()->get("halaman")['108']['act_read'])
-                            && session()->get("halaman")['108']['act_read'] == "1"
+                            isset(session()->get("halaman")['120']['act_read'])
+                            && session()->get("halaman")['120']['act_read'] == "1"
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'kas' ? 'active' : ''; ?>" href="<?= base_url("kas"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Kas</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'bigcash' ? 'active' : ''; ?>" href="<?= base_url("bigcash"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Big Cash</span></a>
+                        </li>
+                    <?php } ?>
+
+                    <?php
+                    if (
+                        (
+                            isset(session()->get("position_id")[0][0])
+                            && (
+                                session()->get("position_id") == "1"
+                                || session()->get("position_id") == "2"
+                            )
+                        ) ||
+                        (
+                            isset(session()->get("halaman")['121']['act_read'])
+                            && session()->get("halaman")['121']['act_read'] == "1"
+                        )
+                    ) { ?>
+                        <li>
+                            <a class="<?= current_url(true)->getSegment(1) == 'pettycash' ? 'active' : ''; ?>" href="<?= base_url("pettycash"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Petty Cash</span></a>
                         </li>
                     <?php } ?>
 

@@ -85,16 +85,22 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="kas_debettype">Debet Type:</label>
-                                    <div class="col-sm-12">
-                                        <select onchange="pilihtype()" required class="form-control" id="kas_debettype" name="kas_debettype">
-                                            <option value="" <?= ($kas_debettype == "") ? "selected" : ""; ?>>Pilih Type</option>
-                                            <option value="pettycash" <?= ($kas_debettype == "pettycash") ? "selected" : ""; ?>>Petty Cash</option>
-                                            <option value="bigcash" <?= ($kas_debettype == "bigcash") ? "selected" : ""; ?>>Big Cash</option>
-                                        </select>
+                                <?php if ($url == "kas") { ?>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                        <label class="control-label col-sm-12" for="kas_debettype">Petty/Big Cash:</label>
+                                        <div class="col-sm-12">
+                                            <select onchange="pilihtype()" required class="form-control" id="kas_debettype" name="kas_debettype">
+                                                <option value="" <?= ($kas_debettype == "") ? "selected" : ""; ?>>Pilih Type</option>
+                                                <option value="pettycash" <?= ($kas_debettype == "pettycash") ? "selected" : ""; ?>>Petty Cash</option>
+                                                <option value="bigcash" <?= ($kas_debettype == "bigcash") ? "selected" : ""; ?>>Big Cash</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php } else {
+                                    $kas_debettype = $url;
+                                ?>
+                                    <input type="hidden" name="kas_debettype" value="<?= $kas_debettype; ?>" />
+                                <?php } ?>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_type">DA Number:</label>
                                     <div class="col-sm-12">
@@ -179,22 +185,24 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12 rekke">
-                                    <label class="control-label col-sm-12" for="kas_rekke">Rekening Ke:</label>
-                                    <div class="col-sm-12">
-                                        <select name="kas_rekke" value="<?= $kas_rekke; ?>" class="form-control select">
-                                            <option value="" <?= ($kas_rekke == "") ? "selected" : ""; ?>>Select Rekening</option>
-                                            <?php
-                                            $usr = $this->db
-                                                ->table("rekening")
-                                                ->orderBy("rekening_an", "ASC")
-                                                ->get();
-                                            foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>><?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
-                                            <?php } ?>
-                                        </select>
+                                <?php if ($url != "pettycash") { ?>
+                                    <div class="form-group col-md-4 col-sm-6 col-xs-12 rekke">
+                                        <label class="control-label col-sm-12" for="kas_rekke">Rekening Ke:</label>
+                                        <div class="col-sm-12">
+                                            <select name="kas_rekke" value="<?= $kas_rekke; ?>" class="form-control select">
+                                                <option value="" <?= ($kas_rekke == "") ? "selected" : ""; ?>>Select Rekening</option>
+                                                <?php
+                                                $usr = $this->db
+                                                    ->table("rekening")
+                                                    ->orderBy("rekening_an", "ASC")
+                                                    ->get();
+                                                foreach ($usr->getResult() as $usr) { ?>
+                                                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>><?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php } ?>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_keterangan">Keterangan:</label>
                                     <div class="col-sm-12">
@@ -222,7 +230,7 @@
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?=base_url("kas");?>">Back</a>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url($url); ?>">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -300,15 +308,23 @@
                                         <!-- <th>No.</th> -->
                                         <th>Date</th>
                                         <th>Type</th>
-                                        <th>Debet Type</th>
+                                        <?php if ($url == "kas") { ?>
+                                            <th>Petty/Big Cash</th>
+                                        <?php } ?>
                                         <th>DA Number</th>
                                         <th>Uraian</th>
                                         <th>Qty</th>
                                         <th>Nominal</th>
                                         <th>Total</th>
-                                        <th>Saldo</th>
-                                        <th>Big Cash</th>
-                                        <th>Petty Cash</th>
+                                        <?php if ($url == "kas") { ?>
+                                            <th>Saldo</th>
+                                        <?php } ?>
+                                        <?php if ($url == "bigcash" || $url == "kas") { ?>
+                                            <th>Saldo<br />Big Cash</th>
+                                        <?php } ?>
+                                        <?php if ($url == "pettycash" || $url == "kas") { ?>
+                                            <th>Saldo<br />Petty Cash</th>
+                                        <?php } ?>
                                         <th>Dari Rek</th>
                                         <th>Ke Rek</th>
                                         <th>Keterangan</th>
@@ -328,11 +344,17 @@
                                     if (isset($_GET["kas_type"]) &&  $_GET["kas_type"] != "") {
                                         $build->where("kas_type", $_GET["kas_type"]);
                                     }
+                                    if ($url == "bigcash") {
+                                        $build->where("kas_debettype", "bigcash");
+                                    }
+                                    if ($url == "pettycash") {
+                                        $build->where("kas_debettype", "pettycash");
+                                    }
                                     $build->where("kas_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     $usr = $build->orderBy("kas.kas_id", "DESC")
                                         ->get();
 
-                                    //echo $this->db->getLastquery();
+                                    // echo $this->db->getLastquery();
                                     $no = 1;
                                     $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
                                     foreach ($usr->getResult() as $usr) { ?>
@@ -340,7 +362,7 @@
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
                                                     <?php
-                                                    if ($usr->invpayment_id == 0) {
+                                                    if ($usr->invpayment_id == 0 && $usr->invvdrp_id == 0) {
                                                         if (
                                                             (
                                                                 isset(session()->get("position_administrator")[0][0])
@@ -385,17 +407,25 @@
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td><?= $usr->kas_date; ?></td>
                                             <td><?= $usr->kas_type; ?></td>
-                                            <td><?= $debettype[$usr->kas_debettype]; ?></td>
+                                            <?php if ($url == "kas") { ?>
+                                                <td><?= $debettype[$usr->kas_debettype]; ?></td>
+                                            <?php } ?>
                                             <td><?= $usr->job_dano; ?></td>
                                             <td class="text-left"><?= $usr->kas_uraian; ?></td>
                                             <td><?= number_format($usr->kas_qty, 0, ",", "."); ?></td>
                                             <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
                                             <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td>
-                                            <td class="text-right"><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
-                                            <td class="text-right"><?= number_format($usr->kas_bigcash, 0, ",", "."); ?></td>
-                                            <td class="text-right"><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
-                                            <td class="text-left"><?= $usr->rekdari; ?></td>
-                                            <td class="text-left"><?= $usr->rekke; ?></td>
+                                            <?php if ($url == "kas") { ?>
+                                                <td class="text-right"><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
+                                            <?php } ?>
+                                            <?php if ($url == "bigcash" || $url == "kas") { ?>
+                                                <td class="text-right"><?= number_format($usr->kas_bigcash, 0, ",", "."); ?></td>
+                                            <?php } ?>
+                                            <?php if ($url == "pettycash" || $url == "kas") { ?>
+                                                <td class="text-right"><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
+                                            <?php } ?>
+                                            <td class="text-left"><?= ($usr->rekdari == "") ? "Pettycash" : $usr->rekdari; ?></td>
+                                            <td class="text-left"><?= ($usr->rekke == "") ? "Pettycash" : $usr->rekke; ?></td>
                                             <td class="text-left"><?= $usr->kas_keterangan; ?></td>
                                             <?php if (isset($_GET["kas_type"]) &&  $_GET["kas_type"] != "Debet") { ?>
                                                 <td class="text-left"><?= $usr->vendor_name; ?></td>
@@ -415,7 +445,7 @@
     $('.select').select2();
     var title = "<?= $title; ?>";
     $("title").text(title);
-    $(".card-title").text(title);
+    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir: Rp. <?= number_format($saldo, 0, ",", ".") ?> )</span>');
     $("#page-title").text(title);
     $("#page-title-link").text(title);
 </script>

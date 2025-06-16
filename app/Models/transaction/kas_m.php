@@ -167,7 +167,7 @@ class kas_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-
+            // dd($input);
             $kas_id = $this->request->getPost("kas_id");
             $kas = $this->db->table("kas")->where("kas_id", $kas_id)->get();
 
@@ -180,32 +180,51 @@ class kas_m extends core_m
                 $kas_saldo = $kas->kas_saldo;
                 $kas_bigcash = $kas->kas_bigcash;
                 $kas_pettycash = $kas->kas_pettycash;
-                if ($input["kas_type"] == "Debet") {
+                $kas_type = $kas->kas_type;
+                $kas_debettype = $kas->kas_debettype;
+                if ($kas_type == "Debet") {
                     $saldoawal = $kas_saldo - $kas_totalawal;
-                    $saldo = $saldoawal + $input["kas_total"];
-                    if ($input["kas_debettype"] == "bigcash") {
+                    if ($kas_debettype == "bigcash") {
                         $bigcashawal = $kas_bigcash - $kas_totalawal;
-                        $bigcash = $bigcashawal + $input["kas_total"];
-                        $pettycash = $kas->kas_pettycash;
-                    }
-                    if ($input["kas_debettype"] == "pettycash") {
+                        $pettycashawal = $kas_pettycash;
+                    } else {
+                        $bigcashawal = $kas_bigcash;
                         $pettycashawal = $kas_pettycash - $kas_totalawal;
-                        $pettycash = $pettycashawal + $input["kas_total"];
-                        $bigcash = $kas->kas_bigcash;
                     }
+                    // echo $kas_saldo." - ".$kas_totalawal;die;
                 } else {
                     $saldoawal = $kas_saldo + $kas_totalawal;
+                    if ($kas_debettype == "bigcash") {
+                        $bigcashawal = $kas_bigcash + $kas_totalawal;
+                        $pettycashawal = $kas_pettycash;
+                    } else {
+                        $bigcashawal = $kas_bigcash;
+                        $pettycashawal = $kas_pettycash + $kas_totalawal;
+                    }
+                    // echo $kas_saldo." + ".$kas_totalawal;die;
+                }
+                // echo $saldoawal."==".$bigcashawal."==".$pettycashawal;die;
+                if ($input["kas_type"] == "Debet") {
+                    $saldo = $saldoawal + $input["kas_total"];
+                    if ($input["kas_debettype"] == "bigcash") {
+                        $bigcash = $bigcashawal + $input["kas_total"];
+                        $pettycash = $pettycashawal;
+                    } else {
+                        $bigcash = $bigcashawal;
+                        $pettycash = $pettycashawal + $input["kas_total"];
+                    }
+                    // echo $bigcash."==".$pettycash;die;
+                } else {
                     $saldo =  $saldoawal - $input["kas_total"];
                     if ($input["kas_debettype"] == "bigcash") {
-                        $bigcashawal = $kas_bigcash + $kas_totalawal;
                         $bigcash = $bigcashawal - $input["kas_total"];
-                        $pettycash = $kas->kas_pettycash;
+                        $pettycash = $pettycashawal;
                     }
                     if ($input["kas_debettype"] == "pettycash") {
-                        $pettycashawal = $kas_pettycash + $kas_totalawal;
+                        $bigcash = $bigcashawal;
                         $pettycash = $pettycashawal - $input["kas_total"];
-                        $bigcash = $kas->kas_bigcash;
                     }
+                    //  echo $saldo."==".$bigcash."==".$pettycash;die;
                 }
             }
             $input["kas_saldo"] = $saldo;

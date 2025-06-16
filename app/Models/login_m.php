@@ -26,7 +26,7 @@ class login_m extends core_m
             $user1 = $builder
                 ->get();
 
-
+            // echo $this->db->getLastQuery();die;
 
             // define('production',$this->db->database);
             // echo production;
@@ -50,6 +50,7 @@ class login_m extends core_m
                     $encrypted_data = substr($datak, openssl_cipher_iv_length($method));
                     $decrypted = openssl_decrypt($encrypted_data, $method, $key, 0, $iv_dec);
                     // if (password_verify($this->request->getVar("password"), $password)) {
+                    // echo $this->request->getVar("password") . " ==> " . $decrypted;die;
                     if ($this->request->getVar("password") == $decrypted) {
 
                         // echo $user->identity_id;die;
@@ -75,7 +76,7 @@ class login_m extends core_m
                         $this->session->set("identity_branch", $identity->identity_branch);
                         $this->session->set("identity_email", $identity->identity_email);
                         $this->session->set("identity_website", $identity->identity_website);
-                        
+
 
                         //tambahkan modul di sini                         
                         $pages = $this->db->table("positionpages")
