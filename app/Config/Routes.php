@@ -34,6 +34,7 @@ $routes->add('/mbank', 'master\mbank::index');
 $routes->add('/mmethodpayment', 'master\mmethodpayment::index');
 
 $routes->add('/synchron', 'transaction\synchron::index');
+$routes->add('/job', 'transaction\job::index');
 $routes->add('/jobfinance', 'transaction\job::finance');
 $routes->add('/jobsales', 'transaction\job::sales');
 $routes->add('/joboperasional', 'transaction\job::operasional');

@@ -801,6 +801,7 @@
                                     </div>
                                 </div>
                                 <div class="col-3">
+                                    <?php if(isset($_GET["report"])){?><input type="hidden" name="report" value="OK"><?php }?>
                                     <button type="submit" class="btn btn-block btn-primary">Search</button>
                                 </div>
                             </div>
@@ -816,7 +817,7 @@
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
                                         <?php if ($ppn == 0) { ?>
-                                            <th>Methode</th>
+                                            <!-- <th>Methode</th> -->
                                         <?php } ?>
 
                                         <th>Shipment Date</th>
@@ -1031,7 +1032,7 @@
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
                                             <?php if ($ppn == 0) { ?>
-                                                <td><?= $usr->job_methode; ?></td>
+                                                <!-- <td><?= $usr->job_methode; ?></td> -->
                                             <?php } ?>
                                             <td style="white-space:nowrap;"><?= $usr->job_shipmentdate; ?></td>
                                             <td style="white-space:nowrap;"><?= $usr->job_salesname; ?></td>
