@@ -62,7 +62,7 @@
                                                     <?php
                                                     $builder = $this->db
                                                         ->table("job");
-                                                    if ($this->session->get("position_name") == "SALES") {
+                                                    if ($this->session->get("position_name") == "Marketing Sales") {
                                                         $builder->where("job_sales", $this->session->get("user_id"));
                                                     }
                                                     $usr = $builder->orderBy("job_dano", "ASC")
@@ -182,7 +182,7 @@
                                                 $usr = $this->db
                                                     ->table("user")
                                                     ->join("position", "position.position_id=user.position_id", "left")
-                                                    ->where("position_name", "SALES")
+                                                    ->where("position_name", "Marketing Sales")
                                                     ->orderBy("user_nama", "ASC")
                                                     ->get();
                                                 foreach ($usr->getResult() as $usr) { ?>
@@ -591,7 +591,7 @@
                                                 $usr = $this->db
                                                     ->table("user")
                                                     ->join("position", "position.position_id=user.position_id", "left")
-                                                    ->where("position_name", "SUPERVISOR")
+                                                    ->where("position_name", "Operation Supervisor")
                                                     ->orderBy("user_nama", "ASC")
                                                     ->get();
                                                 foreach ($usr->getResult() as $usr) { ?>
