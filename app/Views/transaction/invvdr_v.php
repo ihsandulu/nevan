@@ -232,13 +232,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" name="vendor_name" value="<?= $usr->vendor_name; ?>" />
                                                     </form>
                                                 <?php } ?>
-                                                <form method="get" target="_blank" class="btn-action" style="" action="<?= base_url("invvdrprint"); ?>">
+                                                <!-- <form method="get" target="_blank" class="btn-action" style="" action="<?= base_url("invvdrprint"); ?>">
                                                     <button title="Print Invoice Vendor" data-bs-toggle="tooltip" class="btn btn-sm btn-warning" name="print" value="OK"><span class="fa fa-print" style="color:white;"></span> </button>
                                                     <input type="hidden" name="invvdr_id" value="<?= $usr->invvdr_id; ?>" />
                                                     <input type="hidden" name="invvdr_no" value="<?= $usr->invvdr_no; ?>" />
                                                     <input type="hidden" name="vendor_id" value="<?= $usr->vendor_id; ?>" />
                                                     <input type="hidden" name="vendor_name" value="<?= $usr->vendor_name; ?>" />
-                                                </form>
+                                                </form> -->
                                             </td>
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
