@@ -323,6 +323,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let job_id = $("#job_id" + invd_id).val();
                                 let invdid = $("#invd_id" + invd_id).val();
 
+                                $("#job_id").val(job_id).trigger('change');
                                 $("#job_dano").val(job_dano);
                                 $("#inv_no").val(inv_no);
                                 $("#inv_id").val(inv_id);
@@ -331,7 +332,6 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $("#invd_satuan").val(invd_satuan);
                                 $("#invd_qty").val(invd_qty);
                                 $("#invd_description").val(invd_description);
-                                $("#job_id").val(job_id);
                                 $("#invd_id").val(invdid);
 
                                 $("#btninvd").attr("name", "change");

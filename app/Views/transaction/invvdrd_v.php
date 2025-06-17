@@ -345,13 +345,14 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let job_id = $("#job_id" + invvdrd_id).val();
                                 let invvdrdid = $("#invvdrd_id" + invvdrd_id).val();
 
+                                
+                                $("#job_id").val(job_id).trigger('change');
                                 $("#job_dano").val(job_dano);
                                 $("#invvdr_no").val(invvdr_no);
                                 $("#invvdr_id").val(invvdr_id);
                                 $("#invvdrd_satuan").val(invvdrd_satuan);
                                 $("#invvdrd_qty").val(invvdrd_qty);
                                 $("#invvdrd_description").val(invvdrd_description);
-                                $("#job_id").val(job_id);
                                 $("#invvdrd_id").val(invvdrdid);
 
                                 $("#btninvvdrd").attr("name", "change");
