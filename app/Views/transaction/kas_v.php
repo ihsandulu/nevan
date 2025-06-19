@@ -39,8 +39,8 @@
                                     )
                                 ) ||
                                 (
-                                    isset(session()->get("halaman")['49']['act_create'])
-                                    && session()->get("halaman")['49']['act_create'] == "1"
+                                    isset(session()->get("halaman")['108']['act_create'])
+                                    && session()->get("halaman")['108']['act_create'] == "1"
                                 ) ||
                                 (
                                     isset(session()->get("halaman")['120']['act_create'])
@@ -380,8 +380,8 @@
                                                                 )
                                                             ) ||
                                                             (
-                                                                isset(session()->get("halaman")['49']['act_update'])
-                                                                && session()->get("halaman")['49']['act_update'] == "1"
+                                                                isset(session()->get("halaman")['108']['act_update'])
+                                                                && session()->get("halaman")['108']['act_update'] == "1"
                                                             ) ||
                                                             (
                                                                 isset(session()->get("halaman")['120']['act_update'])
@@ -408,8 +408,8 @@
                                                                 )
                                                             ) ||
                                                             (
-                                                                isset(session()->get("halaman")['49']['act_delete'])
-                                                                && session()->get("halaman")['49']['act_delete'] == "1"
+                                                                isset(session()->get("halaman")['108']['act_delete'])
+                                                                && session()->get("halaman")['108']['act_delete'] == "1"
                                                             )||
                                                             (
                                                                 isset(session()->get("halaman")['120']['act_delete'])

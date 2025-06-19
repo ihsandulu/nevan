@@ -191,8 +191,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         )
                                                     ) ||
                                                     (
-                                                        isset(session()->get("halaman")['111']['act_update'])
-                                                        && session()->get("halaman")['111']['act_update'] == "1"
+                                                        isset(session()->get("halaman")['122']['act_update'])
+                                                        && session()->get("halaman")['122']['act_update'] == "1"
                                                     )
                                                 ) { ?>
                                                     <form method="post" class="btn-action">
@@ -223,8 +223,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         )
                                                     ) ||
                                                     (
-                                                        isset(session()->get("halaman")['111']['act_delete'])
-                                                        && session()->get("halaman")['111']['act_delete'] == "1"
+                                                        isset(session()->get("halaman")['122']['act_delete'])
+                                                        && session()->get("halaman")['122']['act_delete'] == "1"
                                                     )
                                                 ) { ?>
                                                     <form method="post" class="btn-action" style="">

@@ -34,8 +34,8 @@
                                     )
                                 ) ||
                                 (
-                                    isset(session()->get("halaman")['49']['act_create'])
-                                    && session()->get("halaman")['49']['act_create'] == "1"
+                                    isset(session()->get("halaman")['96']['act_create'])
+                                    && session()->get("halaman")['96']['act_create'] == "1"
                                 )
                             ) { ?>
                                 <form action="<?= base_url("mvendor"); ?>" method="get" class="col-md-2">
@@ -197,8 +197,8 @@
                                                             )
                                                         ) ||
                                                         (
-                                                            isset(session()->get("halaman")['49']['act_update'])
-                                                            && session()->get("halaman")['49']['act_update'] == "1"
+                                                            isset(session()->get("halaman")['96']['act_update'])
+                                                            && session()->get("halaman")['96']['act_update'] == "1"
                                                         )
                                                     ) { ?>
                                                         <form method="post" class="btn-action" style="">
@@ -217,8 +217,8 @@
                                                             )
                                                         ) ||
                                                         (
-                                                            isset(session()->get("halaman")['49']['act_delete'])
-                                                            && session()->get("halaman")['49']['act_delete'] == "1"
+                                                            isset(session()->get("halaman")['96']['act_delete'])
+                                                            && session()->get("halaman")['96']['act_delete'] == "1"
                                                         )
                                                     ) { ?>
                                                         <form method="post" class="btn-action" style="">
