@@ -62,6 +62,17 @@
                             </div>
                             <form class="form-horizontal" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-2" for="rekening_type">Type:</label>
+                                    <div class="col-sm-10">
+                                        <select required autofocus class="form-control" id="rekening_type" name="rekening_type">
+                                            <option value="" <?=($rekening_type=="")?"selected":"";?>>Pilih Bank</option>
+                                            <option value="NKL" <?=($rekening_type=="NKL")?"selected":"";?>>NKL</option>
+                                            <option value="Customer" <?=($rekening_type=="Customer")?"selected":"";?>>Customer</option>
+                                            <option value="Vendor" <?=($rekening_type=="Vendor")?"selected":"";?>>Vendor</option>                                           
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-2" for="bank_id">Bank:</label>
                                     <div class="col-sm-10">
                                         <select required autofocus class="form-control select" id="bank_id" name="bank_id">
@@ -113,6 +124,7 @@
                                             <th>Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
+                                        <th>Type</th>
                                         <th>Bank</th>
                                         <th>Atas Nama</th>
                                         <th>Nomor Rekening</th>
@@ -123,7 +135,7 @@
                                     $usr = $this->db
                                         ->table("rekening")
                                         ->join("bank","bank.bank_id=rekening.bank_id","left")
-                                        ->orderBy("rekening_id", "DESC")
+                                        ->orderBy("rekening_type", "ASC")
                                         ->get();
                                     //echo $this->db->getLastquery();
                                     $no = 1;
@@ -173,6 +185,7 @@
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
+                                            <td class="text-left"><?= $usr->rekening_type; ?></td>
                                             <td class="text-left"><?= $usr->bank_name; ?></td>
                                             <td class="text-left"><?= $usr->rekening_an; ?></td>
                                             <td class="text-left"><?= $usr->rekening_no; ?></td>
