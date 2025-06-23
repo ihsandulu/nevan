@@ -173,6 +173,18 @@ function terbilang($angka)
     .tengah {
         padding: 10px 50px 20px 50px;
     }
+
+    table,
+    thead,
+    tbody,
+    tr {
+        border-color: black !important;
+    }
+
+    .table td,
+    .table th {
+        border-top: 1px solid rgb(0, 0, 0);
+    }
 </style>
 
 <div class='container-fluid'>
@@ -276,7 +288,7 @@ function terbilang($angka)
                                         <tr>
                                             <td class="text-left" rowspan="8" colspan="3">
                                                 <i>Terbilang :</i><br />
-                                                <i id="terbilang"></i><br/><br/>
+                                                <i id="terbilang"></i><br /><br />
                                                 <span id="norek">
                                                     <span style="font-weight: bold;"> Tujuan Pembayaran :</span><br />
                                                     <ul>
