@@ -39,9 +39,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
                     <form method="post" class="form-inline alert alert-info" action="">
                         <div class="form-group">
-                            <select onchange="metode()" class="form-control" id="jobd_methode" name="jobd_methode">
+                            <select required onchange="metoden()" class="form-control" id="jobd_methode" name="jobd_methode">
                                 <option value="">--Methode--</option>
-                                <option value="lumpsum">Lumpsum</option>
+                                <option value="lumpsum">Lumpsum (Koli)</option>
                                 <option value="cbm">CBM</option>
                                 <option value="kgs">KGS</option>
                             </select>
@@ -50,8 +50,59 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <input type="text" class="form-control" style="width: 400px;" id="jobd_descgood" name="jobd_descgood" placeholder="Description">
                         </div>
                         <div class="form-group">
-                            <input onkeyup="kali()" type="text" class="form-control" style="width: 80px;" id="jobd_qty" name="jobd_qty" placeholder="QTY">
+                            <input onkeyup="kali(); isiotom();" type="text" class="form-control" style="width: 80px;" id="jobd_qty" name="jobd_qty" placeholder="QTY">
                         </div>
+                        <div class="form-group" id="kolian">
+                            <input type="text" class="form-control" style="width: 80px;" id="jobd_koli" name="jobd_koli" placeholder="Koli" title="Koli" data-bs-toggle="tooltip">
+                        </div>
+                        <div class="form-group" id="cbman">
+                            <input type="text" class="form-control" style="width: 80px;" id="jobd_cbm" name="jobd_cbm" placeholder="CBM/KGS" title="CBM/KGS" data-bs-toggle="tooltip">
+                        </div>
+                        <script>
+                            function isiotom() {
+                                let qty = $("#jobd_qty").val();
+                                let metode = $("#jobd_methode").val();
+                                if (metode == "lumpsum") {
+                                    $("#jobd_koli").val(qty);
+                                    $("#jobd_cbm").val("");
+                                } else if (metode == "cbm") {
+                                    $("#jobd_cbm").val(qty);
+                                    $("#jobd_koli").val("");
+                                } else if (metode == "kgs") {
+                                    $("#jobd_cbm").val(qty);
+                                    $("#jobd_koli").val("");
+                                } else {
+                                    $("#jobd_koli").val("");
+                                    $("#jobd_cbm").val("");
+                                }
+                            }
+                            function metoden() {
+                                let metode = $("#jobd_methode").val();
+                                if (metode == "lumpsum") {
+                                    $("#kolian").hide();
+                                    $("#cbman").show();
+                                    $("#jobd_qty").attr("placeholder", "Koli");
+                                } else if (metode == "cbm") {
+                                    $("#kolian").show();
+                                    $("#cbman").hide();
+                                    $("#jobd_qty").attr("placeholder", "CBM/KGS");
+                                } else if (metode == "kgs") {
+                                    $("#kolian").show();
+                                    $("#cbman").hide();
+                                    $("#jobd_qty").attr("placeholder", "CBM/KGS");
+                                } else {
+                                    $("#kolian").hide();
+                                    $("#cbman").hide();
+                                    $("#jobd_qty").attr("placeholder", "QTY");
+                                }
+                                tooltipn();
+                            }
+                            $(document).ready(function() {
+                                $("#kolian").hide();
+                                $("#cbman").hide();
+                                metoden();
+                            });
+                        </script>
                         <div class="form-group">
                             <select class="form-control" id="jobd_satuan" name="jobd_satuan">
                                 <option value="">--Satuan--</option>
@@ -97,7 +148,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <!-- <th>No.</th> -->
                                     <th>Methode</th>
                                     <th>Description</th>
-                                    <th>QTY</th>
+                                    <th>Koli</th>
+                                    <th>CBM/KGS</th>
                                     <th>Satuan</th>
                                     <th>Price</th>
                                     <th>Total</th>
@@ -159,6 +211,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" id="jobd_qty<?= $usr->jobd_id; ?>" name="jobd_qty" value="<?= $usr->jobd_qty; ?>" />
                                                         <input type="hidden" id="jobd_descgood<?= $usr->jobd_id; ?>" name="jobd_descgood" value="<?= $usr->jobd_descgood; ?>" />
                                                         <input type="hidden" id="jobd_id<?= $usr->jobd_id; ?>" name="jobd_id" value="<?= $usr->jobd_id; ?>" />
+
+                                                        
+                                                        <input type="hidden" id="jobd_koli<?= $usr->jobd_id; ?>" name="jobd_koli" value="<?= $usr->jobd_koli; ?>" />
+                                                        <input type="hidden" id="jobd_cbm<?= $usr->jobd_id; ?>" name="jobd_cbm" value="<?= $usr->jobd_cbm; ?>" />
                                                     </form>
                                                 <?php } ?>
 
@@ -174,19 +230,19 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     (
                                                         isset(session()->get("halaman")['102']['act_delete'])
                                                         && session()->get("halaman")['102']['act_delete'] == "1"
-                                                    )||
+                                                    ) ||
                                                     (
                                                         isset(session()->get("halaman")['115']['act_delete'])
                                                         && session()->get("halaman")['115']['act_delete'] == "1"
-                                                    )||
+                                                    ) ||
                                                     (
                                                         isset(session()->get("halaman")['116']['act_delete'])
                                                         && session()->get("halaman")['116']['act_delete'] == "1"
-                                                    )||
+                                                    ) ||
                                                     (
                                                         isset(session()->get("halaman")['118']['act_delete'])
                                                         && session()->get("halaman")['118']['act_delete'] == "1"
-                                                    )||
+                                                    ) ||
                                                     (
                                                         isset(session()->get("halaman")['119']['act_delete'])
                                                         && session()->get("halaman")['119']['act_delete'] == "1"
@@ -202,7 +258,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->jobd_methode; ?></td>
                                         <td><?= $usr->jobd_descgood; ?></td>
-                                        <td><?= number_format($usr->jobd_qty, 3, ",", "."); ?></td>
+                                        <td><?= number_format($usr->jobd_koli, 0, ",", "."); ?></td>
+                                        <td><?= number_format($usr->jobd_cbm, 3, ",", "."); ?></td>
                                         <td><?= $usr->jobd_satuan; ?></td>
                                         <td><?= number_format($usr->jobd_sell, 2, ",", "."); ?></td>
                                         <td><?= number_format($usr->jobd_total, 2, ",", "."); ?></td>
@@ -227,6 +284,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $("#jobd_sell").val(jobd_sell);
                                 $("#jobd_satuan").val(jobd_satuan);
                                 $("#jobd_methode").val(jobd_methode);
+                                metoden();
                                 $("#jobd_qty").val(jobd_qty);
                                 $("#jobd_descgood").val(jobd_descgood);
                                 $("#jobd_id").val(jobdid);
