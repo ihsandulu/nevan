@@ -180,8 +180,12 @@ class invd_m extends core_m
             $input["inv_no"] = $invNon;
 
             // $input["inv_dtagihan"] = $input["inv_tagihan"] - $input["inv_discount"];
-            
-            $dtagihan = $input["inv_tagihan"] - $input["inv_discount"];
+
+            $tagihan = (float) $input["inv_tagihan"];
+            $discount = (float) $input["inv_discount"];
+            $dtagihan = $tagihan - $discount;
+
+            // $dtagihan = $input["inv_tagihan"] - $input["inv_discount"];
             $ppn1k1 = 0;
             $ppn11 = 0;
             $ppn12 = 0;
