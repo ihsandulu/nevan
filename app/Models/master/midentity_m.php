@@ -171,6 +171,51 @@ class midentity_m extends core_m
             }
         } 
 
+        //upload image
+        $data['uploadidentity_financettd'] = "";
+        if (isset($_FILES['identity_financettd']) && $_FILES['identity_financettd']['name'] != "") {
+            // $request = \Config\Services::request();
+            $file = $this->request->getFile('identity_financettd');
+            $name = $file->getName(); // Mengetahui Nama File
+            $originalName = $file->getClientName(); // Mengetahui Nama Asli
+            $tempfile = $file->getTempName(); // Mengetahui Nama TMP File name
+            $ext = $file->getClientExtension(); // Mengetahui extensi File
+            $type = $file->getClientMimeType(); // Mengetahui Mime File
+            $size_kb = $file->getSize('kb'); // Mengetahui Ukuran File dalam kb
+            $size_mb = $file->getSize('mb'); // Mengetahui Ukuran File dalam mb
+
+
+            //$namabaru = $file->getRandomName();//define nama fiel yang baru secara acak
+
+            if ($type == 'image/jpg'||$type == 'image/jpeg'||$type == 'image/png') //cek mime file
+            {    // File Tipe Sesuai   
+                helper('filesystem'); // Load Helper File System
+                $direktori = 'images/identity_financettd'; //definisikan direktori upload            
+                $identity_financettd = str_replace(' ', '_', $name);
+                $identity_financettd = date("H_i_s_") . $identity_financettd; //definisikan nama fiel yang baru
+                $map = directory_map($direktori, FALSE, TRUE); // List direktori
+
+                //Cek File apakah ada 
+                foreach ($map as $key) {
+                    if ($key == $identity_financettd) {
+                        delete_files($direktori, $identity_financettd); //Hapus terlebih dahulu jika file ada
+                    }
+                }
+                //Metode Upload Pilih salah satu
+                //$path = $this->request->getFile('uploadedFile')->identity($direktori, $namabaru);
+                //$file->move($direktori, $namabaru)
+                if ($file->move($direktori, $identity_financettd)) {
+                    $data['uploadidentity_financettd'] = "Upload Success !";
+                    $input['identity_financettd'] = $identity_financettd;
+                } else {
+                    $data['uploadidentity_financettd'] = "Upload Gagal !";
+                }
+            } else {
+                // File Tipe Tidak Sesuai
+                $data['uploadidentity_financettd'] = "Format File Salah !";
+            }
+        }
+
         //delete
         if ($this->request->getPost("delete") == "OK") {  
             $identity_id=$this->request->getPost("identity_id");  

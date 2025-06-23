@@ -211,6 +211,43 @@
                                     </div>
                                 </div>
 
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="identity_financename">Finance Name (Print Invoice):</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="identity_financename" name="identity_financename" placeholder="" value="<?= $identity_financename; ?>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="identity_financettd">Finance TTD (Print Invoice)</label>
+                                    <div class="col-sm-12">
+                                        <input type="file"  class="form-control" id="identity_financettd" name="identity_financettd" placeholder="" value="<?= $identity_financettd; ?>">
+                                        <?php if ($identity_financettd != "") {
+                                            $user_image = "images/identity_financettd/" . $identity_financettd;
+                                        } else {
+                                            $user_image = "images/identity_financettd/no_image.png";
+                                        } ?>
+                                        <img id="identity_financettd_image" width="100" height="100" src="<?= base_url($user_image); ?>" />
+                                        <script>
+                                            function readURL(input) {
+                                                if (input.files && input.files[0]) {
+                                                    var reader = new FileReader();
+
+                                                    reader.onload = function(e) {
+                                                        $('#identity_financettd_image').attr('src', e.target.result);
+                                                    }
+
+                                                    reader.readAsDataURL(input.files[0]);
+                                                }
+                                            }
+
+                                            $("#identity_financettd").change(function() {
+                                                readURL(this);
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+
                                 <input type="hidden" name="identity_id" value="<?= $identity_id; ?>" />
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
