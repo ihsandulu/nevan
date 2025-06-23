@@ -24,6 +24,47 @@ class api extends BaseController
         echo "Page Not Found!";
     }
 
+    public function listrekening()
+    {
+        $kas_rekdari = $this->request->getGET("kas_rekdari");
+        $kas_rekke = $this->request->getGET("kas_rekke");
+        $type = $this->request->getGET("type");
+        $asal = $this->request->getGET("asal");
+
+?>
+        <?php if ($asal == "from") { ?>
+            <option value="" <?= ($kas_rekdari == "") ? "selected" : ""; ?>>Select Rekening</option>
+        <?php } else { ?>
+            <option value="" <?= ($kas_rekke == "") ? "selected" : ""; ?>>Select Rekening</option>
+            <?php if ($type == "Kredit") { ?>
+                <option value="-1" <?= ($kas_rekke == "-1") ? "selected" : ""; ?>>Pettycash</option>
+            <?php } ?>
+        <?php } ?>
+        <?php
+        $build = $this->db
+            ->table("rekening");
+        if (($type == "Debet" && $asal == "from") || ($type == "Kredit" && $asal == "to")) {
+            $build->groupStart()
+                ->where("rekening_type", "Customer")
+                ->orWhere("rekening_type", "Vendor")
+                ->groupEnd();
+        } else if (($type == "Debet" && $asal == "to") || ($type == "Kredit" && $asal == "from")) {
+            $build->where("rekening_type", "NKL");
+        }
+        $usr = $build->orderBy("rekening_type", "ASC")
+            ->orderBy("rekening_an", "ASC")
+            ->get();
+        foreach ($usr->getResult() as $usr) { ?>
+            <?php if ($asal == "from") { ?>
+                <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekdari == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+            <?php } else { ?>
+                <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+            <?php } ?>
+
+        <?php } ?>
+    <?php
+    }
+
     public function encrypt()
     {
         // Kunci dan metode enkripsi
@@ -162,7 +203,7 @@ class api extends BaseController
             ->get();
         //echo $this->db->getLastQuery();
         $user_id = $this->request->getGET("user_id");
-?>
+    ?>
         <option value="" <?= ($user_id == "") ? "selected" : ""; ?>>Pilih User</option>
         <?php
         foreach ($user->getResult() as $user) { ?>

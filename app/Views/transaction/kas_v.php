@@ -86,7 +86,7 @@
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_type">Type:</label>
                                     <div class="col-sm-12">
-                                        <select onchange="pilihtype()" required class="form-control" id="kas_type" name="kas_type">
+                                        <select onchange="pilihtype(); listrekening();" required class="form-control" id="kas_type" name="kas_type">
                                             <option value="" <?= ($kas_type == "") ? "selected" : ""; ?>>Pilih Type</option>
                                             <option value="Debet" <?= ($kas_type == "Debet") ? "selected" : ""; ?>>Debet</option>
                                             <option value="Kredit" <?= ($kas_type == "Kredit") ? "selected" : ""; ?>>Kredit</option>
@@ -110,7 +110,7 @@
                                     <input type="hidden" name="kas_debettype" value="<?= $kas_debettype; ?>" />
                                 <?php } ?>
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="kas_type">DA Number:</label>
+                                    <label class="control-label col-sm-12" for="job_dano">DA Number:</label>
                                     <div class="col-sm-12">
                                         <select name="job_dano" value="<?= $job_dano; ?>" class="form-control select">
                                             <option value="" <?= ($job_dano == "") ? "selected" : ""; ?>>Select DA Number</option>
@@ -150,9 +150,35 @@
                                     </div>
                                 </div>
                                 <script>
+                                    function listrekening() {                                        
+                                        var kas_type = $("#kas_type").val();
+                                        var kas_rekdari = $("#kas_rekdari").val();
+                                        var kas_rekke = $("#kas_rekke").val();
+                                        // alert('<?= base_url("api/listrekening"); ?>?type=' + kas_type + '&asal=from&kas_rekdari=' + kas_rekdari + '&kas_rekke=' + kas_rekke);
+                                        $.get("<?= base_url("api/listrekening"); ?>", {
+                                                type: kas_type,
+                                                asal: 'from',
+                                                kas_rekdari: kas_rekdari,
+                                                kas_rekke: kas_rekke
+                                            })
+                                            .done(function(data) {
+                                                $("#kas_rekdari").html(data);
+                                            });
+                                        $.get("<?= base_url("api/listrekening"); ?>", {
+                                                type: kas_type,
+                                                asal: 'to',
+                                                kas_rekdari: kas_rekdari,
+                                                kas_rekke: kas_rekke
+                                            })
+                                            .done(function(data) {
+                                                $("#kas_rekke").html(data);
+                                            });
+                                    }
+
                                     function pilihtype() {
                                         var kas_type = $("#kas_type").val();
                                         var kas_debettype = $("#kas_debettype").val();
+
                                         if (kas_type == "Debet") {
                                             $(".kredit").hide();
                                             $(".debet").show();
@@ -168,6 +194,7 @@
                                         }
                                     }
                                     $(document).ready(function() {
+                                        listrekening();
                                         pilihtype();
                                         $("#kas_qty, #kas_nominal, #kas_total").on("keyup", function() {
                                             var kas_qty = $("#kas_qty").val();
@@ -180,15 +207,18 @@
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_rekdari">Rekening Dari:</label>
                                     <div class="col-sm-12">
-                                        <select name="kas_rekdari" value="<?= $kas_rekdari; ?>" class="form-control select">
+                                        <select id="kas_rekdari" name="kas_rekdari" value="<?= $kas_rekdari; ?>" class="form-control select">
                                             <option value="" <?= ($kas_rekdari == "") ? "selected" : ""; ?>>Select Rekening</option>
                                             <?php
                                             $usr = $this->db
                                                 ->table("rekening")
+                                                ->orderBy("rekening_type", "ASC")
                                                 ->orderBy("rekening_an", "ASC")
                                                 ->get();
                                             foreach ($usr->getResult() as $usr) { ?>
-                                                <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekdari == $usr->rekening_id) ? "selected" : ""; ?>><?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+                                                <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekdari == $usr->rekening_id) ? "selected" : ""; ?>>
+                                                    (<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?>
+                                                </option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -197,15 +227,19 @@
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12 rekke">
                                         <label class="control-label col-sm-12" for="kas_rekke">Rekening Ke:</label>
                                         <div class="col-sm-12">
-                                            <select name="kas_rekke" value="<?= $kas_rekke; ?>" class="form-control select">
+                                            <select id="kas_rekke" name="kas_rekke" value="<?= $kas_rekke; ?>" class="form-control select">
                                                 <option value="" <?= ($kas_rekke == "") ? "selected" : ""; ?>>Select Rekening</option>
+                                                <option value="-1" <?= ($kas_rekke == "-1") ? "selected" : ""; ?>>Pettycash</option>
                                                 <?php
                                                 $usr = $this->db
                                                     ->table("rekening")
+                                                    ->orderBy("rekening_type", "ASC")
                                                     ->orderBy("rekening_an", "ASC")
                                                     ->get();
                                                 foreach ($usr->getResult() as $usr) { ?>
-                                                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>><?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+                                                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>
+                                                        (<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?>
+                                                    </option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -410,11 +444,11 @@
                                                             (
                                                                 isset(session()->get("halaman")['108']['act_delete'])
                                                                 && session()->get("halaman")['108']['act_delete'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['120']['act_delete'])
                                                                 && session()->get("halaman")['120']['act_delete'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['121']['act_delete'])
                                                                 && session()->get("halaman")['121']['act_delete'] == "1"
@@ -448,8 +482,8 @@
                                             <?php if ($url == "pettycash" || $url == "kas") { ?>
                                                 <td class="text-right"><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
                                             <?php } ?>
-                                            <td class="text-left"><?= ($usr->rekdari == "") ? "Pettycash" : $usr->rekdari; ?></td>
-                                            <td class="text-left"><?= ($usr->rekke == "") ? "Pettycash" : $usr->rekke; ?></td>
+                                            <td class="text-left"><?= ($usr->kas_rekdari == "-1") ? "Pettycash" : $usr->rekdari; ?></td>
+                                            <td class="text-left"><?= ($usr->kas_rekke == "-1") ? "Pettycash" : $usr->rekke; ?></td>
                                             <td class="text-left"><?= $usr->kas_keterangan; ?></td>
                                             <?php if (isset($_GET["kas_type"]) &&  $_GET["kas_type"] != "Debet") { ?>
                                                 <td class="text-left"><?= $usr->vendor_name; ?></td>
