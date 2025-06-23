@@ -64,11 +64,43 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="rekening_type">Type:</label>
                                     <div class="col-sm-10">
-                                        <select required autofocus class="form-control" id="rekening_type" name="rekening_type">
-                                            <option value="" <?=($rekening_type=="")?"selected":"";?>>Pilih Bank</option>
-                                            <option value="NKL" <?=($rekening_type=="NKL")?"selected":"";?>>NKL</option>
-                                            <option value="Customer" <?=($rekening_type=="Customer")?"selected":"";?>>Customer</option>
-                                            <option value="Vendor" <?=($rekening_type=="Vendor")?"selected":"";?>>Vendor</option>                                           
+                                        <select onchange="pilihtipe()" required autofocus class="form-control" id="rekening_type" name="rekening_type">
+                                            <option value="" <?= ($rekening_type == "") ? "selected" : ""; ?>>Pilih Tipe</option>
+                                            <option value="NKL" <?= ($rekening_type == "NKL") ? "selected" : ""; ?>>NKL</option>
+                                            <option value="Customer" <?= ($rekening_type == "Customer") ? "selected" : ""; ?>>Customer</option>
+                                            <option value="Vendor" <?= ($rekening_type == "Vendor") ? "selected" : ""; ?>>Vendor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="vendor">
+                                    <label class="control-label col-sm-12" for="vendor_id">Vendor:</label>
+                                    <div class="col-sm-12">
+                                        <select id="vendor_id" name="vendor_id" value="<?= $vendor_id; ?>" class="form-control select">
+                                            <option value="" <?= ($vendor_id == "") ? "selected" : ""; ?>>Select Vendor</option>
+                                            <?php
+                                            $usr = $this->db
+                                                ->table("vendor")
+                                                ->orderBy("vendor_name", "ASC")
+                                                ->get();
+                                            foreach ($usr->getResult() as $usr) { ?>
+                                                <option value="<?= $usr->vendor_id; ?>" <?= ($vendor_id == $usr->vendor_id) ? "selected" : ""; ?>><?= $usr->vendor_name; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="customer">
+                                    <label class="control-label col-sm-12" for="customer_id">Customer:</label>
+                                    <div class="col-sm-12">
+                                        <select id="customer_id" name="customer_id" value="<?= $customer_id; ?>" class="form-control select">
+                                            <option value="" <?= ($customer_id == "") ? "selected" : ""; ?>>Select customer</option>
+                                            <?php
+                                            $usr = $this->db
+                                                ->table("customer")
+                                                ->orderBy("customer_name", "ASC")
+                                                ->get();
+                                            foreach ($usr->getResult() as $usr) { ?>
+                                                <option value="<?= $usr->customer_id; ?>" <?= ($customer_id == $usr->customer_id) ? "selected" : ""; ?>><?= $usr->customer_name; ?></option>
+                                            <?php } ?>
                                         </select>
                                     </div>
                                 </div>
@@ -125,6 +157,7 @@
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
                                         <th>Type</th>
+                                        <th>Nama Customer/Vendor/NKL</th>
                                         <th>Bank</th>
                                         <th>Atas Nama</th>
                                         <th>Nomor Rekening</th>
@@ -134,10 +167,12 @@
                                     <?php
                                     $usr = $this->db
                                         ->table("rekening")
-                                        ->join("bank","bank.bank_id=rekening.bank_id","left")
+                                        ->join("bank", "bank.bank_id=rekening.bank_id", "left")
+                                        ->join("customer", "customer.customer_id=rekening.customer_id", "left")
+                                        ->join("vendor", "vendor.vendor_id=rekening.vendor_id", "left")
                                         ->orderBy("rekening_type", "ASC")
                                         ->get();
-                                    //echo $this->db->getLastquery();
+                                    // echo $this->db->getLastquery();
                                     $no = 1;
                                     foreach ($usr->getResult() as $usr) { ?>
                                         <tr>
@@ -186,6 +221,20 @@
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
                                             <td class="text-left"><?= $usr->rekening_type; ?></td>
+                                            <td class="text-left">
+                                                <?php
+                                                if ($usr->rekening_type == "NKL") {
+                                                    $nama = "NKL";
+                                                }
+                                                if ($usr->rekening_type == "Customer") {
+                                                    $nama = $usr->customer_name;
+                                                }
+                                                if ($usr->rekening_type == "Vendor") {
+                                                    $nama = $usr->vendor_name;
+                                                }
+                                                echo $nama;
+                                                ?>
+                                            </td>
                                             <td class="text-left"><?= $usr->bank_name; ?></td>
                                             <td class="text-left"><?= $usr->rekening_an; ?></td>
                                             <td class="text-left"><?= $usr->rekening_no; ?></td>
@@ -201,6 +250,24 @@
     </div>
 </div>
 <script>
+    function pilihtipe() {
+        var rekening_type = $("#rekening_type").val();
+        if (rekening_type == "Customer") {
+            $('#customer').show();
+            $('#vendor').hide();
+        } else if (rekening_type == "Vendor") {
+            $('#vendor').show();
+            $('#customer').hide();
+        } else {
+            $('#customer').hide();
+            $('#vendor').hide();
+        }
+    }
+    $(document).ready(function() {
+        $('#customer').hide();
+        $('#vendor').hide();
+        pilihtipe();
+    });
     $('.select').select2();
     var title = "Master Rekening";
     $("title").text(title);
