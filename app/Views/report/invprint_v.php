@@ -196,7 +196,7 @@ function terbilang($angka)
 
 <div class='container-fluid'>
     <div class='row'>
-        <div class='col-12 border-bottom atas'>
+        <!-- <div class='col-12 border-bottom atas'>
             <div class="row">
                 <div class='col-4 text-right'>
                     <?php
@@ -217,7 +217,8 @@ function terbilang($angka)
                     <div id="tagline">PROJECT CARGO - INLAND TRUCK - CARGO MOOVING - CONTAINERIZED</div>
                 </div>
             </div>
-        </div>
+        </div> -->
+        <div class='col-12 border-bottom atas' style="height:3.5cm;"></div>
 
         <?php
         $inv = $this->db->table("inv")
@@ -438,7 +439,7 @@ function terbilang($angka)
         </div>
     </div>
 </div>
-<div class=" col-12 bg-primary p-3 text-center" style="border-radius:5px; border-top:grey solid 1px;"><div style="font-size:25px; font-weight:bold;"><?= $identity->identity_company; ?></div><?= $identity->identity_address; ?></div>
+<!-- <div class=" col-12 bg-primary p-3 text-center" style="border-radius:5px; border-top:grey solid 1px;"><div style="font-size:25px; font-weight:bold;"><?= $identity->identity_company; ?></div><?= $identity->identity_address; ?></div> -->
 <script>
     $("#terbilang").html('<?= terbilang($sisa); ?> Rupiah');
     $('.select').select2();
