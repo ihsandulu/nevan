@@ -293,10 +293,12 @@ function terbilang($angka)
                                                     <span style="font-weight: bold;"> Tujuan Pembayaran :</span><br />
                                                     <ul>
                                                         <?php
-                                                        $rekening = $this->db->table("rekening")->where("rekening_type", "NKL")->get();
+                                                        $rekening = $this->db->table("rekening")
+                                                        ->join("bank", "bank.bank_id=rekening.bank_id", "left")
+                                                        ->where("rekening_type", "NKL")->get();
                                                         foreach ($rekening->getResult() as $row) { ?>
                                                             <li>
-                                                                * <span><?= $row->rekening_no; ?> - <?= $row->rekening_an; ?></span>
+                                                                * (<?= $row->bank_name; ?>) <span><?= $row->rekening_no; ?> - <?= $row->rekening_an; ?></span>
                                                             </li>
                                                         <?php } ?>
                                                     </ul>
