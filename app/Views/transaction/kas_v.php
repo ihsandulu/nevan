@@ -393,7 +393,7 @@
                                         $build->where("kas_debettype", "pettycash");
                                     }
                                     $build->where("kas_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
-                                    $usr = $build->orderBy("kas.kas_id", "DESC")
+                                    $usr = $build->orderBy("kas.kas_date", "ASC")
                                         ->get();
 
                                     // echo $this->db->getLastquery();
