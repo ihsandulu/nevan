@@ -1,5 +1,5 @@
-<?php 
-echo $this->include("template/headersaja_v"); 
+<?php
+echo $this->include("template/headersaja_v");
 function terbilang($angka)
 {
     $angka = abs($angka);
@@ -276,7 +276,19 @@ function terbilang($angka)
                                         <tr>
                                             <td class="text-left" rowspan="8" colspan="3">
                                                 <i>Terbilang :</i><br />
-                                                <i id="terbilang"></i>
+                                                <i id="terbilang"></i><br/><br/>
+                                                <span id="norek">
+                                                    <span style="font-weight: bold;"> Tujuan Pembayaran :</span><br />
+                                                    <ul>
+                                                        <?php
+                                                        $rekening = $this->db->table("rekening")->where("rekening_type", "NKL")->get();
+                                                        foreach ($rekening->getResult() as $row) { ?>
+                                                            <li>
+                                                                * <span><?= $row->rekening_no; ?> - <?= $row->rekening_an; ?></span>
+                                                            </li>
+                                                        <?php } ?>
+                                                    </ul>
+                                                </span>
                                             </td>
                                             <td class="text-left">
                                                 Total
@@ -301,92 +313,92 @@ function terbilang($angka)
                                                 <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_dtagihan, 2, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
-                                        <?php 
-                                            $dtagihan= $inv->inv_dtagihan;
-                                            $ppn1k1=0;
-                                            $ppn11=0;
-                                            $ppn12=0;
-                                            $pph=0;
-                                            ?>
-                                        <?php if($inv->inv_ppn1k1>0){
-                                            $ppn1k1 = $dtagihan*1.1/100;
-                                            ?>
-                                        <tr>                                            
-                                            <td class="text-left">
-                                                PPN 1,1%
-                                            </td>
-                                            <td>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($ppn1k1, 2, ",", "."); ?></span></span>
-                                            </td>
-                                        </tr>
-                                        <?php }?>
-                                        <?php if($inv->inv_ppn11>0){
-                                            $ppn11 = $dtagihan*11/100;
-                                            ?>
-                                        <tr>                                            
-                                            <td class="text-left">
-                                                PPN 11%
-                                            </td>
-                                            <td>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($ppn11, 2, ",", "."); ?></span></span>
-                                            </td>
-                                        </tr>
-                                        <?php }?>
-                                        <?php if($inv->inv_ppn12>0){
-                                            $ppn12 = $dtagihan*12/100;
-                                            ?>
-                                        <tr>                                            
-                                            <td class="text-left">
-                                                PPN 12%
-                                            </td>
-                                            <td>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($ppn12, 2, ",", "."); ?></span></span>
-                                            </td>
-                                        </tr>
-                                        <?php }?>
-                                        <?php if($inv->inv_pph>0){
-                                            $pph=$dtagihan*2/100;
-                                            ?>
-                                        <tr>                                            
-                                            <td class="text-left">
-                                                PPH
-                                            </td>
-                                            <td>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($pph, 2, ",", "."); ?></span></span>
-                                            </td>
-                                        </tr>
-                                        <?php }?>
-                                        <tr>                                            
+                                        <?php
+                                        $dtagihan = $inv->inv_dtagihan;
+                                        $ppn1k1 = 0;
+                                        $ppn11 = 0;
+                                        $ppn12 = 0;
+                                        $pph = 0;
+                                        ?>
+                                        <?php if ($inv->inv_ppn1k1 > 0) {
+                                            $ppn1k1 = $dtagihan * 1.1 / 100;
+                                        ?>
+                                            <tr>
+                                                <td class="text-left">
+                                                    PPN 1,1%
+                                                </td>
+                                                <td>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn1k1, 2, ",", "."); ?></span></span>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                        <?php if ($inv->inv_ppn11 > 0) {
+                                            $ppn11 = $dtagihan * 11 / 100;
+                                        ?>
+                                            <tr>
+                                                <td class="text-left">
+                                                    PPN 11%
+                                                </td>
+                                                <td>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn11, 2, ",", "."); ?></span></span>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                        <?php if ($inv->inv_ppn12 > 0) {
+                                            $ppn12 = $dtagihan * 12 / 100;
+                                        ?>
+                                            <tr>
+                                                <td class="text-left">
+                                                    PPN 12%
+                                                </td>
+                                                <td>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn12, 2, ",", "."); ?></span></span>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                        <?php if ($inv->inv_pph > 0) {
+                                            $pph = $dtagihan * 2 / 100;
+                                        ?>
+                                            <tr>
+                                                <td class="text-left">
+                                                    PPH
+                                                </td>
+                                                <td>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($pph, 2, ",", "."); ?></span></span>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                        <tr>
                                             <td class="text-left">
                                                 Grand Total
                                             </td>
                                             <td>
-                                                <?php 
-                                            $tharga= $dtagihan+$ppn1k1+$ppn11+$ppn12;
-                                            $grand=$tharga-$pph;
-                                            ?>
+                                                <?php
+                                                $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+                                                $grand = $tharga - $pph;
+                                                ?>
                                                 <span class="uang"><span>IDR</span><span><?= number_format($grand, 2, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
-                                        <tr>                                            
+                                        <tr>
                                             <td class="text-left">
                                                 Payment
                                             </td>
                                             <td>
-                                                <?php 
-                                            $payment=$inv->inv_payment;
-                                            ?>
+                                                <?php
+                                                $payment = $inv->inv_payment;
+                                                ?>
                                                 <span class="uang"><span>IDR</span><span><?= number_format($payment, 2, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
-                                        <tr>                                            
+                                        <tr>
                                             <td class="text-left">
                                                 Sisa Hutang
                                             </td>
                                             <td>
-                                                <?php 
-                                            $sisa=$grand-$payment;
-                                            ?>
+                                                <?php
+                                                $sisa = $grand - $payment;
+                                                ?>
                                                 <span class="uang"><span>IDR</span><span><?= number_format($sisa, 2, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
@@ -401,7 +413,7 @@ function terbilang($angka)
     </div>
 </div>
 <script>
-    $("#terbilang").html('<?=terbilang($sisa);?> Rupiah');
+    $("#terbilang").html('<?= terbilang($sisa); ?> Rupiah');
     $('.select').select2();
     var title = "Tarif <?= $this->session->get("identity_name"); ?>";
     $("title").text(title);
