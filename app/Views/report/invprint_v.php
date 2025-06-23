@@ -185,6 +185,13 @@ function terbilang($angka)
     .table th {
         border-top: 1px solid rgb(0, 0, 0);
     }
+
+    .kotak {
+        width: 100px;
+        height: 100px;
+        background-color: lightblue;
+        border: 1px solid #000;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -294,14 +301,19 @@ function terbilang($angka)
                                                     <ul>
                                                         <?php
                                                         $rekening = $this->db->table("rekening")
-                                                        ->join("bank", "bank.bank_id=rekening.bank_id", "left")
-                                                        ->where("rekening_type", "NKL")->get();
+                                                            ->join("bank", "bank.bank_id=rekening.bank_id", "left")
+                                                            ->where("rekening_type", "NKL")->get();
                                                         foreach ($rekening->getResult() as $row) { ?>
                                                             <li>
                                                                 * (<?= $row->bank_name; ?>) <span><?= $row->rekening_no; ?> - <?= $row->rekening_an; ?></span>
                                                             </li>
                                                         <?php } ?>
                                                     </ul>
+                                                    <div class="text-center" style="position:relative; left:30px; width:200px; margin-top:25px;">
+                                                        <div style="font-weight: bold; font-size:15px; ">AUTHORIZED SIGNATURE</div>
+                                                        <div><img src="<?= base_url("images/identity_financettd/" . $identity->identity_financettd); ?>" style="height:100px; width:auto;" /></div>
+                                                        <div style="font-weight: bold; font-size:20px; margin-top:0px;"><?= $identity->identity_financename; ?></div>
+                                                    </div>
                                                 </span>
                                             </td>
                                             <td class="text-left">
@@ -426,6 +438,7 @@ function terbilang($angka)
         </div>
     </div>
 </div>
+<div class=" col-12 bg-primary p-3 text-center" style="border-radius:5px; border-top:grey solid 1px;"><div style="font-size:25px; font-weight:bold;"><?= $identity->identity_company; ?></div><?= $identity->identity_address; ?></div>
 <script>
     $("#terbilang").html('<?= terbilang($sisa); ?> Rupiah');
     $('.select').select2();
