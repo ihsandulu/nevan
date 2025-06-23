@@ -23,6 +23,12 @@ class api extends BaseController
     {
         echo "Page Not Found!";
     }
+    public function saveinvno()
+    {
+        $where["inv_id"] = $this->request->getGET("inv_id");
+        $input1["inv_no"] = $this->request->getGET("inv_no");
+        $this->db->table('inv')->update($input1, $where);
+    }
 
     public function listrekening()
     {

@@ -95,11 +95,15 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <?php
                             $dari = date("Y-m-d", strtotime("-1 week", strtotime(date("Y-m-d"))));
                             $ke = date("Y-m-d");
+                            $lunas = "";
                             if (isset($_GET["dari"])) {
                                 $dari = $_GET["dari"];
                             }
                             if (isset($_GET["ke"])) {
                                 $ke = $_GET["ke"];
+                            }
+                            if (isset($_GET["lunas"])) {
+                                $lunas = $_GET["lunas"];
                             }
                             ?>
                             <div class="col-3 ">
@@ -119,6 +123,20 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     </div>
                                     <div class="col-8">
                                         <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 row ">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="text-dark">Lunas :</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <select class="form-control" name="lunas" value="<?= $lunas; ?>">
+                                            <option value="">Semua</option>
+                                            <option value="1" <?= ($lunas == "1") ? "selected" : ""; ?>>Lunas</option>
+                                            <option value="0" <?= ($lunas == "0") ? "selected" : ""; ?>>Belum Lunas</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -243,7 +261,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->inv_date; ?></td>
-                                        <td><?= $usr->inv_no; ?></td>
+                                        <td>
+                                            <input type="text" class="form-control" id="inv_no<?= $usr->inv_id; ?>" value="<?= $usr->inv_no; ?>" />
+                                            <button class="btn btn-sm btn-info" onclick="saveinvno('<?= $usr->inv_id; ?>')">Save</button>
+                                        </td>
                                         <td><?= $usr->job_dano; ?></td>
                                         <td class="text-left"><?= $usr->customer_name; ?></td>
                                         <td class="ftagihan">
@@ -311,7 +332,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         </td>
                                         <td><span class="uang">
                                                 <span>IDR</span>
-                                                <span><?= number_format($grand - $usr->inv_payment, 2, ",", "."); ?></span>
+                                                <span><?php
+                                                        $sisahutang = $grand - $usr->inv_payment;
+                                                        echo number_format($sisahutang, 2, ",", "."); ?></span>
                                             </span>
                                         </td>
                                     </tr>
@@ -331,6 +354,12 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     $(".card-title").text(title);
     $("#page-title").text(title);
     $("#page-title-link").text(title);
+    function saveinvno(inv_id){
+        $.get("<?=base_url("api/saveinvno");?>",{inv_id:inv_id, inv_no:$("#inv_no"+inv_id).val()})
+        .done(function(data) {
+            alert("Invoice number saved successfully.");
+        });
+    }
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>
