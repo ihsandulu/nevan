@@ -89,8 +89,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 data-bs-trigger="manual"
                                 data-bs-placement="top">
                                 <option value="">From</option>
-                                <option value="-1">Pettycash</option>
                                 <?php $rekening = $this->db->table("rekening")
+                                    ->where("rekening_type", "Customer")
                                     ->orderBy("rekening_no", "ASC")
                                     ->get();
                                 foreach ($rekening->getResult() as $rekening) {
@@ -120,6 +120,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <option value="">To</option>
                                 <option value="-1">Pettycash</option>
                                 <?php $rekening = $this->db->table("rekening")
+                                    ->where("rekening_type", "NKL")
                                     ->orderBy("rekening_no", "ASC")
                                     ->get();
                                 foreach ($rekening->getResult() as $rekening) {
@@ -182,9 +183,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <?php
                                 $build = $this->db
                                     ->table("invpayment")
-                                    ->join("methodpayment","methodpayment.methodpayment_id=invpayment.methodpayment_id","left")
-                                    ->join("(SELECT rekening_id as asalid, rekening_no as asalno from rekening) As asal","asal.asalid=invpayment.invpayment_from","left")
-                                    ->join("(SELECT rekening_id as tujuanid, rekening_no as tujuanno from rekening) As tujuan","tujuan.tujuanid=invpayment.invpayment_to","left");
+                                    ->join("methodpayment", "methodpayment.methodpayment_id=invpayment.methodpayment_id", "left")
+                                    ->join("(SELECT rekening_id as asalid, rekening_no as asalno from rekening) As asal", "asal.asalid=invpayment.invpayment_from", "left")
+                                    ->join("(SELECT rekening_id as tujuanid, rekening_no as tujuanno from rekening) As tujuan", "tujuan.tujuanid=invpayment.invpayment_to", "left");
                                 if (isset($_GET["inv_no"])) {
                                     $build->where("inv_no", $inv_no);
                                 }
@@ -214,7 +215,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <button type="button" onclick="editinvpayment('<?= $usr->invpayment_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
                                                             <span class="fa fa-edit" style="color:white;"></span>
                                                         </button>
-                                                        
+
                                                         <input type="hidden" id="inv_no<?= $usr->invpayment_id; ?>" name="inv_no" value="<?= $usr->inv_no; ?>" />
                                                         <input type="hidden" id="invpayment_total<?= $usr->invpayment_id; ?>" name="invpayment_total" value="<?= $usr->invpayment_total; ?>" />
                                                         <input type="hidden" id="invpayment_price<?= $usr->invpayment_id; ?>" name="invpayment_price" value="<?= $usr->invpayment_price; ?>" />
