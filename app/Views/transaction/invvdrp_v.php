@@ -85,6 +85,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <option value="">From</option>
                                 <option value="-1">Pettycash</option>
                                 <?php $rekening = $this->db->table("rekening")
+                                    ->where("rekening_type", "NKL")
                                     ->orderBy("rekening_no", "ASC")
                                     ->get();
                                 foreach ($rekening->getResult() as $rekening) {
@@ -112,8 +113,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 data-bs-trigger="manual"
                                 data-bs-placement="top">
                                 <option value="">To</option>
-                                <option value="-1">Pettycash</option>
                                 <?php $rekening = $this->db->table("rekening")
+                                    ->where("rekening_type", "Vendor")
                                     ->orderBy("rekening_no", "ASC")
                                     ->get();
                                 foreach ($rekening->getResult() as $rekening) {
