@@ -223,6 +223,7 @@
                                             <td class="text-left"><?= $usr->rekening_type; ?></td>
                                             <td class="text-left">
                                                 <?php
+                                                $nama = "";
                                                 if ($usr->rekening_type == "NKL") {
                                                     $nama = "NKL";
                                                 }
