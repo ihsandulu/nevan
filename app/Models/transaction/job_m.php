@@ -153,7 +153,7 @@ class job_m extends core_m
                 ->orderBy("job_dano", "desc")
                 ->limit(1)
                 ->get();
-            $dano = 250001;
+            $dano = 250192;
             foreach ($cekdano->getResult() as $dano) {
                 $dano = $dano->job_dano + 1;
             }
