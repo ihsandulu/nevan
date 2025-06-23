@@ -178,7 +178,31 @@ class invd_m extends core_m
             $singkatan = $this->request->getPost("customer_singkatan");
             $invNon = $noinv . "/INV/NKL-" . $singkatan . "/" . $romawi[$bulan] . "/" . date("Y", strtotime($input["inv_date"]));
             $input["inv_no"] = $invNon;
-            $input["inv_dtagihan"] = $input["inv_tagihan"] - $input["inv_discount"];
+
+            // $input["inv_dtagihan"] = $input["inv_tagihan"] - $input["inv_discount"];
+            
+            $dtagihan = $input["inv_tagihan"] - $input["inv_discount"];
+            $ppn1k1 = 0;
+            $ppn11 = 0;
+            $ppn12 = 0;
+            $pph = 0;
+            $input["inv_dtagihan"] = $dtagihan;
+            if (isset($input["inv_ppn1k1"]) && $input["inv_ppn1k1"] > 0) {
+                $ppn1k1 = $dtagihan * 1.1 / 100;
+            }
+            if (isset($input["inv_ppn11"]) && $input["inv_ppn11"] > 0) {
+                $ppn11 = $dtagihan * 11 / 100;
+            }
+            if (isset($input["inv_ppn12"]) && $input["inv_ppn12"] > 0) {
+                $ppn12 = $dtagihan * 12 / 100;
+            }
+            if (isset($input["inv_pph"]) && $input["inv_pph"] > 0) {
+                $pph = $dtagihan * 2 / 100;
+            }
+            $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+            $grand = $tharga - $pph;
+            $input["inv_grand"] = $grand;
+
             // dd($input);
             $this->db->table('inv')->insert($input);
             // echo $this->db->getLastQuery(); die;
@@ -285,7 +309,28 @@ class invd_m extends core_m
             $jobdanos      = implode(', ', $jobdano);
             $input["job_dano"] = $jobdanos;
             $input["inv_tagihan"] = $total;
-            $input["inv_dtagihan"] = $input["inv_tagihan"] - $input["inv_discount"];
+            $dtagihan = $input["inv_tagihan"] - $input["inv_discount"];
+            $ppn1k1 = 0;
+            $ppn11 = 0;
+            $ppn12 = 0;
+            $pph = 0;
+            $input["inv_dtagihan"] = $dtagihan;
+            if (isset($input["inv_ppn1k1"]) && $input["inv_ppn1k1"] > 0) {
+                $ppn1k1 = $dtagihan * 1.1 / 100;
+            }
+            if (isset($input["inv_ppn11"]) && $input["inv_ppn11"] > 0) {
+                $ppn11 = $dtagihan * 11 / 100;
+            }
+            if (isset($input["inv_ppn12"]) && $input["inv_ppn12"] > 0) {
+                $ppn12 = $dtagihan * 12 / 100;
+            }
+            if (isset($input["inv_pph"]) && $input["inv_pph"] > 0) {
+                $pph = $dtagihan * 2 / 100;
+            }
+            $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+            $grand = $tharga - $pph;
+            $input["inv_grand"] = $grand;
+
             $this->db->table('inv')->update($input, array("inv_id" => $this->request->getPost("inv_id")));
 
 
