@@ -538,12 +538,12 @@
 
 
                                 <?php } ?>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                               <!--  <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="job_explanation">EXPLANATION:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="job_explanation" name="job_explanation" placeholder="" value="<?= $job_explanation; ?>">
                                     </div>
-                                </div>
+                                </div> -->
 
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12 text-success" style="font-weight:bold;" for="job_status">Status Job:</label>
@@ -922,7 +922,7 @@
                                             <th>Bupot No.</th>
                                             <th>NPWP</th>
                                         <?php } ?>
-                                        <th>Explanation</th>
+                                        <!-- <th>Explanation</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1261,7 +1261,7 @@
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_npwp; ?></td>
                                             <?php } ?>
 
-                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_explanation; ?></td>
+                                            <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_explanation; ?></td> -->
                                         </tr>
                                     <?php } ?>
                                 </tbody>
