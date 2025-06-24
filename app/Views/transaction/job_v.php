@@ -872,6 +872,7 @@
 
                                         <th>Shipment Date</th>
                                         <th>Status Job</th>
+                                        <th>Pickup Status</th>
                                         <th>Sales</th>
                                         <th>DA Number</th>
                                         <th>Shipper Name</th>
@@ -889,7 +890,6 @@
                                             <th>Vessel</th>
                                             <th>Pickup Address</th>
                                             <th>Pickup Date</th>
-                                            <th>Pickup Status</th>
                                             <th>Petugas</th>
                                             <th>Penyerah</th>
                                             <th>Kepada (SJ)</th>
@@ -1201,6 +1201,7 @@
                                             <?php } ?>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_shipmentdate; ?></td>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_status; ?></td>
+                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_salesname; ?></td>
                                             <td class="<?= $textstatus; ?>"><?= $usr->job_dano; ?></td>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->customer_name; ?></td>
@@ -1219,7 +1220,6 @@
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->vessel_name; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickup; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupusername; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepada; ?></td>
