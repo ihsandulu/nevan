@@ -172,7 +172,8 @@ class invd_m extends core_m
             foreach ($inv->getResult() as $row) {
                 $invNon = $row->inv_no;
                 $inve = explode("/", $invNon);
-                $noinv = $inve[0] + 1;
+                // $noinv = $inve[0] + 1;
+                $noinv = isset($inve[0]) ? ((int)$inve[0] + 1) : 1;
             }
             $noinv   = str_pad($noinv, 3, '0', STR_PAD_LEFT);
             $singkatan = $this->request->getPost("customer_singkatan");
