@@ -50,23 +50,23 @@
                                 (
                                     isset(session()->get("halaman")['102']['act_create'])
                                     && session()->get("halaman")['102']['act_create'] == "1"
-                                )||
+                                ) ||
                                 (
                                     isset(session()->get("halaman")['115']['act_create'])
                                     && session()->get("halaman")['115']['act_create'] == "1"
-                                )||
+                                ) ||
                                 (
                                     isset(session()->get("halaman")['116']['act_create'])
                                     && session()->get("halaman")['116']['act_create'] == "1"
-                                )||
+                                ) ||
                                 (
                                     isset(session()->get("halaman")['118']['act_create'])
                                     && session()->get("halaman")['118']['act_create'] == "1"
-                                )||
+                                ) ||
                                 (
                                     isset(session()->get("halaman")['119']['act_create'])
                                     && session()->get("halaman")['119']['act_create'] == "1"
-                                )||
+                                ) ||
                                 (
                                     isset(session()->get("halaman")['114']['act_create'])
                                     && session()->get("halaman")['114']['act_create'] == "1"
@@ -337,7 +337,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                        <label class="control-label col-sm-12" for="job_pickupstatus">Pickup Status:</label>
+                                        <label class="control-label col-sm-12 text-info" style="font-weight:bold;" for="job_pickupstatus">Pickup Status:</label>
                                         <div class="col-sm-12">
                                             <select class="form-control" id="job_pickupstatus" name="job_pickupstatus">
                                                 <option value="0" <?= ($job_pickupstatus == "0") ? "selected" : ""; ?>>--Select--</option>
@@ -544,6 +544,18 @@
                                         <input type="text" class="form-control" id="job_explanation" name="job_explanation" placeholder="" value="<?= $job_explanation; ?>">
                                     </div>
                                 </div>
+
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12 text-success" style="font-weight:bold;" for="job_status">Status Job:</label>
+                                    <div class="col-sm-12">
+                                        <select class="form-control" id="job_status" name="job_status" value="<?= $job_status; ?>">
+                                            <option value="">Pilih Status</option>
+                                            <option value="PROCESS" <?= ($job_status == "PROCESS") ? "selected" : ""; ?>>PROCESS</option>
+                                            <option value="DONE" <?= ($job_status == "DONE") ? "selected" : ""; ?>>DONE</option>
+                                        </select>
+                                    </div>
+                                </div>
+
                                 <div class="form-group col-12 label label-success">
                                     <h2 class="text-white">Surat Jalan</h2>
                                 </div>
@@ -792,12 +804,16 @@
                                 <?php
                                 $dari = date("Y-m-d", strtotime("-5 days"));
                                 $ke = date("Y-m-d");
+                                $status = "";
                                 $idepartemen = 0;
                                 if (isset($_GET["dari"])) {
                                     $dari = $_GET["dari"];
                                 }
                                 if (isset($_GET["ke"])) {
                                     $ke = $_GET["ke"];
+                                }
+                                if (isset($_GET["status"])) {
+                                    $status = $_GET["status"];
                                 }
                                 ?>
                                 <div class="col-3 ">
@@ -820,8 +836,22 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-3 row ">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="text-dark">Status Job :</label>
+                                        </div>
+                                        <div class="col-8">
+                                            <select class="form-control" name="status" value="<?= $status; ?>">
+                                                <option value="">Semua</option>
+                                                <option value="PROCESS" <?= ($status == "PROCESS") ? "selected" : ""; ?>>PROCESS</option>
+                                                <option value="DONE" <?= ($status == "DONE") ? "selected" : ""; ?>>DONE</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="col-3">
-                                    <?php if(isset($_GET["report"])){?><input type="hidden" name="report" value="OK"><?php }?>
+                                    <?php if (isset($_GET["report"])) { ?><input type="hidden" name="report" value="OK"><?php } ?>
                                     <button type="submit" class="btn btn-block btn-primary">Search</button>
                                 </div>
                             </div>
@@ -841,6 +871,7 @@
                                         <?php } ?>
 
                                         <th>Shipment Date</th>
+                                        <th>Status Job</th>
                                         <th>Sales</th>
                                         <th>DA Number</th>
                                         <th>Shipper Name</th>
@@ -910,6 +941,13 @@
                                     if ($ppn != 0) {
                                         $build->where("job_ppntype", $ppn);
                                     }
+                                    if (isset($_GET["status"]) && $_GET["status"] != "") {
+                                        if ($status == "DONE") {
+                                            $build->where("job_status", "DONE");
+                                        } else if ($status == "PROCESS") {
+                                            $build->where("job_status", "PROCESS");
+                                        }
+                                    }
                                     $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     $usr = $build
                                         ->orderBy("job_id", "ASC")
@@ -921,18 +959,25 @@
                                         switch ($usr->job_pickupstatus) {
                                             case "0":
                                                 $linestatus = "";
+                                                $textstatus = "text-dark";
                                                 break;
                                             case "1":
                                                 $linestatus = "bg-success";
+                                                $textstatus = "text-dark";
                                                 break;
                                             case "2":
                                                 $linestatus = "bg-warning";
+                                                $textstatus = "text-dark";
                                                 break;
+                                        }
+                                        if ($usr->job_status == "DONE") {
+                                            $linestatus = "bg-dark";
+                                            $textstatus = "text-white";
                                         }
                                     ?>
                                         <tr class="<?= $linestatus; ?>">
                                             <?php if (!isset($_GET["report"])) { ?>
-                                                <td style="padding-left:0px; padding-right:0px;">
+                                                <td class="<?= $textstatus; ?>" style="padding-left:0px; padding-right:0px;" class="<?= $textstatus; ?>">
 
                                                     <?php
                                                     if ($posisi != "purchasing" && $posisi != "operasional") {
@@ -947,23 +992,23 @@
                                                             (
                                                                 isset(session()->get("halaman")['102']['act_delete'])
                                                                 && session()->get("halaman")['102']['act_delete'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['115']['act_delete'])
                                                                 && session()->get("halaman")['115']['act_delete'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['116']['act_delete'])
                                                                 && session()->get("halaman")['116']['act_delete'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['118']['act_delete'])
                                                                 && session()->get("halaman")['118']['act_delete'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['119']['act_delete'])
                                                                 && session()->get("halaman")['119']['act_delete'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['114']['act_delete'])
                                                                 && session()->get("halaman")['114']['act_delete'] == "1"
@@ -989,23 +1034,23 @@
                                                             (
                                                                 isset(session()->get("halaman")['102']['act_update'])
                                                                 && session()->get("halaman")['102']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['115']['act_update'])
                                                                 && session()->get("halaman")['115']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['116']['act_update'])
                                                                 && session()->get("halaman")['116']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['118']['act_update'])
                                                                 && session()->get("halaman")['118']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['119']['act_update'])
                                                                 && session()->get("halaman")['119']['act_update'] == "1"
-                                                            )|
+                                                            ) |
                                                             (
                                                                 isset(session()->get("halaman")['114']['act_update'])
                                                                 && session()->get("halaman")['114']['act_update'] == "1"
@@ -1030,23 +1075,23 @@
                                                         (
                                                             isset(session()->get("halaman")['102']['act_update'])
                                                             && session()->get("halaman")['102']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['115']['act_update'])
                                                             && session()->get("halaman")['115']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['116']['act_update'])
                                                             && session()->get("halaman")['116']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['118']['act_update'])
                                                             && session()->get("halaman")['118']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['119']['act_update'])
                                                             && session()->get("halaman")['119']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['114']['act_update'])
                                                             && session()->get("halaman")['114']['act_update'] == "1"
@@ -1073,23 +1118,23 @@
                                                         (
                                                             isset(session()->get("halaman")['102']['act_update'])
                                                             && session()->get("halaman")['102']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['115']['act_update'])
                                                             && session()->get("halaman")['115']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['116']['act_update'])
                                                             && session()->get("halaman")['116']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['118']['act_update'])
                                                             && session()->get("halaman")['118']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['119']['act_update'])
                                                             && session()->get("halaman")['119']['act_update'] == "1"
-                                                        )||
+                                                        ) ||
                                                         (
                                                             isset(session()->get("halaman")['114']['act_update'])
                                                             && session()->get("halaman")['114']['act_update'] == "1"
@@ -1117,23 +1162,23 @@
                                                             (
                                                                 isset(session()->get("halaman")['102']['act_update'])
                                                                 && session()->get("halaman")['102']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['115']['act_update'])
                                                                 && session()->get("halaman")['115']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['116']['act_update'])
                                                                 && session()->get("halaman")['116']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['118']['act_update'])
                                                                 && session()->get("halaman")['118']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['119']['act_update'])
                                                                 && session()->get("halaman")['119']['act_update'] == "1"
-                                                            )||
+                                                            ) ||
                                                             (
                                                                 isset(session()->get("halaman")['114']['act_update'])
                                                                 && session()->get("halaman")['114']['act_update'] == "1"
@@ -1150,36 +1195,37 @@
                                                     } ?>
                                                 </td>
                                             <?php } ?>
-                                            <!-- <td><?= $no++; ?></td> -->
+                                            <!-- <td class="<?= $textstatus; ?>"><?= $no++; ?></td> -->
                                             <?php if ($ppn == 0) { ?>
-                                                <!-- <td><?= $usr->job_methode; ?></td> -->
+                                                <!-- <td class="<?= $textstatus; ?>"><?= $usr->job_methode; ?></td> -->
                                             <?php } ?>
-                                            <td style="white-space:nowrap;"><?= $usr->job_shipmentdate; ?></td>
-                                            <td style="white-space:nowrap;"><?= $usr->job_salesname; ?></td>
-                                            <td><?= $usr->job_dano; ?></td>
-                                            <td style="white-space:nowrap;"><?= $usr->customer_name; ?></td>
+                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_shipmentdate; ?></td>
+                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_status; ?></td>
+                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_salesname; ?></td>
+                                            <td class="<?= $textstatus; ?>"><?= $usr->job_dano; ?></td>
+                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->customer_name; ?></td>
 
                                             <?php if ($ppn != 2) { ?>
-                                                <td><?= $usr->origin_name; ?></td>
-                                                <td><?= $usr->destination_name; ?></td>
-                                                <td><?= $usr->job_tujuan; ?></td>
-                                                <td><?= $usr->job_tujuanaddress; ?></td>
-                                                <!-- <td style="white-space:nowrap;"><?= $usr->job_descgood; ?></td>
-                                                <td><?= number_format($usr->job_qty, 0, ",", "."); ?></td>
-                                                <td><?= $usr->job_satuan; ?></td>
-                                                <td><?= number_format($usr->job_cbm, 3, ",", "."); ?></td> -->
-                                                <td style="white-space:nowrap;"><?= $usr->service_name; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name2; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->vessel_name; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_pickup; ?></td>
-                                                <td style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_pickupusername; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_kepada; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_kepadaaddress; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->supervisi_name; ?></td>
-                                                <td style="white-space:nowrap;">
+                                                <td class="<?= $textstatus; ?>"><?= $usr->origin_name; ?></td>
+                                                <td class="<?= $textstatus; ?>"><?= $usr->destination_name; ?></td>
+                                                <td class="<?= $textstatus; ?>"><?= $usr->job_tujuan; ?></td>
+                                                <td class="<?= $textstatus; ?>"><?= $usr->job_tujuanaddress; ?></td>
+                                                <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_descgood; ?></td>
+                                                <td class="<?= $textstatus; ?>"><?= number_format($usr->job_qty, 0, ",", "."); ?></td>
+                                                <td class="<?= $textstatus; ?>"><?= $usr->job_satuan; ?></td>
+                                                <td class="<?= $textstatus; ?>"><?= number_format($usr->job_cbm, 3, ",", "."); ?></td> -->
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->service_name; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name2; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->vessel_name; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickup; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupusername; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepada; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepadaaddress; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->supervisi_name; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
                                                     <button
                                                         class="btn btn-primary btn-sm"
                                                         data-bs-toggle="modal"
@@ -1188,33 +1234,33 @@
                                                         Lihat Bukti
                                                     </button>
                                                 </td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_nopol; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_pengemudi; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_nopol; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pengemudi; ?></td>
                                                 <?php if ($ppn == 0) { ?>
-                                                    <td><?= $usr->vendor_name; ?></td>
-                                                    <td><?= $usr->job_dooring; ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= $usr->vendor_name; ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= $usr->job_dooring; ?></td>
                                                 <?php } ?>
                                                 <?php if ($posisi != "operasional") { ?>
-                                                    <!-- <td><?= number_format($usr->job_sell, 0, ",", "."); ?></td> -->
-                                                    <td><?= number_format($usr->job_total, 0, ",", "."); ?></td>
-                                                    <td><?= number_format($usr->job_cost, 0, ",", "."); ?></td>
-                                                    <td><?= number_format($usr->job_refund, 0, ",", "."); ?></td>
-                                                    <td><?= number_format($usr->job_fee, 0, ",", "."); ?></td>
-                                                    <td><?= number_format($usr->job_profit, 0, ",", "."); ?></td>
-                                                    <td><?= number_format($usr->job_gp, 0, ",", "."); ?></td>
+                                                    <!-- <td class="<?= $textstatus; ?>"><?= number_format($usr->job_sell, 0, ",", "."); ?></td> -->
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_total, 0, ",", "."); ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_cost, 0, ",", "."); ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_refund, 0, ",", "."); ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_fee, 0, ",", "."); ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_profit, 0, ",", "."); ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_gp, 0, ",", "."); ?></td>
                                                 <?php } ?>
                                                 <?php if ($ppn == 1) { ?>
-                                                    <td><?= $usr->job_paynom; ?> <?= $usr->job_payunit; ?></td>
-                                                    <td><?= $usr->job_taxno; ?></td>
-                                                    <td style="white-space:nowrap;"><?= $usr->job_invdate; ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= $usr->job_paynom; ?> <?= $usr->job_payunit; ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= $usr->job_taxno; ?></td>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_invdate; ?></td>
                                                 <?php } ?>
                                             <?php } ?>
                                             <?php if ($ppn == 1) { ?>
-                                                <td style="white-space:nowrap;"><?= $usr->job_bupot; ?></td>
-                                                <td style="white-space:nowrap;"><?= $usr->job_npwp; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_bupot; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_npwp; ?></td>
                                             <?php } ?>
 
-                                            <td style="white-space:nowrap;"><?= $usr->job_explanation; ?></td>
+                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_explanation; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
