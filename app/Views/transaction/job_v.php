@@ -936,6 +936,7 @@
                                         ->join("vendor", "vendor.vendor_id = job.vendor_id", "left")
                                         ->join("vendortruck", "vendortruck.vendortruck_id = job.vendortruck_id", "left")
                                         ->join("(SELECT vendor_id as vendor_id2, vendor_name AS vendor_name2 FROM vendor) AS v2", "v2.vendor_id2 = vendortruck.vendor_id", "left")
+                                        ->join("(SELECT vendor_id as vendor_idd, vendor_name AS vendor_named FROM vendor) AS dooring", "dooring.vendor_idd = vendortruck.vendor_id", "left")
                                         ->join("service", "service.service_id = job.service_id", "left")
                                         ->join("vessel", "vessel.vessel_id = job.vessel_id", "left");
                                     if ($ppn != 0) {
@@ -1238,7 +1239,7 @@
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pengemudi; ?></td>
                                                 <?php if ($ppn == 0) { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->vendor_name; ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= $usr->job_dooring; ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= $usr->vendor_named; ?></td>
                                                 <?php } ?>
                                                 <?php if ($posisi != "operasional") { ?>
                                                     <!-- <td class="<?= $textstatus; ?>"><?= number_format($usr->job_sell, 0, ",", "."); ?></td> -->
