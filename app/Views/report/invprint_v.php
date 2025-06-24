@@ -263,7 +263,7 @@ function terbilang($angka)
                             Date
                         </div>
                         <div class="col-9">
-                            : <?= date("d/m/Y",strtotime($inv->inv_date)); ?>
+                            : <?= date("d/m/Y", strtotime($inv->inv_date)); ?>
                         </div>
                     </div>
                 </div>
@@ -290,7 +290,9 @@ function terbilang($angka)
                                         foreach ($invd->getResult() as $invd) { ?>
                                             <tr>
                                                 <td class="text-center"><?= strtoupper($invd->job_dano); ?></td>
-                                                <td class="text-left"><?= $invd->invd_description; ?></td>
+                                                <td class="text-left" style="word-wrap: break-word; white-space: normal; max-width: 200px;">
+                                                    <?= $invd->invd_description; ?>
+                                                </td>
                                                 <td class="text-center"><?= number_format($invd->invd_qty, 3, ",", "."); ?> <?= $invd->invd_satuan; ?></td>
                                                 <td>
                                                     <span class="uang"><span>IDR</span><span><?= number_format($invd->invd_price, 2, ",", "."); ?></span></span>
