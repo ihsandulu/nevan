@@ -263,7 +263,7 @@ function terbilang($angka)
                             Date
                         </div>
                         <div class="col-9">
-                            : <?= $inv->inv_date; ?>
+                            : <?= date("d-m-Y",strtotime($inv->inv_date)); ?>
                         </div>
                     </div>
                 </div>
@@ -327,7 +327,7 @@ function terbilang($angka)
                                                 <i>Note : Harap mencantumkan nomor invoice di setiap pembayaran</i>
                                                 <div class="text-center" style="position:relative; left:30px; width:200px; margin-top:25px;">
                                                     <div style="font-weight: bold; font-size:15px; ">AUTHORIZED SIGNATURE</div>
-                                                    <div style="height:3.5cm;">
+                                                    <div style="height:4.5cm;">
                                                         <img src="<?= base_url("images/identity_financettd/" . $identity->identity_financettd); ?>" style="height:2.5cm; width:auto;" />
                                                     </div>
 
