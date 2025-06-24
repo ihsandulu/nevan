@@ -129,6 +129,10 @@ function terbilang($angka)
             display: flex;
             flex-wrap: wrap;
         }
+
+        body,td,span,div {
+            font-size: 16px !important;
+        }
     }
 
     #logotop {
