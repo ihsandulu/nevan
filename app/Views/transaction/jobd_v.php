@@ -76,6 +76,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     $("#jobd_cbm").val("");
                                 }
                             }
+
                             function metoden() {
                                 let metode = $("#jobd_methode").val();
                                 if (metode == "lumpsum") {
@@ -95,7 +96,6 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     $("#cbman").hide();
                                     $("#jobd_qty").attr("placeholder", "QTY");
                                 }
-                                tooltipn();
                             }
                             $(document).ready(function() {
                                 $("#kolian").hide();
@@ -212,7 +212,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" id="jobd_descgood<?= $usr->jobd_id; ?>" name="jobd_descgood" value="<?= $usr->jobd_descgood; ?>" />
                                                         <input type="hidden" id="jobd_id<?= $usr->jobd_id; ?>" name="jobd_id" value="<?= $usr->jobd_id; ?>" />
 
-                                                        
+
                                                         <input type="hidden" id="jobd_koli<?= $usr->jobd_id; ?>" name="jobd_koli" value="<?= $usr->jobd_koli; ?>" />
                                                         <input type="hidden" id="jobd_cbm<?= $usr->jobd_id; ?>" name="jobd_cbm" value="<?= $usr->jobd_cbm; ?>" />
                                                     </form>
@@ -278,18 +278,35 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let jobd_methode = $("#jobd_methode" + jobd_id).val();
                                 let jobd_descgood = $("#jobd_descgood" + jobd_id).val();
                                 let jobdid = $("#jobd_id" + jobd_id).val();
+                                let jobd_koli = $("#jobd_koli" + jobd_id).val();
+                                let jobd_cbm = $("#jobd_cbm" + jobd_id).val();
 
                                 $("#job_temp").val(job_temp);
                                 $("#jobd_total").val(jobd_total);
                                 $("#jobd_sell").val(jobd_sell);
                                 $("#jobd_satuan").val(jobd_satuan);
                                 $("#jobd_methode").val(jobd_methode);
-                                metoden();
-                                $("#jobd_qty").val(jobd_qty);
+
                                 $("#jobd_descgood").val(jobd_descgood);
                                 $("#jobd_id").val(jobdid);
 
                                 $("#btnjobd").attr("name", "change");
+                                $("#jobd_qty").val(jobd_qty);
+
+                                metoden();
+
+                                if (jobd_methode == "lumpsum") {
+                                    jobd_koli = jobd_qty;
+                                } else if (jobd_methode == "cbm" || jobd_methode == "kgs") {
+                                    jobd_cbm = jobd_qty;
+                                }
+                                $("#jobd_koli").val(jobd_koli);
+                                $("#jobd_cbm").val(jobd_cbm);
+
+
+
+
+
                             }
                         </script>
                     </div>
