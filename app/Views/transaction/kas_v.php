@@ -289,8 +289,8 @@ if (isset($_GET["rekeningnya"])) {
                                     </div>
                                 </div>
 
-                                <input type="hidden" id="kas_pettyid" name="kas_pettyid" value="<?=$kas_pettyid;?>" />
-                                <input type="hidden" id="kas_total" name="kas_total" value="<?=$kas_total;?>" />
+                                <input type="hidden" id="kas_pettyid" name="kas_pettyid" value="<?= $kas_pettyid; ?>" />
+                                <input type="hidden" id="kas_total" name="kas_total" value="<?= $kas_total; ?>" />
                                 <input type="hidden" id="kas_qty" name="kas_qty" value="1" />
                                 <input type="hidden" name="kas_id" value="<?= $kas_id; ?>" />
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
@@ -530,20 +530,28 @@ if (isset($_GET["rekeningnya"])) {
         </div>
     </div>
 </div>
-<script>
-    $('.select').select2();
-    var title = "<?= $title; ?>";
-    $("title").text(title);
-    <?php
+<?php 
     $banknya = "";
     // if ($rekeningnya != "") {
     $saldon = 0;
-    $kas = $this->db
+
+    
+    $build = $this->db
         ->table("kas")
-        ->select(" SUM(CASE WHEN kas_type = 'Debet' THEN kas_total WHEN kas_type = 'Kredit' THEN -kas_total ELSE 0 END) AS saldo_akhir")
-        ->where("kas_rekdari", $rekeningnya)
-        ->orWhere("kas_rekke", $rekeningnya)
-        ->get();
+        ->select(" SUM(CASE WHEN kas_type = 'Debet' THEN kas_total WHEN kas_type = 'Kredit' THEN -kas_total ELSE 0 END) AS saldo_akhir");
+        // ->groupStart()
+        // ->where("kas_rekdari", $rekeningnya)
+        // ->orWhere("kas_rekke", $rekeningnya)
+        // ->groupEnd();
+    if ($url == "bigcash") {
+        $build->where("kas_debettype", "bigcash");
+    }
+    if ($url == "pettycash") {
+        $build->where("kas_debettype", "pettycash");
+    }
+    $kas = $build->get();
+    // echo $url;die;
+    // echo $this->db->getLastQuery();
     foreach ($kas->getResult() as $s) {
         $saldon = $s->saldo_akhir;
     }
@@ -559,6 +567,11 @@ if (isset($_GET["rekeningnya"])) {
         $saldon = $saldo;
     } */
     ?>
+<script>
+    $('.select').select2();
+    var title = "<?= $title; ?>";
+    $("title").text(title);
+    
     $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya; ?>: Rp. <?= number_format($saldon, 0, ",", ".") ?> )</span>');
     $("#page-title").text(title);
     $("#page-title-link").text(title);
