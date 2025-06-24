@@ -150,7 +150,7 @@
                                     </div>
                                 </div>
                                 <script>
-                                    function listrekening() {                                        
+                                    function listrekening() {
                                         var kas_type = $("#kas_type").val();
                                         var kas_rekdari = $("#kas_rekdari").val();
                                         var kas_rekke = $("#kas_rekke").val();
@@ -290,6 +290,7 @@
                                 $dari = date("Y-m-d");
                                 $ke = date("Y-m-d");
                                 $kas_type = "";
+                                $rekeningnya = "";
                                 if (isset($_GET["dari"])) {
                                     $dari = $_GET["dari"];
                                 }
@@ -299,13 +300,34 @@
                                 if (isset($_GET["kas_type"])) {
                                     $kas_type = $_GET["kas_type"];
                                 }
+                                if (isset($_GET["rekeningnya"])) {
+                                    $rekeningnya = $_GET["rekeningnya"];
+                                }
                                 ?>
-                                <div class="col-3 ">
+
+                                <div class="col-4 ">
                                     <div class="row">
-                                        <div class="col-4">
-                                            <label class="text-dark">Type :</label>
+                                        <div class="col-12">
+                                            <select onchange="pilihrekening()" class="form-control" id="rekeningnya" name="rekeningnya">
+                                                <option value="" <?= ($rekeningnya == "") ? "selected" : ""; ?>>Pilih Rekening</option>
+                                                <?php $rekening = $this->db
+                                                    ->table("rekening")
+                                                    ->join("bank", "bank.bank_id = rekening.bank_id", "left")
+                                                    ->where("rekening_type", "NKL")
+                                                    ->orderBy("rekening_an", "ASC")
+                                                    ->get();
+                                                foreach ($rekening->getResult() as $rekening) { ?>
+                                                    <option value="<?= $rekening->rekening_id; ?>" <?= ($rekeningnya == $rekening->rekening_id) ? "selected" : ""; ?>>
+                                                        (<?= $rekening->bank_name; ?>) <?= $rekening->rekening_an; ?> - <?= $rekening->rekening_no; ?>
+                                                    </option>
+                                                <?php } ?>
+                                            </select>
                                         </div>
-                                        <div class="col-8">
+                                    </div>
+                                </div>
+                                <div class="col-2 tampil">
+                                    <div class="row">
+                                        <div class="col-12">
                                             <select class="form-control" id="kas_type" name="kas_type">
                                                 <option value="" <?= ($kas_type == "") ? "selected" : ""; ?>>Pilih Type</option>
                                                 <option value="Debet" <?= ($kas_type == "Debet") ? "selected" : ""; ?>>Debet</option>
@@ -314,27 +336,22 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3 ">
+                                <div class="col-2 tampil">
                                     <div class="row">
-                                        <div class="col-4">
-                                            <label class="text-dark">Dari :</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
+                                        <div class="col-12">
+                                            <input data-bs-toggle="tooltip" data-bs-placement="top" title="Dari" type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3 row ">
+                                <div class="col-2 row tampil">
                                     <div class="row">
-                                        <div class="col-4">
-                                            <label class="text-dark">Ke :</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
+                                        <div class="col-12">
+                                            <input data-bs-toggle="tooltip" data-bs-placement="top" title="Ke" type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-3">
+
+                                <div class="col-2">
                                     <button type="submit" class="btn btn-block btn-primary">Search</button>
                                 </div>
                             </div>
@@ -391,6 +408,10 @@
                                     }
                                     if ($url == "pettycash") {
                                         $build->where("kas_debettype", "pettycash");
+                                    }
+                                    if ($rekeningnya != "") {
+                                        $build->where("kas.kas_rekdari", $rekeningnya);
+                                        $build->orWhere("kas.kas_rekke", $rekeningnya);
                                     }
                                     $build->where("kas_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     $usr = $build->orderBy("kas.kas_date", "ASC")
@@ -503,9 +524,46 @@
     $('.select').select2();
     var title = "<?= $title; ?>";
     $("title").text(title);
-    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir: Rp. <?= number_format($saldo, 0, ",", ".") ?> )</span>');
+    <?php
+    $banknya="";
+    if ($rekeningnya != "") {
+        $saldon = 0;
+        $kas = $this->db
+            ->table("kas")
+            ->select(" SUM(CASE WHEN kas_type = 'Debet' THEN kas_total WHEN kas_type = 'Kredit' THEN -kas_total ELSE 0 END) AS saldo_akhir")
+            ->where("kas_rekdari", $rekeningnya)
+            ->orWhere("kas_rekke", $rekeningnya)
+            ->get();
+        foreach ($kas->getResult() as $s) {
+            $saldon = $s->saldo_akhir;
+        }
+        $rekening = $this->db
+            ->table("rekening")
+            ->join("bank", "bank.bank_id = rekening.bank_id", "left")
+            ->where("rekening_id", $rekeningnya)
+            ->get();
+            foreach ($rekening->getResult() as $rek) {
+                $banknya = $rek->bank_name. " | ".$rek->rekening_an." - ".$rek->rekening_no." ";
+            }
+    } else {
+        $saldon = $saldo;
+    }
+    ?>
+    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya;?>: Rp. <?= number_format($saldon, 0, ",", ".") ?> )</span>');
     $("#page-title").text(title);
     $("#page-title-link").text(title);
+
+    function pilihrekening1() {
+        let rekeningnya = $("#rekeningnya").val();
+        if (rekeningnya == "") {
+            $(".tampil").show();
+        } else {
+            $(".tampil").hide();
+        }
+    }
+    $(document).ready(function() {
+        pilihrekening();
+    });
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>
