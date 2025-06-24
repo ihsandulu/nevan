@@ -936,7 +936,7 @@
                                         ->join("vendor", "vendor.vendor_id = job.vendor_id", "left")
                                         ->join("vendortruck", "vendortruck.vendortruck_id = job.vendortruck_id", "left")
                                         ->join("(SELECT vendor_id as vendor_id2, vendor_name AS vendor_name2 FROM vendor) AS v2", "v2.vendor_id2 = vendortruck.vendor_id", "left")
-                                        ->join("(SELECT vendor_id as vendor_idd, vendor_name AS vendor_named FROM vendor) AS dooring", "dooring.vendor_idd = vendortruck.vendor_id", "left")
+                                        ->join("(SELECT vendor_id as vendor_idd, vendor_name AS vendor_named FROM vendor) AS dooring", "dooring.vendor_idd = job.job_dooring", "left")
                                         ->join("service", "service.service_id = job.service_id", "left")
                                         ->join("vessel", "vessel.vessel_id = job.vessel_id", "left");
                                     if ($ppn != 0) {
