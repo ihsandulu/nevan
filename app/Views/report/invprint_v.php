@@ -263,7 +263,7 @@ function terbilang($angka)
                             Date
                         </div>
                         <div class="col-9">
-                            : <?= date("d-m-Y",strtotime($inv->inv_date)); ?>
+                            : <?= date("d/m/Y",strtotime($inv->inv_date)); ?>
                         </div>
                     </div>
                 </div>
