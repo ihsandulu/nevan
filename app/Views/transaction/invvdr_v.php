@@ -187,7 +187,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $usr = $build->orderBy("invvdr.invvdr_id", "DESC")
                                     ->get();
 
-                                //echo $this->db->getLastquery();
+                                // echo $this->db->getLastquery();
                                 $no = 1;
                                 $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
                                 foreach ($usr->getResult() as $usr) { ?>
