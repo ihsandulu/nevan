@@ -41,6 +41,7 @@ class kas_m extends core_m
         //delete
         if ($this->request->getPost("delete") == "OK") {
             $kas_id =   $this->request->getPost("kas_id");
+            $kas_pettyid =   $this->request->getPost("kas_pettyid");
             $this->db
                 ->table("kas")
                 ->delete(array("kas_id" =>  $kas_id));
@@ -83,6 +84,12 @@ class kas_m extends core_m
                 $kas_id = $kas->kas_id;
                 $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
                 // echo $this->db->getLastQuery(); die;
+            }
+
+            if ($kas_pettyid > 0) {
+                $this->db
+                    ->table("kas")
+                    ->delete(array("kas_id" =>  $kas_pettyid));
             }
             $data["message"] = "Delete Success";
         }
@@ -231,6 +238,10 @@ class kas_m extends core_m
             $input["kas_bigcash"] = $bigcash;
             $input["kas_pettycash"] = $pettycash;
 
+            if($input["kas_rekke"]!="-1"){
+                $input["kas_pettyid"] = 0;
+            }
+
             $this->db->table('kas')->update($input, array("kas_id" => $kas_id));
 
             $kas = $this->db->table("kas")->where("kas_id >", $kas_id)->orderBy("kas_id", "ASC")->get();
@@ -263,6 +274,37 @@ class kas_m extends core_m
 
             $data["message"] = "Update Success";
             //echo $this->db->last_query();die;
+        }
+
+        //transfer ke pettycash
+        if (($this->request->getPost("kas_debettype") == "bigcash" && $this->request->getPost("kas_rekke") == "-1" && $this->request->getPost("kas_type") == "Kredit") || $this->request->getPost("kas_pettyid") > 0) {
+            if ($this->request->getPost("kas_debettype") == "bigcash" && $this->request->getPost("kas_rekke") == "-1" && $this->request->getPost("kas_type") == "Kredit") {
+                foreach ($this->request->getPost() as $e => $f) {
+                    if ($e != 'change' && $e != 'create' && $e != 'kas_picture' && $e != 'kas_id') {
+                        $inputp[$e] = $this->request->getPost($e);
+                    }
+                }
+                $inputp["kas_bigid"] = $kas_id;
+                $inputp["kas_type"] = "Debet";
+                $inputp["kas_debettype"] = "pettycash";
+                // dd($this->request->getPost());
+                if ($this->request->getPost("create") == "OK" || $this->request->getPost("kas_pettyid") == 0) {
+                    $this->db->table("kas")->insert($inputp);
+                    $inserted_id = $this->db->insertID();
+                    $inputpbigcash["kas_pettyid"] = $inserted_id;
+                    $this->db->table("kas")->where("kas_id", $kas_id)->update($inputpbigcash);
+                }
+
+                $where["kas_id"] = $this->request->getPost("kas_pettyid");
+                if ($this->request->getPost("change") == "OK" && $this->request->getPost("kas_pettyid") > 0) {
+
+                    $this->db->table("kas")->where($where)->update($inputp);
+                }
+            } else {
+                $this->db
+                    ->table("kas")
+                    ->delete(array("kas_id" =>  $this->request->getPost("kas_pettyid")));
+            }
         }
         return $data;
     }

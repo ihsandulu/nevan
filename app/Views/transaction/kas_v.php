@@ -148,24 +148,26 @@ if (isset($_GET["rekeningnya"])) {
                                         <input type="text" class="form-control" id="kas_uraian" name="kas_uraian" placeholder="" value="<?= $kas_uraian; ?>">
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+
+                                <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_qty">Qty:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="kas_qty" name="kas_qty" placeholder="" value="<?= $kas_qty; ?>">
                                     </div>
-                                </div>
+                                </div> -->
+
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_nominal">Nominal:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="kas_nominal" name="kas_nominal" placeholder="" value="<?= $kas_nominal; ?>">
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_total">Total:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="kas_total" name="kas_total" placeholder="" value="<?= $kas_total; ?>">
                                     </div>
-                                </div>
+                                </div> -->
                                 <script>
                                     function listrekening() {
                                         var kas_type = $("#kas_type").val();
@@ -176,7 +178,8 @@ if (isset($_GET["rekeningnya"])) {
                                                 type: kas_type,
                                                 asal: 'from',
                                                 kas_rekdari: kas_rekdari,
-                                                kas_rekke: kas_rekke
+                                                kas_rekke: kas_rekke,
+                                                url: '<?= $url; ?>'
                                             })
                                             .done(function(data) {
                                                 $("#kas_rekdari").html(data);
@@ -185,7 +188,8 @@ if (isset($_GET["rekeningnya"])) {
                                                 type: kas_type,
                                                 asal: 'to',
                                                 kas_rekdari: kas_rekdari,
-                                                kas_rekke: kas_rekke
+                                                kas_rekke: kas_rekke,
+                                                url: '<?= $url; ?>'
                                             })
                                             .done(function(data) {
                                                 $("#kas_rekke").html(data);
@@ -240,28 +244,28 @@ if (isset($_GET["rekeningnya"])) {
                                         </select>
                                     </div>
                                 </div>
-                                <?php if ($url != "pettycash") { ?>
-                                    <div class="form-group col-md-4 col-sm-6 col-xs-12 rekke">
-                                        <label class="control-label col-sm-12" for="kas_rekke">Rekening Ke:</label>
-                                        <div class="col-sm-12">
-                                            <select id="kas_rekke" name="kas_rekke" value="<?= $kas_rekke; ?>" class="form-control select">
-                                                <option value="" <?= ($kas_rekke == "") ? "selected" : ""; ?>>Select Rekening</option>
-                                                <option value="-1" <?= ($kas_rekke == "-1") ? "selected" : ""; ?>>Pettycash</option>
-                                                <?php
-                                                $usr = $this->db
-                                                    ->table("rekening")
-                                                    ->orderBy("rekening_type", "ASC")
-                                                    ->orderBy("rekening_an", "ASC")
-                                                    ->get();
-                                                foreach ($usr->getResult() as $usr) { ?>
-                                                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>
-                                                        (<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?>
-                                                    </option>
-                                                <?php } ?>
-                                            </select>
-                                        </div>
+
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12 rekke">
+                                    <label class="control-label col-sm-12" for="kas_rekke">Rekening Ke:</label>
+                                    <div class="col-sm-12">
+                                        <select id="kas_rekke" name="kas_rekke" value="<?= $kas_rekke; ?>" class="form-control select">
+                                            <option value="" <?= ($kas_rekke == "") ? "selected" : ""; ?>>Select Rekening</option>
+                                            <option value="-1" <?= ($kas_rekke == "-1") ? "selected" : ""; ?>>Pettycash</option>
+                                            <?php
+                                            $usr = $this->db
+                                                ->table("rekening")
+                                                ->orderBy("rekening_type", "ASC")
+                                                ->orderBy("rekening_an", "ASC")
+                                                ->get();
+                                            foreach ($usr->getResult() as $usr) { ?>
+                                                <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>
+                                                    (<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
                                     </div>
-                                <?php } ?>
+                                </div>
+
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_keterangan">Keterangan:</label>
                                     <div class="col-sm-12">
@@ -285,6 +289,9 @@ if (isset($_GET["rekeningnya"])) {
                                     </div>
                                 </div>
 
+                                <input type="hidden" id="kas_pettyid" name="kas_pettyid" value="<?=$kas_pettyid;?>" />
+                                <input type="hidden" id="kas_total" name="kas_total" value="<?=$kas_total;?>" />
+                                <input type="hidden" id="kas_qty" name="kas_qty" value="1" />
                                 <input type="hidden" name="kas_id" value="<?= $kas_id; ?>" />
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">
@@ -372,10 +379,10 @@ if (isset($_GET["rekeningnya"])) {
                                         <?php } ?>
                                         <th>DA Number</th>
                                         <th>Uraian</th>
-                                        <th>Qty</th>
+                                        <!-- <th>Qty</th> -->
                                         <th>Nominal</th>
-                                        <th>Total</th>
-                                        <?php if ($url == "kas") { ?>
+                                        <!-- <th>Total</th> -->
+                                        <!-- <?php if ($url == "kas") { ?>
                                             <th>Saldo</th>
                                         <?php } ?>
                                         <?php if ($url == "bigcash" || $url == "kas") { ?>
@@ -383,7 +390,7 @@ if (isset($_GET["rekeningnya"])) {
                                         <?php } ?>
                                         <?php if ($url == "pettycash" || $url == "kas") { ?>
                                             <th>Saldo<br />Petty Cash</th>
-                                        <?php } ?>
+                                        <?php } ?> -->
                                         <th>Dari Rek</th>
                                         <th>Ke Rek</th>
                                         <th>Keterangan</th>
@@ -425,60 +432,63 @@ if (isset($_GET["rekeningnya"])) {
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
                                                     <?php
-                                                    if ($usr->invpayment_id == 0 && $usr->invvdrp_id == 0) {
-                                                        if (
-                                                            (
-                                                                isset(session()->get("position_administrator")[0][0])
-                                                                && (
-                                                                    session()->get("position_administrator") == "1"
-                                                                    || session()->get("position_administrator") == "2"
+                                                    if (($usr->kas_bigid == 0 && $usr->kas_debettype == "pettycash") || $usr->kas_debettype == "bigcash") { ?>
+                                                        <?php if ($usr->invpayment_id == 0 && $usr->invvdrp_id == 0) {
+                                                            if (
+                                                                (
+                                                                    isset(session()->get("position_administrator")[0][0])
+                                                                    && (
+                                                                        session()->get("position_administrator") == "1"
+                                                                        || session()->get("position_administrator") == "2"
+                                                                    )
+                                                                ) ||
+                                                                (
+                                                                    isset(session()->get("halaman")['108']['act_update'])
+                                                                    && session()->get("halaman")['108']['act_update'] == "1"
+                                                                ) ||
+                                                                (
+                                                                    isset(session()->get("halaman")['120']['act_update'])
+                                                                    && session()->get("halaman")['120']['act_update'] == "1"
+                                                                ) ||
+                                                                (
+                                                                    isset(session()->get("halaman")['121']['act_update'])
+                                                                    && session()->get("halaman")['121']['act_update'] == "1"
                                                                 )
-                                                            ) ||
-                                                            (
-                                                                isset(session()->get("halaman")['108']['act_update'])
-                                                                && session()->get("halaman")['108']['act_update'] == "1"
-                                                            ) ||
-                                                            (
-                                                                isset(session()->get("halaman")['120']['act_update'])
-                                                                && session()->get("halaman")['120']['act_update'] == "1"
-                                                            ) ||
-                                                            (
-                                                                isset(session()->get("halaman")['121']['act_update'])
-                                                                && session()->get("halaman")['121']['act_update'] == "1"
-                                                            )
-                                                        ) { ?>
-                                                            <form method="post" class="btn-action" style="">
-                                                                <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                                <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
-                                                            </form>
-                                                        <?php } ?>
+                                                            ) { ?>
+                                                                <form method="post" class="btn-action" style="">
+                                                                    <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                                    <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                                </form>
+                                                            <?php } ?>
 
-                                                        <?php
-                                                        if (
-                                                            (
-                                                                isset(session()->get("position_administrator")[0][0])
-                                                                && (
-                                                                    session()->get("position_administrator") == "1"
-                                                                    || session()->get("position_administrator") == "2"
+                                                            <?php
+                                                            if (
+                                                                (
+                                                                    isset(session()->get("position_administrator")[0][0])
+                                                                    && (
+                                                                        session()->get("position_administrator") == "1"
+                                                                        || session()->get("position_administrator") == "2"
+                                                                    )
+                                                                ) ||
+                                                                (
+                                                                    isset(session()->get("halaman")['108']['act_delete'])
+                                                                    && session()->get("halaman")['108']['act_delete'] == "1"
+                                                                ) ||
+                                                                (
+                                                                    isset(session()->get("halaman")['120']['act_delete'])
+                                                                    && session()->get("halaman")['120']['act_delete'] == "1"
+                                                                ) ||
+                                                                (
+                                                                    isset(session()->get("halaman")['121']['act_delete'])
+                                                                    && session()->get("halaman")['121']['act_delete'] == "1"
                                                                 )
-                                                            ) ||
-                                                            (
-                                                                isset(session()->get("halaman")['108']['act_delete'])
-                                                                && session()->get("halaman")['108']['act_delete'] == "1"
-                                                            ) ||
-                                                            (
-                                                                isset(session()->get("halaman")['120']['act_delete'])
-                                                                && session()->get("halaman")['120']['act_delete'] == "1"
-                                                            ) ||
-                                                            (
-                                                                isset(session()->get("halaman")['121']['act_delete'])
-                                                                && session()->get("halaman")['121']['act_delete'] == "1"
-                                                            )
-                                                        ) { ?>
-                                                            <form method="post" class="btn-action" style="">
-                                                                <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                                <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
-                                                            </form>
+                                                            ) { ?>
+                                                                <form method="post" class="btn-action" style="">
+                                                                    <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                                    <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                                    <input type="hidden" name="kas_pettyid" value="<?= $usr->kas_pettyid; ?>" />
+                                                                </form>
+                                                            <?php } ?>
                                                         <?php } ?>
                                                     <?php } ?>
                                                 </td>
@@ -491,10 +501,10 @@ if (isset($_GET["rekeningnya"])) {
                                             <?php } ?>
                                             <td><?= $usr->job_dano; ?></td>
                                             <td class="text-left"><?= $usr->kas_uraian; ?></td>
-                                            <td><?= number_format($usr->kas_qty, 0, ",", "."); ?></td>
+                                            <!-- <td><?= number_format($usr->kas_qty, 0, ",", "."); ?></td> -->
                                             <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
-                                            <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td>
-                                            <?php if ($url == "kas") { ?>
+                                            <!-- <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td> -->
+                                            <!-- <?php if ($url == "kas") { ?>
                                                 <td class="text-right"><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
                                             <?php } ?>
                                             <?php if ($url == "bigcash" || $url == "kas") { ?>
@@ -502,7 +512,7 @@ if (isset($_GET["rekeningnya"])) {
                                             <?php } ?>
                                             <?php if ($url == "pettycash" || $url == "kas") { ?>
                                                 <td class="text-right"><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
-                                            <?php } ?>
+                                            <?php } ?> -->
                                             <td class="text-left"><?= ($usr->kas_rekdari == "-1") ? "Pettycash" : $usr->rekdari; ?></td>
                                             <td class="text-left"><?= ($usr->kas_rekke == "-1") ? "Pettycash" : $usr->rekke; ?></td>
                                             <td class="text-left"><?= $usr->kas_keterangan; ?></td>
@@ -526,28 +536,28 @@ if (isset($_GET["rekeningnya"])) {
     $("title").text(title);
     <?php
     $banknya = "";
-    if ($rekeningnya != "") {
-        $saldon = 0;
-        $kas = $this->db
-            ->table("kas")
-            ->select(" SUM(CASE WHEN kas_type = 'Debet' THEN kas_total WHEN kas_type = 'Kredit' THEN -kas_total ELSE 0 END) AS saldo_akhir")
-            ->where("kas_rekdari", $rekeningnya)
-            ->orWhere("kas_rekke", $rekeningnya)
-            ->get();
-        foreach ($kas->getResult() as $s) {
-            $saldon = $s->saldo_akhir;
-        }
-        $rekening = $this->db
-            ->table("rekening")
-            ->join("bank", "bank.bank_id = rekening.bank_id", "left")
-            ->where("rekening_id", $rekeningnya)
-            ->get();
-        foreach ($rekening->getResult() as $rek) {
-            $banknya = $rek->bank_name . " | " . $rek->rekening_an . " - " . $rek->rekening_no . " ";
-        }
-    } else {
-        $saldon = $saldo;
+    // if ($rekeningnya != "") {
+    $saldon = 0;
+    $kas = $this->db
+        ->table("kas")
+        ->select(" SUM(CASE WHEN kas_type = 'Debet' THEN kas_total WHEN kas_type = 'Kredit' THEN -kas_total ELSE 0 END) AS saldo_akhir")
+        ->where("kas_rekdari", $rekeningnya)
+        ->orWhere("kas_rekke", $rekeningnya)
+        ->get();
+    foreach ($kas->getResult() as $s) {
+        $saldon = $s->saldo_akhir;
     }
+    $rekening = $this->db
+        ->table("rekening")
+        ->join("bank", "bank.bank_id = rekening.bank_id", "left")
+        ->where("rekening_id", $rekeningnya)
+        ->get();
+    foreach ($rekening->getResult() as $rek) {
+        $banknya = $rek->bank_name . " | " . $rek->rekening_an . " - " . $rek->rekening_no . " ";
+    }
+    /* } else {
+        $saldon = $saldo;
+    } */
     ?>
     $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya; ?>: Rp. <?= number_format($saldon, 0, ",", ".") ?> )</span>');
     $("#page-title").text(title);
