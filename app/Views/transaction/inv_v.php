@@ -177,6 +177,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     ->table("inv")
                                     ->join("customer", "customer.customer_id=inv.customer_id", "left");
                                 $build->where("inv_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                if (isset($_GET["lunas"]) && $_GET["lunas"] != "") {
+                                    if ($lunas == "1") {
+                                        $build->where("inv_payment >= inv_grand");
+                                    } else if ($lunas == "0"){
+                                        $build->where("inv_payment < inv_grand");
+                                    }
+                                }
                                 $usr = $build->orderBy("inv.inv_id", "DESC")
                                     ->get();
 
