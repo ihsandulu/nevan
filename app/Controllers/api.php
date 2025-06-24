@@ -36,38 +36,47 @@ class api extends BaseController
         $kas_rekke = $this->request->getGET("kas_rekke");
         $type = $this->request->getGET("type");
         $asal = $this->request->getGET("asal");
+        $url = $this->request->getGET("url");
 
 ?>
         <?php if ($asal == "from") { ?>
             <option value="" <?= ($kas_rekdari == "") ? "selected" : ""; ?>>Select Rekening</option>
+            <?php if ($type == "Kredit" && $url == "pettycash") { ?>
+                <option value="-1" <?= ($kas_rekke == "-1") ? "selected" : ""; ?>>Pettycash</option>
+            <?php } ?>
         <?php } else { ?>
             <option value="" <?= ($kas_rekke == "") ? "selected" : ""; ?>>Select Rekening</option>
-            <?php if ($type == "Kredit") { ?>
+            <?php if ($type == "Kredit" && $url == "bigcash") { ?>
+                <option value="-1" <?= ($kas_rekke == "-1") ? "selected" : ""; ?>>Pettycash</option>
+            <?php } ?>
+            <?php if ($type == "Debet" && $url == "pettycash") { ?>
                 <option value="-1" <?= ($kas_rekke == "-1") ? "selected" : ""; ?>>Pettycash</option>
             <?php } ?>
         <?php } ?>
         <?php
-        $build = $this->db
-            ->table("rekening");
-        if (($type == "Debet" && $asal == "from") || ($type == "Kredit" && $asal == "to")) {
-            $build->groupStart()
-                ->where("rekening_type", "Customer")
-                ->orWhere("rekening_type", "Vendor")
-                ->groupEnd();
-        } else if (($type == "Debet" && $asal == "to") || ($type == "Kredit" && $asal == "from")) {
-            $build->where("rekening_type", "NKL");
-        }
-        $usr = $build->orderBy("rekening_type", "ASC")
-            ->orderBy("rekening_an", "ASC")
-            ->get();
-        foreach ($usr->getResult() as $usr) { ?>
-            <?php if ($asal == "from") { ?>
-                <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekdari == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
-            <?php } else { ?>
-                <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
-            <?php } ?>
+        if (($type != "Kredit" && $url == "pettycash" && $asal == "from") || ($type != "Debet" && $url == "pettycash" && $asal == "to") || ($url == "bigcash")) {
+            $build = $this->db
+                ->table("rekening");
+            if (($type == "Debet" && $asal == "from") || ($type == "Kredit" && $asal == "to")) {
+                $build->groupStart()
+                    ->where("rekening_type", "Customer")
+                    ->orWhere("rekening_type", "Vendor")
+                    ->groupEnd();
+            } else if (($type == "Debet" && $asal == "to") || ($type == "Kredit" && $asal == "from")) {
+                $build->where("rekening_type", "NKL");
+            }
+            $usr = $build->orderBy("rekening_type", "ASC")
+                ->orderBy("rekening_an", "ASC")
+                ->get();
+            foreach ($usr->getResult() as $usr) { ?>
+                <?php if ($asal == "from") { ?>
+                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekdari == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+                <?php } else { ?>
+                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+                <?php } ?>
 
-        <?php } ?>
+        <?php }
+        } ?>
     <?php
     }
 
