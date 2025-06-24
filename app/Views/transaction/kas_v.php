@@ -4,7 +4,24 @@
         white-space: nowrap;
     }
 </style>
-
+<?php
+$dari = date("Y-m-d");
+$ke = date("Y-m-d");
+$kas_type = "";
+$rekeningnya = "";
+if (isset($_GET["dari"])) {
+    $dari = $_GET["dari"];
+}
+if (isset($_GET["ke"])) {
+    $ke = $_GET["ke"];
+}
+if (isset($_GET["kas_type"])) {
+    $kas_type = $_GET["kas_type"];
+}
+if (isset($_GET["rekeningnya"])) {
+    $rekeningnya = $_GET["rekeningnya"];
+}
+?>
 <div class='container-fluid'>
     <div class='row'>
         <div class='col-12'>
@@ -286,24 +303,7 @@
                         <?php } ?>
                         <form method="get">
                             <div class="row alert alert-dark">
-                                <?php
-                                $dari = date("Y-m-d");
-                                $ke = date("Y-m-d");
-                                $kas_type = "";
-                                $rekeningnya = "";
-                                if (isset($_GET["dari"])) {
-                                    $dari = $_GET["dari"];
-                                }
-                                if (isset($_GET["ke"])) {
-                                    $ke = $_GET["ke"];
-                                }
-                                if (isset($_GET["kas_type"])) {
-                                    $kas_type = $_GET["kas_type"];
-                                }
-                                if (isset($_GET["rekeningnya"])) {
-                                    $rekeningnya = $_GET["rekeningnya"];
-                                }
-                                ?>
+
 
                                 <div class="col-4 ">
                                     <div class="row">
@@ -525,7 +525,7 @@
     var title = "<?= $title; ?>";
     $("title").text(title);
     <?php
-    $banknya="";
+    $banknya = "";
     if ($rekeningnya != "") {
         $saldon = 0;
         $kas = $this->db
@@ -542,14 +542,14 @@
             ->join("bank", "bank.bank_id = rekening.bank_id", "left")
             ->where("rekening_id", $rekeningnya)
             ->get();
-            foreach ($rekening->getResult() as $rek) {
-                $banknya = $rek->bank_name. " | ".$rek->rekening_an." - ".$rek->rekening_no." ";
-            }
+        foreach ($rekening->getResult() as $rek) {
+            $banknya = $rek->bank_name . " | " . $rek->rekening_an . " - " . $rek->rekening_no . " ";
+        }
     } else {
         $saldon = $saldo;
     }
     ?>
-    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya;?>: Rp. <?= number_format($saldon, 0, ",", ".") ?> )</span>');
+    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya; ?>: Rp. <?= number_format($saldon, 0, ",", ".") ?> )</span>');
     $("#page-title").text(title);
     $("#page-title-link").text(title);
 
