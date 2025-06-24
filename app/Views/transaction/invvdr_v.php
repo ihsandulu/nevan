@@ -95,11 +95,15 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <?php
                             $dari = date("Y-m-d", strtotime("-1 week", strtotime(date("Y-m-d"))));
                             $ke = date("Y-m-d");
+                            $lunas = "";
                             if (isset($_GET["dari"])) {
                                 $dari = $_GET["dari"];
                             }
                             if (isset($_GET["ke"])) {
                                 $ke = $_GET["ke"];
+                            }
+                            if (isset($_GET["lunas"])) {
+                                $lunas = $_GET["lunas"];
                             }
                             ?>
                             <div class="col-3 ">
@@ -119,6 +123,20 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     </div>
                                     <div class="col-8">
                                         <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3 row ">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label class="text-dark">Lunas :</label>
+                                    </div>
+                                    <div class="col-8">
+                                        <select class="form-control" name="lunas" value="<?= $lunas; ?>">
+                                            <option value="">Semua</option>
+                                            <option value="1" <?= ($lunas == "1") ? "selected" : ""; ?>>Lunas</option>
+                                            <option value="0" <?= ($lunas == "0") ? "selected" : ""; ?>>Belum Lunas</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -159,6 +177,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     ->table("invvdr")
                                     ->join("vendor", "vendor.vendor_id=invvdr.vendor_id", "left");
                                 $build->where("invvdr_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                if (isset($_GET["lunas"]) && $_GET["lunas"] != "") {
+                                    if ($lunas == "1") {
+                                        $build->where("invvdr_payment >= invvdr_grand");
+                                    } else if ($lunas == "0"){
+                                        $build->where("invvdr_payment < invvdr_grand");
+                                    }
+                                }
                                 $usr = $build->orderBy("invvdr.invvdr_id", "DESC")
                                     ->get();
 

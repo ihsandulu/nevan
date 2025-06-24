@@ -58,7 +58,7 @@ class invvdrd_m extends core_m
             $this->db->table('invvdr')->update($inputi, array("invvdr_no" => $invvdr_no));
             // echo $this->db->getLastQuery();die;
 
-           
+
 
             //delete invvdrd
             $this->db
@@ -95,7 +95,7 @@ class invvdrd_m extends core_m
                 $inputi["job_dano"] = $jobdanos;
                 $this->db->table('invvdr')->update($inputi, array("invvdr_no" => $invvdr_no));
             }
-           
+
             $data["message"] = "Insert Data Success";
         }
         //echo $_POST["create"];die;
@@ -113,7 +113,7 @@ class invvdrd_m extends core_m
                 ->table('invvdrd')
                 ->where('invvdr_no', $invvdrNo)
                 ->get();
-         
+
             $jobdano      = array();
             foreach ($invvdrd->getResult() as $rinvvdrd) {
                 if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
@@ -121,9 +121,30 @@ class invvdrd_m extends core_m
                 }
             }
             $jobdanos      = implode(', ', $jobdano);
-            $input["job_dano"] = $jobdanos;          
+            $input["job_dano"] = $jobdanos;
+            // dd($input);
 
-           
+            $ppn1k1 = 0;
+            $ppn11 = 0;
+            $ppn12 = 0;
+            $pph = 0;
+            $dtagihan = $input["invvdr_dtagihan"];
+            if (isset($input["invvdr_ppn1k1"]) && $input["invvdr_ppn1k1"] > 0) {
+                $ppn1k1 = $dtagihan * 1.1 / 100;
+            }
+            if (isset($input["invvdr_ppn11"]) && $input["invvdr_ppn11"] > 0) {
+                $ppn11 = $dtagihan * 11 / 100;
+            }
+            if (isset($input["invvdr_ppn12"]) && $input["invvdr_ppn12"] > 0) {
+                $ppn12 = $dtagihan * 12 / 100;
+            }
+            if (isset($input["invvdr_pph"]) && $input["invvdr_pph"] > 0) {
+                $pph = $dtagihan * 2 / 100;
+            }
+            $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+            $grand = $tharga - $pph;
+            $input["invvdr_grand"] = $grand;
+
             // dd($input);
             $this->db->table('invvdr')->insert($input);
             // echo $this->db->getLastQuery(); die;
@@ -158,7 +179,7 @@ class invvdrd_m extends core_m
             //update Invoice
             if ($this->request->getGet("editinvvdr") == "OK") {
                 $invvdrd = $this->db->table('invvdrd')->where("invvdr_no", $invvdr_no)->get();
-               
+
                 $jobdano      = array();
                 foreach ($invvdrd->getResult() as $rinvvdrd) {
                     if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
@@ -166,7 +187,7 @@ class invvdrd_m extends core_m
                     }
                 }
                 $jobdanos      = implode(', ', $jobdano);
-                $inputi["job_dano"] = $jobdanos;                
+                $inputi["job_dano"] = $jobdanos;
                 $this->db->table('invvdr')->update($inputi, array("invvdr_no" => $invvdr_no));
             }
 
@@ -185,7 +206,7 @@ class invvdrd_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-            // dd($input);die;
+            // dd($input);
             $invvdrNo = $input["invvdr_no"];
             $invvdrd  = $this->db
                 ->table('invvdrd')
@@ -200,6 +221,28 @@ class invvdrd_m extends core_m
 
             $jobdanos      = implode(', ', $jobdano);
             $input["job_dano"] = $jobdanos;
+
+            $ppn1k1 = 0;
+            $ppn11 = 0;
+            $ppn12 = 0;
+            $pph = 0;
+            $dtagihan = $input["invvdr_dtagihan"];
+            if (isset($input["invvdr_ppn1k1"]) && $input["invvdr_ppn1k1"] > 0) {
+                $ppn1k1 = $dtagihan * 1.1 / 100;
+            }
+            if (isset($input["invvdr_ppn11"]) && $input["invvdr_ppn11"] > 0) {
+                $ppn11 = $dtagihan * 11 / 100;
+            }
+            if (isset($input["invvdr_ppn12"]) && $input["invvdr_ppn12"] > 0) {
+                $ppn12 = $dtagihan * 12 / 100;
+            }
+            if (isset($input["invvdr_pph"]) && $input["invvdr_pph"] > 0) {
+                $pph = $dtagihan * 2 / 100;
+            }
+            $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+            $grand = $tharga - $pph;
+            $input["invvdr_grand"] = $grand;
+
             $this->db->table('invvdr')->update($input, array("invvdr_id" => $this->request->getPost("invvdr_id")));
 
 
