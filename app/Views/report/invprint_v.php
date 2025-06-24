@@ -130,7 +130,10 @@ function terbilang($angka)
             flex-wrap: wrap;
         }
 
-        body,td,span,div {
+        body,
+        td,
+        span,
+        div {
             font-size: 16px !important;
         }
     }
@@ -300,26 +303,41 @@ function terbilang($angka)
                                         <tr>
                                             <td class="text-left" rowspan="8" colspan="3">
                                                 <i>Terbilang :</i><br />
-                                                <i id="terbilang"></i><br /><br />
-                                                <span id="norek">
+                                                <i id="terbilang" style="margin-top:30px;"></i><br /><br />
+                                                <div id="norek" style="border-top:black solid 1px; border-bottom:black solid 1px; padding:10px; ">
                                                     <span style="font-weight: bold;"> Tujuan Pembayaran :</span><br />
                                                     <ul>
                                                         <?php
-                                                        $rekening = $this->db->table("rekening")
-                                                            ->join("bank", "bank.bank_id=rekening.bank_id", "left")
-                                                            ->where("rekening_type", "NKL")->get();
+                                                        $build = $this->db->table("rekening")
+                                                            ->join("bank", "bank.bank_id=rekening.bank_id", "left");
+                                                        if ($inv->customer_type == "PPN") {
+                                                            $build->where("rekening_ppn", "PPN");
+                                                        }
+                                                        if ($inv->customer_type == "NON") {
+                                                            $build->where("rekening_ppn", "NON");
+                                                        }
+                                                        $rekening = $build->where("rekening_type", "NKL")->get();
                                                         foreach ($rekening->getResult() as $row) { ?>
                                                             <li>
                                                                 * (<?= $row->bank_name; ?>) <span><?= $row->rekening_no; ?> - <?= $row->rekening_an; ?></span>
                                                             </li>
                                                         <?php } ?>
                                                     </ul>
-                                                    <div class="text-center" style="position:relative; left:30px; width:200px; margin-top:25px;">
-                                                        <div style="font-weight: bold; font-size:15px; ">AUTHORIZED SIGNATURE</div>
-                                                        <div><img src="<?= base_url("images/identity_financettd/" . $identity->identity_financettd); ?>" style="height:100px; width:auto;" /></div>
-                                                        <div style="font-weight: bold; font-size:20px; margin-top:0px;"><?= $identity->identity_financename; ?></div>
+                                                </div>
+                                                <i>Note : Harap mencantumkan nomor invoice di setiap pembayaran</i>
+                                                <div class="text-center" style="position:relative; left:30px; width:200px; margin-top:25px;">
+                                                    <div style="font-weight: bold; font-size:15px; ">AUTHORIZED SIGNATURE</div>
+                                                    <div style="height:2.5cm;">
+                                                        <img src="<?= base_url("images/identity_financettd/" . $identity->identity_financettd); ?>" style="height:2.5cm; width:auto;" />
                                                     </div>
-                                                </span>
+
+                                                    <div style="font-weight: bold; font-size:20px; margin-top:0px; border-bottom:1px solid black;">
+                                                        <?= $identity->identity_financename; ?>
+                                                    </div>
+                                                    <div style="font-weight: bold; font-size:20px; margin-top:0px;">
+                                                        Finance Advisor
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td class="text-left">
                                                 Total

@@ -64,11 +64,21 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="rekening_type">Type:</label>
                                     <div class="col-sm-10">
-                                        <select onchange="pilihtipe()" required autofocus class="form-control" id="rekening_type" name="rekening_type">
+                                        <select onchange="pilihtipe();ppn();" required autofocus class="form-control" id="rekening_type" name="rekening_type">
                                             <option value="" <?= ($rekening_type == "") ? "selected" : ""; ?>>Pilih Tipe</option>
                                             <option value="NKL" <?= ($rekening_type == "NKL") ? "selected" : ""; ?>>NKL</option>
                                             <option value="Customer" <?= ($rekening_type == "Customer") ? "selected" : ""; ?>>Customer</option>
                                             <option value="Vendor" <?= ($rekening_type == "Vendor") ? "selected" : ""; ?>>Vendor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" id="ppnn">
+                                    <label class="control-label col-sm-2" for="rekening_ppn">PPN/NON:</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="rekening_ppn" name="rekening_ppn">
+                                            <option value="" <?= ($rekening_ppn == "") ? "selected" : ""; ?>>Pilih PPN/NON</option>
+                                            <option value="PPN" <?= ($rekening_ppn == "PPN") ? "selected" : ""; ?>>PPN</option>
+                                            <option value="NON" <?= ($rekening_ppn == "NON") ? "selected" : ""; ?>>NON</option>
                                         </select>
                                     </div>
                                 </div>
@@ -264,10 +274,19 @@
             $('#vendor').hide();
         }
     }
+    function ppn() {
+        var rekening_type = $("#rekening_type").val();
+        if (rekening_type == "NKL") {
+            $('#ppnn').show();
+        } else {
+            $('#ppnn').hide();
+        }
+    }
     $(document).ready(function() {
         $('#customer').hide();
         $('#vendor').hide();
         pilihtipe();
+        ppn();
     });
     $('.select').select2();
     var title = "Master Rekening";

@@ -90,6 +90,16 @@
                                     <div class="col-sm-10">
                                         <input  type="text"  class="form-control" id="customer_phone" name="customer_phone" placeholder="" value="<?= $customer_phone; ?>">
                                     </div>
+                                </div>                                                       
+                                <div class="form-group">
+                                    <label class="control-label col-sm-2" for="customer_type">Type:</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="customer_type" name="customer_type">
+                                            <option value="" <?= ($customer_type == "") ? "selected" : ""; ?>>Pilih Tipe</option>
+                                            <option value="PPN" <?= ($customer_type == "PPN") ? "selected" : ""; ?>>PPN</option>
+                                            <option value="NON" <?= ($customer_type == "NON") ? "selected" : ""; ?>>NON</option>
+                                        </select>
+                                    </div>
                                 </div>  
 
                                 <input type="hidden" name="customer_id" value="<?= $customer_id; ?>" />
@@ -123,6 +133,7 @@
                                         <th>Alamat</th>
                                         <th>NPWP</th>
                                         <th>Phone</th>
+                                        <th>Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -184,6 +195,7 @@
                                             <td class="text-left"><?= $usr->customer_address; ?></td>
                                             <td class="text-left"><?= $usr->customer_npwp; ?></td>
                                             <td class="text-left"><?= $usr->customer_phone; ?></td>
+                                            <td class="text-left"><?= $usr->customer_type; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
