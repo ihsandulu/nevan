@@ -233,12 +233,13 @@ if (isset($_GET["rekeningnya"])) {
                                             <?php
                                             $usr = $this->db
                                                 ->table("rekening")
+                                                ->join("bank", "bank.bank_id = rekening.bank_id", "left")
                                                 ->orderBy("rekening_type", "ASC")
                                                 ->orderBy("rekening_an", "ASC")
                                                 ->get();
                                             foreach ($usr->getResult() as $usr) { ?>
                                                 <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekdari == $usr->rekening_id) ? "selected" : ""; ?>>
-                                                    (<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?>
+                                                    (<?= $usr->rekening_type; ?>-<?= $usr->bank_id; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?>
                                                 </option>
                                             <?php } ?>
                                         </select>
@@ -254,12 +255,13 @@ if (isset($_GET["rekeningnya"])) {
                                             <?php
                                             $usr = $this->db
                                                 ->table("rekening")
+                                                ->join("bank", "bank.bank_id = rekening.bank_id", "left")
                                                 ->orderBy("rekening_type", "ASC")
                                                 ->orderBy("rekening_an", "ASC")
                                                 ->get();
                                             foreach ($usr->getResult() as $usr) { ?>
                                                 <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>
-                                                    (<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?>
+                                                    (<?= $usr->rekening_type; ?>-<?= $usr->bank_id; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?>
                                                 </option>
                                             <?php } ?>
                                         </select>

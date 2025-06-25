@@ -56,7 +56,8 @@ class api extends BaseController
         <?php
         if (($type != "Kredit" && $url == "pettycash" && $asal == "from") || ($type != "Debet" && $url == "pettycash" && $asal == "to") || ($url == "bigcash")) {
             $build = $this->db
-                ->table("rekening");
+                ->table("rekening")
+                ->join("bank", "bank.bank_id=rekening.bank_id", "left");
             if (($type == "Debet" && $asal == "from") || ($type == "Kredit" && $asal == "to")) {
                 if ($url == "pettycash" && $type == "Debet" && $asal == "from") {
                     $build->groupStart()
@@ -78,9 +79,9 @@ class api extends BaseController
                 ->get();
             foreach ($usr->getResult() as $usr) { ?>
                 <?php if ($asal == "from") { ?>
-                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekdari == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekdari == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>-<?= $usr->bank_name; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
                 <?php } else { ?>
-                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
+                    <option value="<?= $usr->rekening_id; ?>" <?= ($kas_rekke == $usr->rekening_id) ? "selected" : ""; ?>>(<?= $usr->rekening_type; ?>-<?= $usr->bank_name; ?>) <?= $usr->rekening_an; ?> - <?= $usr->rekening_no; ?></option>
                 <?php } ?>
 
         <?php }
