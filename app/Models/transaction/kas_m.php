@@ -277,7 +277,7 @@ class kas_m extends core_m
         }
 
         //transfer ke pettycash
-        if (($this->request->getPost("kas_debettype") == "bigcash" && $this->request->getPost("kas_rekke") == "-1" && $this->request->getPost("kas_type") == "Kredit") || $this->request->getPost("kas_pettyid") > 0) {
+        /* if (($this->request->getPost("kas_debettype") == "bigcash" && $this->request->getPost("kas_rekke") == "-1" && $this->request->getPost("kas_type") == "Kredit") || $this->request->getPost("kas_pettyid") > 0) {
             if ($this->request->getPost("kas_debettype") == "bigcash" && $this->request->getPost("kas_rekke") == "-1" && $this->request->getPost("kas_type") == "Kredit") {
                 foreach ($this->request->getPost() as $e => $f) {
                     if ($e != 'change' && $e != 'create' && $e != 'kas_picture' && $e != 'kas_id') {
@@ -305,7 +305,7 @@ class kas_m extends core_m
                     ->table("kas")
                     ->delete(array("kas_id" =>  $this->request->getPost("kas_pettyid")));
             }
-        }
+        } */
         return $data;
     }
 }

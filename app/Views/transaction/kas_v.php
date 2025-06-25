@@ -380,9 +380,10 @@ if (isset($_GET["rekeningnya"])) {
                                         <th>DA Number</th>
                                         <th>Uraian</th>
                                         <!-- <th>Qty</th> -->
-                                        <th>Nominal</th>
+                                        <th>Debet</th>
+                                        <th>Kredit</th>
                                         <!-- <th>Total</th> -->
-                                        <!-- <?php if ($url == "kas") { ?>
+                                        <?php if ($url == "kas") { ?>
                                             <th>Saldo</th>
                                         <?php } ?>
                                         <?php if ($url == "bigcash" || $url == "kas") { ?>
@@ -390,7 +391,7 @@ if (isset($_GET["rekeningnya"])) {
                                         <?php } ?>
                                         <?php if ($url == "pettycash" || $url == "kas") { ?>
                                             <th>Saldo<br />Petty Cash</th>
-                                        <?php } ?> -->
+                                        <?php } ?>
                                         <th>Dari Rek</th>
                                         <th>Ke Rek</th>
                                         <th>Keterangan</th>
@@ -502,9 +503,15 @@ if (isset($_GET["rekeningnya"])) {
                                             <td><?= $usr->job_dano; ?></td>
                                             <td class="text-left"><?= $usr->kas_uraian; ?></td>
                                             <!-- <td><?= number_format($usr->kas_qty, 0, ",", "."); ?></td> -->
-                                            <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
+                                            <?php if ($usr->kas_type == "Debet") { ?>
+                                                <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
+                                                <td></td>
+                                            <?php } else { ?>
+                                                <td></td>
+                                                <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
+                                            <?php } ?>
                                             <!-- <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td> -->
-                                            <!-- <?php if ($url == "kas") { ?>
+                                            <?php if ($url == "kas") { ?>
                                                 <td class="text-right"><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
                                             <?php } ?>
                                             <?php if ($url == "bigcash" || $url == "kas") { ?>
@@ -512,7 +519,7 @@ if (isset($_GET["rekeningnya"])) {
                                             <?php } ?>
                                             <?php if ($url == "pettycash" || $url == "kas") { ?>
                                                 <td class="text-right"><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
-                                            <?php } ?> -->
+                                            <?php } ?>
                                             <td class="text-left"><?= ($usr->kas_rekdari == "-1") ? "Pettycash" : $usr->rekdari; ?></td>
                                             <td class="text-left"><?= ($usr->kas_rekke == "-1") ? "Pettycash" : $usr->rekke; ?></td>
                                             <td class="text-left"><?= $usr->kas_keterangan; ?></td>
@@ -530,19 +537,19 @@ if (isset($_GET["rekeningnya"])) {
         </div>
     </div>
 </div>
-<?php 
-    $banknya = "";
-    // if ($rekeningnya != "") {
+<?php
+$banknya = "";
+/* if ($rekeningnya != "") {
     $saldon = 0;
 
-    
+
     $build = $this->db
         ->table("kas")
         ->select(" SUM(CASE WHEN kas_type = 'Debet' THEN kas_total WHEN kas_type = 'Kredit' THEN -kas_total ELSE 0 END) AS saldo_akhir");
-        // ->groupStart()
-        // ->where("kas_rekdari", $rekeningnya)
-        // ->orWhere("kas_rekke", $rekeningnya)
-        // ->groupEnd();
+    // ->groupStart()
+    // ->where("kas_rekdari", $rekeningnya)
+    // ->orWhere("kas_rekke", $rekeningnya)
+    // ->groupEnd();
     if ($url == "bigcash") {
         $build->where("kas_debettype", "bigcash");
     }
@@ -563,16 +570,16 @@ if (isset($_GET["rekeningnya"])) {
     foreach ($rekening->getResult() as $rek) {
         $banknya = $rek->bank_name . " | " . $rek->rekening_an . " - " . $rek->rekening_no . " ";
     }
-    /* } else {
-        $saldon = $saldo;
-    } */
-    ?>
+} else {
+    $saldon = $saldo;
+} */
+?>
 <script>
     $('.select').select2();
     var title = "<?= $title; ?>";
     $("title").text(title);
-    
-    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya; ?>: Rp. <?= number_format($saldon, 0, ",", ".") ?> )</span>');
+
+    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya; ?>: Rp. <?= number_format($saldo, 0, ",", ".") ?> )</span>');
     $("#page-title").text(title);
     $("#page-title-link").text(title);
 

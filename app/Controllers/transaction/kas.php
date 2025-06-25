@@ -38,6 +38,7 @@ class kas extends BaseController
         $data["title"]="Big Cash";
         $data["url"]="bigcash";
         $kas=$this->db->table("kas")->where("kas_debettype","bigcash")->orderBy("kas_id","DESC")->limit(1)->get();
+        // echo $this->db->getLastQuery();die;
         $saldo=0;
         foreach($kas->getResult() as $row){
             $saldo=$row->kas_bigcash;
