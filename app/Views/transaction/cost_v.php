@@ -36,11 +36,11 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         </div>
                     <?php } ?>
 
-                  
-                    <form method="post" class="form-inline alert alert-info" action="">                        
+
+                    <form method="post" class="form-inline alert alert-info" action="">
                         <div class="form-group">
                             <input type="date" class="form-control" style="width: 200px;" id="cost_date" name="cost_date" placeholder="Date">
-                        </div>                     
+                        </div>
                         <div class="form-group">
                             <input type="text" class="form-control" style="width: 400px;" id="cost_description" name="cost_description" placeholder="Description">
                         </div>
@@ -58,8 +58,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <option value="">From</option>
                                 <?php
                                 $rek = $this->db->table("rekening")
-                                ->orderBy("rekening_an", "ASC")
-                                ->get();
+                                    ->orderBy("rekening_an", "ASC")
+                                    ->get();
                                 foreach ($rek->getResult() as $r) { ?>
                                     <option value="<?= $r->rekening_id; ?>"><?= $r->rekening_no; ?> - <?= $r->rekening_an; ?></option>
                                 <?php } ?>
@@ -70,8 +70,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <option value="">To</option>
                                 <?php
                                 $rek = $this->db->table("rekening")
-                                ->orderBy("rekening_an", "ASC")
-                                ->get();
+                                    ->orderBy("rekening_an", "ASC")
+                                    ->get();
                                 foreach ($rek->getResult() as $r) { ?>
                                     <option value="<?= $r->rekening_id; ?>"><?= $r->rekening_no; ?> - <?= $r->rekening_an; ?></option>
                                 <?php } ?>
@@ -88,7 +88,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $("#cost_total").val(total);
                             }
                         </script>
-                        <input type="hidden" id="job_temp" name="job_temp" value="<?= $job_temp;?>" />
+                        <input type="hidden" id="job_temp" name="job_temp" value="<?= $job_temp; ?>" />
                         <input type="hidden" id="cost_id" name="cost_id" value="" />
 
                         &nbsp;&nbsp;<button id="btncost" type="submit" name="create" value="OK" class="btn btn-primary">Submit</button>
@@ -118,7 +118,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     ->table("cost")
                                     ->join("(SELECT rekening_id as fromid, rekening_no as fromrek, rekening_an as froman from rekening) AS dari", "dari.fromid = cost.cost_from", "left")
                                     ->join("(SELECT rekening_id as toid, rekening_no as torek, rekening_an as toan from rekening) AS ke", "ke.toid = cost.cost_to", "left");
-                                    $build->where("job_temp", $job_temp);
+                                $build->where("job_temp", $job_temp);
                                 $usr = $build->get();
 
                                 //echo $this->db->getLastquery();
@@ -139,25 +139,25 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     (
                                                         isset(session()->get("halaman")['102']['act_update'])
                                                         && session()->get("halaman")['102']['act_update'] == "1"
-                                                    )||
+                                                    ) ||
                                                     (
                                                         isset(session()->get("halaman")['115']['act_update'])
                                                         && session()->get("halaman")['115']['act_update'] == "1"
-                                                    )||
+                                                    ) ||
                                                     (
                                                         isset(session()->get("halaman")['116']['act_update'])
                                                         && session()->get("halaman")['116']['act_update'] == "1"
-                                                    )||
+                                                    ) ||
                                                     (
                                                         isset(session()->get("halaman")['118']['act_update'])
                                                         && session()->get("halaman")['118']['act_update'] == "1"
-                                                    )||
+                                                    ) ||
                                                     (
                                                         isset(session()->get("halaman")['119']['act_update'])
                                                         && session()->get("halaman")['119']['act_update'] == "1"
                                                     )
                                                 ) { ?>
-                                                    <form method="post" class="btn-action" >
+                                                    <form method="post" class="btn-action">
                                                         <button type="button" onclick="editcost('<?= $usr->cost_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
                                                             <span class="fa fa-edit" style="color:white;"></span>
                                                         </button>
@@ -165,7 +165,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" id="cost_date<?= $usr->cost_id; ?>" name="cost_date" value="<?= $usr->cost_date; ?>" />
                                                         <input type="hidden" id="cost_total<?= $usr->cost_id; ?>" name="cost_total" value="<?= $usr->cost_total; ?>" />
                                                         <input type="hidden" id="cost_nominal<?= $usr->cost_id; ?>" name="cost_nominal" value="<?= $usr->cost_nominal; ?>" />
-                                                        
+
                                                         <input type="hidden" id="cost_qty<?= $usr->cost_id; ?>" name="cost_qty" value="<?= $usr->cost_qty; ?>" />
                                                         <input type="hidden" id="cost_description<?= $usr->cost_id; ?>" name="cost_description" value="<?= $usr->cost_description; ?>" />
                                                         <input type="hidden" id="cost_id<?= $usr->cost_id; ?>" name="cost_id" value="<?= $usr->cost_id; ?>" />
@@ -210,7 +210,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->cost_description; ?></td>
-                                        <td><?= number_format($usr->cost_qty, 3, ",", "."); ?></td>                                        
+                                        <td><?= number_format($usr->cost_qty, 3, ",", "."); ?></td>
                                         <td><?= number_format($usr->cost_nominal, 2, ",", "."); ?></td>
                                         <td><?= number_format($usr->cost_total, 2, ",", "."); ?></td>
                                         <td><?= $usr->fromrek; ?>-<?= $usr->froman; ?></td>
@@ -255,7 +255,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     </div>
 </div>
 <script>
-    let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url($_GET["url"]."?t=" . $_GET["t"]."&temp=" . $job_temp); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
+    <?php if ($_GET["t"] == "jc") {
+        $urln = base_url($_GET["url"] . "?t=" . $_GET["t"]);
+    } else {
+        $urln = base_url($_GET["url"] . "?t=" . $_GET["t"] . "&temp=" . $job_temp);
+    }
+    ?>
+    let pagetitle = '&nbsp;&nbsp;<a href="<?= $urln;  ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
     $(document).ready(function() {
         $("#page-title").append(pagetitle);
     });

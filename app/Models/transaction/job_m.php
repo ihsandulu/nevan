@@ -11,11 +11,11 @@ class job_m extends core_m
         $data = array();
         $data["message"] = "";
         //cek job
-        if ($this->request->getVar("job_id")) {
-            $jobd["job_id"] = $this->request->getVar("job_id");
+        if ($this->request->getPost("job_id")) {
+            $jobd["job_id"] = $this->request->getPost("job_id");
         } else {
-            if ($this->request->getVar("temp")) {
-                $jobd["job_temp"] = $this->request->getVar("temp");
+            if ($this->request->getPost("temp")) {
+                $jobd["job_temp"] = $this->request->getPost("temp");
             } else {
                 $jobd["job_id"] = -1;
             }
