@@ -58,10 +58,18 @@ class api extends BaseController
             $build = $this->db
                 ->table("rekening");
             if (($type == "Debet" && $asal == "from") || ($type == "Kredit" && $asal == "to")) {
-                $build->groupStart()
-                    ->where("rekening_type", "Customer")
-                    ->orWhere("rekening_type", "Vendor")
-                    ->groupEnd();
+                if ($url == "pettycash" && $type == "Debet" && $asal == "from") {
+                    $build->groupStart()
+                        ->where("rekening_type", "Customer")
+                        ->orWhere("rekening_type", "Vendor")
+                        ->orWhere("rekening_type", "NKL")
+                        ->groupEnd();
+                } else {
+                    $build->groupStart()
+                        ->where("rekening_type", "Customer")
+                        ->orWhere("rekening_type", "Vendor")
+                        ->groupEnd();
+                }
             } else if (($type == "Debet" && $asal == "to") || ($type == "Kredit" && $asal == "from")) {
                 $build->where("rekening_type", "NKL");
             }
