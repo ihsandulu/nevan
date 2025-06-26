@@ -5,9 +5,9 @@
     }
 </style>
 <?php
-$dari = date("Y-m-d");
+$dari = date("Y-m-d", strtotime("-1 weeks"));
 $ke = date("Y-m-d");
-$kas_type = "";
+$kas_typen = "";
 $rekeningnya = "";
 if (isset($_GET["dari"])) {
     $dari = $_GET["dari"];
@@ -15,8 +15,8 @@ if (isset($_GET["dari"])) {
 if (isset($_GET["ke"])) {
     $ke = $_GET["ke"];
 }
-if (isset($_GET["kas_type"])) {
-    $kas_type = $_GET["kas_type"];
+if (isset($_GET["kas_typen"])) {
+    $kas_typen = $_GET["kas_typen"];
 }
 if (isset($_GET["rekeningnya"])) {
     $rekeningnya = $_GET["rekeningnya"];
@@ -337,10 +337,10 @@ if (isset($_GET["rekeningnya"])) {
                                 <div class="col-2 tampil">
                                     <div class="row">
                                         <div class="col-12">
-                                            <select class="form-control" id="kas_type" name="kas_type">
-                                                <option value="" <?= ($kas_type == "") ? "selected" : ""; ?>>Pilih Type</option>
-                                                <option value="Debet" <?= ($kas_type == "Debet") ? "selected" : ""; ?>>Debet</option>
-                                                <option value="Kredit" <?= ($kas_type == "Kredit") ? "selected" : ""; ?>>Kredit</option>
+                                            <select class="form-control" id="kas_typen" name="kas_typen">
+                                                <option value="" <?= ($kas_typen == "") ? "selected" : ""; ?>>Pilih Type</option>
+                                                <option value="Debet" <?= ($kas_typen == "Debet") ? "selected" : ""; ?>>Debet</option>
+                                                <option value="Kredit" <?= ($kas_typen == "Kredit") ? "selected" : ""; ?>>Kredit</option>
                                             </select>
                                         </div>
                                     </div>
@@ -425,6 +425,7 @@ if (isset($_GET["rekeningnya"])) {
                                     }
                                     $build->where("kas_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     $usr = $build->orderBy("kas.kas_date", "ASC")
+                                        ->orderBy("kas.kas_id", "ASC")
                                         ->get();
 
                                     // echo $this->db->getLastquery();
@@ -490,6 +491,7 @@ if (isset($_GET["rekeningnya"])) {
                                                                     <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                                     <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
                                                                     <input type="hidden" name="kas_pettyid" value="<?= $usr->kas_pettyid; ?>" />
+                                                                    <input type="hidden" name="kas_date" value="<?= $usr->kas_date; ?>" />
                                                                 </form>
                                                             <?php } ?>
                                                         <?php } ?>
@@ -497,7 +499,7 @@ if (isset($_GET["rekeningnya"])) {
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->kas_date; ?></td>
+                                            <td><?= $usr->kas_id; ?> - <?= $usr->kas_date; ?></td>
                                             <td><?= $usr->kas_type; ?></td>
                                             <?php if ($url == "kas") { ?>
                                                 <td><?= $debettype[$usr->kas_debettype]; ?></td>

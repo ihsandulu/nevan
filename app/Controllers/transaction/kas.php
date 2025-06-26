@@ -22,7 +22,11 @@ class kas extends BaseController
         $data = $data->data();
         $data["title"]="Kas";
         $data["url"]="kas";
-        $kas=$this->db->table("kas")->orderBy("kas_id","DESC")->limit(1)->get();
+        $kas=$this->db->table("kas")
+        ->orderBy("kas_date","DESC")
+        ->orderBy("kas_id","DESC")
+        ->limit(1)
+        ->get();
         $saldo=0;
         foreach($kas->getResult() as $row){
             $saldo=$row->kas_saldo;
@@ -37,7 +41,12 @@ class kas extends BaseController
         $data = $data->data();
         $data["title"]="Big Cash";
         $data["url"]="bigcash";
-        $kas=$this->db->table("kas")->where("kas_debettype","bigcash")->orderBy("kas_id","DESC")->limit(1)->get();
+        $kas=$this->db->table("kas")
+        ->where("kas_debettype","bigcash")
+        ->orderBy("kas_date","DESC")
+        ->orderBy("kas_id","DESC")
+        ->limit(1)
+        ->get();
         // echo $this->db->getLastQuery();die;
         $saldo=0;
         foreach($kas->getResult() as $row){
@@ -53,7 +62,12 @@ class kas extends BaseController
         $data = $data->data();
         $data["title"]="Petty Cash";
         $data["url"]="pettycash";
-        $kas=$this->db->table("kas")->where("kas_debettype","pettycash")->orderBy("kas_id","DESC")->limit(1)->get();
+        $kas=$this->db->table("kas")
+        ->where("kas_debettype","pettycash")
+        ->orderBy("kas_date","DESC")
+        ->orderBy("kas_id","DESC")
+        ->limit(1)
+        ->get();
         $saldo=0;
         foreach($kas->getResult() as $row){
             $saldo=$row->kas_pettycash;
