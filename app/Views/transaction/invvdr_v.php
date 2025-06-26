@@ -62,9 +62,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <button name="new" class="btn btn-info btn-block btn-sm" value="OK" style="">New</button>
                                         <input type="hidden" name="invvdr_id" />
                                         <?php
-                                        $invvdr_no = date("dmyhis");
+                                        $invvdr_temp = date("dmyhis");
                                         ?>
-                                        <input type="hidden" name="invvdr_no" value="<?= $invvdr_no; ?>" />
+                                        <input type="hidden" name="invvdr_temp" value="<?= $invvdr_temp; ?>" />
                                     </h1>
                                 </form>
                             <?php } ?>
@@ -211,7 +211,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     <form target="_self" method="get" class="btn-action" style="" action="<?= base_url("invvdrd"); ?>">
                                                         <button title="Edit" data-bs-toggle="tooltip" class="btn btn-sm btn-warning " name="editinvvdr" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
                                                         <input type="hidden" name="invvdr_id" value="<?= $usr->invvdr_id; ?>" />
-                                                        <input type="hidden" name="invvdr_no" value="<?= $usr->invvdr_no; ?>" />
+                                                        <input type="hidden" name="invvdr_temp" value="<?= $usr->invvdr_temp; ?>" />
                                                     </form>
                                                 <?php } ?>
 

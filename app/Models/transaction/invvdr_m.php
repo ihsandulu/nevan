@@ -42,37 +42,47 @@ class invvdr_m extends core_m
         if ($this->request->getPost("delete") == "OK") {
             $invvdr_id =   $this->request->getPost("invvdr_id");
 
-            //update job
-            $invvdr_no =   $this->request->getPost("invvdr_no");
-            $invvdrd = $this->db->table('invvdrd')
+            //cek pembayaran
+            $cekpembayaran = $this->db
+                ->table("invvdrp")
                 ->where("invvdr_id", $invvdr_id)
                 ->get();
-            $jobdano      = array();
-            foreach ($invvdrd->getResult() as $rinvvdrd) {
-                if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
-                    $jobdano[] = $rinvvdrd->job_dano;
+            if ($cekpembayaran->getNumRows() > 0) {
+                $data["message"] = "Hapus transaksi pembayaran terlebih dahulu!";
+            } else {
+
+                //update job
+                /* $invvdr_no =   $this->request->getPost("invvdr_no");
+                $invvdrd = $this->db->table('invvdrd')
+                    ->where("invvdr_id", $invvdr_id)
+                    ->get();
+                $jobdano      = array();
+                foreach ($invvdrd->getResult() as $rinvvdrd) {
+                    if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
+                        $jobdano[] = $rinvvdrd->job_dano;
+                    }
                 }
-            }
-            $inputjob["invvdr_no"] = "";
+                $inputjob["invvdr_no"] = "";
 
-            if (!empty($jobdano)) {
+                if (!empty($jobdano)) {
+                    $this->db
+                        ->table('job')
+                        ->whereIn('job_dano', $jobdano)
+                        ->update($inputjob);
+                    // echo $this->db->getLastQuery();die;
+                } */
+
+                //delete invvdrd
                 $this->db
-                    ->table('job')
-                    ->whereIn('job_dano', $jobdano)
-                    ->update($inputjob);
-                // echo $this->db->getLastQuery();die;
+                    ->table("invvdrd")
+                    ->delete(array("invvdr_id" =>  $invvdr_id));
+
+                //delete invvdr
+                $this->db
+                    ->table("invvdr")
+                    ->delete(array("invvdr_id" =>  $invvdr_id));
+                $data["message"] = "Delete Success";
             }
-
-            //delete invvdrd
-            $this->db
-                ->table("invvdrd")
-                ->delete(array("invvdr_id" =>  $invvdr_id));
-
-            //delete invvdr
-            $this->db
-                ->table("invvdr")
-                ->delete(array("invvdr_id" =>  $invvdr_id));
-            $data["message"] = "Delete Success";
         }
 
         //insert

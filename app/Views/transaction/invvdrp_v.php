@@ -139,6 +139,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <input type="text" class="form-control" style="width: 200px;" id="invvdrp_keterangan" name="invvdrp_keterangan" placeholder="Keterangan">
                         </div>
 
+                        <input type="hidden" id="invvdr_id" name="invvdr_id" value="<?= $invvdr_id; ?>" />
                         <input type="hidden" id="invvdr_no" name="invvdr_no" value="<?= $invvdr_no; ?>" />
                         <input type="hidden" id="vendor_id" name="vendor_id" value="<?= $vendor_id; ?>" />
                         <input type="hidden" id="vendor_name" name="vendor_name" value="<?= $vendor_name; ?>" />

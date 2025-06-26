@@ -173,6 +173,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         </div>
 
                         <input type="hidden" id="invvdr_id" name="invvdr_id" value="<?= $invvdr_id; ?>" />
+                        <input type="hidden" id="invvdr_temp" name="invvdr_temp" value="<?= $invvdr_temp; ?>" />
 
                         <?php
                         if (isset($_GET["editinvvdr"])) {
@@ -216,6 +217,12 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <?php } ?>
                             </select>
                         </div>
+                        <div class="form-group">
+                            <input onkeyup="kali()" type="text" class="form-control" style="width: 80px;" id="invvdrd_price" name="invvdrd_price" placeholder="Price">
+                        </div>
+                        <div class="form-group">
+                            <input  type="text" class="form-control" style="width: 80px;" id="invvdrd_total" name="invvdrd_total" placeholder="Total">
+                        </div>
 
                         <script>
                             function pilihdano() {
@@ -228,10 +235,17 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $("#invvdrd_description").val(des);
                                 $("#invvdrd_qty").val(qty);
                                 $("#invvdrd_satuan").val(satuan);
+                                kali();
+                            }
+                            function kali() {
+                                let qty = $("#invvdrd_qty").val();
+                                let price = $("#invvdrd_price").val();
+                                let total = qty * price;
+                                $("#invvdrd_total").val(total);
                             }
                         </script>
                         <input type="hidden" id="job_dano" name="job_dano" value="" />
-                        <input type="hidden" id="invvdr_no" name="invvdr_no" value="<?= $invvdr_no; ?>" />
+                        <input type="hidden" id="invvdr_temp" name="invvdr_temp" value="<?= $invvdr_temp; ?>" />
                         <input type="hidden" id="invvdr_id" name="invvdr_id" value="<?= $invvdr_id; ?>" />
                         <input type="hidden" id="invvdrd_id" name="invvdrd_id" value="" />
                         <?php if (isset($_GET["editinvvdr"])) { ?>
@@ -253,6 +267,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <th>DA Number</th>
                                     <th>Description</th>
                                     <th>QTY</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
                                     <th>Satuan</th>
                                 </tr>
                             </thead>
@@ -261,7 +277,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $build = $this->db
                                     ->table("invvdrd");
                                 if (isset($_GET["invvdr_no"])) {
-                                    $build->where("invvdr_no", $invvdr_no);
+                                    $build->where("invvdr_no", $invvdr_not);
                                 }
                                 $usr = $build->get();
 
@@ -290,7 +306,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                             <span class="fa fa-edit" style="color:white;"></span>
                                                         </button>
                                                         <input type="hidden" id="job_dano<?= $usr->invvdrd_id; ?>" name="job_dano" value="<?= $usr->job_dano; ?>" />
-                                                        <input type="hidden" id="invvdr_no<?= $usr->invvdrd_id; ?>" name="invvdr_no" value="<?= $usr->invvdr_no; ?>" />
+                                                        <input type="hidden" id="invvdr_temp<?= $usr->invvdrd_id; ?>" name="invvdr_temp" value="<?= $usr->invvdr_temp; ?>" />
                                                         <input type="hidden" id="invvdr_id<?= $usr->invvdrd_id; ?>" name="invvdr_id" value="<?= $usr->invvdr_id; ?>" />
 
                                                         <input type="hidden" id="invvdrd_satuan<?= $usr->invvdrd_id; ?>" name="invvdrd_satuan" value="<?= $usr->invvdrd_satuan; ?>" />
@@ -298,6 +314,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" id="invvdrd_description<?= $usr->invvdrd_id; ?>" name="invvdrd_description" value="<?= $usr->invvdrd_description; ?>" />
                                                         <input type="hidden" id="job_id<?= $usr->invvdrd_id; ?>" name="job_id" value="<?= $usr->job_id; ?>" />
                                                         <input type="hidden" id="invvdrd_id<?= $usr->invvdrd_id; ?>" name="invvdrd_id" value="<?= $usr->invvdrd_id; ?>" />
+                                                        <input type="hidden" id="invvdrd_price<?= $usr->invvdrd_id; ?>" name="invvdrd_price" value="<?= $usr->invvdrd_price; ?>" />
+                                                        <input type="hidden" id="invvdrd_total<?= $usr->invvdrd_id; ?>" name="invvdrd_total" value="<?= $usr->invvdrd_total; ?>" />
                                                     </form>
                                                 <?php } ?>
 
@@ -318,7 +336,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                         <input type="hidden" name="invvdrd_id" value="<?= $usr->invvdrd_id; ?>" />
-                                                        <input type="hidden" name="invvdr_no" value="<?= $invvdr_no; ?>" />
+                                                        <input type="hidden" name="invvdr_temp" value="<?= $invvdr_temp; ?>" />
                                                         <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                     </form>
                                                 <?php } ?>
@@ -328,6 +346,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <td><?= $usr->job_dano; ?></td>
                                         <td><?= $usr->invvdrd_description; ?></td>
                                         <td><?= number_format($usr->invvdrd_qty, 0, ",", "."); ?></td>
+                                        <td><?= number_format($usr->invvdrd_price, 0, ",", "."); ?></td>
+                                        <td><?= number_format($usr->invvdrd_total, 0, ",", "."); ?></td>
                                         <td><?= $usr->invvdrd_satuan; ?></td>
                                     </tr>
                                 <?php } ?>
@@ -337,23 +357,27 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <script>
                             function editinvvdrd(invvdrd_id) {
                                 let job_dano = $("#job_dano" + invvdrd_id).val();
-                                let invvdr_no = $("#invvdr_no" + invvdrd_id).val();
+                                let invvdr_temp = $("#invvdr_temp" + invvdrd_id).val();
                                 let invvdr_id = $("#invvdr_id" + invvdrd_id).val();
                                 let invvdrd_satuan = $("#invvdrd_satuan" + invvdrd_id).val();
                                 let invvdrd_qty = $("#invvdrd_qty" + invvdrd_id).val();
                                 let invvdrd_description = $("#invvdrd_description" + invvdrd_id).val();
                                 let job_id = $("#job_id" + invvdrd_id).val();
                                 let invvdrdid = $("#invvdrd_id" + invvdrd_id).val();
+                                let invvdrd_price = $("#invvdrd_price" + invvdrd_id).val();
+                                let invvdrdtotal = $("#invvdrd_total" + invvdrd_id).val();
 
                                 
                                 $("#job_id").val(job_id).trigger('change');
                                 $("#job_dano").val(job_dano);
-                                $("#invvdr_no").val(invvdr_no);
+                                $("#invvdr_temp").val(invvdr_temp);
                                 $("#invvdr_id").val(invvdr_id);
                                 $("#invvdrd_satuan").val(invvdrd_satuan);
                                 $("#invvdrd_qty").val(invvdrd_qty);
                                 $("#invvdrd_description").val(invvdrd_description);
                                 $("#invvdrd_id").val(invvdrdid);
+                                $("#invvdrd_price").val(invvdrd_price);
+                                $("#invvdrd_total").val(invvdrdtotal);
 
                                 $("#btninvvdrd").attr("name", "change");
                             }

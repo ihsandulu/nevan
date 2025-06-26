@@ -10,41 +10,16 @@ class invvdrd_m extends core_m
     {
         $data = array();
         $data["message"] = "";
-        //cek invvdrd
-        if ($this->request->getVar("invvdr_id")) {
-            $invvdrdd["invvdr_id"] = $this->request->getVar("invvdr_id");
-        } else {
-            $invvdrdd["invvdr_id"] = -1;
-        }
-        $us = $this->db
-            ->table("invvdr")
-            ->getWhere($invvdrdd);
-        /* echo $this->db->getLastquery();
-        die; */
-        $larang = array("log_id", "id", "user_id", "action", "data", "invvdrd_id_dep", "trx_id", "trx_code");
-        if ($us->getNumRows() > 0) {
-            foreach ($us->getResult() as $invvdr) {
-                foreach ($this->db->getFieldNames('invvdr') as $field) {
-                    if (!in_array($field, $larang)) {
-                        $data[$field] = $invvdr->$field;
-                    }
-                }
-            }
-        } else {
-            foreach ($this->db->getFieldNames('invvdr') as $field) {
-                $data[$field] = "";
-            }
-        }
-
+        
 
 
         //delete
         if ($this->request->getPost("delete") == "OK") {
             $invvdrd_id =   $this->request->getPost("invvdrd_id");
             //update Invoice
-            $invvdr_no =   $this->request->getPost("invvdr_no");
+            $invvdr_temp =   $this->request->getPost("invvdr_temp");
             $invvdrd = $this->db->table('invvdrd')
-                ->where("invvdr_no", $invvdr_no)
+                ->where("invvdr_temp", $invvdr_temp)
                 ->where("invvdrd_id !=", $invvdrd_id)
                 ->get();
             $jobdano      = array();
@@ -55,7 +30,7 @@ class invvdrd_m extends core_m
             }
             $jobdanos      = implode(', ', $jobdano);
             $inputi["job_dano"] = $jobdanos;
-            $this->db->table('invvdr')->update($inputi, array("invvdr_no" => $invvdr_no));
+            $this->db->table('invvdr')->update($inputi, array("invvdr_temp" => $invvdr_temp));
             // echo $this->db->getLastQuery();die;
 
 
@@ -81,19 +56,22 @@ class invvdrd_m extends core_m
             die; */
             $invvdrd_id = $this->db->insertID();
 
-            $invvdr_no =   $input["invvdr_no"];
+            $invvdr_temp =   $input["invvdr_temp"];
             //update Invoice
             if ($this->request->getGet("editinvvdr") == "OK") {
-                $invvdrd = $this->db->table('invvdrd')->where("invvdr_no", $invvdr_no)->get();
+                $invvdrd = $this->db->table('invvdrd')->where("invvdr_temp", $invvdr_temp)->get();
                 $jobdano      = array();
+                $tagihan = 0;
                 foreach ($invvdrd->getResult() as $rinvvdrd) {
                     if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
                         $jobdano[] = $rinvvdrd->job_dano;
                     }
+                    $tagihan += $rinvvdrd->invvdrd_total;
                 }
                 $jobdanos      = implode(', ', $jobdano);
                 $inputi["job_dano"] = $jobdanos;
-                $this->db->table('invvdr')->update($inputi, array("invvdr_no" => $invvdr_no));
+                $inputi["invvdr_total"] = $tagihan;
+                $this->db->table('invvdr')->update($inputi, array("invvdr_temp" => $invvdr_temp));
             }
 
             $data["message"] = "Insert Data Success";
@@ -108,10 +86,10 @@ class invvdrd_m extends core_m
                 }
             }
 
-            $invvdrNo = $this->request->getGet('invvdr_no');
+            $invvdr_temp = $this->request->getGet('invvdr_temp');
             $invvdrd  = $this->db
                 ->table('invvdrd')
-                ->where('invvdr_no', $invvdrNo)
+                ->where('invvdr_temp', $invvdr_temp)
                 ->get();
 
             $jobdano      = array();
@@ -152,11 +130,10 @@ class invvdrd_m extends core_m
 
             //updane nomor Invoice invvdrd
             $inputad["invvdrd_date"] = $input["invvdr_date"];
-            $inputad["invvdr_no"] = $input["invvdr_no"];
             $inputad["invvdr_id"] = $invvdr_id;
             $this->db
                 ->table('invvdrd')
-                ->where('invvdr_no', $invvdrNo)
+                ->where('invvdr_temp', $invvdr_temp)
                 ->update($inputad);
             // echo $this->db->getLastQuery(); die;          
 
@@ -175,10 +152,10 @@ class invvdrd_m extends core_m
             }
             $this->db->table('invvdrd')->update($input, array("invvdrd_id" => $this->request->getPost("invvdrd_id")));
 
-            $invvdr_no =   $this->request->getGet("invvdr_no");
+            $invvdr_temp =   $this->request->getGet("invvdr_temp");
             //update Invoice
             if ($this->request->getGet("editinvvdr") == "OK") {
-                $invvdrd = $this->db->table('invvdrd')->where("invvdr_no", $invvdr_no)->get();
+                $invvdrd = $this->db->table('invvdrd')->where("invvdr_temp", $invvdr_temp)->get();
 
                 $jobdano      = array();
                 foreach ($invvdrd->getResult() as $rinvvdrd) {
@@ -188,7 +165,7 @@ class invvdrd_m extends core_m
                 }
                 $jobdanos      = implode(', ', $jobdano);
                 $inputi["job_dano"] = $jobdanos;
-                $this->db->table('invvdr')->update($inputi, array("invvdr_no" => $invvdr_no));
+                $this->db->table('invvdr')->update($inputi, array("invvdr_temp" => $invvdr_temp));
             }
 
             $data["message"] = "Update Success";
@@ -207,10 +184,10 @@ class invvdrd_m extends core_m
                 }
             }
             // dd($input);
-            $invvdrNo = $input["invvdr_no"];
+            $invvdr_temp = $input["invvdr_temp"];
             $invvdrd  = $this->db
                 ->table('invvdrd')
-                ->where('invvdr_no', $invvdrNo)
+                ->where('invvdr_temp', $invvdr_temp)
                 ->get();
             $jobdano      = array();
             foreach ($invvdrd->getResult() as $rinvvdrd) {
@@ -250,7 +227,7 @@ class invvdrd_m extends core_m
             $inputad["invvdrd_date"] = $input["invvdr_date"];
             $this->db
                 ->table('invvdrd')
-                ->where('invvdr_no', $invvdrNo)
+                ->where('invvdr_temp', $invvdr_temp)
                 ->update($inputad);
             // echo $this->db->getLastQuery(); die;
 
@@ -258,6 +235,45 @@ class invvdrd_m extends core_m
             header('Location: ' . base_url('invvdr'));
             exit;
         }
+
+
+        //cek invvdrd
+        if ($this->request->getVar("invvdr_id")) {
+            $invvdrdd["invvdr_id"] = $this->request->getVar("invvdr_id");
+        } else {
+            $invvdrdd["invvdr_id"] = -1;
+        }
+        $us = $this->db
+            ->table("invvdr")
+            ->getWhere($invvdrdd);
+        /* echo $this->db->getLastquery();
+        die; */
+        $larang = array("log_id", "id", "user_id", "action", "data", "invvdrd_id_dep", "trx_id", "trx_code");
+        if ($us->getNumRows() > 0) {
+            foreach ($us->getResult() as $invvdr) {
+                foreach ($this->db->getFieldNames('invvdr') as $field) {
+                    if (!in_array($field, $larang)) {
+                        $data[$field] = $invvdr->$field;
+                    }
+                }
+            }
+        } else {
+            foreach ($this->db->getFieldNames('invvdr') as $field) {
+                $data[$field] = "";
+            }
+            $data["invvdr_temp"] = $_GET["invvdr_temp"];
+        }
+
+        $invvdrd = $this->db->table('invvdrd')->where("invvdr_temp", $data["invvdr_temp"])->get();
+        // echo $this->db->getLastQuery();die;
+        $tagihan = 0;
+        foreach ($invvdrd->getResult() as $rinvvdrd) {
+            $tagihan += $rinvvdrd->invvdrd_total;
+        }
+        $data["invvdr_tagihan"] = $tagihan;
+        $data["invvdr_dtagihan"] = $tagihan-$data["invvdr_discount"];
+        // dd($data);
+
         return $data;
     }
 }
