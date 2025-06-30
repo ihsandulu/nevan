@@ -10,7 +10,7 @@ class invvdrd_m extends core_m
     {
         $data = array();
         $data["message"] = "";
-        
+
 
 
         //delete
@@ -270,8 +270,14 @@ class invvdrd_m extends core_m
         foreach ($invvdrd->getResult() as $rinvvdrd) {
             $tagihan += $rinvvdrd->invvdrd_total;
         }
+        /* if (!isset($data["invvdr_tagihan"])) {
+            $data["invvdr_tagihan"] = $tagihan;
+        }
+        if (!isset($data["invvdr_dtagihan"])) {
+            $data["invvdr_dtagihan"] = $tagihan - $data["invvdr_discount"];
+        } */
         $data["invvdr_tagihan"] = $tagihan;
-        $data["invvdr_dtagihan"] = $tagihan-$data["invvdr_discount"];
+        $data["invvdr_dtagihan"] = $tagihan - $data["invvdr_discount"];
         // dd($data);
 
         return $data;
