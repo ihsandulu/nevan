@@ -276,12 +276,12 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <?php
                                 $build = $this->db
                                     ->table("invvdrd");
-                                if (isset($_GET["invvdr_no"])) {
-                                    $build->where("invvdr_no", $invvdr_not);
+                                if (isset($_GET["invvdr_temp"])) {
+                                    $build->where("invvdr_temp", $_GET["invvdr_temp"]);
                                 }
                                 $usr = $build->get();
 
-                                //echo $this->db->getLastquery();
+                                // echo $this->db->getLastquery();
                                 $no = 1;
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
