@@ -277,7 +277,9 @@ class invvdrd_m extends core_m
             $data["invvdr_dtagihan"] = $tagihan - $data["invvdr_discount"];
         } */
         $data["invvdr_tagihan"] = $tagihan;
-        $data["invvdr_dtagihan"] = $tagihan - $data["invvdr_discount"];
+        // $data["invvdr_dtagihan"] = $tagihan - $data["invvdr_discount"];
+        $data["invvdr_dtagihan"] = $tagihan - floatval($data["invvdr_discount"]);
+
         // dd($data);
 
         return $data;
