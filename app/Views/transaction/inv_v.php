@@ -96,6 +96,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             $dari = date("Y-m-d", strtotime("-1 week", strtotime(date("Y-m-d"))));
                             $ke = date("Y-m-d");
                             $lunas = "";
+                            $customer_id = "";
                             if (isset($_GET["dari"])) {
                                 $dari = $_GET["dari"];
                             }
@@ -105,42 +106,43 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             if (isset($_GET["lunas"])) {
                                 $lunas = $_GET["lunas"];
                             }
+                            if (isset($_GET["customer_id"])) {
+                                $customer_id = $_GET["customer_id"];
+                            }
                             ?>
-                            <div class="col-3 ">
+                            <div class="col-2 ">
                                 <div class="row">
-                                    <div class="col-4">
-                                        <label class="text-dark">Dari :</label>
+                                    <div class="col-12">
+                                        <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Dari" type="date" class="form-control tooltip-statis" placeholder="Dari" name="dari" value="<?= $dari; ?>">
                                     </div>
-                                    <div class="col-8">
-                                        <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
-                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2 row ">
+                                <div class="col-12">
+                                    <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Ke" type="date" class="form-control tooltip-statis" placeholder="Ke" name="ke" value="<?= $ke; ?>">
                                 </div>
                             </div>
                             <div class="col-3 row ">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label class="text-dark">Ke :</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
-                                    </div>
+                                <div class="col-12">
+                                    <select class="form-control select" name="customer_id" value="<?= $customer_id; ?>">
+                                        <option value="" <?= ($customer_id == "") ? "selected" : ""; ?>>Customer</option>
+                                        <?php $customer = $this->db->table("customer")->orderBy("customer_name", "ASC")->get();
+                                        foreach ($customer->getResult() as $row) { ?>
+                                            <option value="<?= $row->customer_id; ?>" <?= ($customer_id == $row->customer_id) ? "selected" : ""; ?>><?= $row->customer_name; ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-3 row ">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label class="text-dark">Lunas :</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <select class="form-control" name="lunas" value="<?= $lunas; ?>">
-                                            <option value="">Semua</option>
-                                            <option value="1" <?= ($lunas == "1") ? "selected" : ""; ?>>Lunas</option>
-                                            <option value="0" <?= ($lunas == "0") ? "selected" : ""; ?>>Belum Lunas</option>
-                                        </select>
-                                    </div>
+                            <div class="col-2 row">
+                                <div class="col-12">
+                                    <select class="form-control" name="lunas" value="<?= $lunas; ?>">
+                                        <option value="">Lunas/Belum</option>
+                                        <option value="1" <?= ($lunas == "1") ? "selected" : ""; ?>>Lunas</option>
+                                        <option value="0" <?= ($lunas == "0") ? "selected" : ""; ?>>Belum Lunas</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
                                 <button type="submit" class="btn btn-block btn-primary">Search</button>
                             </div>
                         </div>
@@ -180,17 +182,25 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 if (isset($_GET["lunas"]) && $_GET["lunas"] != "") {
                                     if ($lunas == "1") {
                                         $build->where("inv_payment >= inv_grand");
-                                    } else if ($lunas == "0"){
+                                    } else if ($lunas == "0") {
                                         $build->where("inv_payment < inv_grand");
                                     }
+                                }
+                                if (isset($_GET["customer_id"]) && $_GET["customer_id"] != "") {
+                                    $build->where("inv.customer_id", $customer_id);
                                 }
                                 $usr = $build->orderBy("inv.inv_id", "DESC")
                                     ->get();
 
-                                //echo $this->db->getLastquery();
+                                // echo $this->db->getLastquery();
                                 $no = 1;
                                 $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
-                                foreach ($usr->getResult() as $usr) { ?>
+                                $pembayaran = 0;
+                                $sisahutang = 0;
+                                foreach ($usr->getResult() as $usr) {
+                                    $pembayaran += $usr->inv_payment;
+                                    $sisahutang += $usr->inv_grand;
+                                ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
                                             <td style="padding-left:0px; padding-right:0px;">
@@ -357,16 +367,34 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 <script>
     $('.select').select2();
     var title = "<?= $title; ?>";
+    let pembayaran = ". Pembayaran : <?= number_format($pembayaran, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($sisahutang, 0, ",", "."); ?>";
     $("title").text(title);
-    $(".card-title").text(title);
+    $(".card-title").text(title + pembayaran);
     $("#page-title").text(title);
     $("#page-title-link").text(title);
-    function saveinvno(inv_id){
-        $.get("<?=base_url("api/saveinvno");?>",{inv_id:inv_id, inv_no:$("#inv_no"+inv_id).val()})
-        .done(function(data) {
-            alert("Invoice number saved successfully.");
-        });
+
+    function saveinvno(inv_id) {
+        $.get("<?= base_url("api/saveinvno"); ?>", {
+                inv_id: inv_id,
+                inv_no: $("#inv_no" + inv_id).val()
+            })
+            .done(function(data) {
+                alert("Invoice number saved successfully.");
+            });
     }
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tooltipTriggerList = document.querySelectorAll('.tooltip-statis');
+
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            const tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
+
+            // Menampilkan tooltip secara manual
+            tooltip.show();
+        });
+    });
+</script>
+
 
 <?php echo  $this->include("template/footer_v"); ?>
