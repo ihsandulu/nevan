@@ -499,7 +499,7 @@ if (isset($_GET["rekeningnya"])) {
                                                 </td>
                                             <?php } ?>
                                             <!-- <td><?= $no++; ?></td> -->
-                                            <td><?= $usr->kas_id; ?> - <?= $usr->kas_date; ?></td>
+                                            <td><?= $usr->kas_date; ?></td>
                                             <td><?= $usr->kas_type; ?></td>
                                             <?php if ($url == "kas") { ?>
                                                 <td><?= $debettype[$usr->kas_debettype]; ?></td>
