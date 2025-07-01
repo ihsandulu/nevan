@@ -35,7 +35,7 @@ class invd_m extends core_m
                 $data[$field] = "";
             }
         }
-        $data["inv_no"] = $this->request->getGet("inv_no");
+        $data["inv_temp"] = $this->request->getGet("inv_temp");
         $data["inv_id"] = $this->request->getGet("inv_id");
 
 
@@ -44,9 +44,9 @@ class invd_m extends core_m
         if ($this->request->getPost("delete") == "OK") {
             $invd_id =   $this->request->getPost("invd_id");
             //update invoice
-            $inv_no =   $this->request->getPost("inv_no");
+            $inv_temp =   $this->request->getPost("inv_temp");
             $invd = $this->db->table('invd')
-                ->where("inv_no", $inv_no)
+                ->where("inv_temp", $inv_temp)
                 ->where("invd_id !=", $invd_id)
                 ->get();
             $total = 0;
@@ -59,14 +59,43 @@ class invd_m extends core_m
             }
             $jobdanos      = implode(', ', $jobdano);
             $inputi["job_dano"] = $jobdanos;
-            $inputi["inv_tagihan"] = $total;
-            $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
-            // echo $this->db->getLastQuery();die;
+
+            $inv = $this->db->table('inv')->where("inv_temp", $inv_temp)->get();
+            foreach ($inv->getResult() as $row) {
+                $diskon = $row->inv_discount;
+                $inputi["inv_tagihan"] = $total;
+                $dtagihan = $total - $diskon;
+                $inputi["inv_dtagihan"] = $dtagihan;
+
+                $ppn1k1 = 0;
+                $ppn11 = 0;
+                $ppn12 = 0;
+                $pph = 0;
+                $input["inv_dtagihan"] = $dtagihan;
+                if ($row->inv_ppn1k1 > 0) {
+                    $ppn1k1 = $dtagihan * 1.1 / 100;
+                }
+                if ($row->inv_ppn11 > 0) {
+                    $ppn11 = $dtagihan * 11 / 100;
+                }
+                if ($row->inv_ppn12 > 0) {
+                    $ppn12 = $dtagihan * 12 / 100;
+                }
+                if ($row->inv_pph > 0) {
+                    $pph = $dtagihan * 2 / 100;
+                }
+                $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+                $grand = $tharga - $pph;
+                $inputi["inv_grand"] = $grand;
+
+                $this->db->table('inv')->update($inputi, array("inv_temp" => $inv_temp));
+                // echo $this->db->getLastQuery();die;
+            }
 
             //update invoice table job   
             if ($this->request->getPost("job_id") != "0") {
                 $job_id = $this->request->getPost("job_id");
-                $inputj["inv_no"] = "";
+                $inputj["inv_temp"] = "";
                 $this->db->table('job')->update($inputj, array("job_id" => $job_id));
             }
 
@@ -91,10 +120,10 @@ class invd_m extends core_m
             die; */
             $invd_id = $this->db->insertID();
 
-            $inv_no =   $this->request->getGet("inv_no");
+            $inv_temp =   $this->request->getGet("inv_temp");
             //update invoice
             if ($this->request->getGet("editinv") == "OK") {
-                $invd = $this->db->table('invd')->where("inv_no", $inv_no)->get();
+                $invd = $this->db->table('invd')->where("inv_temp", $inv_temp)->get();
                 $total = 0;
                 $jobdano      = array();
                 foreach ($invd->getResult() as $rinvd) {
@@ -104,21 +133,46 @@ class invd_m extends core_m
                     }
                 }
                 $jobdanos      = implode(', ', $jobdano);
-                $inv = $this->db->table('inv')->where("inv_no", $inv_no)->get();
-                $diskon = 0;
-                foreach ($inv->getResult() as $rinv) {
-                    $diskon = $rinv->inv_discount;
-                }
                 $inputi["job_dano"] = $jobdanos;
-                $inputi["inv_tagihan"] = $total;
-                $inputi["inv_dtagihan"] = $total - $diskon;
-                $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
+
+                
+                $diskon = 0; 
+                $inv = $this->db->table('inv')->where("inv_temp", $inv_temp)->get();
+                foreach ($inv->getResult() as $row) {
+                    $diskon = $row->inv_discount;
+                    $inputi["inv_tagihan"] = $total;
+                    $dtagihan = $total - $diskon;
+                    $inputi["inv_dtagihan"] = $dtagihan;
+
+                    $ppn1k1 = 0;
+                    $ppn11 = 0;
+                    $ppn12 = 0;
+                    $pph = 0;
+                    $input["inv_dtagihan"] = $dtagihan;
+                    if ($row->inv_ppn1k1 > 0) {
+                        $ppn1k1 = $dtagihan * 1.1 / 100;
+                    }
+                    if ($row->inv_ppn11 > 0) {
+                        $ppn11 = $dtagihan * 11 / 100;
+                    }
+                    if ($row->inv_ppn12 > 0) {
+                        $ppn12 = $dtagihan * 12 / 100;
+                    }
+                    if ($row->inv_pph > 0) {
+                        $pph = $dtagihan * 2 / 100;
+                    }
+                    $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+                    $grand = $tharga - $pph;
+                    $inputi["inv_grand"] = $grand;
+
+                    $this->db->table('inv')->update($inputi, array("inv_temp" => $inv_temp));
+                }
             }
 
             //update invoice table job   
             if ($this->request->getPost("job_id") != "0") {
                 $job_id = $this->request->getPost("job_id");
-                $inputj["inv_no"] = $inv_no;
+                $inputj["inv_temp"] = $inv_temp;
                 $this->db->table('job')->update($inputj, array("job_id" => $job_id));
             }
             $data["message"] = "Insert Data Success";
@@ -133,10 +187,10 @@ class invd_m extends core_m
                 }
             }
 
-            $invNo = $this->request->getGet('inv_no');
+            $invNo = $this->request->getGet('inv_temp');
             $invd  = $this->db
                 ->table('invd')
-                ->where('inv_no', $invNo)
+                ->where('inv_temp', $invNo)
                 ->get();
             $total = 0;
             $jobdano      = array();
@@ -170,7 +224,7 @@ class invd_m extends core_m
             $inv = $this->db->table("inv")->orderBy("inv_id", "DESC")->limit(1)->get();
             $noinv = 1;
             foreach ($inv->getResult() as $row) {
-                $invNon = $row->inv_no;
+                $invNon = $row->inv_temp;
                 $inve = explode("/", $invNon);
                 // $noinv = $inve[0] + 1;
                 $noinv = isset($inve[0]) ? ((int)$inve[0] + 1) : 1;
@@ -178,7 +232,7 @@ class invd_m extends core_m
             $noinv   = str_pad($noinv, 3, '0', STR_PAD_LEFT);
             $singkatan = $this->request->getPost("customer_singkatan");
             $invNon = $noinv . "/INV/NKL-" . $singkatan . "/" . $romawi[$bulan] . "/" . date("Y", strtotime($input["inv_date"]));
-            $input["inv_no"] = $invNon;
+            $input["inv_temp"] = $invNon;
 
             // $input["inv_dtagihan"] = $input["inv_tagihan"] - $input["inv_discount"];
 
@@ -215,16 +269,16 @@ class invd_m extends core_m
 
             //updane nomor invoice invd
             $inputad["invd_date"] = $input["inv_date"];
-            $inputad["inv_no"] = $input["inv_no"];
+            $inputad["inv_temp"] = $input["inv_temp"];
             $inputad["inv_id"] = $inv_id;
             $this->db
                 ->table('invd')
-                ->where('inv_no', $invNo)
+                ->where('inv_temp', $invNo)
                 ->update($inputad);
             // echo $this->db->getLastQuery(); die;
 
             //tambahkan nomor invoice di job
-            $inputjob["inv_no"] = $input["inv_no"];
+            $inputjob["inv_temp"] = $input["inv_temp"];
             // dd($jobdano);
             if (!empty($jobdano)) {
                 $this->db
@@ -249,10 +303,10 @@ class invd_m extends core_m
             }
             $this->db->table('invd')->update($input, array("invd_id" => $this->request->getPost("invd_id")));
 
-            $inv_no =   $this->request->getGet("inv_no");
+            $inv_temp =   $this->request->getGet("inv_temp");
             //update invoice
             if ($this->request->getGet("editinv") == "OK") {
-                $invd = $this->db->table('invd')->where("inv_no", $inv_no)->get();
+                $invd = $this->db->table('invd')->where("inv_temp", $inv_temp)->get();
                 $total = 0;
                 $jobdano      = array();
                 foreach ($invd->getResult() as $rinvd) {
@@ -263,20 +317,43 @@ class invd_m extends core_m
                 }
                 $jobdanos      = implode(', ', $jobdano);
                 $inputi["job_dano"] = $jobdanos;
-                $inputi["inv_tagihan"] = $total;
-                $inv = $this->db->table('inv')->where("inv_no", $inv_no)->get();
+
+                $inv = $this->db->table('inv')->where("inv_temp", $inv_temp)->get();
                 $diskon = 0;
-                foreach ($inv->getResult() as $rinv) {
-                    $diskon = $rinv->inv_discount;
+                foreach ($inv->getResult() as $row) {
+                    $diskon = $row->inv_discount;
+                    $inputi["inv_tagihan"] = $total;
+                    $dtagihan = $total - $diskon;
+                    $inputi["inv_dtagihan"] = $dtagihan;
+
+                    $ppn1k1 = 0;
+                    $ppn11 = 0;
+                    $ppn12 = 0;
+                    $pph = 0;
+                    $input["inv_dtagihan"] = $dtagihan;
+                    if ($row->inv_ppn1k1 > 0) {
+                        $ppn1k1 = $dtagihan * 1.1 / 100;
+                    }
+                    if ($row->inv_ppn11 > 0) {
+                        $ppn11 = $dtagihan * 11 / 100;
+                    }
+                    if ($row->inv_ppn12 > 0) {
+                        $ppn12 = $dtagihan * 12 / 100;
+                    }
+                    if ($row->inv_pph > 0) {
+                        $pph = $dtagihan * 2 / 100;
+                    }
+                    $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+                    $grand = $tharga - $pph;
+                    $inputi["inv_grand"] = $grand;
+                    $this->db->table('inv')->update($inputi, array("inv_temp" => $inv_temp));
                 }
-                $inputi["inv_dtagihan"] = $total - $diskon;
-                $this->db->table('inv')->update($inputi, array("inv_no" => $inv_no));
             }
 
             //update invoice table job   
             if ($this->request->getPost("job_id") != "0") {
                 $job_id = $this->request->getPost("job_id");
-                $inputj["inv_no"] = $inv_no;
+                $inputj["inv_temp"] = $inv_temp;
                 $this->db->table('job')->update($inputj, array("job_id" => $job_id));
             }
 
@@ -297,10 +374,10 @@ class invd_m extends core_m
                 }
             }
             // dd($input);die;
-            $invNo = $input["inv_no"];
+            $invNo = $input["inv_temp"];
             $invd  = $this->db
                 ->table('invd')
-                ->where('inv_no', $invNo)
+                ->where('inv_temp', $invNo)
                 ->get();
             $total = 0;
             $jobdano      = array();
@@ -343,14 +420,14 @@ class invd_m extends core_m
             $inputad["invd_date"] = $input["inv_date"];
             $this->db
                 ->table('invd')
-                ->where('inv_no', $invNo)
+                ->where('inv_temp', $invNo)
                 ->update($inputad);
             // echo $this->db->getLastQuery(); die;
 
 
 
             //update job
-            $inputjob["inv_no"] = $input["inv_no"];
+            $inputjob["inv_temp"] = $input["inv_temp"];
             if (!empty($jobdano)) {
                 $this->db
                     ->table('job')

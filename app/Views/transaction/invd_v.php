@@ -126,7 +126,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         </div>
 
                         <input type="hidden" id="user_id" name="user_id" value="<?= session('user_id'); ?>" />
-                        <input type="hidden" id="inv_no" name="inv_no" value="<?= $inv_no; ?>" />
+                        <input type="hidden" id="inv_temp" name="inv_temp" value="<?= $inv_temp; ?>" />
                         <input type="hidden" id="inv_id" name="inv_id" value="<?= $inv_id; ?>" />
                         <input type="hidden" id="customer_singkatan" name="customer_singkatan" value="" />
 
@@ -144,8 +144,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <select onchange="pilihdano()" class="form-control select" id="job_id" name="job_id">
                                 <option value="">Pilih Da Number</option>
                                 <?php $job = $this->db->table("job")
-                                    // ->where("inv_no", "")
-                                    // ->orWhere("inv_no", $inv_no)
+                                    // ->where("inv_temp", "")
+                                    // ->orWhere("inv_temp", $inv_temp)
                                     ->orderBy("job_dano", "ASC")
                                     ->get();
                                 foreach ($job->getResult() as $job) {
@@ -202,7 +202,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             }
                         </script>
                         <input type="hidden" id="job_dano" name="job_dano" value="" />
-                        <input type="hidden" id="inv_no" name="inv_no" value="<?= $inv_no; ?>" />
+                        <input type="hidden" id="inv_temp" name="inv_temp" value="<?= $inv_temp; ?>" />
                         <input type="hidden" id="inv_id" name="inv_id" value="<?= $inv_id; ?>" />
                         <input type="hidden" id="invd_id" name="invd_id" value="" />
                         <?php if (isset($_GET["editinv"])) { ?>
@@ -233,12 +233,12 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 <?php
                                 $build = $this->db
                                     ->table("invd");
-                                if (isset($_GET["inv_no"])) {
-                                    $build->where("inv_no", $inv_no);
+                                if (isset($_GET["inv_temp"])) {
+                                    $build->where("inv_temp", $inv_temp);
                                 }
                                 $usr = $build->get();
 
-                                //echo $this->db->getLastquery();
+                                // echo $this->db->getLastquery();
                                 $no = 1;
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
@@ -263,7 +263,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                             <span class="fa fa-edit" style="color:white;"></span>
                                                         </button>
                                                         <input type="hidden" id="job_dano<?= $usr->invd_id; ?>" name="job_dano" value="<?= $usr->job_dano; ?>" />
-                                                        <input type="hidden" id="inv_no<?= $usr->invd_id; ?>" name="inv_no" value="<?= $usr->inv_no; ?>" />
+                                                        <input type="hidden" id="inv_temp<?= $usr->invd_id; ?>" name="inv_temp" value="<?= $usr->inv_temp; ?>" />
                                                         <input type="hidden" id="inv_id<?= $usr->invd_id; ?>" name="inv_id" value="<?= $usr->inv_id; ?>" />
                                                         <input type="hidden" id="invd_total<?= $usr->invd_id; ?>" name="invd_total" value="<?= $usr->invd_total; ?>" />
                                                         <input type="hidden" id="invd_price<?= $usr->invd_id; ?>" name="invd_price" value="<?= $usr->invd_price; ?>" />
@@ -292,7 +292,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                         <input type="hidden" name="invd_id" value="<?= $usr->invd_id; ?>" />
-                                                        <input type="hidden" name="inv_no" value="<?= $inv_no; ?>" />
+                                                        <input type="hidden" name="inv_temp" value="<?= $inv_temp; ?>" />
                                                         <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                     </form>
                                                 <?php } ?>
@@ -313,7 +313,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <script>
                             function editinvd(invd_id) {
                                 let job_dano = $("#job_dano" + invd_id).val();
-                                let inv_no = $("#inv_no" + invd_id).val();
+                                let inv_temp = $("#inv_temp" + invd_id).val();
                                 let inv_id = $("#inv_id" + invd_id).val();
                                 let invd_total = $("#invd_total" + invd_id).val();
                                 let invd_price = $("#invd_price" + invd_id).val();
@@ -325,7 +325,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
                                 $("#job_id").val(job_id).trigger('change');
                                 $("#job_dano").val(job_dano);
-                                $("#inv_no").val(inv_no);
+                                $("#inv_temp").val(inv_temp);
                                 $("#inv_id").val(inv_id);
                                 $("#invd_total").val(invd_total);
                                 $("#invd_price").val(invd_price);
