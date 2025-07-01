@@ -23,15 +23,44 @@ class invvdrd_m extends core_m
                 ->where("invvdrd_id !=", $invvdrd_id)
                 ->get();
             $jobdano      = array();
+            $tagihan = 0;
             foreach ($invvdrd->getResult() as $rinvvdrd) {
                 if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
                     $jobdano[] = $rinvvdrd->job_dano;
                 }
+                $tagihan += $rinvvdrd->invvdrd_total;
             }
             $jobdanos      = implode(', ', $jobdano);
             $inputi["job_dano"] = $jobdanos;
-            $this->db->table('invvdr')->update($inputi, array("invvdr_temp" => $invvdr_temp));
-            // echo $this->db->getLastQuery();die;
+
+            $invvdr = $this->db->table('invvdr')->where("invvdr_temp", $invvdr_temp)->get();
+            foreach ($invvdr->getResult() as $row) {
+                $inputi["invvdr_tagihan"] = $tagihan;
+                $dtagihan = $tagihan - $row->invvdr_discount;
+                $inputi["invvdr_dtagihan"] = $dtagihan;
+
+                $ppn1k1 = 0;
+                $ppn11 = 0;
+                $ppn12 = 0;
+                $pph = 0;
+                if ($row->invvdr_ppn1k1 > 0) {
+                    $ppn1k1 = $dtagihan * 1.1 / 100;
+                }
+                if ($row->invvdr_ppn11 > 0) {
+                    $ppn11 = $dtagihan * 11 / 100;
+                }
+                if ($row->invvdr_ppn12 > 0) {
+                    $ppn12 = $dtagihan * 12 / 100;
+                }
+                if ($row->invvdr_pph > 0) {
+                    $pph = $dtagihan * 2 / 100;
+                }
+                $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
+                $grand = $tharga - $pph;
+                $inputi["invvdr_grand"] = $grand;
+                $this->db->table('invvdr')->update($inputi, array("invvdr_temp" => $invvdr_temp));
+                // echo $this->db->getLastQuery();die;
+            }
 
 
 
