@@ -144,6 +144,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <input type="hidden" id="vendor_id" name="vendor_id" value="<?= $vendor_id; ?>" />
                         <input type="hidden" id="vendor_name" name="vendor_name" value="<?= $vendor_name; ?>" />
                         <input type="hidden" id="invvdrp_id" name="invvdrp_id" value="" />
+                        <input type="hidden" id="kas_id" name="kas_id" value="" />
 
                         &nbsp;&nbsp;<button id="btninvvdrp" type="submit" name="create" value="OK" class="btn btn-primary">Submit</button>
                     </form>
@@ -208,6 +209,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
                                                         <input type="hidden" id="invvdrp_keterangan<?= $usr->invvdrp_id; ?>" name="invvdrp_keterangan" value="<?= $usr->invvdrp_keterangan; ?>" />
                                                         <input type="hidden" id="invvdrp_id<?= $usr->invvdrp_id; ?>" name="invvdrp_id" value="<?= $usr->invvdrp_id; ?>" />
+                                                        <input type="hidden" id="kas_id<?= $usr->invvdrp_id; ?>" name="kas_id" value="<?= $usr->kas_id; ?>" />
                                                         <input type="hidden" id="invvdrp_date<?= $usr->invvdrp_id; ?>" name="invvdrp_date" value="<?= $usr->invvdrp_date; ?>" />
                                                         <input type="hidden" id="invvdrp_from<?= $usr->invvdrp_id; ?>" name="invvdrp_from" value="<?= $usr->invvdrp_from; ?>" />
                                                         <input type="hidden" id="invvdrp_to<?= $usr->invvdrp_id; ?>" name="invvdrp_to" value="<?= $usr->invvdrp_to; ?>" />
@@ -231,6 +233,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                 ) { ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                        <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
                                                         <input type="hidden" name="invvdrp_id" value="<?= $usr->invvdrp_id; ?>" />
                                                         <input type="hidden" name="invvdr_no" value="<?= $invvdr_no; ?>" />
                                                     </form>
@@ -259,6 +262,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let invvdrp_keterangan = $("#invvdrp_keterangan" + invvdrp_id).val();
                                 let job_id = $("#job_id" + invvdrp_id).val();
                                 let invvdrpid = $("#invvdrp_id" + invvdrp_id).val();
+                                let kas_id = $("#kas_id" + invvdrp_id).val();
                                 let invvdrp_date = $("#invvdrp_date" + invvdrp_id).val();
                                 let invvdrp_from = $("#invvdrp_from" + invvdrp_id).val();
                                 let invvdrp_to = $("#invvdrp_to" + invvdrp_id).val();
@@ -272,6 +276,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $("#invvdrp_keterangan").val(invvdrp_keterangan);
                                 $("#job_id").val(job_id);
                                 $("#invvdrp_id").val(invvdrpid);
+                                $("#kas_id").val(kas_id);
                                 $("#invvdrp_date").val(invvdrp_date);
                                 $("#invvdrp_from").val(invvdrp_from);
                                 $("#invvdrp_to").val(invvdrp_to);
