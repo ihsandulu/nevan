@@ -49,7 +49,6 @@ class kas_m extends core_m
                 ->delete(array("kas_id" =>  $kas_id));
 
 
-            $kas_id = $this->request->getPost("kas_id");
             //apakah di tanggal yg sama ada id yg lebih rendah dari dia
             $kas = $this->db
                 ->table("kas")
