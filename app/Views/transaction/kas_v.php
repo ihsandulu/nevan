@@ -366,7 +366,7 @@ if (isset($_GET["rekeningnya"])) {
                             </div>
                         </form>
                         <div class="table-responsive m-t-40">
-                            <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                            <table id="example23e" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
@@ -388,10 +388,10 @@ if (isset($_GET["rekeningnya"])) {
                                         <?php if ($url == "kas") { ?>
                                             <th>Saldo</th>
                                         <?php } ?>
-                                        <?php if ($url == "bigcash" || $url == "kas") { ?>
+                                        <?php if ($url == "bigcash") { ?>
                                             <th>Saldo<br />Big Cash</th>
                                         <?php } ?>
-                                        <?php if ($url == "pettycash" || $url == "kas") { ?>
+                                        <?php if ($url == "pettycash") { ?>
                                             <th>Saldo<br />Petty Cash</th>
                                         <?php } ?>
                                         <th>Dari Rek</th>
@@ -404,26 +404,101 @@ if (isset($_GET["rekeningnya"])) {
                                 </thead>
                                 <tbody>
                                     <?php
+                                    //******* Cari titik point sebelum tgl $dari, di table tbuku  *********//
                                     $build = $this->db
-                                        ->table("kas")
-                                        ->select("kas.*, rekdari.rekening_an AS rekdari, rekke.rekening_an AS rekke, kas.kas_id AS kas_id, vendor.vendor_name AS vendor_name")
-                                        ->join("vendor", "vendor.vendor_id = kas.vendor_id", "left")
-                                        ->join("rekening AS rekdari", "rekdari.rekening_id = kas.kas_rekdari", "left")
-                                        ->join("rekening AS rekke", "rekke.rekening_id = kas.kas_rekke", "left");
-                                    if (isset($_GET["kas_type"]) &&  $_GET["kas_type"] != "") {
-                                        $build->where("kas_type", $_GET["kas_type"]);
+                                        ->table("tbuku");
+                                    if ($url == "bigcash") {
+                                        $build->where("tbuku_type", "bigcash");
+                                    } else if ($url == "pettycash") {
+                                        $build->where("tbuku_type", "pettycash");
+                                    } else {
+                                        $build->where("tbuku_type", "kas");
                                     }
+                                    if (isset($_GET["rekeningnya"]) && $_GET["rekeningnya"] != "") {
+                                        $build->where("rekening_id", $_GET["rekeningnya"]);
+                                    } else {
+                                        $build->where("rekening_id", "0");
+                                    }
+                                    $build->where("tbuku_date <", $dari);
+                                    $usr = $build->orderBy("tbuku_date", "DESC")
+                                        ->orderBy("tbuku_id ", "DESC")
+                                        ->limit(1)
+                                        ->get();
+                                    // echo $this->db->getLastQuery();
+                                    $tgltbuku = "";
+                                    $saldon = 0;
+                                    foreach ($usr->getResult() as $s) {
+                                        if (isset($_GET["kas_typen"]) && $_GET["kas_typen"] == "Debet") {
+                                            $saldon = $s->tbuku_debet;
+                                        } else if (isset($_GET["kas_typen"]) && $_GET["kas_typen"] == "Kredit") {
+                                            $saldon = $s->tbuku_kredit;
+                                        } else {
+                                            $saldon = $s->tbuku_total;
+                                        }
+                                        $tgltbuku = $s->tbuku_date;
+                                    }
+
+                                    //******* jumlahkan saldo sebelum tgl $dari, di table kas  *********//
+                                    $build = $this->db
+                                        ->table("kas");
                                     if ($url == "bigcash") {
                                         $build->where("kas_debettype", "bigcash");
                                     }
                                     if ($url == "pettycash") {
                                         $build->where("kas_debettype", "pettycash");
                                     }
-                                    if ($rekeningnya != "") {
-                                        $build->where("kas.kas_rekdari", $rekeningnya);
-                                        $build->orWhere("kas.kas_rekke", $rekeningnya);
+                                    if (isset($_GET["rekeningnya"]) && $_GET["rekeningnya"] != "") {
+                                        $build->groupStart()
+                                            ->where("kas_rekdari", $_GET["rekeningnya"])
+                                            ->orWhere("kas_rekke", $_GET["rekeningnya"])
+                                            ->groupEnd();
                                     }
-                                    $build->where("kas_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                    if (isset($_GET["kas_typen"]) && $_GET["kas_typen"] != "") {
+                                        $build->where("kas_type", $_GET["kas_typen"]);
+                                    }
+                                    if ($tgltbuku != "") {
+                                        $build->where("kas_date >", $tgltbuku);
+                                    }
+                                    $build->where("kas_date <", $dari);
+                                    $usr = $build->orderBy("kas.kas_date", "ASC")
+                                        ->orderBy("kas.kas_id", "ASC")
+                                        ->get();
+                                    $saldod = 0;
+                                    foreach ($usr->getResult() as $row) {
+                                        if ($row->kas_type == "Debet") {
+                                            $saldod += $row->kas_total;
+                                            // echo $row->kas_id . ") " . $row->kas_total . " - 0 = " . $tkas1 . " <br/>";
+                                        } else {
+                                            $saldod -= $row->kas_total;
+                                            // echo $row->kas_id . ") " . "0 - " . $row->kas_total . " = " . $tkas1 . " <br/>";
+                                        }
+                                    }
+                                    $saldos = $saldon + $saldod;
+
+                                    $build = $this->db
+                                        ->table("kas")
+                                        ->select("kas.*, rekdari.rekening_an AS rekdari, rekke.rekening_an AS rekke, kas.kas_id AS kas_id, vendor.vendor_name AS vendor_name")
+                                        ->join("vendor", "vendor.vendor_id = kas.vendor_id", "left")
+                                        ->join("rekening AS rekdari", "rekdari.rekening_id = kas.kas_rekdari", "left")
+                                        ->join("rekening AS rekke", "rekke.rekening_id = kas.kas_rekke", "left");
+
+                                    if ($url == "bigcash") {
+                                        $build->where("kas_debettype", "bigcash");
+                                    }
+                                    if ($url == "pettycash") {
+                                        $build->where("kas_debettype", "pettycash");
+                                    }
+                                    if (isset($_GET["rekeningnya"]) && $_GET["rekeningnya"] != "") {
+                                        $build->groupStart()
+                                            ->where("kas_rekdari", $_GET["rekeningnya"])
+                                            ->orWhere("kas_rekke", $_GET["rekeningnya"])
+                                            ->groupEnd();
+                                    }
+                                    if (isset($_GET["kas_typen"]) && $_GET["kas_typen"] != "") {
+                                        $build->where("kas_type", $_GET["kas_typen"]);
+                                    }
+                                    $build->where("kas_date >=", $dari);
+                                    $build->where("kas_date <=", $ke);
                                     $usr = $build->orderBy("kas.kas_date", "ASC")
                                         ->orderBy("kas.kas_id", "ASC")
                                         ->get();
@@ -431,7 +506,14 @@ if (isset($_GET["rekeningnya"])) {
                                     // echo $this->db->getLastquery();
                                     $no = 1;
                                     $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
-                                    foreach ($usr->getResult() as $usr) { ?>
+                                    $saldoa = $saldos;
+                                    foreach ($usr->getResult() as $usr) {
+                                        if ($usr->kas_type == "Debet") {
+                                            $saldoa += $usr->kas_nominal;
+                                        } else {
+                                            $saldoa -= $usr->kas_nominal;
+                                        }
+                                    ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
@@ -506,24 +588,14 @@ if (isset($_GET["rekeningnya"])) {
                                             <?php } ?>
                                             <td><?= $usr->job_dano; ?></td>
                                             <td class="text-left"><?= $usr->kas_uraian; ?></td>
-                                            <!-- <td><?= number_format($usr->kas_qty, 0, ",", "."); ?></td> -->
                                             <?php if ($usr->kas_type == "Debet") { ?>
-                                                <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td>
                                                 <td></td>
                                             <?php } else { ?>
                                                 <td></td>
-                                                <td><?= number_format($usr->kas_nominal, 0, ",", "."); ?></td>
+                                                <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td>
                                             <?php } ?>
-                                            <!-- <td><?= number_format($usr->kas_total, 0, ",", "."); ?></td> -->
-                                            <?php if ($url == "kas") { ?>
-                                                <td class="text-right"><?= number_format($usr->kas_saldo, 0, ",", "."); ?></td>
-                                            <?php } ?>
-                                            <?php if ($url == "bigcash" || $url == "kas") { ?>
-                                                <td class="text-right"><?= number_format($usr->kas_bigcash, 0, ",", "."); ?></td>
-                                            <?php } ?>
-                                            <?php if ($url == "pettycash" || $url == "kas") { ?>
-                                                <td class="text-right"><?= number_format($usr->kas_pettycash, 0, ",", "."); ?></td>
-                                            <?php } ?>
+                                            <td class="text-right"><?= number_format($saldoa, 0, ",", "."); ?></td>
                                             <td class="text-left"><?= ($usr->kas_rekdari == "-1") ? "Pettycash" : $usr->rekdari; ?></td>
                                             <td class="text-left"><?= ($usr->kas_rekke == "-1") ? "Pettycash" : $usr->rekke; ?></td>
                                             <td class="text-left"><?= $usr->kas_keterangan; ?></td>
@@ -543,29 +615,8 @@ if (isset($_GET["rekeningnya"])) {
 </div>
 <?php
 $banknya = "";
-/* if ($rekeningnya != "") {
-    $saldon = 0;
 
-
-    $build = $this->db
-        ->table("kas")
-        ->select(" SUM(CASE WHEN kas_type = 'Debet' THEN kas_total WHEN kas_type = 'Kredit' THEN -kas_total ELSE 0 END) AS saldo_akhir");
-    // ->groupStart()
-    // ->where("kas_rekdari", $rekeningnya)
-    // ->orWhere("kas_rekke", $rekeningnya)
-    // ->groupEnd();
-    if ($url == "bigcash") {
-        $build->where("kas_debettype", "bigcash");
-    }
-    if ($url == "pettycash") {
-        $build->where("kas_debettype", "pettycash");
-    }
-    $kas = $build->get();
-    // echo $url;die;
-    // echo $this->db->getLastQuery();
-    foreach ($kas->getResult() as $s) {
-        $saldon = $s->saldo_akhir;
-    }
+if (isset($_GET["rekeningnya"]) && $_GET["rekeningnya"] != "") {
     $rekening = $this->db
         ->table("rekening")
         ->join("bank", "bank.bank_id = rekening.bank_id", "left")
@@ -574,16 +625,14 @@ $banknya = "";
     foreach ($rekening->getResult() as $rek) {
         $banknya = $rek->bank_name . " | " . $rek->rekening_an . " - " . $rek->rekening_no . " ";
     }
-} else {
-    $saldon = $saldo;
-} */
+}
 ?>
 <script>
     $('.select').select2();
     var title = "<?= $title; ?>";
     $("title").text(title);
 
-    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya; ?>: Rp. <?= number_format($saldo, 0, ",", ".") ?> )</span>');
+    $(".card-title").html(title + ' <span class="text-danger">( Saldo Akhir <?= $banknya; ?>: Rp. <?= number_format($saldoa, 0, ",", ".") ?> )</span>');
     $("#page-title").text(title);
     $("#page-title-link").text(title);
 
@@ -597,6 +646,63 @@ $banknya = "";
     }
     $(document).ready(function() {
         pilihrekening();
+    });
+    $(document).ready(function() {
+        $('#example23e').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    },
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    customize: function(doc) {
+                        // Tambah jarak antara title dan tabel
+                        doc.content[1].margin = [0, 20, 0, 0]; // [left, top, right, bottom]
+
+                        // Biar kolom rata dan memenuhi lebar
+                        doc.content[1].table.widths =
+                            Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':not(:first-child)',
+                        format: {
+                            body: function(data, row, column, node) {
+                                // Jika data kosong/null, ganti jadi "0"
+                                if (!data || $.trim(data) === '') {
+                                    return '0';
+                                }
+
+                                // Untuk kolom E (4), F (5), G (6), hilangkan pemisah ribuan
+                                if (column === 4 || column === 5 || column === 6) {
+                                    return data.toString().replace(/[.,]/g, '');
+                                }
+
+                                return data;
+                            }
+                        }
+                    }
+                }
+
+
+            ],
+            ordering: false, // Mencegah DataTables mengatur order by
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "Semua"]
+            ],
+            pageLength: 10 // Default jumlah baris per halaman
+        });
     });
 </script>
 
