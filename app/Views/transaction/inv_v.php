@@ -62,9 +62,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <button name="new" class="btn btn-info btn-block btn-sm" value="OK" style="">New</button>
                                         <input type="hidden" name="inv_id" />
                                         <?php
-                                        $inv_no = date("dmyhis");
+                                        $inv_temp = date("dmyhis");
                                         ?>
-                                        <input type="hidden" name="inv_no" value="<?= $inv_no; ?>" />
+                                        <input type="hidden" name="inv_temp" value="<?= $inv_temp; ?>" />
                                     </h1>
                                 </form>
                             <?php } ?>

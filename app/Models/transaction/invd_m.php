@@ -135,8 +135,8 @@ class invd_m extends core_m
                 $jobdanos      = implode(', ', $jobdano);
                 $inputi["job_dano"] = $jobdanos;
 
-                
-                $diskon = 0; 
+
+                $diskon = 0;
                 $inv = $this->db->table('inv')->where("inv_temp", $inv_temp)->get();
                 foreach ($inv->getResult() as $row) {
                     $diskon = $row->inv_discount;
@@ -232,7 +232,8 @@ class invd_m extends core_m
             $noinv   = str_pad($noinv, 3, '0', STR_PAD_LEFT);
             $singkatan = $this->request->getPost("customer_singkatan");
             $invNon = $noinv . "/INV/NKL-" . $singkatan . "/" . $romawi[$bulan] . "/" . date("Y", strtotime($input["inv_date"]));
-            $input["inv_temp"] = $invNon;
+            $input["inv_no"] = $invNon;
+            $input["inv_temp"] = $_GET["inv_temp"];
 
             // $input["inv_dtagihan"] = $input["inv_tagihan"] - $input["inv_discount"];
 
@@ -412,7 +413,7 @@ class invd_m extends core_m
             $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
             $grand = $tharga - $pph;
             $input["inv_grand"] = $grand;
-
+            // dd($input);
             $this->db->table('inv')->update($input, array("inv_id" => $this->request->getPost("inv_id")));
 
 
