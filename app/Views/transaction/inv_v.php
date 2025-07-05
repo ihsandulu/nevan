@@ -196,10 +196,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $no = 1;
                                 $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
                                 $pembayaran = 0;
-                                $sisahutang = 0;
+                                $sisahutangnya = 0;
                                 foreach ($usr->getResult() as $usr) {
                                     $pembayaran += $usr->inv_payment;
-                                    $sisahutang += $usr->inv_grand;
+                                    $sisahutangnya += $usr->inv_grand;
                                 ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
@@ -367,7 +367,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 <script>
     $('.select').select2();
     var title = "<?= $title; ?>";
-    let pembayaran = ". Pembayaran : <?= number_format($pembayaran, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($sisahutang, 0, ",", "."); ?>";
+    let pembayaran = ". Pembayaran : <?= number_format($pembayaran, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($sisahutangnya, 0, ",", "."); ?>";
     $("title").text(title);
     $(".card-title").text(title + pembayaran);
     $("#page-title").text(title);
