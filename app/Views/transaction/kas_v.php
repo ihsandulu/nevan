@@ -151,7 +151,7 @@ if (isset($_GET["rekeningnya"])) {
                                 </div>
 
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
-                                    <label class="control-label col-sm-12" for="kas_qty">Qty:</label>
+                                    <label class="control-label col-sm-12" for="kas_qty">Qty (support hingga 3 digit decimal. Format English [titik adalah pemisah decimal]):</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="kas_qty" name="kas_qty" placeholder="" value="<?= $kas_qty; ?>">
                                     </div>
