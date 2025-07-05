@@ -14,6 +14,7 @@ $routes->add('/logout', 'utama::logout');
 $routes->add('/mposition', 'master\mposition::index');
 $routes->add('/mpositionpages', 'master\mpositionpages::index');
 $routes->add('/muser', 'master\muser::index');
+$routes->add('/mprofile', 'master\mprofile::index');
 $routes->add('/muserposition', 'master\muserposition::index');
 $routes->add('/mpassword', 'master\mpassword::index');
 $routes->add('/midentity', 'master\midentity::index');

@@ -157,6 +157,7 @@
                     <div class="dropdown-menu dropdown-menu-right animated zoomIn">
                         <ul class="dropdown-user">
                             <li><a href="<?= base_url("mpassword"); ?>"><i class="ti-user"></i> Change Password</a></li>
+                            <li><a href="<?= base_url("mprofile?profile=OK"); ?>"><i class="ti-user"></i> Change Profile</a></li>
                             <!--<li><a href="#"><i class="ti-wallet"></i> Balance</a></li>
                             <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
                             <li><a href="#"><i class="ti-settings"></i> Setting</a></li>-->

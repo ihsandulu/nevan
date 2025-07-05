@@ -11,7 +11,7 @@
 							<div class="card-two">
 								<header>
 									<div class="avatar">
-										<img src="images/global/user.png" alt="<?= session()->get("user_name"); ?>" />
+										<img src="images/user_picture/<?=(session()->get("user_picture"))?session()->get("user_picture"):"no_image.png";?>" alt="<?= session()->get("user_name"); ?>" />
 									</div>
 								</header>
 								<h3><?= ucfirst(session()->get("position_name")); ?></h3>

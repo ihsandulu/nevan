@@ -63,6 +63,7 @@ class login_m extends core_m
                         $this->session->set("user_nik", $user->user_nik);
                         $this->session->set("user_nama", $user->user_nama);
                         $this->session->set("user_id", $user->user_id);
+                        $this->session->set("user_picture", $user->user_picture);
                         $this->session->set("identity_id", $identity->identity_id);
                         $this->session->set("identity_name", $identity->identity_name);
                         $this->session->set("identity_logo", $identity->identity_logo);
