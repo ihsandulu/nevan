@@ -5,6 +5,7 @@
     }
 </style>
 <?php
+$saldoa=0;
 $dari = date("Y-m-d", strtotime("-1 weeks"));
 $ke = date("Y-m-d");
 $kas_typen = "";
