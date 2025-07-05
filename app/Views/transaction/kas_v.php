@@ -5,7 +5,7 @@
     }
 </style>
 <?php
-$saldoa=0;
+$saldoa = 0;
 $dari = date("Y-m-d", strtotime("-1 weeks"));
 $ke = date("Y-m-d");
 $kas_typen = "";
@@ -150,12 +150,12 @@ if (isset($_GET["rekeningnya"])) {
                                     </div>
                                 </div>
 
-                                <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_qty">Qty:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="kas_qty" name="kas_qty" placeholder="" value="<?= $kas_qty; ?>">
                                     </div>
-                                </div> -->
+                                </div>
 
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_nominal">Nominal:</label>
@@ -163,12 +163,12 @@ if (isset($_GET["rekeningnya"])) {
                                         <input type="text" class="form-control" id="kas_nominal" name="kas_nominal" placeholder="" value="<?= $kas_nominal; ?>">
                                     </div>
                                 </div>
-                                <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_total">Total:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="kas_total" name="kas_total" placeholder="" value="<?= $kas_total; ?>">
                                     </div>
-                                </div> -->
+                                </div>
                                 <script>
                                     function listrekening() {
                                         var kas_type = $("#kas_type").val();
