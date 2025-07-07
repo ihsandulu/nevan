@@ -293,8 +293,6 @@ if (isset($_GET["rekeningnya"])) {
                                 </div>
 
                                 <input type="hidden" id="kas_pettyid" name="kas_pettyid" value="<?= $kas_pettyid; ?>" />
-                                <input type="hidden" id="kas_total" name="kas_total" value="<?= $kas_total; ?>" />
-                                <input type="hidden" id="kas_qty" name="kas_qty" value="1" />
                                 <input type="hidden" name="kas_id" value="<?= $kas_id; ?>" />
                                 <div class="form-group col-md-12 col-sm-12 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">

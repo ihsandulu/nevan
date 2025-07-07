@@ -855,7 +855,7 @@ class kas_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-            // dd($input);
+           
             $kas_id = $this->request->getPost("kas_id");
             //apakah di tanggal yg sama ada id yg lebih rendah dari dia
             $kas = $this->db
