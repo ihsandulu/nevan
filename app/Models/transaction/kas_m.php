@@ -768,7 +768,7 @@ class kas_m extends core_m
                             $bigcash = $kas->kas_bigcash;
                         }
                     } else {
-                        $saldo = $kas->kas_saldo - $input["kas_total"];
+                        $saldo = (float)$kas->kas_saldo - (float)$input["kas_total"];
                         if ($input["kas_debettype"] == "bigcash") {
                             $bigcash = $kas->kas_bigcash - $input["kas_total"];
                             $pettycash = $kas->kas_pettycash;
