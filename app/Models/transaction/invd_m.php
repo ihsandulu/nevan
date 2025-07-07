@@ -121,7 +121,12 @@ class invd_m extends core_m
             foreach ($danya->getResult() as $row) {
                 $input["job_id"] = $this->request->getPost("job_id");
                 $input["invd_description"] = $row->jobd_descgood;
-                $input["invd_qty"] = $row->jobd_qty;
+                if ($row->jobd_methode == "lumpsum") {
+                    $input["invd_qty"] = $row->jobd_koli;
+                } else if ($row->jobd_methode == "cbm") {
+                    $input["invd_qty"] = $row->jobd_cbm;
+                }
+
                 $input["invd_satuan"] = $row->jobd_satuan;
                 $input["invd_price"] = $row->jobd_sell;
                 $input["invd_total"] = $row->jobd_total;
