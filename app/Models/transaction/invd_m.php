@@ -109,16 +109,34 @@ class invd_m extends core_m
 
         //insert
         if ($this->request->getPost("create") == "OK") {
-            foreach ($this->request->getPost() as $e => $f) {
+            /* foreach ($this->request->getPost() as $e => $f) {
                 if ($e != 'create' && $e != 'invd_id') {
                     $input[$e] = $this->request->getPost($e);
                 }
-            }
+            } */
             // dd($input);
-            $this->db->table('invd')->insert($input);
-            /* echo $this->db->getLastQuery();
-            die; */
-            $invd_id = $this->db->insertID();
+
+            //cari semua detail job sesuai DA
+            $danya = $this->db->table("jobd")->where("job_temp", $this->request->getPost("job_temp"))->get();
+            foreach ($danya->getResult() as $row) {
+                $input["job_id"] = $this->request->getPost("job_id");
+                $input["invd_description"] = $row->jobd_descgood;
+                $input["invd_qty"] = $row->jobd_qty;
+                $input["invd_satuan"] = $row->jobd_satuan;
+                $input["invd_price"] = $row->jobd_sell;
+                $input["invd_total"] = $row->jobd_total;
+                $input["job_dano"] = $this->request->getPost("job_dano");
+                $input["inv_temp"] = $this->request->getPost("inv_temp");
+                $input["inv_id"] = $this->request->getPost("inv_id");
+                if (isset($_GET["editinv"])) {
+                    $input["invd_date"] = $this->request->getPost("invd_date");
+                }
+                $this->db->table('invd')->insert($input);
+                // echo $this->db->getLastQuery(); die; 
+                $invd_id = $this->db->insertID();
+            }
+
+
 
             $inv_temp =   $this->request->getGet("inv_temp");
             //update invoice
@@ -148,7 +166,7 @@ class invd_m extends core_m
                     $ppn11 = 0;
                     $ppn12 = 0;
                     $pph = 0;
-                    $input["inv_dtagihan"] = $dtagihan;
+                    // $input["inv_dtagihan"] = $dtagihan;
                     if ($row->inv_ppn1k1 > 0) {
                         $ppn1k1 = $dtagihan * 1.1 / 100;
                     }

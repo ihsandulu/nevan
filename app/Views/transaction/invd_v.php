@@ -150,11 +150,11 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     ->get();
                                 foreach ($job->getResult() as $job) {
                                 ?>
-                                    <option value="<?= $job->job_id; ?>" data-des="<?= $job->job_descgood; ?>" data-dano="<?= $job->job_dano; ?>" data-qty="<?= $job->job_qty; ?>" data-satuan="<?= $job->job_satuan; ?>" data-price="<?= $job->job_sell; ?>"><?= $job->job_dano; ?></option>
+                                    <option value="<?= $job->job_id; ?>" data-temp="<?= $job->job_temp; ?>" data-des="<?= $job->job_descgood; ?>" data-dano="<?= $job->job_dano; ?>" data-qty="<?= $job->job_qty; ?>" data-satuan="<?= $job->job_satuan; ?>" data-price="<?= $job->job_sell; ?>"><?= $job->job_dano; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <input type="text" class="form-control" style="width: 200px;" id="invd_description" name="invd_description" placeholder="Description">
                         </div>
                         <div class="form-group">
@@ -177,20 +177,22 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control" style="width: 120px;" id="invd_total" name="invd_total" placeholder="Total">
-                        </div>
+                        </div> -->
                         <script>
                             function pilihdano() {
                                 let selected = $("#job_id option:selected");
                                 let dano = selected.data("dano");
-                                let des = selected.data("des");
-                                let qty = selected.data("qty");
-                                let satuan = selected.data("satuan");
-                                let price = selected.data("price");
+                                // let des = selected.data("des");
+                                // let qty = selected.data("qty");
+                                // let satuan = selected.data("satuan");
+                                // let price = selected.data("price");
+                                let temp = selected.data("temp");
                                 $("#job_dano").val(dano);
-                                $("#invd_description").val(des);
-                                $("#invd_qty").val(qty);
-                                $("#invd_satuan").val(satuan);
-                                $("#invd_price").val(price);
+                                // $("#invd_description").val(des);
+                                // $("#invd_qty").val(qty);
+                                // $("#invd_satuan").val(satuan);
+                                // $("#invd_price").val(price);
+                                $("#job_temp").val(temp);
                                 kali();
                             }
 
@@ -201,6 +203,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $("#invd_total").val(total);
                             }
                         </script>
+                        <input type="hidden" id="job_temp" name="job_temp" value="" />
                         <input type="hidden" id="job_dano" name="job_dano" value="" />
                         <input type="hidden" id="inv_temp" name="inv_temp" value="<?= $inv_temp; ?>" />
                         <input type="hidden" id="inv_id" name="inv_id" value="<?= $inv_id; ?>" />
@@ -218,7 +221,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <thead class="">
                                 <tr>
                                     <?php if (!isset($_GET["report"])) { ?>
-                                        <th>Action</th>
+                                        <!-- <th>Action</th> -->
                                     <?php } ?>
                                     <!-- <th>No.</th> -->
                                     <th>DA Number</th>
@@ -243,7 +246,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
-                                            <td style="padding-left:0px; padding-right:0px;">
+                                            <!-- <td style="padding-left:0px; padding-right:0px;">
                                                 <?php
                                                 if (
                                                     (
@@ -296,7 +299,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                     </form>
                                                 <?php } ?>
-                                            </td>
+                                            </td> -->
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->job_dano; ?></td>
