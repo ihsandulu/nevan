@@ -764,17 +764,17 @@ class kas_m extends core_m
                             $pettycash = $kas->kas_pettycash;
                         }
                         if ($input["kas_debettype"] == "pettycash") {
-                            $pettycash = $kas->kas_pettycash + $input["kas_total"];
+                            $pettycash = (float)$kas->kas_pettycash + (float)$input["kas_total"];
                             $bigcash = $kas->kas_bigcash;
                         }
                     } else {
                         $saldo = (float)$kas->kas_saldo - (float)$input["kas_total"];
                         if ($input["kas_debettype"] == "bigcash") {
-                            $bigcash = $kas->kas_bigcash - $input["kas_total"];
+                            $bigcash = (float)$kas->kas_bigcash - (float)$input["kas_total"];
                             $pettycash = $kas->kas_pettycash;
                         }
                         if ($input["kas_debettype"] == "pettycash") {
-                            $pettycash = $kas->kas_pettycash - $input["kas_total"];
+                            $pettycash = (float)$kas->kas_pettycash - (float)$input["kas_total"];
                             $bigcash = $kas->kas_bigcash;
                         }
                     }
