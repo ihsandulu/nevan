@@ -199,6 +199,7 @@ function terbilang($angka)
         background-color: lightblue;
         border: 1px solid #000;
     }
+    .wraptext{white-space: normal; word-wrap: break-word;}
 </style>
 
 <div class='container-fluid'>
@@ -277,7 +278,9 @@ function terbilang($angka)
                                         <tr>
                                             <th>Da No.</th>
                                             <th>Description</th>
-                                            <th>Qty</th>
+                                            <th>Koli</th>
+                                            <th>CBM</th>
+                                            <th>Satuan</th>
                                             <th>Price</th>
                                             <th>Total</th>
                                         </tr>
@@ -293,7 +296,9 @@ function terbilang($angka)
                                                 <td class="text-left" style="word-wrap: break-word; white-space: normal; max-width: 200px;">
                                                     <?= $invd->invd_description; ?>
                                                 </td>
-                                                <td class="text-center"><?= number_format($invd->invd_qty, 3, ",", "."); ?> <?= $invd->invd_satuan; ?></td>
+                                                <td class="text-center"><?= number_format($invd->invd_koli, 0, ",", "."); ?></td>
+                                                <td class="text-center"><?= number_format($invd->invd_cbm, 3, ",", "."); ?></td>
+                                                <td class="text-center"><?= $invd->invd_satuan; ?></td>
                                                 <td>
                                                     <span class="uang"><span>IDR</span><span><?= number_format($invd->invd_price, 2, ",", "."); ?></span></span>
                                                 </td>
@@ -303,11 +308,11 @@ function terbilang($angka)
                                             </tr>
                                         <?php } ?>
                                         <tr>
-                                            <td class="text-left" rowspan="8" colspan="3">
+                                            <td class="text-left" rowspan="8" colspan="5">
                                                 <i>Terbilang :</i><br />
-                                                <i id="terbilang" style="margin-top:30px;"></i><br /><br />
+                                                <i id="terbilang" class="wraptext" style="margin-top:30px;"></i><br /><br />
                                                 <div id="norek" style="border-top:black solid 1px; border-bottom:black solid 1px; padding:10px; ">
-                                                    <span style="font-weight: bold;"> Tujuan Pembayaran :</span><br />
+                                                    <span style="font-weight: bold;" class="wraptext"> Tujuan Pembayaran :</span><br />
                                                     <ul>
                                                         <?php
                                                         $build = $this->db->table("rekening")
@@ -326,7 +331,7 @@ function terbilang($angka)
                                                         <?php } ?>
                                                     </ul>
                                                 </div>
-                                                <i>Note : Harap mencantumkan nomor invoice di setiap pembayaran</i>
+                                                <i class="wraptext">Note : Harap mencantumkan nomor invoice di setiap pembayaran</i>
                                                 <div class="text-center" style="position:relative; left:30px; width:200px; margin-top:25px;">
                                                     <div style="font-weight: bold; font-size:15px; ">AUTHORIZED SIGNATURE</div>
                                                     <div style="height:4.5cm;">

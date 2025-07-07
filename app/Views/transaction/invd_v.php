@@ -226,7 +226,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <!-- <th>No.</th> -->
                                     <th>DA Number</th>
                                     <th>Description</th>
-                                    <th>QTY</th>
+                                    <th>Koli</th>
+                                    <th>CBM</th>
                                     <th>Satuan</th>
                                     <th>Unit Price</th>
                                     <th>Total</th>
@@ -304,7 +305,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->job_dano; ?></td>
                                         <td><?= $usr->invd_description; ?></td>
-                                        <td><?= number_format($usr->invd_qty, 3, ",", "."); ?></td>
+                                        <td><?= number_format($usr->invd_koli, 0, ",", "."); ?></td>
+                                        <td><?= number_format($usr->invd_cbm, 3, ",", "."); ?></td>
                                         <td><?= $usr->invd_satuan; ?></td>
                                         <td><?= number_format($usr->invd_price, 0, ",", "."); ?></td>
                                         <td><?= number_format($usr->invd_total, 0, ",", "."); ?></td>

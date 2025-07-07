@@ -126,7 +126,8 @@ class invd_m extends core_m
                 } else if ($row->jobd_methode == "cbm") {
                     $input["invd_qty"] = $row->jobd_cbm;
                 }
-
+                $input["invd_koli"] = $row->jobd_koli;
+                $input["invd_cbm"] = $row->jobd_cbm;
                 $input["invd_satuan"] = $row->jobd_satuan;
                 $input["invd_price"] = $row->jobd_sell;
                 $input["invd_total"] = $row->jobd_total;
