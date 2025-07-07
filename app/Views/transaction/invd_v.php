@@ -221,7 +221,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <thead class="">
                                 <tr>
                                     <?php if (!isset($_GET["report"])) { ?>
-                                        <!-- <th>Action</th> -->
+                                        <th>Action</th>
                                     <?php } ?>
                                     <!-- <th>No.</th> -->
                                     <th>DA Number</th>
@@ -246,8 +246,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
-                                            <!-- <td style="padding-left:0px; padding-right:0px;">
-                                                <?php
+                                            <td style="padding-left:0px; padding-right:0px;">
+                                                <!-- <?php
                                                 if (
                                                     (
                                                         isset(session()->get("position_administrator")[0][0])
@@ -276,7 +276,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" id="job_id<?= $usr->invd_id; ?>" name="job_id" value="<?= $usr->job_id; ?>" />
                                                         <input type="hidden" id="invd_id<?= $usr->invd_id; ?>" name="invd_id" value="<?= $usr->invd_id; ?>" />
                                                     </form>
-                                                <?php } ?>
+                                                <?php } ?> -->
 
                                                 <?php
                                                 if (
@@ -299,7 +299,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                     </form>
                                                 <?php } ?>
-                                            </td> -->
+                                            </td>
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->job_dano; ?></td>
