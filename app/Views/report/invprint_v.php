@@ -345,7 +345,7 @@ function terbilang($angka)
                                                 Total
                                             </td>
                                             <td>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_tagihan, 2, ",", "."); ?></span></span>
+                                                <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_tagihan, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -353,7 +353,7 @@ function terbilang($angka)
                                                 Discount
                                             </td>
                                             <td>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_discount, 2, ",", "."); ?></span></span>
+                                                <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_discount, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -361,7 +361,7 @@ function terbilang($angka)
                                                 Setelah Discount
                                             </td>
                                             <td>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_dtagihan, 2, ",", "."); ?></span></span>
+                                                <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_dtagihan, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
                                         <?php
@@ -379,7 +379,7 @@ function terbilang($angka)
                                                     PPN 1,1%
                                                 </td>
                                                 <td>
-                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn1k1, 2, ",", "."); ?></span></span>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn1k1, 0, ",", "."); ?></span></span>
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -391,7 +391,7 @@ function terbilang($angka)
                                                     PPN 11%
                                                 </td>
                                                 <td>
-                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn11, 2, ",", "."); ?></span></span>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn11, 0, ",", "."); ?></span></span>
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -403,7 +403,7 @@ function terbilang($angka)
                                                     PPN 12%
                                                 </td>
                                                 <td>
-                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn12, 2, ",", "."); ?></span></span>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($ppn12, 0, ",", "."); ?></span></span>
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -415,7 +415,7 @@ function terbilang($angka)
                                                     PPH
                                                 </td>
                                                 <td>
-                                                    <span class="uang"><span>IDR</span><span><?= number_format($pph, 2, ",", "."); ?></span></span>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($pph, 0, ",", "."); ?></span></span>
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -428,7 +428,7 @@ function terbilang($angka)
                                                 $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
                                                 $grand = $tharga - $pph;
                                                 ?>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($grand, 2, ",", "."); ?></span></span>
+                                                <span class="uang"><span>IDR</span><span><?= number_format($grand, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -439,7 +439,7 @@ function terbilang($angka)
                                                 <?php
                                                 $payment = $inv->inv_payment;
                                                 ?>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($payment, 2, ",", "."); ?></span></span>
+                                                <span class="uang"><span>IDR</span><span><?= number_format($payment, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
                                         <tr>
@@ -450,7 +450,7 @@ function terbilang($angka)
                                                 <?php
                                                 $sisa = $grand - $payment;
                                                 ?>
-                                                <span class="uang"><span>IDR</span><span><?= number_format($sisa, 2, ",", "."); ?></span></span>
+                                                <span class="uang"><span>IDR</span><span><?= number_format($sisa, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
                                     </tbody>
