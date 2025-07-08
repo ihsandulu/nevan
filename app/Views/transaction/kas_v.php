@@ -508,9 +508,9 @@ if (isset($_GET["rekeningnya"])) {
                                     $saldoa = $saldos;
                                     foreach ($usr->getResult() as $usr) {
                                         if ($usr->kas_type == "Debet") {
-                                            $saldoa += $usr->kas_nominal;
+                                            $saldoa += $usr->kas_total;
                                         } else {
-                                            $saldoa -= $usr->kas_nominal;
+                                            $saldoa -= $usr->kas_total;
                                         }
                                     ?>
                                         <tr>

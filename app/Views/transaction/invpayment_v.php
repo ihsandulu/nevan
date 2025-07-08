@@ -62,6 +62,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             });
                         </script>
                         <div class="form-group">
+                            <input type="text" class="form-control" style="width: 200px;" id="invpayment_keterangan" name="invpayment_keterangan" placeholder="Description">
+                        </div>
+                        <div class="form-group">
                             <input onkeyup="kali()" type="text" class="form-control" style="width: 80px;" id="invpayment_qty" name="invpayment_qty" placeholder="QTY">
                         </div>
                         <div class="form-group">
@@ -141,9 +144,6 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 });
                             </script>
                         </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" style="width: 200px;" id="invpayment_keterangan" name="invpayment_keterangan" placeholder="Keterangan">
-                        </div>
                         <script>
                             function kali() {
                                 let qty = $("#invpayment_qty").val();
@@ -153,6 +153,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             }
                         </script>
                         <input type="hidden" id="inv_no" name="inv_no" value="<?= $inv_no; ?>" />
+                        <input type="hidden" id="inv_temp" name="inv_temp" value="<?= $inv_temp; ?>" />
                         <input type="hidden" id="customer_id" name="customer_id" value="<?= $customer_id; ?>" />
                         <input type="hidden" id="customer_name" name="customer_name" value="<?= $customer_name; ?>" />
                         <input type="hidden" id="invpayment_id" name="invpayment_id" value="" />
@@ -186,8 +187,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     ->join("methodpayment", "methodpayment.methodpayment_id=invpayment.methodpayment_id", "left")
                                     ->join("(SELECT rekening_id as asalid, rekening_no as asalno from rekening) As asal", "asal.asalid=invpayment.invpayment_from", "left")
                                     ->join("(SELECT rekening_id as tujuanid, rekening_no as tujuanno from rekening) As tujuan", "tujuan.tujuanid=invpayment.invpayment_to", "left");
-                                if (isset($_GET["inv_no"])) {
-                                    $build->where("inv_no", $inv_no);
+                                if (isset($_GET["inv_temp"])) {
+                                    $build->where("inv_temp", $inv_temp);
                                 }
                                 $usr = $build->get();
 
@@ -216,7 +217,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                             <span class="fa fa-edit" style="color:white;"></span>
                                                         </button>
 
-                                                        <input type="hidden" id="inv_no<?= $usr->invpayment_id; ?>" name="inv_no" value="<?= $usr->inv_no; ?>" />
+                                                        <input type="hidden" id="inv_temp<?= $usr->invpayment_id; ?>" name="inv_temp" value="<?= $usr->inv_temp; ?>" />
                                                         <input type="hidden" id="invpayment_total<?= $usr->invpayment_id; ?>" name="invpayment_total" value="<?= $usr->invpayment_total; ?>" />
                                                         <input type="hidden" id="invpayment_price<?= $usr->invpayment_id; ?>" name="invpayment_price" value="<?= $usr->invpayment_price; ?>" />
                                                         <input type="hidden" id="invpayment_qty<?= $usr->invpayment_id; ?>" name="invpayment_qty" value="<?= $usr->invpayment_qty; ?>" />
@@ -246,7 +247,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                     <form method="post" class="btn-action" style="">
                                                         <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
                                                         <input type="hidden" name="invpayment_id" value="<?= $usr->invpayment_id; ?>" />
-                                                        <input type="hidden" name="inv_no" value="<?= $inv_no; ?>" />
+                                                        <input type="hidden" name="inv_temp" value="<?= $inv_temp; ?>" />
                                                     </form>
                                                 <?php } ?>
                                             </td>
@@ -268,7 +269,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <script>
                             function editinvpayment(invpayment_id) {
                                 let job_dano = $("#job_dano" + invpayment_id).val();
-                                let inv_no = $("#inv_no" + invpayment_id).val();
+                                let inv_temp = $("#inv_temp" + invpayment_id).val();
                                 let inv_id = $("#inv_id" + invpayment_id).val();
                                 let invpayment_total = $("#invpayment_total" + invpayment_id).val();
                                 let invpayment_price = $("#invpayment_price" + invpayment_id).val();
@@ -283,7 +284,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let methodpayment_id = $("#methodpayment_id" + invpayment_id).val();
 
                                 $("#job_dano").val(job_dano);
-                                $("#inv_no").val(inv_no);
+                                $("#inv_temp").val(inv_temp);
                                 $("#inv_id").val(inv_id);
                                 $("#invpayment_total").val(invpayment_total);
                                 $("#invpayment_price").val(invpayment_price);

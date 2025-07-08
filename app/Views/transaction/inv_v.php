@@ -263,6 +263,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <button title="Pembayaran" data-bs-toggle="tooltip" class="btn btn-sm btn-success" name="payment" value="OK"><span class="fa fa-money" style="color:white;"></span> </button>
                                                         <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>" />
                                                         <input type="hidden" name="inv_no" value="<?= $usr->inv_no; ?>" />
+                                                        <input type="hidden" name="inv_temp" value="<?= $usr->inv_temp; ?>" />
                                                         <input type="hidden" name="customer_id" value="<?= $usr->customer_id; ?>" />
                                                         <input type="hidden" name="customer_name" value="<?= $usr->customer_name; ?>" />
                                                     </form>

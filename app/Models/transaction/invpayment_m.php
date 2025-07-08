@@ -35,7 +35,7 @@ class invpayment_m extends core_m
                 $data[$field] = "";
             }
         }
-        $data["inv_no"] = $this->request->getGet("inv_no");
+        $data["inv_temp"] = $this->request->getGet("inv_temp");
         $data["inv_id"] = $this->request->getGet("inv_id");
         $data["customer_name"] = $this->request->getGet("customer_name");
         $data["customer_id"] = $this->request->getGet("customer_id");
@@ -53,11 +53,11 @@ class invpayment_m extends core_m
 
 
             // Hitung total pembayaran dari invpayment
-            $inv_no = $this->request->getGet("inv_no");
+            $inv_temp = $this->request->getGet("inv_temp");
             $invpayment_total = $this->db
                 ->table("invpayment")
                 ->select("SUM(invpayment_total) AS inv_payment")
-                ->where("inv_no", $inv_no)
+                ->where("inv_temp", $inv_temp)
                 ->get()
                 ->getRow();
 
@@ -72,7 +72,7 @@ class invpayment_m extends core_m
             // Lakukan update pada tabel inv
             $this->db
                 ->table("inv")
-                ->where("inv_no", $inv_no)
+                ->where("inv_temp", $inv_temp)
                 ->update($inputi);
 
             //delete kas
@@ -134,7 +134,7 @@ class invpayment_m extends core_m
         //insert
         if ($this->request->getPost("create") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'create' && $e != 'invpayment_id') {
+                if ($e != 'create' && $e != 'invpayment_id'&& $e != 'inv_no') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
@@ -146,11 +146,11 @@ class invpayment_m extends core_m
 
 
             // Hitung total pembayaran dari invpayment
-            $inv_no = $this->request->getGet("inv_no");
+            $inv_temp = $this->request->getGet("inv_temp");
             $invpaymenttotal = $this->db
                 ->table("invpayment")
                 ->select("SUM(invpayment_total) AS invpaymenttotal")
-                ->where("inv_no", $inv_no)
+                ->where("inv_temp", $inv_temp)
                 ->get()
                 ->getRow();
 
@@ -165,12 +165,12 @@ class invpayment_m extends core_m
             // Lakukan update pada tabel inv
             $this->db
                 ->table("inv")
-                ->where("inv_no", $inv_no)
+                ->where("inv_temp", $inv_temp)
                 ->update($inputi);
 
             //input kas
             $invd = $this->db->table('invd')
-                ->where("inv_no", $inv_no)
+                ->where("inv_temp", $inv_temp)
                 ->get();
             $jobdano      = array();
             foreach ($invd->getResult() as $rinvd) {
@@ -202,7 +202,7 @@ class invpayment_m extends core_m
             $inputkas[] = array(
                 "kas_date" => $input["invpayment_date"],
                 "job_dano" => $jobdanos,
-                "kas_uraian" => $inv_no,
+                "kas_uraian" => $this->request->getPost("inv_no"),
                 "kas_qty" => $input["invpayment_qty"],
                 "kas_nominal" => $input["invpayment_price"],
                 "kas_total" => $input["invpayment_total"],
@@ -230,7 +230,7 @@ class invpayment_m extends core_m
         //update
         if ($this->request->getPost("change") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'change' && $e != 'invpayment_picture') {
+                if ($e != 'change' && $e != 'invpayment_picture' && $e != 'inv_no') {
                     $inputp[$e] = $this->request->getPost($e);
                 }
             }
@@ -249,11 +249,11 @@ class invpayment_m extends core_m
             $this->db->table('invpayment')->update($inputp, array("invpayment_id" => $invpayment_id));
 
             // Hitung total pembayaran dari invpayment
-            $inv_no = $this->request->getGet("inv_no");
+            $inv_temp = $this->request->getGet("inv_temp");
             $invpaymenttotal = $this->db
                 ->table("invpayment")
                 ->select("SUM(invpayment_total) AS invpaymenttotal")
-                ->where("inv_no", $inv_no)
+                ->where("inv_temp", $inv_temp)
                 ->get()
                 ->getRow();
 
@@ -268,7 +268,7 @@ class invpayment_m extends core_m
             // Lakukan update pada tabel inv
             $this->db
                 ->table("inv")
-                ->where("inv_no", $inv_no)
+                ->where("inv_temp", $inv_temp)
                 ->update($inputi);
 
             //input kas
@@ -338,6 +338,9 @@ class invpayment_m extends core_m
             $input["kas_pettycash"] = $pettycash;
 
             $this->db->table('kas')->update($input, array("kas_id" => $kas_id));
+
+            // echo $this->db->getLastQuery(); die;
+
 
             $kas = $this->db->table("kas")->where("kas_id >", $kas_id)->orderBy("kas_id", "ASC")->get();
             // echo $this->db->getLastQuery(); die;
