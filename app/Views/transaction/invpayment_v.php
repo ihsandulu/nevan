@@ -190,7 +190,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 if (isset($_GET["inv_temp"])) {
                                     $build->where("inv_temp", $inv_temp);
                                 }
-                                $usr = $build->get();
+                                $usr = $build
+                                ->orderBy("invpayment_id","ASC")
+                                ->get();
 
                                 //echo $this->db->getLastquery();
                                 $no = 1;
