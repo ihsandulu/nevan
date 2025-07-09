@@ -5,11 +5,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         white-space: nowrap;
     }
 
-    .ftagihan {
+    .f12 {
         font-size: 12px;
         line-height: 15px !important;
     }
-
     .uang {
         display: flex;
         justify-content: space-between;
@@ -17,6 +16,12 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         width: 100%;
         text-align: left;
     }
+
+    .export-data {
+        display: none;
+    }
+    .w200{width: 200px;}
+    .w300{width: 300px;}
 </style>
 
 <div class='container-fluid'>
@@ -148,7 +153,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         </div>
                     </form>
                     <div class="table-responsive m-t-40">
-                        <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <table id="ex23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
                                 <tr>
@@ -159,6 +164,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <th>Date</th>
                                     <th>INV Number</th>
                                     <th>DA Number</th>
+                                    <th>Description</th>
                                     <th>Customer</th>
                                     <th>Tagihan</th>
                                     <th>Pembayaran</th>
@@ -173,6 +179,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $ainvd = array();
                                 foreach ($invd->getResult() as $invd) {
                                     $ainvd[$invd->inv_id]["job_dano"][] = $invd->job_dano;
+                                    $ainvd[$invd->inv_id]["invd_description"][] = $invd->invd_description;
                                 }
                                 // dd($ainvd);
                                 $build = $this->db
@@ -279,13 +286,23 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->inv_date; ?></td>
-                                        <td>
-                                            <input type="text" class="form-control" id="inv_no<?= $usr->inv_id; ?>" value="<?= $usr->inv_no; ?>" />
-                                            <button class="btn btn-sm btn-info" onclick="saveinvno('<?= $usr->inv_id; ?>')">Save</button>
+                                        <td class="w200">
+                                            <div class="export-data"><?= $usr->inv_no; ?></div>
+                                            <div class="screen-only pr-3">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <input type="text" class="form-control f12" id="inv_no<?= $usr->inv_id; ?>" value="<?= $usr->inv_no; ?>" />
+                                                    </div>
+                                                    <button class="btn btn-xs btn-info fa fa-check" onclick="saveinvno('<?= $usr->inv_id; ?>')"></button>
+                                                </div>
+                                            </div>
                                         </td>
+
+
                                         <td><?= $usr->job_dano; ?></td>
-                                        <td class="text-left"><?= $usr->customer_name; ?></td>
-                                        <td class="ftagihan">
+                                        <td class="f12" style="white-space: normal; word-break: break-word;"><?= implode(', ', $ainvd[$usr->inv_id]["invd_description"]); ?></td>
+                                        <td class="text-left f12"><?= $usr->customer_name; ?></td>
+                                        <td class="f12">
                                             <?php
                                             $dtagihan = $usr->inv_dtagihan;
                                             $ppn1k1 = 0;
@@ -366,6 +383,54 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+        $('#ex23').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    },
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    customize: function(doc) {
+                        // Tampilkan data khusus ekspor, sembunyikan elemen tampilan
+                        $('.export-data').css('display', 'block');
+                        $('.screen-only').css('display', 'none');
+
+                        // Atur margin dan lebar
+                        doc.content[1].margin = [0, 20, 0, 0];
+                        doc.content[1].table.widths =
+                            Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+
+                        // Kembalikan tampilan normal setelah render
+                        setTimeout(function() {
+                            $('.export-data').css('display', 'none');
+                            $('.screen-only').css('display', 'block');
+                        }, 10);
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    }
+                }
+            ],
+            ordering: false, // Mencegah DataTables mengatur order by
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "Semua"]
+            ],
+            pageLength: 10 // Default jumlah baris per halaman
+        });
+    });
     $('.select').select2();
     var title = "<?= $title; ?>";
     let pembayaran = ". Pembayaran : <?= number_format($pembayaran, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($sisahutangnya, 0, ",", "."); ?>";
