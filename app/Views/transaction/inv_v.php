@@ -29,6 +29,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     .w300 {
         width: 300px;
     }
+    .wraptext{white-space: normal; word-break: break-word;}
 </style>
 
 <div class='container-fluid'>
@@ -309,7 +310,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
 
                                         <td><?= $usr->job_dano; ?></td>
-                                        <td class="f12" style="white-space: normal; word-break: break-word;"><?= implode(', ', $ainvd[$usr->inv_id]["invd_description"]); ?></td>
+                                        <td class="f12 wraptext">
+                                            <?=
+                                            isset($ainvd[$usr->inv_id]["invd_description"]) && is_array($ainvd[$usr->inv_id]["invd_description"])
+                                                ? implode(', ', $ainvd[$usr->inv_id]["invd_description"])
+                                                : '-'
+                                            ?>
+                                        </td>
                                         <td class="text-left f12"><?= $usr->customer_name; ?></td>
                                         <td class="f12">
                                             <?php
@@ -392,11 +399,11 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         </td>
                                     <?php } ?>
                                     <!-- <td><?= $no++; ?></td> -->
-                                     <td></td>
-                                     <td></td>
-                                     <td></td>
-                                     <td></td>
-                                     <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td class="f12 bold">
                                         Total :
                                     </td>
