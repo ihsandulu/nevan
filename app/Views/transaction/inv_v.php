@@ -9,6 +9,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         font-size: 12px;
         line-height: 15px !important;
     }
+
     .uang {
         display: flex;
         justify-content: space-between;
@@ -20,8 +21,14 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     .export-data {
         display: none;
     }
-    .w200{width: 200px;}
-    .w300{width: 300px;}
+
+    .w200 {
+        width: 200px;
+    }
+
+    .w300 {
+        width: 300px;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -204,6 +211,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
                                 $pembayaran = 0;
                                 $sisahutangnya = 0;
+                                $bayar = 0;
+                                $hutang = 0;
                                 foreach ($usr->getResult() as $usr) {
                                     $pembayaran += $usr->inv_payment;
                                     $sisahutangnya += $usr->inv_grand;
@@ -312,42 +321,42 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                             ?>
                                             <span class="uang">
                                                 <span>Tagihan:</span>
-                                                <span><?= number_format($usr->inv_tagihan, 0, ",", "."); ?></span>
+                                                <span>(<?= number_format($usr->inv_tagihan, 0, ",", "."); ?>)</span>
                                             </span>
                                             <span class="uang">
                                                 <span>Diskon:</span>
-                                                <span><?= number_format($usr->inv_discount, 0, ",", "."); ?></span>
+                                                <span>(<?= number_format($usr->inv_discount, 0, ",", "."); ?>)</span>
                                             </span>
                                             <span class="uang">
                                                 <span>Stlh Diskon:</span>
-                                                <span><?= number_format($usr->inv_dtagihan, 0, ",", "."); ?></span>
+                                                <span>(<?= number_format($usr->inv_dtagihan, 0, ",", "."); ?>)</span>
                                             </span>
                                             <?php if ($usr->inv_ppn1k1 > 0) {
                                                 $ppn1k1 = $dtagihan * 1.1 / 100; ?>
                                                 <span class="uang">
                                                     <span>PPN1,1:</span>
-                                                    <span><?= number_format($ppn1k1, 0, ",", "."); ?></span>
+                                                    <span>(<?= number_format($ppn1k1, 0, ",", "."); ?>)</span>
                                                 </span>
                                             <?php } ?>
                                             <?php if ($usr->inv_ppn11 > 0) {
                                                 $ppn11 = $dtagihan * 11 / 100; ?>
                                                 <span class="uang">
                                                     <span>PPN11:</span>
-                                                    <span><?= number_format($ppn11, 0, ",", "."); ?></span>
+                                                    <span>(<?= number_format($ppn11, 0, ",", "."); ?>)</span>
                                                 </span>
                                             <?php } ?>
                                             <?php if ($usr->inv_ppn12 > 0) {
                                                 $ppn12 = $dtagihan * 12 / 100; ?>
                                                 <span class="uang">
                                                     <span>PPN12:</span>
-                                                    <span><?= number_format($ppn12, 0, ",", "."); ?></span>
+                                                    <span>(<?= number_format($ppn12, 0, ",", "."); ?>)</span>
                                                 </span>
                                             <?php } ?>
                                             <?php if ($usr->inv_pph > 0) {
                                                 $pph = $dtagihan * 2 / 100; ?>
                                                 <span class="uang">
                                                     <span>PPH:</span>
-                                                    <span><?= number_format($pph, 0, ",", "."); ?></span>
+                                                    <span>(<?= number_format($pph, 0, ",", "."); ?>)</span>
                                                 </span>
                                             <?php } ?>
                                             <?php
@@ -356,24 +365,55 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                             ?>
                                             <span class="uang">
                                                 <span>Grand Total</span>
-                                                <span><?= number_format($grand, 0, ",", "."); ?></span>
+                                                <span>(<?= number_format($grand, 0, ",", "."); ?>)</span>
                                             </span>
                                         </td>
-                                        <td>
+                                        <td class="f12">
                                             <span class="uang">
-                                                <span>IDR</span>
+                                                <span></span>
                                                 <span><?= number_format($usr->inv_payment, 0, ",", "."); ?></span>
                                             </span>
                                         </td>
-                                        <td><span class="uang">
-                                                <span>IDR</span>
+                                        <td class="f12"><span class="uang">
+                                                <span></span>
                                                 <span><?php
                                                         $sisahutang = $grand - $usr->inv_payment;
                                                         echo number_format($sisahutang, 0, ",", "."); ?></span>
                                             </span>
                                         </td>
                                     </tr>
-                                <?php } ?>
+                                <?php $bayar += $usr->inv_payment;
+                                    $hutang += $sisahutang;
+                                } ?>
+                                <tr>
+                                    <?php if (!isset($_GET["report"])) { ?>
+                                        <td style="padding-left:0px; padding-right:0px;">
+
+                                        </td>
+                                    <?php } ?>
+                                    <!-- <td><?= $no++; ?></td> -->
+                                     <td></td>
+                                     <td></td>
+                                     <td></td>
+                                     <td></td>
+                                     <td></td>
+                                    <td class="f12 bold">
+                                        Total :
+                                    </td>
+                                    <td class="f12">
+                                        <span class="uang bold">
+                                            <span></span>
+                                            <span><?= number_format($bayar, 0, ",", "."); ?></span>
+                                        </span>
+                                    </td>
+                                    <td class="f12">
+                                        <span class="uang bold">
+                                            <span></span>
+                                            <span><?php
+                                                    echo number_format($hutang, 0, ",", "."); ?></span>
+                                        </span>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -385,6 +425,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 <script>
     $(document).ready(function() {
         $('#ex23').DataTable({
+            // paging: false,
             dom: 'Bfrtip',
             buttons: [{
                     extend: 'print',
@@ -433,7 +474,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     });
     $('.select').select2();
     var title = "<?= $title; ?>";
-    let pembayaran = ". Pembayaran : <?= number_format($pembayaran, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($sisahutangnya, 0, ",", "."); ?>";
+    let pembayaran = ". Pembayaran : <?= number_format($bayar, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($hutang, 0, ",", "."); ?>";
     $("title").text(title);
     $(".card-title").text(title + pembayaran);
     $("#page-title").text(title);
