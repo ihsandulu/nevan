@@ -184,7 +184,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         ?>
                         &nbsp;&nbsp;<button type="submit" <?= $namebtninvvdr; ?> value="OK" class="btn btn-primary">Submit</button>
                     </form>
-                    <form method="post" class="form-inline alert alert-info" action="">
+                    <form id="myForm" method="post" class="form-inline alert alert-info" action="">
                         <div class="form-group">
                             <select onchange="pilihdano()" class="form-control select" id="job_id" name="job_id">
                                 <option value="">Pilih Da Number</option>
@@ -221,7 +221,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <input onkeyup="kali()" type="text" class="form-control" style="width: 80px;" id="invvdrd_price" name="invvdrd_price" placeholder="Price">
                         </div>
                         <div class="form-group">
-                            <input  type="text" class="form-control" style="width: 80px;" id="invvdrd_total" name="invvdrd_total" placeholder="Total">
+                            <input type="text" class="form-control" style="width: 80px;" id="invvdrd_total" name="invvdrd_total" placeholder="Total">
                         </div>
 
                         <script>
@@ -237,6 +237,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 $("#invvdrd_satuan").val(satuan);
                                 kali();
                             }
+
                             function kali() {
                                 let qty = $("#invvdrd_qty").val();
                                 let price = $("#invvdrd_price").val();
@@ -253,6 +254,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <?php } ?>
 
                         &nbsp;&nbsp;<button id="btninvvdrd" type="submit" name="create" value="OK" class="btn btn-primary">Submit</button>
+                        &nbsp;&nbsp;<button type="button" class="btn btn-warning" onclick="bersih()">Clear</button>
                     </form>
 
                     <div class="table-responsive ">
@@ -367,7 +369,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let invvdrd_price = $("#invvdrd_price" + invvdrd_id).val();
                                 let invvdrdtotal = $("#invvdrd_total" + invvdrd_id).val();
 
-                                
+
                                 $("#job_id").val(job_id).trigger('change');
                                 $("#job_dano").val(job_dano);
                                 $("#invvdr_temp").val(invvdr_temp);
@@ -400,6 +402,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     $(".card-title").text(title);
     $("#page-title").text(title);
     $("#page-title-link").text(title);
+
+    function bersih() {
+        $('#myForm').find('input[type=text], input[type=number], textarea, select').val('');
+        // Jika menggunakan select2, reset juga:
+        $('#myForm').find('select').val(null).trigger('change');
+        $("#btninvvdrd").attr("name", "create");
+    }
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>
