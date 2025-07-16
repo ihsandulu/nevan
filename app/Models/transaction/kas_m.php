@@ -37,48 +37,46 @@ class kas_m extends core_m
         }
 
         //////////////////////////////TUTUP BUKU/////////////////////////////////////////
-        // Tentukan titik point bulan kemaren (akhir bulan kemaren)
-        $tab1l = date("Y-m-t", strtotime("first day of last month"));
+        if (isset($_POST["tp"])) {
+            // Tentukan titik point bulan kemaren (akhir bulan kemaren)
+            $tab1l = date("Y-m-t", strtotime("first day of last month"));
 
-        //cari di table tbuku tanggal akhir 2 bulan sebelumnya
-        $tab2l = date("Y-m-t", strtotime("first day of -2 months"));
+            //cari di table tbuku tanggal akhir 2 bulan sebelumnya
+            $tab2l = date("Y-m-t", strtotime("first day of -2 months"));
 
-        //////////////////////////////AWAL TUTUP BUKU ALL/////////////////////////////////////////
+            //tgl tp
+            $tgltp = $_POST["kas_date"];
 
-        //////////////////////////////TUTUP BUKU KAS/////////////////////////////////////////
-        //apakah ditemukan tp di akhir bulan kemaren?
-        //rekening_id = 0 artinya semua rekening
-        $tp1bln = $this->db->table("tbuku")
-            ->where("rekening_id", "0")
-            ->where("tbuku_date", $tab1l)
-            ->where("tbuku_type", "kas")
-            ->get();
-        // echo $this->db->getLastQuery();die;
-        //jika tdk ditemukan maka lanjutkan proses
-        if ($tp1bln->getNumRows() == 0) {
+            //////////////////////////////AWAL TUTUP BUKU ALL/////////////////////////////////////////
+
+            //////////////////////////////TUTUP BUKU KAS/////////////////////////////////////////       
+            //rekening_id = 0 artinya semua rekening
+
             //cari tp sebelumnya
-            $tp2bln = $this->db->table("tbuku")
+            $tpsbl = $this->db->table("tbuku")
                 ->where("rekening_id", "0")
-                ->where("tbuku_date", $tab2l)
                 ->where("tbuku_type", "kas")
+                ->where("tbuku_date <", $tgltp)
+                ->orderBy("tbuku_date", "DESC")
+                ->limit(1)
                 ->get();
-            if ($tp2bln->getNumRows() > 0) {
+            if ($tpsbl->getNumRows() > 0) {
                 //jika ditemukan maka ambil datanya
-                $row = $tp2bln->getRow();
-                $rekening_id2 = $row->rekening_id;
-                $tbuku_date2 = $row->tbuku_date;
-                $tbuku_type2 = $row->tbuku_type;
-                $tbuku_total2 = $row->tbuku_total;
-                $tbuku_debet2 = $row->tbuku_debet;
-                $tbuku_kredit2 = $row->tbuku_kredit;
+                $row = $tpsbl->getRow();
+                $rekeningsbl = $row->rekening_id;
+                $tgltpsbl = $row->tbuku_date;
+                $typesbl = $row->tbuku_type;
+                $totalsbl = $row->tbuku_total;
+                $debetsbl = $row->tbuku_debet;
+                $kreditsbl = $row->tbuku_kredit;
             } else {
                 //jika tdk ditemukan maka semua masih kosong
-                $rekening_id2 = 0;
-                $tbuku_date2 = 0;
-                $tbuku_type2 = 0;
-                $tbuku_total2 = 0;
-                $tbuku_debet2 = 0;
-                $tbuku_kredit2 = 0;
+                $rekeningsbl = 0;
+                $tgltpsbl = 0;
+                $typesbl = 0;
+                $totalsbl = 0;
+                $debetsbl = 0;
+                $kreditsbl = 0;
             }
 
             //hitung total 1 bulan kemaren 
@@ -87,8 +85,8 @@ class kas_m extends core_m
                     WHEN kas_type = 'Debet' THEN kas_total 
                     WHEN kas_type = 'Kredit' THEN -kas_total 
                     ELSE 0 END) AS saldo_akhir")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             $tkas = 0;
             if ($kas->getNumRows() > 0) {
@@ -100,8 +98,8 @@ class kas_m extends core_m
             $kas = $this->db->table("kas")
                 ->select("SUM(kas_total) AS saldo_akhir")
                 ->where("kas_type", "Debet")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             // echo $this->db->getLastQuery();die;
             $tdebet = 0;
@@ -113,8 +111,8 @@ class kas_m extends core_m
             $kas = $this->db->table("kas")
                 ->select("SUM(kas_total) AS saldo_akhir")
                 ->where("kas_type", "Kredit")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             $tkredit = 0;
             if ($kas->getNumRows() > 0) {
@@ -122,48 +120,41 @@ class kas_m extends core_m
             }
 
             $inputkas["rekening_id"] = 0;
-            $inputkas["tbuku_date"] = $tab1l;
+            $inputkas["tbuku_date"] = $tgltp;
             $inputkas["tbuku_type"] = "kas";
-            $inputkas["tbuku_total"] = $tkas + $tbuku_total2;
-            $inputkas["tbuku_debet"] = $tdebet + $tbuku_debet2;
-            $inputkas["tbuku_kredit"] = $tkredit + $tbuku_kredit2;
+            $inputkas["tbuku_total"] = $tkas + $totalsbl;
+            $inputkas["tbuku_debet"] = $tdebet + $debetsbl;
+            $inputkas["tbuku_kredit"] = $tkredit + $kreditsbl;
             // dd($inputkas);
             $this->db->table("tbuku")->insert($inputkas);
-        }
 
-        //////////////////////////////TUTUP BUKU BIGCASH/////////////////////////////////////////
-        //apakah ditemukan tp di akhir bulan kemaren?
-        $tp1bln = $this->db->table("tbuku")
-            ->where("rekening_id", "0")
-            ->where("tbuku_date", $tab1l)
-            ->where("tbuku_type", "bigcash")
-            ->get();
-        // echo $this->db->getLastQuery();die;
-        //jika tdk ditemukan maka lanjutkan proses
-        if ($tp1bln->getNumRows() == 0) {
+
+            //////////////////////////////TUTUP BUKU BIGCASH/////////////////////////////////////////
+
             //cari tp sebelumnya
-            $tp2bln = $this->db->table("tbuku")
+            $tpsbl = $this->db->table("tbuku")
                 ->where("rekening_id", "0")
-                ->where("tbuku_date", $tab2l)
                 ->where("tbuku_type", "bigcash")
+                ->where("tbuku_date <", $tgltp)
+                ->orderBy("tbuku_date", "DESC")
                 ->get();
-            if ($tp2bln->getNumRows() > 0) {
+            if ($tpsbl->getNumRows() > 0) {
                 //jika ditemukan maka ambil datanya
-                $row = $tp2bln->getRow();
-                $rekening_id2 = $row->rekening_id;
-                $tbuku_date2 = $row->tbuku_date;
-                $tbuku_type2 = $row->tbuku_type;
-                $tbuku_total2 = $row->tbuku_total;
-                $tbuku_debet2 = $row->tbuku_debet;
-                $tbuku_kredit2 = $row->tbuku_kredit;
+                $row = $tpsbl->getRow();
+                $rekeningsbl = $row->rekening_id;
+                $tgltpsbl = $row->tbuku_date;
+                $typesbl = $row->tbuku_type;
+                $totalsbl = $row->tbuku_total;
+                $debetsbl = $row->tbuku_debet;
+                $kreditsbl = $row->tbuku_kredit;
             } else {
                 //jika tdk ditemukan maka semua masih kosong
-                $rekening_id2 = 0;
-                $tbuku_date2 = 0;
-                $tbuku_type2 = 0;
-                $tbuku_total2 = 0;
-                $tbuku_debet2 = 0;
-                $tbuku_kredit2 = 0;
+                $rekeningsbl = 0;
+                $tgltpsbl = 0;
+                $typesbl = 0;
+                $totalsbl = 0;
+                $debetsbl = 0;
+                $kreditsbl = 0;
             }
 
             //hitung total 1 bulan kemaren 
@@ -173,8 +164,8 @@ class kas_m extends core_m
                     WHEN kas_type = 'Kredit' THEN -kas_total 
                     ELSE 0 END) AS saldo_akhir")
                 ->where("kas_debettype", "bigcash")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             $tkas = 0;
             if ($kas->getNumRows() > 0) {
@@ -186,8 +177,8 @@ class kas_m extends core_m
                 ->select("SUM(kas_total) AS saldo_akhir")
                 ->where("kas_debettype", "bigcash")
                 ->where("kas_type", "Debet")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             // echo $this->db->getLastQuery();die;
             $tdebet = 0;
@@ -200,8 +191,8 @@ class kas_m extends core_m
                 ->select("SUM(kas_total) AS saldo_akhir")
                 ->where("kas_debettype", "bigcash")
                 ->where("kas_type", "Kredit")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             $tkredit = 0;
             if ($kas->getNumRows() > 0) {
@@ -210,48 +201,41 @@ class kas_m extends core_m
 
 
             $inputbigcash["rekening_id"] = 0;
-            $inputbigcash["tbuku_date"] = $tab1l;
+            $inputbigcash["tbuku_date"] = $tgltp;
             $inputbigcash["tbuku_type"] = "bigcash";
-            $inputbigcash["tbuku_total"] = $tkas + $tbuku_total2;
-            $inputbigcash["tbuku_debet"] = $tdebet + $tbuku_debet2;
-            $inputbigcash["tbuku_kredit"] = $tkredit + $tbuku_kredit2;
+            $inputbigcash["tbuku_total"] = $tkas + $totalsbl;
+            $inputbigcash["tbuku_debet"] = $tdebet + $debetsbl;
+            $inputbigcash["tbuku_kredit"] = $tkredit + $kreditsbl;
             // dd($inputbigcash);
             $this->db->table("tbuku")->insert($inputbigcash);
-        }
 
-        //////////////////////////////TUTUP BUKU PETTYCASH/////////////////////////////////////////
-        //apakah ditemukan tp di akhir bulan kemaren?
-        $tp1bln = $this->db->table("tbuku")
-            ->where("rekening_id", "0")
-            ->where("tbuku_date", $tab1l)
-            ->where("tbuku_type", "pettycash")
-            ->get();
-        // echo $this->db->getLastQuery();die;
-        //jika tdk ditemukan maka lanjutkan proses
-        if ($tp1bln->getNumRows() == 0) {
+
+            //////////////////////////////TUTUP BUKU PETTYCASH/////////////////////////////////////////
+
             //cari tp sebelumnya
-            $tp2bln = $this->db->table("tbuku")
+            $tpsbl = $this->db->table("tbuku")
                 ->where("rekening_id", "0")
-                ->where("tbuku_date", $tab2l)
                 ->where("tbuku_type", "pettycash")
+                ->where("tbuku_date <", $tgltp)
+                ->orderBy("tbuku_date", "DESC")
                 ->get();
-            if ($tp2bln->getNumRows() > 0) {
+            if ($tpsbl->getNumRows() > 0) {
                 //jika ditemukan maka ambil datanya
-                $row = $tp2bln->getRow();
-                $rekening_id2 = $row->rekening_id;
-                $tbuku_date2 = $row->tbuku_date;
-                $tbuku_type2 = $row->tbuku_type;
-                $tbuku_total2 = $row->tbuku_total;
-                $tbuku_debet2 = $row->tbuku_debet;
-                $tbuku_kredit2 = $row->tbuku_kredit;
+                $row = $tpsbl->getRow();
+                $rekeningsbl = $row->rekening_id;
+                $tgltpsbl = $row->tbuku_date;
+                $typesbl = $row->tbuku_type;
+                $totalsbl = $row->tbuku_total;
+                $debetsbl = $row->tbuku_debet;
+                $kreditsbl = $row->tbuku_kredit;
             } else {
                 //jika tdk ditemukan maka semua masih kosong
-                $rekening_id2 = 0;
-                $tbuku_date2 = 0;
-                $tbuku_type2 = 0;
-                $tbuku_total2 = 0;
-                $tbuku_debet2 = 0;
-                $tbuku_kredit2 = 0;
+                $rekeningsbl = 0;
+                $tgltpsbl = 0;
+                $typesbl = 0;
+                $totalsbl = 0;
+                $debetsbl = 0;
+                $kreditsbl = 0;
             }
 
             //hitung total 1 bulan kemaren 
@@ -261,8 +245,8 @@ class kas_m extends core_m
                     WHEN kas_type = 'Kredit' THEN -kas_total 
                     ELSE 0 END) AS saldo_akhir")
                 ->where("kas_debettype", "pettycash")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             $tkas = 0;
             if ($kas->getNumRows() > 0) {
@@ -274,8 +258,8 @@ class kas_m extends core_m
                 ->select("SUM(kas_total) AS saldo_akhir")
                 ->where("kas_debettype", "pettycash")
                 ->where("kas_type", "Debet")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             // echo $this->db->getLastQuery();die;
             $tdebet = 0;
@@ -288,66 +272,59 @@ class kas_m extends core_m
                 ->select("SUM(kas_total) AS saldo_akhir")
                 ->where("kas_debettype", "pettycash")
                 ->where("kas_type", "Kredit")
-                ->where("kas_date >", $tab2l)
-                ->where("kas_date <=", $tab1l)
+                ->where("kas_date >", $tgltpsbl)
+                ->where("kas_date <=", $tgltp)
                 ->get();
             $tkredit = 0;
             if ($kas->getNumRows() > 0) {
                 $tkredit = $kas->getRow()->saldo_akhir;
             }
             $inputpettycash["rekening_id"] = 0;
-            $inputpettycash["tbuku_date"] = $tab1l;
+            $inputpettycash["tbuku_date"] = $tgltp;
             $inputpettycash["tbuku_type"] = "pettycash";
-            $inputpettycash["tbuku_total"] = $tkas + $tbuku_total2;
-            $inputpettycash["tbuku_debet"] = $tdebet + $tbuku_debet2;
-            $inputpettycash["tbuku_kredit"] = $tkredit + $tbuku_kredit2;
+            $inputpettycash["tbuku_total"] = $tkas + $totalsbl;
+            $inputpettycash["tbuku_debet"] = $tdebet + $debetsbl;
+            $inputpettycash["tbuku_kredit"] = $tkredit + $kreditsbl;
             // dd($inputpettycash);
             $this->db->table("tbuku")->insert($inputpettycash);
-        }
-
-        //////////////////////////////AKHIR TUTUP BUKU ALL/////////////////////////////////////////
 
 
-        //////////////////////////////AWAL TUTUP BUKU REKENING/////////////////////////////////////////
+            //////////////////////////////AKHIR TUTUP BUKU ALL/////////////////////////////////////////
 
-        $rekening = $this->db->table("rekening")
-            ->where("rekening_type", "NKL")
-            ->get();
-        foreach ($rekening->getResult() as $rowrek) {
 
-            //////////////////////////////TUTUP BUKU KAS/////////////////////////////////////////
-            //apakah ditemukan tp di akhir bulan kemaren?
-            $tp1bln = $this->db->table("tbuku")
-                ->where("rekening_id", $rowrek->rekening_id)
-                ->where("tbuku_date", $tab1l)
-                ->where("tbuku_type", "kas")
+            //////////////////////////////AWAL TUTUP BUKU REKENING/////////////////////////////////////////
+
+            $rekening = $this->db->table("rekening")
+                ->where("rekening_type", "NKL")
                 ->get();
-            // echo $this->db->getLastQuery();die;
-            //jika tdk ditemukan maka lanjutkan proses
-            if ($tp1bln->getNumRows() == 0) {
+            foreach ($rekening->getResult() as $rowrek) {
+
+                //////////////////////////////TUTUP BUKU KAS/////////////////////////////////////////
+
                 //cari tp sebelumnya
-                $tp2bln = $this->db->table("tbuku")
+                $tpsbl = $this->db->table("tbuku")
                     ->where("rekening_id", $rowrek->rekening_id)
-                    ->where("tbuku_date", $tab2l)
                     ->where("tbuku_type", "kas")
+                    ->where("tbuku_date <", $tgltp)
+                    ->orderBy("tbuku_date", "DESC")
                     ->get();
-                if ($tp2bln->getNumRows() > 0) {
+                if ($tpsbl->getNumRows() > 0) {
                     //jika ditemukan maka ambil datanya
-                    $row = $tp2bln->getRow();
-                    $rekening_id2 = $row->rekening_id;
-                    $tbuku_date2 = $row->tbuku_date;
-                    $tbuku_type2 = $row->tbuku_type;
-                    $tbuku_total2 = $row->tbuku_total;
-                    $tbuku_debet2 = $row->tbuku_debet;
-                    $tbuku_kredit2 = $row->tbuku_kredit;
+                    $row = $tpsbl->getRow();
+                    $rekeningsbl = $row->rekening_id;
+                    $tgltpsbl = $row->tbuku_date;
+                    $typesbl = $row->tbuku_type;
+                    $totalsbl = $row->tbuku_total;
+                    $debetsbl = $row->tbuku_debet;
+                    $kreditsbl = $row->tbuku_kredit;
                 } else {
                     //jika tdk ditemukan maka semua masih kosong
-                    $rekening_id2 = 0;
-                    $tbuku_date2 = 0;
-                    $tbuku_type2 = 0;
-                    $tbuku_total2 = 0;
-                    $tbuku_debet2 = 0;
-                    $tbuku_kredit2 = 0;
+                    $rekeningsbl = 0;
+                    $tgltpsbl = 0;
+                    $typesbl = 0;
+                    $totalsbl = 0;
+                    $debetsbl = 0;
+                    $kreditsbl = 0;
                 }
 
                 //hitung total 1 bulan kemaren 
@@ -360,14 +337,14 @@ class kas_m extends core_m
                     ->where("kas_rekdari", $rowrek->rekening_id)
                     ->orWhere("kas_rekke", $rowrek->rekening_id)
                     ->groupEnd()
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 $tkas = 0;
                 if ($kas->getNumRows() > 0) {
                     $tkas = $kas->getRow()->saldo_akhir;
                 }
-                
+
 
                 //hitung debet 1 bulan kemaren 
                 $kas = $this->db->table("kas")
@@ -377,15 +354,15 @@ class kas_m extends core_m
                     ->orWhere("kas_rekke", $rowrek->rekening_id)
                     ->groupEnd()
                     ->where("kas_type", "Debet")
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 // echo $this->db->getLastQuery();die;
                 $tdebet = 0;
                 if ($kas->getNumRows() > 0) {
                     $tdebet = $kas->getRow()->saldo_akhir;
                 }
-                
+
 
                 //hitung kredit 1 bulan kemaren 
                 $kas = $this->db->table("kas")
@@ -395,60 +372,53 @@ class kas_m extends core_m
                     ->orWhere("kas_rekke", $rowrek->rekening_id)
                     ->groupEnd()
                     ->where("kas_type", "Kredit")
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 $tkredit = 0;
                 if ($kas->getNumRows() > 0) {
                     $tkredit = $kas->getRow()->saldo_akhir;
-                }                
-
-                $inputkas["rekening_id"] = $rowrek->rekening_id;
-                $inputkas["tbuku_date"] = $tab1l;
-                $inputkas["tbuku_type"] = "kas";
-                $inputkas["tbuku_total"] = $tkas + $tbuku_total2;
-                $inputkas["tbuku_debet"] = $tdebet + $tbuku_debet2;
-                $inputkas["tbuku_kredit"] = $tkredit + $tbuku_kredit2;
-                // dd($inputkas);
-                $this->db->table("tbuku")->insert($inputkas);
-            }
-
-            //////////////////////////////TUTUP BUKU BIGCASH/////////////////////////////////////////
-            //apakah ditemukan tp di akhir bulan kemaren?
-            $tp1bln = $this->db->table("tbuku")
-                ->where("rekening_id", $rowrek->rekening_id)
-                ->where("tbuku_date", $tab1l)
-                ->where("tbuku_type", "bigcash")
-                ->get();
-            // echo $this->db->getLastQuery();die;
-            //jika tdk ditemukan maka lanjutkan proses
-            if ($tp1bln->getNumRows() == 0) {
-                //cari tp sebelumnya
-                $tp2bln = $this->db->table("tbuku")
-                    ->where("rekening_id", $rowrek->rekening_id)
-                    ->where("tbuku_date", $tab2l)
-                    ->where("tbuku_type", "bigcash")
-                    ->get();
-                if ($tp2bln->getNumRows() > 0) {
-                    //jika ditemukan maka ambil datanya
-                    $row = $tp2bln->getRow();
-                    $rekening_id2 = $row->rekening_id;
-                    $tbuku_date2 = $row->tbuku_date;
-                    $tbuku_type2 = $row->tbuku_type;
-                    $tbuku_total2 = $row->tbuku_total;
-                    $tbuku_debet2 = $row->tbuku_debet;
-                    $tbuku_kredit2 = $row->tbuku_kredit;
-                } else {
-                    //jika tdk ditemukan maka semua masih kosong
-                    $rekening_id2 = 0;
-                    $tbuku_date2 = 0;
-                    $tbuku_type2 = 0;
-                    $tbuku_total2 = 0;
-                    $tbuku_debet2 = 0;
-                    $tbuku_kredit2 = 0;
                 }
 
-                
+                $inputkas["rekening_id"] = $rowrek->rekening_id;
+                $inputkas["tbuku_date"] = $tgltp;
+                $inputkas["tbuku_type"] = "kas";
+                $inputkas["tbuku_total"] = $tkas + $totalsbl;
+                $inputkas["tbuku_debet"] = $tdebet + $debetsbl;
+                $inputkas["tbuku_kredit"] = $tkredit + $kreditsbl;
+                // dd($inputkas);
+                $this->db->table("tbuku")->insert($inputkas);
+
+
+                //////////////////////////////TUTUP BUKU BIGCASH/////////////////////////////////////////
+
+                //cari tp sebelumnya
+                $tpsbl = $this->db->table("tbuku")
+                    ->where("rekening_id", $rowrek->rekening_id)
+                    ->where("tbuku_type", "bigcash")
+                    ->where("tbuku_date <", $tgltp)
+                    ->orderBy("tbuku_date", "DESC")
+                    ->get();
+                if ($tpsbl->getNumRows() > 0) {
+                    //jika ditemukan maka ambil datanya
+                    $row = $tpsbl->getRow();
+                    $rekeningsbl = $row->rekening_id;
+                    $tgltpsbl = $row->tbuku_date;
+                    $typesbl = $row->tbuku_type;
+                    $totalsbl = $row->tbuku_total;
+                    $debetsbl = $row->tbuku_debet;
+                    $kreditsbl = $row->tbuku_kredit;
+                } else {
+                    //jika tdk ditemukan maka semua masih kosong
+                    $rekeningsbl = 0;
+                    $tgltpsbl = 0;
+                    $typesbl = 0;
+                    $totalsbl = 0;
+                    $debetsbl = 0;
+                    $kreditsbl = 0;
+                }
+
+
                 //hitung total 1 bulan kemaren 
                 $kas = $this->db->table("kas")
                     ->select("SUM(CASE 
@@ -460,15 +430,15 @@ class kas_m extends core_m
                     ->orWhere("kas_rekke", $rowrek->rekening_id)
                     ->groupEnd()
                     ->where("kas_debettype", "bigcash")
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 $tkas = 0;
                 if ($kas->getNumRows() > 0) {
                     $tkas = $kas->getRow()->saldo_akhir;
                 }
 
-                
+
 
                 //hitung debet 1 bulan kemaren 
                 $kas = $this->db->table("kas")
@@ -479,8 +449,8 @@ class kas_m extends core_m
                     ->groupEnd()
                     ->where("kas_debettype", "bigcash")
                     ->where("kas_type", "Debet")
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 // echo $this->db->getLastQuery();die;
                 $tdebet = 0;
@@ -488,7 +458,7 @@ class kas_m extends core_m
                     $tdebet = $kas->getRow()->saldo_akhir;
                 }
 
-               
+
                 //hitung kredit 1 bulan kemaren 
                 $kas = $this->db->table("kas")
                     ->select("SUM(kas_total) AS saldo_akhir")
@@ -498,8 +468,8 @@ class kas_m extends core_m
                     ->groupEnd()
                     ->where("kas_debettype", "bigcash")
                     ->where("kas_type", "Kredit")
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 //    echo $this->db->getLastQuery();die; 
                 $tkredit = 0;
@@ -507,51 +477,44 @@ class kas_m extends core_m
                     $tkredit = $kas->getRow()->saldo_akhir;
                 }
 
-                
+
 
                 $inputbigcash["rekening_id"] = $rowrek->rekening_id;
-                $inputbigcash["tbuku_date"] = $tab1l;
+                $inputbigcash["tbuku_date"] = $tgltp;
                 $inputbigcash["tbuku_type"] = "bigcash";
-                $inputbigcash["tbuku_total"] = $tkas + $tbuku_total2;
-                $inputbigcash["tbuku_debet"] = $tdebet + $tbuku_debet2;
-                $inputbigcash["tbuku_kredit"] = $tkredit + $tbuku_kredit2;
+                $inputbigcash["tbuku_total"] = $tkas + $totalsbl;
+                $inputbigcash["tbuku_debet"] = $tdebet + $debetsbl;
+                $inputbigcash["tbuku_kredit"] = $tkredit + $kreditsbl;
                 // dd($inputbigcash);
                 $this->db->table("tbuku")->insert($inputbigcash);
-            }
 
-            //////////////////////////////TUTUP BUKU PETTYCASH/////////////////////////////////////////
-            //apakah ditemukan tp di akhir bulan kemaren?
-            $tp1bln = $this->db->table("tbuku")
-                ->where("rekening_id", $rowrek->rekening_id)
-                ->where("tbuku_date", $tab1l)
-                ->where("tbuku_type", "pettycash")
-                ->get();
-            // echo $this->db->getLastQuery();die;
-            //jika tdk ditemukan maka lanjutkan proses
-            if ($tp1bln->getNumRows() == 0) {
+
+                //////////////////////////////TUTUP BUKU PETTYCASH/////////////////////////////////////////
+
                 //cari tp sebelumnya
-                $tp2bln = $this->db->table("tbuku")
+                $tpsbl = $this->db->table("tbuku")
                     ->where("rekening_id", $rowrek->rekening_id)
-                    ->where("tbuku_date", $tab2l)
                     ->where("tbuku_type", "pettycash")
+                    ->where("tbuku_date <", $tgltp)
+                    ->orderBy("tbuku_date", "DESC")
                     ->get();
-                if ($tp2bln->getNumRows() > 0) {
+                if ($tpsbl->getNumRows() > 0) {
                     //jika ditemukan maka ambil datanya
-                    $row = $tp2bln->getRow();
-                    $rekening_id2 = $row->rekening_id;
-                    $tbuku_date2 = $row->tbuku_date;
-                    $tbuku_type2 = $row->tbuku_type;
-                    $tbuku_total2 = $row->tbuku_total;
-                    $tbuku_debet2 = $row->tbuku_debet;
-                    $tbuku_kredit2 = $row->tbuku_kredit;
+                    $row = $tpsbl->getRow();
+                    $rekeningsbl = $row->rekening_id;
+                    $tgltpsbl = $row->tbuku_date;
+                    $typesbl = $row->tbuku_type;
+                    $totalsbl = $row->tbuku_total;
+                    $debetsbl = $row->tbuku_debet;
+                    $kreditsbl = $row->tbuku_kredit;
                 } else {
                     //jika tdk ditemukan maka semua masih kosong
-                    $rekening_id2 = 0;
-                    $tbuku_date2 = 0;
-                    $tbuku_type2 = 0;
-                    $tbuku_total2 = 0;
-                    $tbuku_debet2 = 0;
-                    $tbuku_kredit2 = 0;
+                    $rekeningsbl = 0;
+                    $tgltpsbl = 0;
+                    $typesbl = 0;
+                    $totalsbl = 0;
+                    $debetsbl = 0;
+                    $kreditsbl = 0;
                 }
 
                 //hitung total 1 bulan kemaren 
@@ -565,8 +528,8 @@ class kas_m extends core_m
                     ->orWhere("kas_rekke", $rowrek->rekening_id)
                     ->groupEnd()
                     ->where("kas_debettype", "pettycash")
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 $tkas = 0;
                 if ($kas->getNumRows() > 0) {
@@ -582,8 +545,8 @@ class kas_m extends core_m
                     ->groupEnd()
                     ->where("kas_debettype", "pettycash")
                     ->where("kas_type", "Debet")
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 // echo $this->db->getLastQuery();die;
                 $tdebet = 0;
@@ -600,25 +563,24 @@ class kas_m extends core_m
                     ->groupEnd()
                     ->where("kas_debettype", "pettycash")
                     ->where("kas_type", "Kredit")
-                    ->where("kas_date >", $tab2l)
-                    ->where("kas_date <=", $tab1l)
+                    ->where("kas_date >", $tgltpsbl)
+                    ->where("kas_date <=", $tgltp)
                     ->get();
                 $tkredit = 0;
                 if ($kas->getNumRows() > 0) {
                     $tkredit = $kas->getRow()->saldo_akhir;
                 }
                 $inputpettycash["rekening_id"] = $rowrek->rekening_id;
-                $inputpettycash["tbuku_date"] = $tab1l;
+                $inputpettycash["tbuku_date"] = $tgltp;
                 $inputpettycash["tbuku_type"] = "pettycash";
-                $inputpettycash["tbuku_total"] = $tkas + $tbuku_total2;
-                $inputpettycash["tbuku_debet"] = $tdebet + $tbuku_debet2;
-                $inputpettycash["tbuku_kredit"] = $tkredit + $tbuku_kredit2;
+                $inputpettycash["tbuku_total"] = $tkas + $totalsbl;
+                $inputpettycash["tbuku_debet"] = $tdebet + $debetsbl;
+                $inputpettycash["tbuku_kredit"] = $tkredit + $kreditsbl;
                 // dd($inputpettycash);
                 $this->db->table("tbuku")->insert($inputpettycash);
             }
+            /////////////////////////////////AKHIR TUTUP BUKU REKENING///////////////////////////////////
         }
-        /////////////////////////////////AKHIR TUTUP BUKU REKENING///////////////////////////////////
-
         /////////////////////////////////////////TUTUP BUKU/////////////////////////////////////////
 
         //delete
@@ -855,7 +817,7 @@ class kas_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-           
+
             $kas_id = $this->request->getPost("kas_id");
             //apakah di tanggal yg sama ada id yg lebih rendah dari dia
             $kas = $this->db

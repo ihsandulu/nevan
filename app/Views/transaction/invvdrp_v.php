@@ -168,6 +168,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             </thead>
                             <tbody>
                                 <?php
+                                //******* Cari titik point terakhir, di table tbuku untuk menentukan mana yg didisable buttonnya  *********//
+                                $tgltbterakhir = "2000-12-01";
+                                $tbukun = $this->db->table("tbuku")->orderBy("tbuku_date", "DESC")->limit(1)->get();
+                                foreach ($tbukun->getResult() as $row) {
+                                    $tgltbterakhir = $row->tbuku_date;
+                                }
+
                                 $build = $this->db
                                     ->table("invvdrp")
                                     ->join("methodpayment", "methodpayment.methodpayment_id=invvdrp.methodpayment_id", "left")
@@ -176,7 +183,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 if (isset($_GET["invvdr_no"])) {
                                     $build->where("invvdr_no", $invvdr_no);
                                 }
-                                $usr = $build->get();
+                                $usr = $build
+                                    ->orderBy("invvdrp_date", "ASC")
+                                    ->orderBy("invvdrp_id", "ASC")
+                                    ->get();
 
                                 //echo $this->db->getLastquery();
                                 $no = 1;
@@ -184,59 +194,61 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
                                             <td style="padding-left:0px; padding-right:0px;">
-                                                <?php
-                                                if (
-                                                    (
-                                                        isset(session()->get("position_administrator")[0][0])
-                                                        && (
-                                                            session()->get("position_administrator") == "1"
-                                                            || session()->get("position_administrator") == "2"
+                                                <?php if ($usr->invvdrp_date > $tgltbterakhir) { ?>
+                                                    <?php
+                                                    if (
+                                                        (
+                                                            isset(session()->get("position_administrator")[0][0])
+                                                            && (
+                                                                session()->get("position_administrator") == "1"
+                                                                || session()->get("position_administrator") == "2"
+                                                            )
+                                                        ) ||
+                                                        (
+                                                            isset(session()->get("halaman")['122']['act_update'])
+                                                            && session()->get("halaman")['122']['act_update'] == "1"
                                                         )
-                                                    ) ||
-                                                    (
-                                                        isset(session()->get("halaman")['122']['act_update'])
-                                                        && session()->get("halaman")['122']['act_update'] == "1"
-                                                    )
-                                                ) { ?>
-                                                    <form method="post" class="btn-action">
-                                                        <button type="button" onclick="editinvvdrp('<?= $usr->invvdrp_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
-                                                            <span class="fa fa-edit" style="color:white;"></span>
-                                                        </button>
+                                                    ) { ?>
+                                                        <form method="post" class="btn-action">
+                                                            <button type="button" onclick="editinvvdrp('<?= $usr->invvdrp_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
+                                                                <span class="fa fa-edit" style="color:white;"></span>
+                                                            </button>
 
-                                                        <input type="hidden" id="invvdr_no<?= $usr->invvdrp_id; ?>" name="invvdr_no" value="<?= $usr->invvdr_no; ?>" />
-                                                        <input type="hidden" id="invvdrp_nominal<?= $usr->invvdrp_id; ?>" name="invvdrp_nominal" value="<?= $usr->invvdrp_nominal; ?>" />
+                                                            <input type="hidden" id="invvdr_no<?= $usr->invvdrp_id; ?>" name="invvdr_no" value="<?= $usr->invvdr_no; ?>" />
+                                                            <input type="hidden" id="invvdrp_nominal<?= $usr->invvdrp_id; ?>" name="invvdrp_nominal" value="<?= $usr->invvdrp_nominal; ?>" />
 
 
-                                                        <input type="hidden" id="invvdrp_keterangan<?= $usr->invvdrp_id; ?>" name="invvdrp_keterangan" value="<?= $usr->invvdrp_keterangan; ?>" />
-                                                        <input type="hidden" id="invvdrp_id<?= $usr->invvdrp_id; ?>" name="invvdrp_id" value="<?= $usr->invvdrp_id; ?>" />
-                                                        <input type="hidden" id="kas_id<?= $usr->invvdrp_id; ?>" name="kas_id" value="<?= $usr->kas_id; ?>" />
-                                                        <input type="hidden" id="invvdrp_date<?= $usr->invvdrp_id; ?>" name="invvdrp_date" value="<?= $usr->invvdrp_date; ?>" />
-                                                        <input type="hidden" id="invvdrp_from<?= $usr->invvdrp_id; ?>" name="invvdrp_from" value="<?= $usr->invvdrp_from; ?>" />
-                                                        <input type="hidden" id="invvdrp_to<?= $usr->invvdrp_id; ?>" name="invvdrp_to" value="<?= $usr->invvdrp_to; ?>" />
-                                                        <input type="hidden" id="methodpayment_id<?= $usr->invvdrp_id; ?>" name="methodpayment_id" value="<?= $usr->methodpayment_id; ?>" />
-                                                    </form>
-                                                <?php } ?>
+                                                            <input type="hidden" id="invvdrp_keterangan<?= $usr->invvdrp_id; ?>" name="invvdrp_keterangan" value="<?= $usr->invvdrp_keterangan; ?>" />
+                                                            <input type="hidden" id="invvdrp_id<?= $usr->invvdrp_id; ?>" name="invvdrp_id" value="<?= $usr->invvdrp_id; ?>" />
+                                                            <input type="hidden" id="kas_id<?= $usr->invvdrp_id; ?>" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                            <input type="hidden" id="invvdrp_date<?= $usr->invvdrp_id; ?>" name="invvdrp_date" value="<?= $usr->invvdrp_date; ?>" />
+                                                            <input type="hidden" id="invvdrp_from<?= $usr->invvdrp_id; ?>" name="invvdrp_from" value="<?= $usr->invvdrp_from; ?>" />
+                                                            <input type="hidden" id="invvdrp_to<?= $usr->invvdrp_id; ?>" name="invvdrp_to" value="<?= $usr->invvdrp_to; ?>" />
+                                                            <input type="hidden" id="methodpayment_id<?= $usr->invvdrp_id; ?>" name="methodpayment_id" value="<?= $usr->methodpayment_id; ?>" />
+                                                        </form>
+                                                    <?php } ?>
 
-                                                <?php
-                                                if (
-                                                    (
-                                                        isset(session()->get("position_administrator")[0][0])
-                                                        && (
-                                                            session()->get("position_administrator") == "1"
-                                                            || session()->get("position_administrator") == "2"
+                                                    <?php
+                                                    if (
+                                                        (
+                                                            isset(session()->get("position_administrator")[0][0])
+                                                            && (
+                                                                session()->get("position_administrator") == "1"
+                                                                || session()->get("position_administrator") == "2"
+                                                            )
+                                                        ) ||
+                                                        (
+                                                            isset(session()->get("halaman")['122']['act_delete'])
+                                                            && session()->get("halaman")['122']['act_delete'] == "1"
                                                         )
-                                                    ) ||
-                                                    (
-                                                        isset(session()->get("halaman")['122']['act_delete'])
-                                                        && session()->get("halaman")['122']['act_delete'] == "1"
-                                                    )
-                                                ) { ?>
-                                                    <form method="post" class="btn-action" style="">
-                                                        <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                        <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
-                                                        <input type="hidden" name="invvdrp_id" value="<?= $usr->invvdrp_id; ?>" />
-                                                        <input type="hidden" name="invvdr_no" value="<?= $invvdr_no; ?>" />
-                                                    </form>
+                                                    ) { ?>
+                                                        <form method="post" class="btn-action" style="">
+                                                            <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                            <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                            <input type="hidden" name="invvdrp_id" value="<?= $usr->invvdrp_id; ?>" />
+                                                            <input type="hidden" name="invvdr_no" value="<?= $invvdr_no; ?>" />
+                                                        </form>
+                                                    <?php } ?>
                                                 <?php } ?>
                                             </td>
                                         <?php } ?>

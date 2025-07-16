@@ -92,9 +92,6 @@ if (isset($_GET["rekeningnya"])) {
                                 <h3><?= $judul; ?></h3>
                             </div>
                             <form class="form-horizontal row" method="post" enctype="multipart/form-data">
-
-
-
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="kas_date">DATE:</label>
                                     <div class="col-sm-12">
@@ -403,6 +400,12 @@ if (isset($_GET["rekeningnya"])) {
                                 </thead>
                                 <tbody>
                                     <?php
+                                    //******* Cari titik point terakhir, di table tbuku untuk menentukan mana yg didisable buttonnya  *********//
+                                    $tgltbterakhir = "2000-12-01";
+                                    $tbukun = $this->db->table("tbuku")->orderBy("tbuku_date", "DESC")->limit(1)->get();
+                                    foreach ($tbukun->getResult() as $row) {
+                                        $tgltbterakhir = $row->tbuku_date;
+                                    }
                                     //******* Cari titik point sebelum tgl $dari, di table tbuku  *********//
                                     $build = $this->db
                                         ->table("tbuku");
@@ -504,8 +507,10 @@ if (isset($_GET["rekeningnya"])) {
 
                                     // echo $this->db->getLastquery();
                                     $no = 1;
+                                    $not = 1;
                                     $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
                                     $saldoa = $saldos;
+                                    $cektrakhirtgl = "";
                                     foreach ($usr->getResult() as $usr) {
                                         if ($usr->kas_type == "Debet") {
                                             $saldoa += $usr->kas_total;
@@ -517,64 +522,112 @@ if (isset($_GET["rekeningnya"])) {
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td style="padding-left:0px; padding-right:0px;">
                                                     <?php
-                                                    if (($usr->kas_bigid == 0 && $usr->kas_debettype == "pettycash") || $usr->kas_debettype == "bigcash") { ?>
-                                                        <?php if ($usr->invpayment_id == 0 && $usr->invvdrp_id == 0) {
-                                                            if (
-                                                                (
-                                                                    isset(session()->get("position_administrator")[0][0])
-                                                                    && (
-                                                                        session()->get("position_administrator") == "1"
-                                                                        || session()->get("position_administrator") == "2"
-                                                                    )
-                                                                ) ||
-                                                                (
-                                                                    isset(session()->get("halaman")['108']['act_update'])
-                                                                    && session()->get("halaman")['108']['act_update'] == "1"
-                                                                ) ||
-                                                                (
-                                                                    isset(session()->get("halaman")['120']['act_update'])
-                                                                    && session()->get("halaman")['120']['act_update'] == "1"
-                                                                ) ||
-                                                                (
-                                                                    isset(session()->get("halaman")['121']['act_update'])
-                                                                    && session()->get("halaman")['121']['act_update'] == "1"
-                                                                )
-                                                            ) { ?>
-                                                                <form method="post" class="btn-action" style="">
-                                                                    <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
-                                                                    <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
-                                                                </form>
-                                                            <?php } ?>
+                                                    if ($cektrakhirtgl != $usr->kas_date) { ?>
+                                                        <script>
+                                                            $().ready(function() {
+                                                                // alert('tgl<?= $cektrakhirtgl; ?><?= $not; ?>');
+                                                                $(".tgl<?= $cektrakhirtgl; ?>").hide();
+                                                                $("#tgl<?= $cektrakhirtgl; ?><?= $not - 1; ?>").show();
+                                                            });
+                                                        </script>
+                                                    <?php
+                                                        $not = 1;
+                                                        $cektrakhirtgl = $usr->kas_date;
+                                                    }
+                                                    ?>
 
-                                                            <?php
-                                                            if (
-                                                                (
-                                                                    isset(session()->get("position_administrator")[0][0])
-                                                                    && (
-                                                                        session()->get("position_administrator") == "1"
-                                                                        || session()->get("position_administrator") == "2"
+                                                    <?php
+                                                    if ($tgltbterakhir < $usr->kas_date) {
+                                                        if (($usr->kas_bigid == 0 && $usr->kas_debettype == "pettycash") || $usr->kas_debettype == "bigcash") { ?>
+                                                            <?php if ($usr->invpayment_id == 0 && $usr->invvdrp_id == 0) {
+                                                                if (
+                                                                    (
+                                                                        isset(session()->get("position_administrator")[0][0])
+                                                                        && (
+                                                                            session()->get("position_administrator") == "1"
+                                                                            || session()->get("position_administrator") == "2"
+                                                                        )
+                                                                    ) ||
+                                                                    (
+                                                                        isset(session()->get("halaman")['108']['act_update'])
+                                                                        && session()->get("halaman")['108']['act_update'] == "1"
+                                                                    ) ||
+                                                                    (
+                                                                        isset(session()->get("halaman")['120']['act_update'])
+                                                                        && session()->get("halaman")['120']['act_update'] == "1"
+                                                                    ) ||
+                                                                    (
+                                                                        isset(session()->get("halaman")['121']['act_update'])
+                                                                        && session()->get("halaman")['121']['act_update'] == "1"
                                                                     )
-                                                                ) ||
-                                                                (
-                                                                    isset(session()->get("halaman")['108']['act_delete'])
-                                                                    && session()->get("halaman")['108']['act_delete'] == "1"
-                                                                ) ||
-                                                                (
-                                                                    isset(session()->get("halaman")['120']['act_delete'])
-                                                                    && session()->get("halaman")['120']['act_delete'] == "1"
-                                                                ) ||
-                                                                (
-                                                                    isset(session()->get("halaman")['121']['act_delete'])
-                                                                    && session()->get("halaman")['121']['act_delete'] == "1"
-                                                                )
-                                                            ) { ?>
-                                                                <form method="post" class="btn-action" style="">
-                                                                    <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
-                                                                    <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
-                                                                    <input type="hidden" name="kas_pettyid" value="<?= $usr->kas_pettyid; ?>" />
-                                                                    <input type="hidden" name="kas_date" value="<?= $usr->kas_date; ?>" />
-                                                                </form>
+                                                                ) { ?>
+                                                                    <form method="post" class="btn-action" style="">
+                                                                        <button class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
+                                                                        <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                                    </form>
+                                                                <?php } ?>
+
+                                                                <?php
+                                                                if (
+                                                                    (
+                                                                        isset(session()->get("position_administrator")[0][0])
+                                                                        && (
+                                                                            session()->get("position_administrator") == "1"
+                                                                            || session()->get("position_administrator") == "2"
+                                                                        )
+                                                                    ) ||
+                                                                    (
+                                                                        isset(session()->get("halaman")['108']['act_delete'])
+                                                                        && session()->get("halaman")['108']['act_delete'] == "1"
+                                                                    ) ||
+                                                                    (
+                                                                        isset(session()->get("halaman")['120']['act_delete'])
+                                                                        && session()->get("halaman")['120']['act_delete'] == "1"
+                                                                    ) ||
+                                                                    (
+                                                                        isset(session()->get("halaman")['121']['act_delete'])
+                                                                        && session()->get("halaman")['121']['act_delete'] == "1"
+                                                                    )
+                                                                ) { ?>
+                                                                    <form method="post" class="btn-action" style="">
+                                                                        <button class="btn btn-sm btn-danger delete" onclick="return confirm(' you want to delete?');" name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                                                                        <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                                        <input type="hidden" name="kas_pettyid" value="<?= $usr->kas_pettyid; ?>" />
+                                                                        <input type="hidden" name="kas_date" value="<?= $usr->kas_date; ?>" />
+                                                                    </form>
+                                                                <?php } ?>
+
+
+
                                                             <?php } ?>
+                                                        <?php } ?>
+                                                        <?php
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['108']['act_update'])
+                                                                && session()->get("halaman")['108']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['120']['act_update'])
+                                                                && session()->get("halaman")['120']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['121']['act_update'])
+                                                                && session()->get("halaman")['121']['act_update'] == "1"
+                                                            )
+                                                        ) { ?>
+                                                            <form method="post" class="btn-action tgl<?= $cektrakhirtgl; ?>" id="tgl<?= $usr->kas_date; ?><?= $not; ?>" style="">
+                                                                <button data-bs-toggle="tooltip" title="Titik Point" onclick="return confirm('Yakin akan melakukan Tutup Buku?');" class="btn btn-sm btn-success " name="tp" value="OK"><span class="fa fa-check" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="kas_id" value="<?= $usr->kas_id; ?>" />
+                                                                <input type="hidden" name="kas_date" value="<?= $usr->kas_date; ?>" />
+                                                            </form>
                                                         <?php } ?>
                                                     <?php } ?>
                                                 </td>
@@ -600,9 +653,17 @@ if (isset($_GET["rekeningnya"])) {
                                             <td class="text-left"><?= $usr->kas_keterangan; ?></td>
                                             <?php if (isset($_GET["kas_type"]) &&  $_GET["kas_type"] != "Debet") { ?>
                                                 <td class="text-left"><?= $usr->vendor_name; ?></td>
-                                            <?php } ?>
+                                            <?php }
+                                            $not++; ?>
                                         </tr>
                                     <?php } ?>
+                                    <script>
+                                        $().ready(function() {
+                                            // alert('tgl<?= $cektrakhirtgl; ?><?= $not; ?>');
+                                            $(".tgl<?= $cektrakhirtgl; ?>").hide();
+                                            $("#tgl<?= $cektrakhirtgl; ?><?= $not - 1; ?>").show();
+                                        });
+                                    </script>
                                 </tbody>
                             </table>
                         </div>
