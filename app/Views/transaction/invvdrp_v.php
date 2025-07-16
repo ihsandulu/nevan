@@ -22,7 +22,14 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         color: #000 !important;
     }
 </style>
-
+<?php
+//******* Cari titik point terakhir, di table tbuku untuk menentukan mana yg didisable buttonnya  *********//
+$tgltbterakhir = "2000-12-01";
+$tbukun = $this->db->table("tbuku")->orderBy("tbuku_date", "DESC")->limit(1)->get();
+foreach ($tbukun->getResult() as $row) {
+    $tgltbterakhir = $row->tbuku_date;
+}
+?>
 <div class='container-fluid'>
     <div class='row'>
         <div class='col-12'>
@@ -47,6 +54,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 data-bs-content="Pilih tanggal invoice"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top"
+                                min="<?=$tgltbterakhir;?>"
                                 value="">
                         </div>
                         <script>
@@ -168,12 +176,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             </thead>
                             <tbody>
                                 <?php
-                                //******* Cari titik point terakhir, di table tbuku untuk menentukan mana yg didisable buttonnya  *********//
-                                $tgltbterakhir = "2000-12-01";
-                                $tbukun = $this->db->table("tbuku")->orderBy("tbuku_date", "DESC")->limit(1)->get();
-                                foreach ($tbukun->getResult() as $row) {
-                                    $tgltbterakhir = $row->tbuku_date;
-                                }
+
 
                                 $build = $this->db
                                     ->table("invvdrp")
