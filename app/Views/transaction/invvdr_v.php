@@ -17,6 +17,28 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         width: 100%;
         text-align: left;
     }
+
+    .wrap-text {
+        white-space: normal;
+        word-wrap: break-word;
+        word-break: break-word;
+        /* untuk browser modern */
+    }
+
+    .w100 {
+        width: 100px !important;
+    }
+
+    td {
+        font-size: 12px;
+    }
+
+    td.w200 {
+        white-space: normal !important;
+        word-wrap: break-word;
+        word-break: break-word;
+        max-width: 200px;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -105,48 +127,50 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             if (isset($_GET["lunas"])) {
                                 $lunas = $_GET["lunas"];
                             }
+                            if (isset($_GET["vendor_id"])) {
+                                $vendor_id = $_GET["vendor_id"];
+                            }
                             ?>
-                            <div class="col-3 ">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label class="text-dark">Dari :</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
-                                    </div>
-                                </div>
+                            <div class="col-2 ">
+                                <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Dari" type="date" class="form-control tooltip-statis" placeholder="Dari" name="dari" value="<?= $dari; ?>">
                             </div>
-                            <div class="col-3 row ">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label class="text-dark">Ke :</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
-                                    </div>
-                                </div>
+                            <div class="col-2  ">
+                                <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Ke" type="date" class="form-control tooltip-statis" placeholder="Ke" name="ke" value="<?= $ke; ?>">
                             </div>
-                            <div class="col-3 row ">
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label class="text-dark">Lunas :</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <select class="form-control" name="lunas" value="<?= $lunas; ?>">
-                                            <option value="">Semua</option>
-                                            <option value="1" <?= ($lunas == "1") ? "selected" : ""; ?>>Lunas</option>
-                                            <option value="0" <?= ($lunas == "0") ? "selected" : ""; ?>>Belum Lunas</option>
-                                        </select>
-                                    </div>
-                                </div>
+                            <div class="col-3  ">
+                                <select class="form-control select" name="vendor_id" value="<?= $vendor_id; ?>">
+                                    <option value="" <?= ($vendor_id == "") ? "selected" : ""; ?>>All Vendor</option>
+                                    <?php $vendor = $this->db->table("vendor")->orderBy("vendor_name", "ASC")->get();
+                                    foreach ($vendor->getResult() as $row) { ?>
+                                        <option value="<?= $row->vendor_id; ?>" <?= ($vendor_id == $row->vendor_id) ? "selected" : ""; ?>><?= $row->vendor_name; ?></option>
+                                    <?php } ?>
+                                </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2  ">
+                                <select class="form-control" name="lunas" value="<?= $lunas; ?>">
+                                    <option value="">Semua</option>
+                                    <option value="1" <?= ($lunas == "1") ? "selected" : ""; ?>>Lunas</option>
+                                    <option value="0" <?= ($lunas == "0") ? "selected" : ""; ?>>Belum Lunas</option>
+                                </select>
+                            </div>
+                            <div class="col-2">
                                 <button type="submit" class="btn btn-block btn-primary">Search</button>
                             </div>
                         </div>
                     </form>
-                    <div class="table-responsive m-t-40">
-                        <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                    <div class=" m-t-40">
+                        <?php
+                        $invvdrd = $this->db->table("invvdrd")
+                            ->where("invvdrd_date BETWEEN '" . $dari . "' AND '" . $ke . "'")
+                            ->get();
+                        $ainvvdrd = array();
+                        foreach ($invvdrd->getResult() as $invvdrd) {
+                            $ainvvdrd[$invvdrd->invvdr_id]["job_dano"][] = $invvdrd->job_dano;
+                            $ainvvdrd[$invvdrd->invvdr_id]["invvdrd_description"][] = $invvdrd->invvdrd_description;
+                        }
+                        // print_r($ainvvdrd);
+                        ?>
+                        <<table id="ex23" class="display table table-hover table-striped table-bordered">
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
                                 <tr>
@@ -157,6 +181,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <th>Date</th>
                                     <th>Invoice Number</th>
                                     <th>DA Number</th>
+                                    <th style="width:200px;">Description</th>
                                     <th>Vendor</th>
                                     <th>Tagihan</th>
                                     <th>Pembayaran</th>
@@ -180,9 +205,12 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 if (isset($_GET["lunas"]) && $_GET["lunas"] != "") {
                                     if ($lunas == "1") {
                                         $build->where("invvdr_payment >= invvdr_grand");
-                                    } else if ($lunas == "0"){
+                                    } else if ($lunas == "0") {
                                         $build->where("invvdr_payment < invvdr_grand");
                                     }
+                                }
+                                if (isset($_GET["vendor_id"]) && $_GET["vendor_id"] != "") {
+                                    $build->where("invvdr.vendor_id", $vendor_id);
                                 }
                                 $usr = $build->orderBy("invvdr.invvdr_id", "DESC")
                                     ->get();
@@ -190,6 +218,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 // echo $this->db->getLastquery();
                                 $no = 1;
                                 $debettype = array("pettycash" => "Petty Cash", "bigcash" => "Big Cash");
+                                $pembayaran = 0;
+                                $sisahutangnya = 0;
+                                $bayar = 0;
+                                $hutang = 0;
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
@@ -269,7 +301,20 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->invvdr_date; ?></td>
                                         <td><?= $usr->invvdr_no; ?></td>
-                                        <td><?= $usr->job_dano; ?></td>
+                                        <td class=" wraptext w100">
+                                            <?=
+                                            isset($ainvvdrd[$usr->invvdr_id]["job_dano"]) && is_array($ainvvdrd[$usr->invvdr_id]["job_dano"])
+                                                ? implode(', ', $ainvvdrd[$usr->invvdr_id]["job_dano"])
+                                                : '-'
+                                            ?>
+                                        </td>
+                                        <td class=" wraptext w200">
+                                            <?=
+                                            isset($ainvvdrd[$usr->invvdr_id]["invvdrd_description"]) && is_array($ainvvdrd[$usr->invvdr_id]["invvdrd_description"])
+                                                ? implode(', ', $ainvvdrd[$usr->invvdr_id]["invvdrd_description"])
+                                                : '-'
+                                            ?>
+                                        </td>
                                         <td class="text-left"><?= $usr->vendor_name; ?></td>
                                         <td class="ftagihan">
                                             <?php
@@ -336,13 +381,46 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         </td>
                                         <td><span class="uang">
                                                 <span>IDR</span>
-                                                <span><?= number_format($grand - $usr->invvdr_payment, 2, ",", "."); ?></span>
+                                                <span><?php
+                                                        $sisahutang = $grand - $usr->invvdr_payment;
+                                                        echo number_format($sisahutang, 0, ",", "."); ?></span>
                                             </span>
                                         </td>
                                     </tr>
-                                <?php } ?>
+                                <?php $bayar += $usr->invvdr_payment;
+                                    $hutang += $sisahutang;
+                                } ?>
+                                <tr>
+                                    <?php if (!isset($_GET["report"])) { ?>
+                                        <td style="padding-left:0px; padding-right:0px;">
+
+                                        </td>
+                                    <?php } ?>
+                                    <!-- <td><?= $no++; ?></td> -->
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="f12 bold">
+                                        Total :
+                                    </td>
+                                    <td class="f12">
+                                        <span class="uang bold">
+                                            <span></span>
+                                            <span><?= number_format($bayar, 0, ",", "."); ?></span>
+                                        </span>
+                                    </td>
+                                    <td class="f12">
+                                        <span class="uang bold">
+                                            <span></span>
+                                            <span><?php
+                                                    echo number_format($hutang, 0, ",", "."); ?></span>
+                                        </span>
+                                    </td>
+                                </tr>
                             </tbody>
-                        </table>
+                            </table>
                     </div>
                 </div>
             </div>
@@ -352,10 +430,23 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 <script>
     $('.select').select2();
     var title = "<?= $title; ?>";
+    let pembayaran = ". Pembayaran : <?= number_format($bayar, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($hutang, 0, ",", "."); ?>";
     $("title").text(title);
-    $(".card-title").text(title);
+    $(".card-title").text(title + pembayaran);
     $("#page-title").text(title);
     $("#page-title-link").text(title);
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tooltipTriggerList = document.querySelectorAll('.tooltip-statis');
+
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            const tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
+
+            // Menampilkan tooltip secara manual
+            tooltip.show();
+        });
+    });
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>

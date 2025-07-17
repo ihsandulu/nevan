@@ -138,7 +138,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <div class="col-3 row ">
                                 <div class="col-12">
                                     <select class="form-control select" name="customer_id" value="<?= $customer_id; ?>">
-                                        <option value="" <?= ($customer_id == "") ? "selected" : ""; ?>>Customer</option>
+                                        <option value="" <?= ($customer_id == "") ? "selected" : ""; ?>>All Customer</option>
                                         <?php $customer = $this->db->table("customer")->orderBy("customer_name", "ASC")->get();
                                         foreach ($customer->getResult() as $row) { ?>
                                             <option value="<?= $row->customer_id; ?>" <?= ($customer_id == $row->customer_id) ? "selected" : ""; ?>><?= $row->customer_name; ?></option>
@@ -309,8 +309,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         </td>
 
 
-                                        <td><?= $usr->job_dano; ?></td>
                                         <td class="f12 wraptext">
+                                            <?=
+                                            isset($ainvd[$usr->inv_id]["job_dano"]) && is_array($ainvd[$usr->inv_id]["job_dano"])
+                                                ? implode(', ', $ainvd[$usr->inv_id]["job_dano"])
+                                                : '-'
+                                            ?>
+                                        </td><td class="f12 wraptext">
                                             <?=
                                             isset($ainvd[$usr->inv_id]["invd_description"]) && is_array($ainvd[$usr->inv_id]["invd_description"])
                                                 ? implode(', ', $ainvd[$usr->inv_id]["invd_description"])
