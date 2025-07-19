@@ -43,7 +43,6 @@ class inv_m extends core_m
             $inv_id =   $this->request->getPost("inv_id");
 
             //update job
-            $inv_no =   $this->request->getPost("inv_no");
             $invd = $this->db->table('invd')
                 ->where("inv_id", $inv_id)
                 ->get();
@@ -53,7 +52,7 @@ class inv_m extends core_m
                     $jobdano[] = $rinvd->job_dano;
                 }
             }
-            $inputjob["inv_no"] = "";
+            $inputjob["inv_temp"] = "";
 
             if (!empty($jobdano)) {
                 $this->db
