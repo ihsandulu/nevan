@@ -538,7 +538,7 @@
 
 
                                 <?php } ?>
-                               <!--  <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                <!--  <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="job_explanation">EXPLANATION:</label>
                                     <div class="col-sm-12">
                                         <input type="text" class="form-control" id="job_explanation" name="job_explanation" placeholder="" value="<?= $job_explanation; ?>">
@@ -805,6 +805,8 @@
                                 $dari = date("Y-m-d", strtotime("-5 days"));
                                 $ke = date("Y-m-d");
                                 $status = "";
+                                $lunas = "";
+                                $job_sales = "";
                                 $idepartemen = 0;
                                 if (isset($_GET["dari"])) {
                                     $dari = $_GET["dari"];
@@ -815,40 +817,42 @@
                                 if (isset($_GET["status"])) {
                                     $status = $_GET["status"];
                                 }
+                                if (isset($_GET["lunas"])) {
+                                    $lunas = $_GET["lunas"];
+                                }
+                                if (isset($_GET["job_sales"])) {
+                                    $job_sales = $_GET["job_sales"];
+                                }
                                 ?>
-                                <div class="col-3 ">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label class="text-dark">Dari :</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input type="date" class="form-control" placeholder="Dari" name="dari" value="<?= $dari; ?>">
-                                        </div>
-                                    </div>
+                                <div class="col-2 ">
+                                    <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Dari" type="date" class="form-control tooltip-statis" placeholder="Dari" name="dari" value="<?= $dari; ?>">
+                                </div>
+                                <div class="col-2 row ">
+                                    <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Ke" type="date" class="form-control tooltip-statis" placeholder="Ke" name="ke" value="<?= $ke; ?>">
+
                                 </div>
                                 <div class="col-3 row ">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label class="text-dark">Ke :</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <input type="date" class="form-control" placeholder="Ke" name="ke" value="<?= $ke; ?>">
-                                        </div>
-                                    </div>
+                                    <select class="form-control" name="job_sales">
+                                        <option value="" <?= ($job_sales == "") ? "selected" : ""; ?>>Sales Name</option>
+                                        <?php $user = $this->db->table("user")->where("position_id", "102")->get();
+                                        foreach ($user->getResult() as $row) { ?>
+                                            <option value="<?= $row->user_id; ?>" <?= ($job_sales == $row->user_id) ? "selected" : ""; ?>><?= $row->user_nama; ?></option>
+                                        <?php } ?>
+                                    </select>
                                 </div>
-                                <div class="col-3 row ">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <label class="text-dark">Status Job :</label>
-                                        </div>
-                                        <div class="col-8">
-                                            <select class="form-control" name="status" value="<?= $status; ?>">
-                                                <option value="">Semua</option>
-                                                <option value="PROCESS" <?= ($status == "PROCESS") ? "selected" : ""; ?>>PROCESS</option>
-                                                <option value="DONE" <?= ($status == "DONE") ? "selected" : ""; ?>>DONE</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                <div class="col-2 row ">
+                                    <select class="form-control" name="lunas">
+                                        <option value="" <?= ($lunas == "") ? "selected" : ""; ?>>Status Lunas</option>
+                                        <option value="lunas" <?= ($lunas == "lunas") ? "selected" : ""; ?>>Lunas</option>
+                                        <option value="belum" <?= ($lunas == "belum") ? "selected" : ""; ?>>Belum</option>
+                                    </select>
+                                </div>
+                                <div class="col-2 row ">
+                                    <select class="form-control" name="status">
+                                        <option value="" <?= ($status == "") ? "selected" : ""; ?>>Status Job</option>
+                                        <option value="PROCESS" <?= ($status == "PROCESS") ? "selected" : ""; ?>>PROCESS</option>
+                                        <option value="DONE" <?= ($status == "DONE") ? "selected" : ""; ?>>DONE</option>
+                                    </select>
                                 </div>
                                 <div class="col-3">
                                     <?php if (isset($_GET["report"])) { ?><input type="hidden" name="report" value="OK"><?php } ?>
@@ -927,6 +931,50 @@
                                 </thead>
                                 <tbody>
                                     <?php
+                                    //cari job_dano yg sesuai tgl
+                                    $cari = $this->db
+                                        ->table("job")
+                                        ->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'")
+                                        ->get();
+                                    $arjob = array();
+                                    $arjobprice = array();
+                                    foreach ($cari->getResult() as $row) {
+                                        $arjob[] = $row->job_dano;
+                                        $arjobprice[$row->job_dano] = $row->job_total;
+                                    }
+                                    // dd($arjob);
+                                    //data payment job
+                                    $jobpay = array();
+                                    if (!empty($arjob)) {
+                                        $invpayment = $this->db
+                                            ->table("invpayment")
+                                            ->join("inv", "inv.inv_temp = invpayment.inv_temp", "left")
+                                            ->whereIn("inv.job_dano", $arjob)
+                                            ->get();
+                                        foreach ($invpayment->getResult() as $row) {
+                                            $amount = $row->invpayment_total;
+                                            if (!isset($jobpay[$row->job_dano])) {
+                                                $jobpay[$row->job_dano] = 0;
+                                            }
+                                            $jobpay[$row->job_dano] += $amount;
+                                        }
+                                    }
+                                    $jobb = $this->db->table("job")
+                                        ->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'")
+                                        ->get();
+                                    $arlunas = array();
+                                    $arbelum = array();
+                                    foreach ($jobb->getResult() as $row) {
+                                        $job_dano = $row->job_dano;
+                                        $dibayar = isset($jobpay[$job_dano]) ? $jobpay[$job_dano] : 0;
+
+                                        if ($dibayar >= $row->job_total) {
+                                            $arlunas[] = $job_dano;
+                                        } else {
+                                            $arbelum[] = $job_dano;
+                                        }
+                                    }
+
                                     $build = $this->db
                                         ->table("job")
                                         ->join("(SELECT user_id AS supervisi_id, user_nama as supervisi_name from user)AS supervisi", "supervisi.supervisi_id = job.job_supervisi", "left")
@@ -939,6 +987,11 @@
                                         ->join("(SELECT vendor_id as vendor_idd, vendor_name AS vendor_named FROM vendor) AS dooring", "dooring.vendor_idd = job.job_dooring", "left")
                                         ->join("service", "service.service_id = job.service_id", "left")
                                         ->join("vessel", "vessel.vessel_id = job.vessel_id", "left");
+                                    if ($lunas == "lunas") {
+                                        $build->whereIn("job.job_dano", $arlunas);
+                                    } else if ($lunas == "belum") {
+                                        $build->whereIn("job.job_dano", $arbelum);
+                                    }
                                     if ($ppn != 0) {
                                         $build->where("job_ppntype", $ppn);
                                     }
@@ -950,10 +1003,13 @@
                                         }
                                     }
                                     $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                    if (isset($_GET["job_sales"]) && $_GET["job_sales"] != "") {
+                                        $build->where("job_sales", $_GET["job_sales"]);
+                                    }
                                     $usr = $build
                                         ->orderBy("job_id", "ASC")
                                         ->get();
-                                    //echo $this->db->getLastquery();
+                                    // echo $this->db->getLastquery();
                                     $no = 1;
                                     $statuspickup = array("", "Done", "Pending");
                                     foreach ($usr->getResult() as $usr) {
@@ -1307,6 +1363,18 @@
     $(".card-title").text(title);
     $("#page-title").text(title);
     $("#page-title-link").text(title);
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tooltipTriggerList = document.querySelectorAll('.tooltip-statis');
+
+        tooltipTriggerList.forEach(function(tooltipTriggerEl) {
+            const tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
+
+            // Menampilkan tooltip secara manual
+            tooltip.show();
+        });
+    });
 </script>
 
 <?php echo  $this->include("template/footer_v"); ?>
