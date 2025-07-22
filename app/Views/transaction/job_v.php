@@ -827,11 +827,11 @@
                                 <div class="col-2 ">
                                     <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Dari" type="date" class="form-control tooltip-statis" placeholder="Dari" name="dari" value="<?= $dari; ?>">
                                 </div>
-                                <div class="col-2 row ">
+                                <div class="col-2">
                                     <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Ke" type="date" class="form-control tooltip-statis" placeholder="Ke" name="ke" value="<?= $ke; ?>">
 
                                 </div>
-                                <div class="col-3 row ">
+                                <div class="col-3">
                                     <select class="form-control" name="job_sales">
                                         <option value="" <?= ($job_sales == "") ? "selected" : ""; ?>>Sales Name</option>
                                         <?php $user = $this->db->table("user")->where("position_id", "102")->get();
@@ -840,23 +840,23 @@
                                         <?php } ?>
                                     </select>
                                 </div>
-                                <div class="col-2 row ">
+                                <div class="col-2">
                                     <select class="form-control" name="lunas">
                                         <option value="" <?= ($lunas == "") ? "selected" : ""; ?>>Status Lunas</option>
                                         <option value="lunas" <?= ($lunas == "lunas") ? "selected" : ""; ?>>Lunas</option>
                                         <option value="belum" <?= ($lunas == "belum") ? "selected" : ""; ?>>Belum</option>
                                     </select>
                                 </div>
-                                <div class="col-2 row ">
+                                <div class="col-2">
                                     <select class="form-control" name="status">
                                         <option value="" <?= ($status == "") ? "selected" : ""; ?>>Status Job</option>
                                         <option value="PROCESS" <?= ($status == "PROCESS") ? "selected" : ""; ?>>PROCESS</option>
                                         <option value="DONE" <?= ($status == "DONE") ? "selected" : ""; ?>>DONE</option>
                                     </select>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-1">
                                     <?php if (isset($_GET["report"])) { ?><input type="hidden" name="report" value="OK"><?php } ?>
-                                    <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-search"></i></button>
                                 </div>
                             </div>
                         </form>
