@@ -170,7 +170,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         }
                         // print_r($ainvvdrd);
                         ?>
-                        <<table id="ex23" class="display table table-hover table-striped table-bordered">
+                        <table id="ex23" class="display table table-hover table-striped table-bordered">
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                             <thead class="">
                                 <tr>
@@ -326,42 +326,42 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                             ?>
                                             <span class="uang">
                                                 <span>Tagihan:</span>
-                                                <span><?= number_format($usr->invvdr_tagihan, 2, ",", "."); ?></span>
+                                                <span><?= number_format($usr->invvdr_tagihan, 2, ".", ","); ?></span>
                                             </span>
                                             <span class="uang">
                                                 <span>Diskon:</span>
-                                                <span><?= number_format($usr->invvdr_discount, 2, ",", "."); ?></span>
+                                                <span><?= number_format($usr->invvdr_discount, 2, ".", ","); ?></span>
                                             </span>
                                             <span class="uang">
                                                 <span>Stlh Diskon:</span>
-                                                <span><?= number_format($usr->invvdr_dtagihan, 2, ",", "."); ?></span>
+                                                <span><?= number_format($usr->invvdr_dtagihan, 2, ".", ","); ?></span>
                                             </span>
                                             <?php if ($usr->invvdr_ppn1k1 > 0) {
                                                 $ppn1k1 = $dtagihan * 1.1 / 100; ?>
                                                 <span class="uang">
                                                     <span>PPN1,1:</span>
-                                                    <span><?= number_format($ppn1k1, 2, ",", "."); ?></span>
+                                                    <span><?= number_format($ppn1k1, 2, ".", ","); ?></span>
                                                 </span>
                                             <?php } ?>
                                             <?php if ($usr->invvdr_ppn11 > 0) {
                                                 $ppn11 = $dtagihan * 11 / 100; ?>
                                                 <span class="uang">
                                                     <span>PPN11:</span>
-                                                    <span><?= number_format($ppn11, 2, ",", "."); ?></span>
+                                                    <span><?= number_format($ppn11, 2, ".", ","); ?></span>
                                                 </span>
                                             <?php } ?>
                                             <?php if ($usr->invvdr_ppn12 > 0) {
                                                 $ppn12 = $dtagihan * 12 / 100; ?>
                                                 <span class="uang">
                                                     <span>PPN12:</span>
-                                                    <span><?= number_format($ppn12, 2, ",", "."); ?></span>
+                                                    <span><?= number_format($ppn12, 2, ".", ","); ?></span>
                                                 </span>
                                             <?php } ?>
                                             <?php if ($usr->invvdr_pph > 0) {
                                                 $pph = $dtagihan * 2 / 100; ?>
                                                 <span class="uang">
                                                     <span>PPH:</span>
-                                                    <span><?= number_format($pph, 2, ",", "."); ?></span>
+                                                    <span><?= number_format($pph, 2, ".", ","); ?></span>
                                                 </span>
                                             <?php } ?>
                                             <?php
@@ -370,21 +370,16 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                             ?>
                                             <span class="uang">
                                                 <span>Grand Total</span>
-                                                <span><?= number_format($grand, 2, ",", "."); ?></span>
+                                                <span><?= number_format($grand, 2, ".", ","); ?></span>
                                             </span>
                                         </td>
-                                        <td>
-                                            <span class="uang">
-                                                <span>IDR</span>
-                                                <span><?= number_format($usr->invvdr_payment, 2, ",", "."); ?></span>
-                                            </span>
+                                        <td class="text-right">
+                                            <?= number_format($usr->invvdr_payment, 2, ".", ","); ?>
                                         </td>
-                                        <td><span class="uang">
-                                                <span>IDR</span>
-                                                <span><?php
-                                                        $sisahutang = $grand - $usr->invvdr_payment;
-                                                        echo number_format($sisahutang, 0, ",", "."); ?></span>
-                                            </span>
+                                        <td class="text-right">
+                                            <?php
+                                            $sisahutang = $grand - $usr->invvdr_payment;
+                                            echo number_format($sisahutang, 0, ".", ","); ?>
                                         </td>
                                     </tr>
                                 <?php $bayar += $usr->invvdr_payment;
@@ -405,22 +400,11 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <td class="f12 bold">
                                         Total :
                                     </td>
-                                    <td class="f12">
-                                        <span class="uang bold">
-                                            <span></span>
-                                            <span><?= number_format($bayar, 0, ",", "."); ?></span>
-                                        </span>
-                                    </td>
-                                    <td class="f12">
-                                        <span class="uang bold">
-                                            <span></span>
-                                            <span><?php
-                                                    echo number_format($hutang, 0, ",", "."); ?></span>
-                                        </span>
-                                    </td>
+                                    <td class="f12 bold"><?= number_format($bayar, 0, ".", ","); ?></td>
+                                    <td class="f12 bold"><?= number_format($hutang, 0, ".", ","); ?></td>
                                 </tr>
                             </tbody>
-                            </table>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -430,7 +414,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 <script>
     $('.select').select2();
     var title = "<?= $title; ?>";
-    let pembayaran = ". Pembayaran : <?= number_format($bayar, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($hutang, 0, ",", "."); ?>";
+    let pembayaran = ". Pembayaran : <?= number_format($bayar, 0, ".", ","); ?> , Sisa Hutang : <?= number_format($hutang, 0, ".", ","); ?>";
     $("title").text(title);
     $(".card-title").text(title + pembayaran);
     $("#page-title").text(title);
@@ -445,6 +429,72 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
             // Menampilkan tooltip secara manual
             tooltip.show();
+        });
+    });
+    $(document).ready(function() {
+        $('#ex23').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    },
+                    orientation: 'landscape',
+                    pageSize: 'A4',
+                    customize: function(doc) {
+                        // Tambah jarak antara title dan tabel
+                        doc.content[1].margin = [0, 20, 0, 0]; // [left, top, right, bottom]
+
+                        // Biar kolom rata dan memenuhi lebar
+                        doc.content[1].table.widths =
+                            Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                    }
+                },
+                {
+                    extend: 'excelHtml5',
+                    text: 'Export Excel',
+                    exportOptions: {
+                        // Ekspor semua kolom KECUALI kolom pertama (indeks 0)
+                        columns: [1, 2, 3, 4, 5, 6, 7, 8], // sesuaikan dengan jumlah kolom kamu
+
+                        // Format data untuk hilangkan pemisah ribuan
+                        format: {
+                            body: function(data, row, column, node) {
+                                // Contoh: tambahkan kembali pemisah ribuan untuk kolom tertentu
+                                
+
+                                // Kolom 6 (jika mengandung <span class="uang">...) kita tangani secara khusus
+                                if (column === 5) {
+                                    const temp = $('<div>').html(data);
+                                    let result = [];
+
+                                    temp.find('span.uang').each(function() {
+                                        const label = $(this).find('span').eq(0).text().trim();
+                                        const value = $(this).find('span').eq(1).text().trim();
+                                        result.push(`${label} ${value}`);
+                                    });
+
+                                    return result.join(', ');
+                                }
+
+                                return data;
+                            }
+                        }
+                    }
+                }
+            ],
+            ordering: false, // Mencegah DataTables mengatur order by
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "Semua"]
+            ],
+            pageLength: 10 // Default jumlah baris per halaman
         });
     });
 </script>
