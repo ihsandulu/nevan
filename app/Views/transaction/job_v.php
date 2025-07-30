@@ -862,7 +862,7 @@
                         </form>
 
                         <div class="table-responsive m-t-40">
-                            <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                            <table id="e23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
@@ -1373,6 +1373,47 @@
 
             // Menampilkan tooltip secara manual
             tooltip.show();
+        });
+    });
+    $(document).ready(function() {
+        $('#e23').DataTable({
+            dom: 'Bfrtip',
+            buttons: [{
+                    extend: 'print',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    }
+                },
+                {
+                    extend: 'pdfHtml5',
+                    text: 'Export PDF',
+                    orientation: 'landscape',
+                    pageSize: 'LEGAL', // atau pakai ukuran kustom di customize
+                    customize: function(doc) {
+                        doc.pageSize = {
+                            width: 1500, // dalam poin (1 inch = 72 poin)
+                            height: 800
+                        };
+                        doc.defaultStyle.fontSize = 6;
+                        doc.styles.tableHeader.fontSize = 7;
+                        doc.pageMargins = [10, 10, 10, 10];
+                        doc.content[1].table.widths =
+                            Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                    }
+                },
+                {
+                    extend: 'excel',
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    }
+                }
+            ],
+            ordering: false, // Mencegah DataTables mengatur order by
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "Semua"]
+            ],
+            pageLength: 10 // Default jumlah baris per halaman
         });
     });
 </script>
