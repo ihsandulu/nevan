@@ -20,7 +20,7 @@ class quotationd extends BaseController
     {
         $data = new \App\Models\transaction\quotationd_m();
         $data = $data->data();
-        $data["title"]="Detail quotationoice";
+        $data["title"]="Detail Quotation";
         return view('transaction/quotationd_v', $data);
     }
 }

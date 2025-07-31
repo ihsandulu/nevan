@@ -1011,6 +1011,13 @@
                                         ->get();
                                     // echo $this->db->getLastquery();
                                     $no = 1;
+                                    // $usr->job_total, $usr->job_cost, $usr->job_refund, $usr->job_fee, $usr->job_profit, $usr->job_gp
+                                    $job_total=0;
+                                    $job_cost=0;
+                                    $job_refund=0;
+                                    $job_fee=0;
+                                    $job_profit=0;
+                                    $job_gp=0;
                                     $statuspickup = array("", "Done", "Pending");
                                     foreach ($usr->getResult() as $usr) {
                                         switch ($usr->job_pickupstatus) {
@@ -1299,12 +1306,12 @@
                                                 <?php } ?>
                                                 <?php if ($posisi != "operasional") { ?>
                                                     <!-- <td class="<?= $textstatus; ?>"><?= number_format($usr->job_sell, 0, ",", "."); ?></td> -->
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_total, 0, ",", "."); ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_cost, 0, ",", "."); ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_refund, 0, ",", "."); ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_fee, 0, ",", "."); ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_profit, 0, ",", "."); ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_gp, 0, ",", "."); ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_total, 0, ",", "."); $job_total+=$usr->job_total; ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_cost, 0, ",", "."); $job_cost+=$usr->job_cost;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_refund, 0, ",", "."); $job_refund+=$usr->job_refund;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_fee, 0, ",", "."); $job_fee+=$usr->job_fee;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_profit, 0, ",", "."); $job_profit+=$usr->job_profit;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_gp, 0, ",", "."); $job_gp+=$usr->job_gp;  ?></td>
                                                 <?php } ?>
                                                 <?php if ($ppn == 1) { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->job_paynom; ?> <?= $usr->job_payunit; ?></td>
@@ -1320,6 +1327,39 @@
                                             <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_explanation; ?></td> -->
                                         </tr>
                                     <?php } ?>
+                                    <tr class="bold">
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right">Total</td>
+                                        <td><?= number_format($job_total, 0, ",", ".");?></td>
+                                        <td><?= number_format($job_cost, 0, ",", ".");?></td>
+                                        <td><?= number_format($job_refund, 0, ",", ".");?></td>
+                                        <td><?= number_format($job_fee, 0, ",", ".");?></td>
+                                        <td><?= number_format($job_profit, 0, ",", ".");?></td>
+                                        <td><?= number_format($job_gp, 0, ",", ".");?></td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <!-- Modal Bootstrap -->

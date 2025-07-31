@@ -54,7 +54,7 @@ class quotationd_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-
+            // dd($input);
             $builder = $this->db->table('quotationd');
             $builder->insert($input);
             // echo $this->db->getLastQuery(); die;
