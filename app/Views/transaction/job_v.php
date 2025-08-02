@@ -805,6 +805,7 @@
                                 $dari = date("Y-m-d", strtotime("-5 days"));
                                 $ke = date("Y-m-d");
                                 $status = "";
+                                $sinvoice = "";
                                 $lunas = "";
                                 $job_sales = "";
                                 $idepartemen = 0;
@@ -820,11 +821,14 @@
                                 if (isset($_GET["lunas"])) {
                                     $lunas = $_GET["lunas"];
                                 }
+                                if (isset($_GET["sinvoice"])) {
+                                    $sinvoice = $_GET["sinvoice"];
+                                }
                                 if (isset($_GET["job_sales"])) {
                                     $job_sales = $_GET["job_sales"];
                                 }
                                 ?>
-                                <div class="col-2 ">
+                                <div class="col-2 mb-1">
                                     <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Dari" type="date" class="form-control tooltip-statis" placeholder="Dari" name="dari" value="<?= $dari; ?>">
                                 </div>
                                 <div class="col-2">
@@ -838,6 +842,13 @@
                                         foreach ($user->getResult() as $row) { ?>
                                             <option value="<?= $row->user_id; ?>" <?= ($job_sales == $row->user_id) ? "selected" : ""; ?>><?= $row->user_nama; ?></option>
                                         <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <select class="form-control" name="sinvoice">
+                                        <option value="" <?= ($sinvoice == "") ? "selected" : ""; ?>>Status Invoice</option>
+                                        <option value="invoice" <?= ($sinvoice == "invoice") ? "selected" : ""; ?>>Invoice</option>
+                                        <option value="belum" <?= ($sinvoice == "belum") ? "selected" : ""; ?>>Belum</option>
                                     </select>
                                 </div>
                                 <div class="col-2">
@@ -1000,6 +1011,13 @@
                                             $build->where("job_status", "DONE");
                                         } else if ($status == "PROCESS") {
                                             $build->where("job_status", "PROCESS");
+                                        }
+                                    }
+                                     if (isset($_GET["sinvoice"]) && $_GET["sinvoice"] != "") {
+                                        if ($sinvoice == "invoice") {
+                                            $build->where("inv_temp !=", "");
+                                        } else if ($sinvoice == "belum") {
+                                            $build->where("inv_temp", "");
                                         }
                                     }
                                     $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
