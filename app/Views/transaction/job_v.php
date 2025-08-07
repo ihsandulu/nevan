@@ -1027,7 +1027,7 @@
                                     $usr = $build
                                         ->orderBy("job_dano", "ASC")
                                         ->get();
-                                    echo $this->db->getLastquery();
+                                    // echo $this->db->getLastquery();
                                     $no = 1;
                                     // $usr->job_total, $usr->job_cost, $usr->job_refund, $usr->job_fee, $usr->job_profit, $usr->job_gp
                                     $job_total=0;
