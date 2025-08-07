@@ -1025,7 +1025,7 @@
                                         $build->where("job_sales", $_GET["job_sales"]);
                                     }
                                     $usr = $build
-                                        ->orderBy("job_id", "ASC")
+                                        ->orderBy("job_dano", "ASC")
                                         ->get();
                                     // echo $this->db->getLastquery();
                                     $no = 1;
