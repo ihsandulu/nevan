@@ -266,6 +266,12 @@ function terbilang($angka)
                         <div class="col-9">
                             : <?= date("d/m/Y", strtotime($inv->inv_date)); ?>
                         </div>
+                        <div class="col-3">
+                            Due Date
+                        </div>
+                        <div class="col-9">
+                            : <?= date("d/m/Y", strtotime($inv->inv_duedate)); ?>
+                        </div>
                     </div>
                 </div>
                 <div class="col-12 mt-2">
