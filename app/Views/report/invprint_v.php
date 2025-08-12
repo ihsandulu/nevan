@@ -226,7 +226,7 @@ function terbilang($angka)
                 </div>
             </div>
         </div> -->
-        <div class='col-12 border-bottom atas' style="height:3.5cm;"></div>
+        <div class='col-12 border-bottom atas' style="height:4.5cm;"></div>
 
         <?php
         $inv = $this->db->table("inv")
