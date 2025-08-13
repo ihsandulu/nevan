@@ -827,6 +827,9 @@
                                 if (isset($_GET["job_sales"])) {
                                     $job_sales = $_GET["job_sales"];
                                 }
+                                if (isset($_GET["customer_id"])) {
+                                    $customer_id = $_GET["customer_id"];
+                                }
                                 ?>
                                 <div class="col-2 mb-1">
                                     <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Dari" type="date" class="form-control tooltip-statis" placeholder="Dari" name="dari" value="<?= $dari; ?>">
@@ -838,9 +841,18 @@
                                 <div class="col-3">
                                     <select class="form-control" name="job_sales">
                                         <option value="" <?= ($job_sales == "") ? "selected" : ""; ?>>Sales Name</option>
-                                        <?php $user = $this->db->table("user")->where("position_id", "102")->get();
+                                        <?php $user = $this->db->table("user")->where("position_id", "102")->orderBy("user_nama")->get();
                                         foreach ($user->getResult() as $row) { ?>
                                             <option value="<?= $row->user_id; ?>" <?= ($job_sales == $row->user_id) ? "selected" : ""; ?>><?= $row->user_nama; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <select class="form-control" name="customer_id">
+                                        <option value="" <?= ($customer_id == "") ? "selected" : ""; ?>>Customer</option>
+                                        <?php $customer = $this->db->table("customer")->orderBy("customer_name")->get();
+                                        foreach ($customer->getResult() as $row) { ?>
+                                            <option value="<?= $row->customer_id; ?>" <?= ($customer_id == $row->customer_id) ? "selected" : ""; ?>><?= $row->customer_name; ?></option>
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -1013,12 +1025,15 @@
                                             $build->where("job_status", "PROCESS");
                                         }
                                     }
-                                     if (isset($_GET["sinvoice"]) && $_GET["sinvoice"] != "") {
+                                    if (isset($_GET["sinvoice"]) && $_GET["sinvoice"] != "") {
                                         if ($sinvoice == "invoice") {
                                             $build->where("inv_temp !=", "");
                                         } else if ($sinvoice == "belum") {
                                             $build->where("inv_temp", "");
                                         }
+                                    }
+                                    if (isset($_GET["customer_id"]) && $_GET["customer_id"] != "") {
+                                        $build->where("job.customer_id", $_GET["customer_id"]);
                                     }
                                     $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     if (isset($_GET["job_sales"]) && $_GET["job_sales"] != "") {
@@ -1030,12 +1045,12 @@
                                     // echo $this->db->getLastquery();
                                     $no = 1;
                                     // $usr->job_total, $usr->job_cost, $usr->job_refund, $usr->job_fee, $usr->job_profit, $usr->job_gp
-                                    $job_total=0;
-                                    $job_cost=0;
-                                    $job_refund=0;
-                                    $job_fee=0;
-                                    $job_profit=0;
-                                    $job_gp=0;
+                                    $job_total = 0;
+                                    $job_cost = 0;
+                                    $job_refund = 0;
+                                    $job_fee = 0;
+                                    $job_profit = 0;
+                                    $job_gp = 0;
                                     $statuspickup = array("", "Done", "Pending");
                                     foreach ($usr->getResult() as $usr) {
                                         switch ($usr->job_pickupstatus) {
@@ -1324,12 +1339,18 @@
                                                 <?php } ?>
                                                 <?php if ($posisi != "operasional") { ?>
                                                     <!-- <td class="<?= $textstatus; ?>"><?= number_format($usr->job_sell, 0, ",", "."); ?></td> -->
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_total, 0, ",", "."); $job_total+=$usr->job_total; ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_cost, 0, ",", "."); $job_cost+=$usr->job_cost;  ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_refund, 0, ",", "."); $job_refund+=$usr->job_refund;  ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_fee, 0, ",", "."); $job_fee+=$usr->job_fee;  ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_profit, 0, ",", "."); $job_profit+=$usr->job_profit;  ?></td>
-                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_gp, 0, ",", "."); $job_gp+=$usr->job_gp;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_total, 0, ",", ".");
+                                                                                    $job_total += $usr->job_total; ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_cost, 0, ",", ".");
+                                                                                    $job_cost += $usr->job_cost;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_refund, 0, ",", ".");
+                                                                                    $job_refund += $usr->job_refund;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_fee, 0, ",", ".");
+                                                                                    $job_fee += $usr->job_fee;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_profit, 0, ",", ".");
+                                                                                    $job_profit += $usr->job_profit;  ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= number_format($usr->job_gp, 0, ",", ".");
+                                                                                    $job_gp += $usr->job_gp;  ?></td>
                                                 <?php } ?>
                                                 <?php if ($ppn == 1) { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->job_paynom; ?> <?= $usr->job_payunit; ?></td>
@@ -1371,12 +1392,12 @@
                                         <td class="text-right"></td>
                                         <td class="text-right"></td>
                                         <td class="text-right">Total</td>
-                                        <td><?= number_format($job_total, 0, ",", ".");?></td>
-                                        <td><?= number_format($job_cost, 0, ",", ".");?></td>
-                                        <td><?= number_format($job_refund, 0, ",", ".");?></td>
-                                        <td><?= number_format($job_fee, 0, ",", ".");?></td>
-                                        <td><?= number_format($job_profit, 0, ",", ".");?></td>
-                                        <td><?= number_format($job_gp, 0, ",", ".");?></td>
+                                        <td><?= number_format($job_total, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_cost, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_refund, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_fee, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_profit, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_gp, 0, ",", "."); ?></td>
                                     </tr>
                                 </tbody>
                             </table>
