@@ -88,9 +88,9 @@ class invvdrp_m extends core_m
                     $this->db
                         ->table("kas")
                         ->delete(array("kas_id" =>  $kas_id));
-                
+
                     //apakah di tanggal yg sama ada id yg lebih rendah dari dia
-                    $kas = $this->db
+                    /* $kas = $this->db
                         ->table("kas")
                         ->where("kas_date", $kas_date)
                         ->where("kas_id <",  $kas_id)
@@ -116,12 +116,12 @@ class invvdrp_m extends core_m
                         $saldo = $kas->kas_saldo;
                         $bigcash = $kas->kas_bigcash;
                         $pettycash = $kas->kas_pettycash;
-                    }
+                    } */
 
                     // echo $saldo."-".$bigcash."-".$pettycash;die;
                     //******update transaksi setelahnya******//
                     //update dulu transaksi setelahnya yg satu tanggal dengan dia
-                    $kas = $this->db->table("kas")
+                    /* $kas = $this->db->table("kas")
                         ->where("kas_id >", $kas_id)
                         ->where("kas_date",  $kas_date)
                         ->orderBy("kas_id", "ASC")->get();
@@ -151,10 +151,10 @@ class invvdrp_m extends core_m
                         // dd($input2);
                         $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
                         // echo $this->db->getLastQuery(); die;
-                    }
+                    } */
                     // dd();
                     //baru update transaksi ditanggal setelahnya dengan urutan by date asc dan id asc
-                    $kas = $this->db->table("kas")
+                    /* $kas = $this->db->table("kas")
                         ->where("kas_date >",  $kas_date)
                         ->orderBy("kas_date", "ASC")
                         ->orderBy("kas_id", "ASC")
@@ -185,13 +185,13 @@ class invvdrp_m extends core_m
                         $kas_id = $kas->kas_id;
                         $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
                         // echo $this->db->getLastQuery(); die;
-                    }
+                    } */
 
-                    if ($kas_pettyid > 0) {
+                    /* if ($kas_pettyid > 0) {
                         $this->db
                             ->table("kas")
                             ->delete(array("kas_id" =>  $kas_pettyid));
-                    }
+                    } */
                 }
             }
 
@@ -232,93 +232,118 @@ class invvdrp_m extends core_m
                 ->update($inputi);
 
             //****input ke table kas*****//
-            $input["kas_rekdari"] = $inputdr["invvdrp_from"];
-            $input["kas_rekke"] = $inputdr["invvdrp_to"];
-            $input["kas_nominal"] = $inputdr["invvdrp_nominal"];
-            $input["kas_qty"] = 1;
-            $input["kas_uraian"] = "Pembayaran ke Vendor";
-            $input["kas_keterangan"] = $inputdr["invvdrp_keterangan"];
-            $input["invvdrp_id"] = $invvdrp_id;
-            $input["kas_date"] = $inputdr["invvdrp_date"];
-            $input["kas_type"] = "Kredit";
-            $input["kas_total"] = $inputdr["invvdrp_nominal"];
-            if ($inputdr["invvdrp_from"] == -1) {
-                $debettype = "pettycash";
-            } else {
-                $debettype = "bigcash";
+            //cek apakah rekening nkl
+            $rekening = $this->db->table("rekening")->where("rekening_id", $inputdr["invvdrp_from"])->get();
+            $nkl = 0;
+            foreach ($rekening->getResult() as $row) {
+                if ($row->rekening_type == "NKL") {
+                    $nkl = 1;
+                }
             }
-            $input["kas_debettype"] = $debettype;
-            $kas = $this->db->table("kas")
+            if ($inputdr["invvdrp_from"] == -1) {
+                $nkl = 1;
+            }
+            if ($nkl == 1) {
+                $input["kas_rekdari"] = $inputdr["invvdrp_from"];
+                $input["kas_rekke"] = $inputdr["invvdrp_to"];
+                $input["kas_nominal"] = $inputdr["invvdrp_nominal"];
+                $input["kas_qty"] = 1;
+                $input["kas_uraian"] = "Pembayaran ke Vendor";
+                $input["kas_keterangan"] = $inputdr["invvdrp_keterangan"];
+                $input["invvdrp_id"] = $invvdrp_id;
+                $input["kas_date"] = $inputdr["invvdrp_date"];
+                $input["kas_type"] = "Kredit";
+                $input["kas_total"] = $inputdr["invvdrp_nominal"];
+                if ($inputdr["invvdrp_from"] == -1) {
+                    $debettype = "pettycash";
+                } else {
+                    $debettype = "bigcash";
+                }
+                $input["kas_debettype"] = $debettype;
+                /* $kas = $this->db->table("kas")
                 ->where("kas_date <=", $input["kas_date"])
                 ->orderBy("kas_id", "desc")
                 ->limit("1")->get();
-            $saldo = 0;
-            $bigcash = 0;
-            $pettycash = 0;
+                $saldo = 0;
+                $bigcash = 0;
+                $pettycash = 0;
 
-            if ($kas->getNumRows() > 0) {
-                foreach ($kas->getResult() as $kas) {
-                    if ($input["kas_type"] == "Debet") {
-                        $saldo = $kas->kas_saldo + $input["kas_total"];
-                        if ($input["kas_debettype"] == "bigcash") {
-                            $bigcash = $kas->kas_bigcash + $input["kas_total"];
-                            $pettycash = $kas->kas_pettycash;
+                if ($kas->getNumRows() > 0) {
+                    foreach ($kas->getResult() as $kas) {
+                        if ($input["kas_type"] == "Debet") {
+                            $saldo = $kas->kas_saldo + $input["kas_total"];
+                            if ($input["kas_debettype"] == "bigcash") {
+                                $bigcash = $kas->kas_bigcash + $input["kas_total"];
+                                $pettycash = $kas->kas_pettycash;
+                            }
+                            if ($input["kas_debettype"] == "pettycash") {
+                                $pettycash = $kas->kas_pettycash + $input["kas_total"];
+                                $bigcash = $kas->kas_bigcash;
+                            }
+                        } else {
+                            $saldo = $kas->kas_saldo - $input["kas_total"];
+                            if ($input["kas_debettype"] == "bigcash") {
+                                $bigcash = $kas->kas_bigcash - $input["kas_total"];
+                                $pettycash = $kas->kas_pettycash;
+                            }
+                            if ($input["kas_debettype"] == "pettycash") {
+                                $pettycash = $kas->kas_pettycash - $input["kas_total"];
+                                $bigcash = $kas->kas_bigcash;
+                            }
                         }
-                        if ($input["kas_debettype"] == "pettycash") {
-                            $pettycash = $kas->kas_pettycash + $input["kas_total"];
-                            $bigcash = $kas->kas_bigcash;
-                        }
-                    } else {
-                        $saldo = $kas->kas_saldo - $input["kas_total"];
-                        if ($input["kas_debettype"] == "bigcash") {
-                            $bigcash = $kas->kas_bigcash - $input["kas_total"];
-                            $pettycash = $kas->kas_pettycash;
-                        }
-                        if ($input["kas_debettype"] == "pettycash") {
-                            $pettycash = $kas->kas_pettycash - $input["kas_total"];
-                            $bigcash = $kas->kas_bigcash;
-                        }
-                    }
-                }
-            } else {
-                if ($input["kas_type"] == "Debet") {
-                    $saldo = 0 + $input["kas_total"];
-                    if ($input["kas_debettype"] == "bigcash") {
-                        $bigcash = 0 + $input["kas_total"];
-                        $pettycash = 0;
-                    }
-                    if ($input["kas_debettype"] == "pettycash") {
-                        $pettycash = 0 + $input["kas_total"];
-                        $bigcash = 0;
                     }
                 } else {
-                    $saldo = 0 - $input["kas_total"];
-                    if ($input["kas_debettype"] == "bigcash") {
-                        $bigcash = 0 - $input["kas_total"];
-                        $pettycash = 0;
-                    }
-                    if ($input["kas_debettype"] == "pettycash") {
-                        $pettycash = 0 - $input["kas_total"];
-                        $bigcash = 0;
+                    if ($input["kas_type"] == "Debet") {
+                        $saldo = 0 + $input["kas_total"];
+                        if ($input["kas_debettype"] == "bigcash") {
+                            $bigcash = 0 + $input["kas_total"];
+                            $pettycash = 0;
+                        }
+                        if ($input["kas_debettype"] == "pettycash") {
+                            $pettycash = 0 + $input["kas_total"];
+                            $bigcash = 0;
+                        }
+                    } else {
+                        $saldo = 0 - $input["kas_total"];
+                        if ($input["kas_debettype"] == "bigcash") {
+                            $bigcash = 0 - $input["kas_total"];
+                            $pettycash = 0;
+                        }
+                        if ($input["kas_debettype"] == "pettycash") {
+                            $pettycash = 0 - $input["kas_total"];
+                            $bigcash = 0;
+                        }
                     }
                 }
+                $input["kas_saldo"] = $saldo;
+                $input["kas_bigcash"] = $bigcash;
+                $input["kas_pettycash"] = $pettycash; */
+
+                $inv_temp = $this->request->getGet("invvdr_temp");
+                $invvdrd = $this->db->table('invvdrd')
+                    ->where("invvdr_temp", $inv_temp)
+                    ->get();
+                $jobdano      = array();
+                foreach ($invvdrd->getResult() as $rinvvdrd) {
+                    if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
+                        $jobdano[] = $rinvvdrd->job_dano;
+                    }
+                }
+                $jobdanos      = implode(', ', $jobdano);
+                $input["job_dano"] = $jobdanos;
+
+                $builder = $this->db->table('kas');
+                $builder->insert($input);
+                // echo $this->db->getLastQuery(); die;
+                $kas_id = $this->db->insertID();
+
+                //input kas_id di inv vendor payment
+                $inputkas["kas_id"] = $kas_id;
+                $this->db->table('invvdrp')->update($inputkas, array("invvdrp_id" => $invvdrp_id));
             }
-            $input["kas_saldo"] = $saldo;
-            $input["kas_bigcash"] = $bigcash;
-            $input["kas_pettycash"] = $pettycash;
-
-            $builder = $this->db->table('kas');
-            $builder->insert($input);
-            // echo $this->db->getLastQuery(); die;
-            $kas_id = $this->db->insertID();
-
-            //input kas_id di inv vendor payment
-            $inputkas["kas_id"] = $kas_id;
-            $this->db->table('invvdrp')->update($inputkas, array("invvdrp_id" => $invvdrp_id));
-
 
             //******update transaksi setelahnya******//
-            $kas = $this->db->table("kas")
+            /*  $kas = $this->db->table("kas")
                 ->where("kas_date >", $input["kas_date"])
                 ->orderBy("kas_date", "ASC")
                 ->orderBy("kas_id", "ASC")
@@ -346,11 +371,11 @@ class invvdrp_m extends core_m
                 $input2["kas_bigcash"] = $bigcash;
                 $input2["kas_pettycash"] = $pettycash;
                 $kas_id = $kas->kas_id;
-                $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
+                $this->db->table('kas')->update($input2, array("kas_id" => $kas_id)); 
 
                 $data["message"] = "Insert Data Success";
             }
-
+            */
 
             $data["message"] = "Insert Data Success";
         }
@@ -393,96 +418,179 @@ class invvdrp_m extends core_m
                 ->where("invvdr_id", $invvdr_id)
                 ->update($inputi);
 
-            //*****Update Table Kas******//   
-            if ($inputdr["invvdrp_from"] == "-1") {
-                $kas_debettype = "pettycash";
-            } else {
-                $kas_debettype = "bigcash";
+            //*****Update Table Kas******// 
+            //cek apakah rekening nkl
+            $rekening = $this->db->table("rekening")->where("rekening_id", $inputdr["invvdrp_from"])->get();
+            $nkl = 0;
+            foreach ($rekening->getResult() as $row) {
+                if ($row->rekening_type == "NKL") {
+                    $nkl = 1;
+                }
             }
-            $input["kas_debettype"] = $kas_debettype;
-            $input["kas_date"] = $inputdr["invvdrp_date"];
-            $input["kas_type"] = "Kredit";
-            $input["kas_total"] = $inputdr["invvdrp_nominal"];
-            $kas_id = $this->request->getPost("kas_id");
+            if ($inputdr["invvdrp_from"] == -1) {
+                $nkl = 1;
+            }
+            if ($nkl == 1) {
+                $kas = $this->db->table('kas')
+                    ->where("invvdrp_id", $invvdrp_id)
+                    ->get();
+                if ($kas->getNumRows() > 0) {
+                    if ($inputdr["invvdrp_from"] == "-1") {
+                        $kas_debettype = "pettycash";
+                    } else {
+                        $kas_debettype = "bigcash";
+                    }
+                    $input["kas_debettype"] = $kas_debettype;
+                    $input["kas_date"] = $inputdr["invvdrp_date"];
+                    $input["kas_type"] = "Kredit";
+                    $input["kas_total"] = $inputdr["invvdrp_nominal"];
+                    $kas_id = $this->request->getPost("kas_id");
 
-            $input["kas_rekdari"] = $inputdr["invvdrp_from"];
-            $input["kas_rekke"] = $inputdr["invvdrp_to"];
-            $input["kas_nominal"] = $inputdr["invvdrp_nominal"];
-            $input["kas_qty"] = 1;
-            $input["kas_uraian"] = "Pembayaran ke Vendor";
-            $input["kas_keterangan"] = $inputdr["invvdrp_keterangan"];
-            $input["invvdrp_id"] = $invvdrp_id;
+                    $input["kas_rekdari"] = $inputdr["invvdrp_from"];
+                    $input["kas_rekke"] = $inputdr["invvdrp_to"];
+                    $input["kas_nominal"] = $inputdr["invvdrp_nominal"];
+                    $input["kas_qty"] = 1;
+                    $input["kas_uraian"] = "Pembayaran ke Vendor";
+                    $input["kas_keterangan"] = $inputdr["invvdrp_keterangan"];
+                    $input["invvdrp_id"] = $invvdrp_id;
 
-            //apakah di tanggal yg sama ada id yg lebih rendah dari dia
-            $kas = $this->db
-                ->table("kas")
-                ->where("kas_date", $input["kas_date"])
-                ->where("kas_id <",  $kas_id)
-                ->orderBy("kas_date", "DESC")
-                ->orderBy("kas_id", "DESC")
-                ->limit(1)
-                ->get();
-            if ($kas->getNumRows() == 0) {
-                //jika tidak ada maka cari transksi tgl sebelumnya
-                $kas = $this->db
+                    //apakah di tanggal yg sama ada id yg lebih rendah dari dia
+                    /* $kas = $this->db
                     ->table("kas")
-                    ->where("kas_date <", $input["kas_date"])
+                    ->where("kas_date", $input["kas_date"])
+                    ->where("kas_id <",  $kas_id)
                     ->orderBy("kas_date", "DESC")
                     ->orderBy("kas_id", "DESC")
                     ->limit(1)
                     ->get();
-            }
-            // echo $this->db->getLastQuery(); //die;
-            $saldo = 0;
-            $bigcash = 0;
-            $pettycash = 0;
-            foreach ($kas->getResult() as $kas) {
-                $saldoawal = $kas->kas_saldo;
-                $bigcashawal = $kas->kas_bigcash;
-                $pettycashawal = $kas->kas_pettycash;
-                // echo $saldoawal . "==" . $bigcashawal . "==" . $pettycashawal;die;
-                if ($input["kas_type"] == "Debet") {
-                    $saldo = $saldoawal + $input["kas_total"];
-                    if ($input["kas_debettype"] == "bigcash") {
-                        $bigcash = $bigcashawal + $input["kas_total"];
-                        $pettycash = $pettycashawal;
-                    } else {
-                        $bigcash = $bigcashawal;
-                        $pettycash = $pettycashawal + $input["kas_total"];
+                    if ($kas->getNumRows() == 0) {
+                        //jika tidak ada maka cari transksi tgl sebelumnya
+                        $kas = $this->db
+                            ->table("kas")
+                            ->where("kas_date <", $input["kas_date"])
+                            ->orderBy("kas_date", "DESC")
+                            ->orderBy("kas_id", "DESC")
+                            ->limit(1)
+                            ->get();
+                    } */
+                    // echo $this->db->getLastQuery(); //die;
+                    /* $saldo = 0;
+                    $bigcash = 0;
+                    $pettycash = 0;
+                    foreach ($kas->getResult() as $kas) {
+                        /* $saldoawal = $kas->kas_saldo;
+                        $bigcashawal = $kas->kas_bigcash;
+                        $pettycashawal = $kas->kas_pettycash; */
+                    // echo $saldoawal . "==" . $bigcashawal . "==" . $pettycashawal;die;
+                    /* if ($input["kas_type"] == "Debet") {
+                            $saldo = $saldoawal + $input["kas_total"];
+                            if ($input["kas_debettype"] == "bigcash") {
+                                $bigcash = $bigcashawal + $input["kas_total"];
+                                $pettycash = $pettycashawal;
+                            } else {
+                                $bigcash = $bigcashawal;
+                                $pettycash = $pettycashawal + $input["kas_total"];
+                            }
+                            // echo $bigcash."==".$pettycash;die;
+                        } else {
+                            $saldo =  $saldoawal - $input["kas_total"];
+                            if ($input["kas_debettype"] == "bigcash") {
+                                $bigcash = $bigcashawal - $input["kas_total"];
+                                $pettycash = $pettycashawal;
+                            }
+                            if ($input["kas_debettype"] == "pettycash") {
+                                $bigcash = $bigcashawal;
+                                $pettycash = $pettycashawal - $input["kas_total"];
+                            }
+                            //  echo $saldo."==".$bigcash."==".$pettycash;die;
+                        } 
+                    } */
+                    /* $input["kas_saldo"] = $saldo;
+                    $input["kas_bigcash"] = $bigcash;
+                    $input["kas_pettycash"] = $pettycash; */
+
+                    if ($input["kas_rekke"] != "-1") {
+                        $input["kas_pettyid"] = 0;
                     }
-                    // echo $bigcash."==".$pettycash;die;
+                    // dd($input);
+
+                    $inv_temp = $this->request->getGet("invvdr_temp");
+                    $invvdrd = $this->db->table('invvdrd')
+                        ->where("invvdr_temp", $inv_temp)
+                        ->get();
+                    $jobdano      = array();
+                    foreach ($invvdrd->getResult() as $rinvvdrd) {
+                        if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
+                            $jobdano[] = $rinvvdrd->job_dano;
+                        }
+                    }
+                    $jobdanos      = implode(', ', $jobdano);
+                    $input["job_dano"] = $jobdanos;
+                    $this->db->table('kas')->update($input, array("kas_id" => $kas_id));
+                    // echo $this->db->getLastQuery(); die;
                 } else {
-                    $saldo =  $saldoawal - $input["kas_total"];
-                    if ($input["kas_debettype"] == "bigcash") {
-                        $bigcash = $bigcashawal - $input["kas_total"];
-                        $pettycash = $pettycashawal;
+                    $input["kas_rekdari"] = $inputdr["invvdrp_from"];
+                    $input["kas_rekke"] = $inputdr["invvdrp_to"];
+                    $input["kas_nominal"] = $inputdr["invvdrp_nominal"];
+                    $input["kas_qty"] = 1;
+                    $input["kas_uraian"] = "Pembayaran ke Vendor";
+                    $input["kas_keterangan"] = $inputdr["invvdrp_keterangan"];
+                    $input["invvdrp_id"] = $invvdrp_id;
+                    $input["kas_date"] = $inputdr["invvdrp_date"];
+                    $input["kas_type"] = "Kredit";
+                    $input["kas_total"] = $inputdr["invvdrp_nominal"];
+                    if ($inputdr["invvdrp_from"] == -1) {
+                        $debettype = "pettycash";
+                    } else {
+                        $debettype = "bigcash";
                     }
-                    if ($input["kas_debettype"] == "pettycash") {
-                        $bigcash = $bigcashawal;
-                        $pettycash = $pettycashawal - $input["kas_total"];
+                    $input["kas_debettype"] = $debettype;
+
+                    $inv_temp = $this->request->getGet("invvdr_temp");
+                    $invvdrd = $this->db->table('invvdrd')
+                        ->where("invvdr_temp", $inv_temp)
+                        ->get();
+                    $jobdano      = array();
+                    foreach ($invvdrd->getResult() as $rinvvdrd) {
+                        if ($rinvvdrd->job_dano !== '' && ! in_array($rinvvdrd->job_dano, $jobdano)) {
+                            $jobdano[] = $rinvvdrd->job_dano;
+                        }
                     }
-                    //  echo $saldo."==".$bigcash."==".$pettycash;die;
+                    $jobdanos      = implode(', ', $jobdano);
+                    $input["job_dano"] = $jobdanos;
+
+                    $builder = $this->db->table('kas');
+                    $builder->insert($input);
+                    // echo $this->db->getLastQuery(); die;
+                    $kas_id = $this->db->insertID();
+
+                    //input kas_id di inv vendor payment
+                    $inputkas["kas_id"] = $kas_id;
+                    $this->db->table('invvdrp')->update($inputkas, array("invvdrp_id" => $invvdrp_id));
+                }
+            } else {
+                //delete kas
+                $kas = $this->db->table('kas')
+                    ->where("invvdrp_id", $invvdrp_id)
+                    ->get();
+                if ($kas->getNumRows() > 0) {
+                    foreach ($kas->getResult() as $kas) {
+                        $kas_id =   $kas->kas_id;
+                        $this->db
+                            ->table("kas")
+                            ->delete(array("kas_id" =>  $kas_id));
+                    }
                 }
             }
-            $input["kas_saldo"] = $saldo;
-            $input["kas_bigcash"] = $bigcash;
-            $input["kas_pettycash"] = $pettycash;
-
-            if ($input["kas_rekke"] != "-1") {
-                $input["kas_pettyid"] = 0;
-            }
-            // dd($input);
-            $this->db->table('kas')->update($input, array("kas_id" => $kas_id));
-            // echo $this->db->getLastQuery(); die;
 
             //******update transaksi setelahnya******//
             //update dulu transaksi setelahnya yg satu tanggal dengan dia
-            $kas = $this->db->table("kas")
+            /* $kas = $this->db->table("kas")
                 ->where("kas_id >", $kas_id)
                 ->where("kas_date",  $input["kas_date"])
-                ->orderBy("kas_id", "ASC")->get();
+                ->orderBy("kas_id", "ASC")->get(); */
             // echo $this->db->getLastQuery();die;
-            foreach ($kas->getResult() as $kas) {
+            /* foreach ($kas->getResult() as $kas) {
                 if ($kas->kas_type == "Debet") {
                     $saldo = $saldo + $kas->kas_total;
                     if ($kas->kas_debettype == "bigcash") {
@@ -507,10 +615,10 @@ class invvdrp_m extends core_m
                 // dd($input2);
                 $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
                 // echo $this->db->getLastQuery(); die;
-            }
+            } */
             // dd();
             //baru update transaksi ditanggal setelahnya dengan urutan by date asc dan id asc
-            $kas = $this->db->table("kas")
+            /* $kas = $this->db->table("kas")
                 ->where("kas_date >",  $input["kas_date"])
                 ->orderBy("kas_date", "ASC")
                 ->orderBy("kas_id", "ASC")
@@ -541,7 +649,7 @@ class invvdrp_m extends core_m
                 $kas_id = $kas->kas_id;
                 $this->db->table('kas')->update($input2, array("kas_id" => $kas_id));
                 // echo $this->db->getLastQuery(); die;
-            }
+            } */
 
 
             $data["message"] = "Update Success";

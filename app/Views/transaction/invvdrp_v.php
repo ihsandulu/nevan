@@ -260,8 +260,8 @@ foreach ($tbukun->getResult() as $row) {
                                         <td><?= $usr->invvdrp_keterangan; ?></td>
                                         <td><?= number_format($usr->invvdrp_nominal, 0, ",", "."); ?></td>
                                         <td><?= $usr->methodpayment_name; ?></td>
-                                        <td><?= ($usr->asalno == "") ? "Pettycash" : $usr->asalno; ?></td>
-                                        <td><?= ($usr->tujuanno == "") ? "Pettycash" : $usr->tujuanno; ?></td>
+                                        <td><?= ($usr->asalno == "") ? "" : $usr->asalno; ?></td>
+                                        <td><?= ($usr->tujuanno == "") ? "" : $usr->tujuanno; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

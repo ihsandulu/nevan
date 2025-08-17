@@ -272,8 +272,8 @@ foreach ($tbukun->getResult() as $row) {
                                         <td><?= number_format($usr->invpayment_price, 0, ",", "."); ?></td>
                                         <td><?= number_format($usr->invpayment_total, 0, ",", "."); ?></td>
                                         <td><?= $usr->methodpayment_name; ?></td>
-                                        <td><?= $usr->asalno; ?></td>
-                                        <td><?= $usr->tujuanno; ?></td>
+                                        <td><?= ($usr->asalno == "") ? "" : $usr->asalno; ?></td>
+                                        <td><?= ($usr->tujuanno == "") ? "" : $usr->tujuanno; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

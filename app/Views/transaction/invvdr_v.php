@@ -287,6 +287,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                         <input type="hidden" name="invvdr_no" value="<?= $usr->invvdr_no; ?>" />
                                                         <input type="hidden" name="vendor_id" value="<?= $usr->vendor_id; ?>" />
                                                         <input type="hidden" name="vendor_name" value="<?= $usr->vendor_name; ?>" />
+                                                        <input type="hidden" name="invvdr_temp" value="<?= $usr->invvdr_temp; ?>" />
                                                     </form>
                                                 <?php } ?>
                                                 <!-- <form method="get" target="_blank" class="btn-action" style="" action="<?= base_url("invvdrprint"); ?>">

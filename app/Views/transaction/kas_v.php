@@ -466,6 +466,7 @@ if (isset($_GET["rekeningnya"])) {
                                         ->orderBy("kas.kas_id", "ASC")
                                         ->get();
                                     $saldod = 0;
+                                    // echo $this->db->getLastQuery();
                                     foreach ($usr->getResult() as $row) {
                                         if ($row->kas_type == "Debet") {
                                             $saldod += $row->kas_total;
@@ -476,6 +477,7 @@ if (isset($_GET["rekeningnya"])) {
                                         }
                                     }
                                     $saldos = $saldon + $saldod;
+                                    // echo $saldon." + ".$saldod;die;
 
                                     $build = $this->db
                                         ->table("kas")
