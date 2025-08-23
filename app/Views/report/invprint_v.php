@@ -40,9 +40,14 @@ if (isset($_GET["inv_temp"])) {
         $tagihan = $row->invpayment_total;
         $tagihandate = $row->invpayment_tagihandate;
         $tagihanduedate = $row->invpayment_duedate;
+        $bayardate=$row->invpayment_date;
+        if($tagihandate=="0000-00-00"){
+            $tagihandate =$bayardate;
+            $tagihanduedate =$bayardate;
+        }
         if($row->invpayment_date>"0000-00-00"){
             $status="Lunas";
-            $tglbayar="(".$row->invpayment_date.")";
+            $tglbayar="(".$bayardate.")";
         }
     }
 }
