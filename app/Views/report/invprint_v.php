@@ -47,7 +47,7 @@ if (isset($_GET["inv_temp"])) {
         }
         if($row->invpayment_date>"0000-00-00"){
             $status="Lunas";
-            $tglbayar="(".date("d/m/Y", strtotime($tglbayar)).")";
+            $tglbayar="(".date("d/m/Y", strtotime($bayardate)).")";
         }
     }
 }
