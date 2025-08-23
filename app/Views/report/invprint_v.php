@@ -495,7 +495,7 @@ if (isset($_GET["inv_temp"])) {
                                         <?php if (isset($_GET["inv_temp"])) { ?>
                                             <tr>
                                                 <td class="text-left" style="border-top: 3px double black; border-bottom: 3px double black; padding: 5px;  font-weight:bold;">
-                                                    Tagihan Invoice<br /><?= $namatagihan; ?><br /><?= $tglbayar; ?>
+                                                    Tagihan Invoice<br /><?= $namatagihan; ?><br /><?= date("d/m/Y", strtotime($tglbayar)); ?>
                                                 </td>
                                                 <td class="tdkecil" style="border-top: 3px double black; border-bottom: 3px double black; padding: 5px;  font-weight:bold;">
                                                     <?php
