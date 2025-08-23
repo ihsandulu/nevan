@@ -41,7 +41,7 @@ if (isset($_GET["inv_temp"])) {
         $tagihandate = $row->invpayment_tagihandate;
         $tagihanduedate = $row->invpayment_duedate;
         $bayardate=$row->invpayment_date;
-        if($tagihandate=="0000-00-00"){
+        if($tagihandate=="0000-00-00"||$tagihandate==""){
             $tagihandate =$bayardate;
             $tagihanduedate =$bayardate;
         }
