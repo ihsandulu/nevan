@@ -47,27 +47,45 @@ foreach ($tbukun->getResult() as $row) {
                             <input type="date"
                                 class="form-control"
                                 style="width:100px;"
+                                id="invpayment_tagihandate"
+                                name="invpayment_tagihandate"
+                                data-toggle="popover"
+                                data-content="Tanggal Tagihan"
+                                data-trigger="hover"
+                                data-placement="top"
+                                min="<?= $tgltbterakhir; ?>"
+                                value="">
+                        </div>
+                        <div class="form-group">
+                            <input type="date"
+                                class="form-control"
+                                style="width:100px;"
+                                id="invpayment_duedate"
+                                name="invpayment_duedate"
+                                data-toggle="popover"
+                                data-content="Batas Akhir"
+                                data-trigger="hover"
+                                data-placement="top"
+                                min="<?= $tgltbterakhir; ?>"
+                                value="">
+                        </div>
+                        <div class="form-group pembayaran">
+                            <input type="date"
+                                class="form-control"
+                                style="width:100px;"
                                 id="invpayment_date"
                                 name="invpayment_date"
-                                placeholder="Tanggal Invoice"
-                                data-bs-toggle="popover"
-                                data-bs-content="Pilih tanggal invoice"
-                                data-bs-trigger="manual"
-                                data-bs-placement="top"
-                                min="<?=$tgltbterakhir;?>"
+                                data-toggle="popover"
+                                data-content="Tanggal Bayar"
+                                data-trigger="hover"
+                                data-placement="top"
+                                min="<?= $tgltbterakhir; ?>"
                                 value="">
                         </div>
                         <script>
                             $(function() {
-                                $('#invpayment_date')
-                                    .popover({
-                                        content: 'Pilih Tanggal Pembayaran',
-                                        trigger: 'manual',
-                                        placement: 'top',
-                                        template: '<div class="popover bs-popover-top" role="tooltip"><div class="arrow"></div><div class="popover-body"></div></div>'
-                                    })
-                                    .popover('show');
-                            });
+                                $('[data-toggle="popover"]').popover()
+                            })
                         </script>
                         <div class="form-group">
                             <input type="text" class="form-control" style="width: 200px;" id="invpayment_keterangan" name="invpayment_keterangan" placeholder="Description">
@@ -81,8 +99,8 @@ foreach ($tbukun->getResult() as $row) {
                         <div class="form-group">
                             <input type="text" class="form-control" style="width: 120px;" id="invpayment_total" name="invpayment_total" placeholder="Total">
                         </div>
-                        <div class="form-group">
-                            <select required class="form-control" id="methodpayment_id" name="methodpayment_id">
+                        <div class="form-group pembayaran">
+                            <select class="form-control" id="methodpayment_id" name="methodpayment_id">
                                 <option value="">Payment Methode</option>
                                 <?php $methodpayment = $this->db->table("methodpayment")
                                     ->orderBy("methodpayment_name", "ASC")
@@ -93,13 +111,13 @@ foreach ($tbukun->getResult() as $row) {
                                 <?php } ?>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group pembayaran">
                             <select style="width: 100px;" class="form-control" id="invpayment_from" name="invpayment_from" placeholder="From"
                                 data-bs-toggle="popover"
                                 data-bs-content="Asal"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top">
-                                <option value="">From</option>
+                                <option value="0">From</option>
                                 <?php $rekening = $this->db->table("rekening")
                                     ->where("rekening_type", "Customer")
                                     ->orderBy("rekening_no", "ASC")
@@ -122,13 +140,13 @@ foreach ($tbukun->getResult() as $row) {
                                 });
                             </script>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group pembayaran">
                             <select style="width: 100px;" class="form-control" id="invpayment_to" name="invpayment_to" placeholder="To"
                                 data-bs-toggle="popover"
                                 data-bs-content="Tujuan"
                                 data-bs-trigger="manual"
                                 data-bs-placement="top">
-                                <option value="">To</option>
+                                <option value="0">To</option>
                                 <option value="-1">Pettycash</option>
                                 <?php $rekening = $this->db->table("rekening")
                                     ->where("rekening_type", "NKL")
@@ -167,7 +185,30 @@ foreach ($tbukun->getResult() as $row) {
                         <input type="hidden" id="invpayment_id" name="invpayment_id" value="" />
 
                         &nbsp;&nbsp;<button id="btninvpayment" type="submit" name="create" value="OK" class="btn btn-primary">Submit</button>
+                        &nbsp;&nbsp;<button type="button" class="btn btn-info" onclick="buatbaru()">Clear</button>
                     </form>
+                    <script>
+                        function buatbaru() {
+                            $("#invpayment_total").val("");
+                            $("#invpayment_price").val("");
+                            $("#invpayment_qty").val("");
+                            $("#invpayment_keterangan").val("");
+                            $("#invpayment_date").val("");
+                            $("#invpayment_tagihandate").val("");
+                            $("#invpayment_duedate").val("");
+                            $("#invpayment_from").val(0);
+                            $("#invpayment_to").val(0);
+                            $("#methodpayment_id").val("");
+                            $("#btninvpayment").attr("name", "create");
+                            $(".pembayaran").hide();
+                        }
+
+                        <?php if (isset($_POST["pembayaran"])) { ?>
+                            $(".pembayaran").show();
+                        <?php } else { ?>
+                            $(".pembayaran").hide();
+                        <?php } ?>
+                    </script>
 
                     <div class="table-responsive ">
                         <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
@@ -178,7 +219,9 @@ foreach ($tbukun->getResult() as $row) {
                                         <th>Action</th>
                                     <?php } ?>
                                     <!-- <th>No.</th> -->
-                                    <th>Date</th>
+                                    <th>Tagihan</th>
+                                    <th>Batas Akhir</th>
+                                    <th>Bayar</th>
                                     <th>Description</th>
                                     <th>QTY</th>
                                     <th>Price</th>
@@ -186,6 +229,7 @@ foreach ($tbukun->getResult() as $row) {
                                     <th>Methode</th>
                                     <th>Rek.Asal</th>
                                     <th>Rek.Tujuan</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -209,7 +253,7 @@ foreach ($tbukun->getResult() as $row) {
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
                                             <td style="padding-left:0px; padding-right:0px;">
-                                                <?php if ($usr->invpayment_date > $tgltbterakhir) { ?>
+                                                <?php if ($usr->invpayment_date > $tgltbterakhir || $usr->invpayment_date == "0000-00-00") { ?>
                                                     <?php
                                                     if (
                                                         (
@@ -230,12 +274,14 @@ foreach ($tbukun->getResult() as $row) {
                                                             </button>
 
                                                             <input type="hidden" id="inv_temp<?= $usr->invpayment_id; ?>" name="inv_temp" value="<?= $usr->inv_temp; ?>" />
-                                                            <input type="hidden" id="invpayment_total<?= $usr->invpayment_id; ?>" name="invpayment_total" value="<?= $usr->invpayment_total; ?>" />
-                                                            <input type="hidden" id="invpayment_price<?= $usr->invpayment_id; ?>" name="invpayment_price" value="<?= $usr->invpayment_price; ?>" />
-                                                            <input type="hidden" id="invpayment_qty<?= $usr->invpayment_id; ?>" name="invpayment_qty" value="<?= $usr->invpayment_qty; ?>" />
+                                                            <input type="hidden" id="invpayment_total<?= $usr->invpayment_id; ?>" name="invpayment_total" value="<?= number_format($usr->invpayment_total, 0, ".", ""); ?>" />
+                                                            <input type="hidden" id="invpayment_price<?= $usr->invpayment_id; ?>" name="invpayment_price" value="<?= number_format($usr->invpayment_price, 0, ".", ""); ?>" />
+                                                            <input type="hidden" id="invpayment_qty<?= $usr->invpayment_id; ?>" name="invpayment_qty" value="<?= number_format($usr->invpayment_qty, 0, ".", ""); ?>" />
                                                             <input type="hidden" id="invpayment_keterangan<?= $usr->invpayment_id; ?>" name="invpayment_keterangan" value="<?= $usr->invpayment_keterangan; ?>" />
                                                             <input type="hidden" id="invpayment_id<?= $usr->invpayment_id; ?>" name="invpayment_id" value="<?= $usr->invpayment_id; ?>" />
                                                             <input type="hidden" id="invpayment_date<?= $usr->invpayment_id; ?>" name="invpayment_date" value="<?= $usr->invpayment_date; ?>" />
+                                                            <input type="hidden" id="invpayment_tagihandate<?= $usr->invpayment_id; ?>" name="invpayment_tagihandate" value="<?= $usr->invpayment_tagihandate; ?>" />
+                                                            <input type="hidden" id="invpayment_duedate<?= $usr->invpayment_id; ?>" name="invpayment_duedate" value="<?= $usr->invpayment_duedate; ?>" />
                                                             <input type="hidden" id="invpayment_from<?= $usr->invpayment_id; ?>" name="invpayment_from" value="<?= $usr->invpayment_from; ?>" />
                                                             <input type="hidden" id="invpayment_to<?= $usr->invpayment_id; ?>" name="invpayment_to" value="<?= $usr->invpayment_to; ?>" />
                                                             <input type="hidden" id="methodpayment_id<?= $usr->invpayment_id; ?>" name="methodpayment_id" value="<?= $usr->methodpayment_id; ?>" />
@@ -263,9 +309,20 @@ foreach ($tbukun->getResult() as $row) {
                                                         </form>
                                                     <?php } ?>
                                                 <?php } ?>
+
+                                                <form method="get" target="_blank" class="btn-action" style="" action="<?= base_url("invprint"); ?>">
+                                                    <button title="Print Invoice" data-bs-toggle="tooltip" class="btn btn-sm btn-success" name="print" value="OK"><span class="fa fa-print" style="color:white;"></span> </button>
+                                                    <input type="hidden" name="inv_temp" value="<?= $inv_temp; ?>" />
+                                                    <input type="hidden" name="inv_id" value="<?= $inv_id; ?>" />
+                                                    <input type="hidden" name="inv_no" value="<?= $inv_no; ?>" />
+                                                    <input type="hidden" name="customer_id" value="<?= $usr->customer_id; ?>" />
+                                                    <input type="hidden" name="customer_name" value="<?= $usr->customer_name; ?>" />
+                                                </form>
                                             </td>
                                         <?php } ?>
                                         <!-- <td><?= $no++; ?></td> -->
+                                        <td><?= $usr->invpayment_tagihandate; ?></td>
+                                        <td><?= $usr->invpayment_duedate; ?></td>
                                         <td><?= $usr->invpayment_date; ?></td>
                                         <td><?= $usr->invpayment_keterangan; ?></td>
                                         <td><?= number_format($usr->invpayment_qty, 0, ",", "."); ?></td>
@@ -274,6 +331,7 @@ foreach ($tbukun->getResult() as $row) {
                                         <td><?= $usr->methodpayment_name; ?></td>
                                         <td><?= ($usr->asalno == "") ? "" : $usr->asalno; ?></td>
                                         <td><?= ($usr->tujuanno == "") ? "" : $usr->tujuanno; ?></td>
+                                        <td><?= ($usr->invpayment_date != "0000-00-00") ? "Lunas" : ""; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -292,6 +350,8 @@ foreach ($tbukun->getResult() as $row) {
                                 let job_id = $("#job_id" + invpayment_id).val();
                                 let invpaymentid = $("#invpayment_id" + invpayment_id).val();
                                 let invpayment_date = $("#invpayment_date" + invpayment_id).val();
+                                let invpayment_tagihandate = $("#invpayment_tagihandate" + invpayment_id).val();
+                                let invpayment_duedate = $("#invpayment_duedate" + invpayment_id).val();
                                 let invpayment_from = $("#invpayment_from" + invpayment_id).val();
                                 let invpayment_to = $("#invpayment_to" + invpayment_id).val();
                                 let methodpayment_id = $("#methodpayment_id" + invpayment_id).val();
@@ -307,11 +367,13 @@ foreach ($tbukun->getResult() as $row) {
                                 $("#job_id").val(job_id);
                                 $("#invpayment_id").val(invpaymentid);
                                 $("#invpayment_date").val(invpayment_date);
+                                $("#invpayment_tagihandate").val(invpayment_tagihandate);
+                                $("#invpayment_duedate").val(invpayment_duedate);
                                 $("#invpayment_from").val(invpayment_from);
                                 $("#invpayment_to").val(invpayment_to);
                                 $("#methodpayment_id").val(methodpayment_id);
-
                                 $("#btninvpayment").attr("name", "change");
+                                $(".pembayaran").show();
                             }
                         </script>
                     </div>

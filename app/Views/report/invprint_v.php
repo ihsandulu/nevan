@@ -26,6 +26,26 @@ function terbilang($angka)
     }
 }
 
+$inv = $this->db->table("inv")
+    ->join("customer", "customer.customer_id=inv.customer_id", "left")
+    ->where("inv_id", $_GET["inv_id"])->get()->getRow();
+$tagihandate = $inv->inv_date;
+$tagihanduedate = $inv->inv_duedate;
+$status="Belum Lunas";
+$tglbayar="";
+if (isset($_GET["inv_temp"])) {
+    $invpayment = $this->db->table("invpayment")->where("inv_temp", $_GET["inv_temp"])->get();
+    foreach ($invpayment->getResult() as $row) {
+        $namatagihan = $row->invpayment_keterangan;
+        $tagihan = $row->invpayment_total;
+        $tagihandate = $row->invpayment_tagihandate;
+        $tagihanduedate = $row->invpayment_duedate;
+        if($row->invpayment_date>"0000-00-00"){
+            $status="Lunas";
+            $tglbayar="(".$row->invpayment_date.")";
+        }
+    }
+}
 
 ?>
 <style>
@@ -199,7 +219,15 @@ function terbilang($angka)
         background-color: lightblue;
         border: 1px solid #000;
     }
-    .wraptext{white-space: normal; word-wrap: break-word;}
+
+    .wraptext {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+    .tdkecil2 {
+        line-height: 0px !important;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -227,12 +255,6 @@ function terbilang($angka)
             </div>
         </div> -->
         <div class='col-12 border-bottom atas' style="height:4.5cm;"></div>
-
-        <?php
-        $inv = $this->db->table("inv")
-            ->join("customer", "customer.customer_id=inv.customer_id", "left")
-            ->where("inv_id", $_GET["inv_id"])->get()->getRow();
-        ?>
         <div class='col-12 tengah'>
             <div class="row">
                 <div class="col-12 judul text-center">INVOICE</div>
@@ -264,13 +286,13 @@ function terbilang($angka)
                             Date
                         </div>
                         <div class="col-9">
-                            : <?= date("d/m/Y", strtotime($inv->inv_date)); ?>
+                            : <?= date("d/m/Y", strtotime($tagihandate)); ?>
                         </div>
                         <div class="col-3">
                             Due Date
                         </div>
                         <div class="col-9">
-                            : <?= date("d/m/Y", strtotime($inv->inv_duedate)); ?>
+                            : <?= date("d/m/Y", strtotime($tagihanduedate)); ?>
                         </div>
                     </div>
                 </div>
@@ -314,7 +336,7 @@ function terbilang($angka)
                                             </tr>
                                         <?php } ?>
                                         <tr>
-                                            <td class="text-left" rowspan="8" colspan="5">
+                                            <td class="text-left" rowspan="9" colspan="5">
                                                 <i>Terbilang :</i><br />
                                                 <i id="terbilang" class="wraptext" style="margin-top:30px;"></i><br /><br />
                                                 <div id="norek" style="border-top:black solid 1px; border-bottom:black solid 1px; padding:10px; ">
@@ -352,26 +374,26 @@ function terbilang($angka)
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="text-left">
+                                            <td class="text-left tdkecil">
                                                 Total
                                             </td>
-                                            <td>
+                                            <td class="tdkecil">
                                                 <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_tagihan, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-left">
+                                            <td class="text-left tdkecil">
                                                 Discount
                                             </td>
-                                            <td>
+                                            <td class="tdkecil">
                                                 <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_discount, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-left">
+                                            <td class="text-left tdkecil">
                                                 Setelah Discount
                                             </td>
-                                            <td>
+                                            <td class="tdkecil">
                                                 <span class="uang"><span>IDR</span><span><?= number_format($inv->inv_dtagihan, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
@@ -386,10 +408,10 @@ function terbilang($angka)
                                             $ppn1k1 = $dtagihan * 1.1 / 100;
                                         ?>
                                             <tr>
-                                                <td class="text-left">
+                                                <td class="text-left tdkecil">
                                                     PPN 1,1%
                                                 </td>
-                                                <td>
+                                                <td class="tdkecil">
                                                     <span class="uang"><span>IDR</span><span><?= number_format($ppn1k1, 0, ",", "."); ?></span></span>
                                                 </td>
                                             </tr>
@@ -398,10 +420,10 @@ function terbilang($angka)
                                             $ppn11 = $dtagihan * 11 / 100;
                                         ?>
                                             <tr>
-                                                <td class="text-left">
+                                                <td class="text-left tdkecil">
                                                     PPN 11%
                                                 </td>
-                                                <td>
+                                                <td class="tdkecil">
                                                     <span class="uang"><span>IDR</span><span><?= number_format($ppn11, 0, ",", "."); ?></span></span>
                                                 </td>
                                             </tr>
@@ -410,10 +432,10 @@ function terbilang($angka)
                                             $ppn12 = $dtagihan * 12 / 100;
                                         ?>
                                             <tr>
-                                                <td class="text-left">
+                                                <td class="text-left tdkecil">
                                                     PPN 12%
                                                 </td>
-                                                <td>
+                                                <td class="tdkecil">
                                                     <span class="uang"><span>IDR</span><span><?= number_format($ppn12, 0, ",", "."); ?></span></span>
                                                 </td>
                                             </tr>
@@ -422,19 +444,19 @@ function terbilang($angka)
                                             $pph = $dtagihan * 2 / 100;
                                         ?>
                                             <tr>
-                                                <td class="text-left">
+                                                <td class="text-left tdkecil">
                                                     PPH
                                                 </td>
-                                                <td>
+                                                <td class="tdkecil">
                                                     <span class="uang"><span>IDR</span><span><?= number_format($pph, 0, ",", "."); ?></span></span>
                                                 </td>
                                             </tr>
                                         <?php } ?>
                                         <tr>
-                                            <td class="text-left">
+                                            <td class="text-left tdkecil">
                                                 Grand Total
                                             </td>
-                                            <td>
+                                            <td class="tdkecil">
                                                 <?php
                                                 $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
                                                 $grand = $tharga - $pph;
@@ -443,10 +465,10 @@ function terbilang($angka)
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-left">
+                                            <td class="text-left tdkecil">
                                                 Payment
                                             </td>
-                                            <td>
+                                            <td class="tdkecil">
                                                 <?php
                                                 $payment = $inv->inv_payment;
                                                 ?>
@@ -454,16 +476,31 @@ function terbilang($angka)
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="text-left">
+                                            <td class="text-left tdkecil">
                                                 Sisa Hutang
                                             </td>
-                                            <td>
+                                            <td class="tdkecil">
                                                 <?php
                                                 $sisa = $grand - $payment;
                                                 ?>
                                                 <span class="uang"><span>IDR</span><span><?= number_format($sisa, 0, ",", "."); ?></span></span>
                                             </td>
                                         </tr>
+
+                                        <?php if (isset($_GET["inv_temp"])) { ?>
+                                            <tr>
+                                                <td class="text-left" style="border-top: 3px double black; border-bottom: 3px double black; padding: 5px;  font-weight:bold;">
+                                                    Tagihan Invoice<br /><?= $namatagihan; ?><br /><?= $tglbayar; ?>
+                                                </td>
+                                                <td class="tdkecil" style="border-top: 3px double black; border-bottom: 3px double black; padding: 5px;  font-weight:bold;">
+                                                    <?php
+                                                    $sisa = $grand - $payment;
+                                                    ?>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($tagihan, 0, ",", "."); ?></span></span>
+                                                    <br />(<?= $status; ?>)
+                                                </td>
+                                            </tr>
+                                        <?php  } ?>
                                     </tbody>
                                 </table>
                             </div>
