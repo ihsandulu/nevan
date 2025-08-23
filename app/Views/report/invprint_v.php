@@ -47,7 +47,7 @@ if (isset($_GET["inv_temp"])) {
         }
         if($row->invpayment_date>"0000-00-00"){
             $status="Lunas";
-            $tglbayar="(".$bayardate.")";
+            $tglbayar="(".date("d/m/Y", strtotime($tglbayar)).")";
         }
     }
 }
@@ -495,7 +495,7 @@ if (isset($_GET["inv_temp"])) {
                                         <?php if (isset($_GET["inv_temp"])) { ?>
                                             <tr>
                                                 <td class="text-left" style="border-top: 3px double black; border-bottom: 3px double black; padding: 5px;  font-weight:bold;">
-                                                    Tagihan Invoice<br /><?= $namatagihan; ?><br /><?= date("d/m/Y", strtotime($tglbayar)); ?>
+                                                    Tagihan Invoice<br /><?= $namatagihan; ?><br /><?= $tglbayar; ?>
                                                 </td>
                                                 <td class="tdkecil" style="border-top: 3px double black; border-bottom: 3px double black; padding: 5px;  font-weight:bold;">
                                                     <?php
