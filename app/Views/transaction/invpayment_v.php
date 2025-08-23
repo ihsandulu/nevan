@@ -69,19 +69,6 @@ foreach ($tbukun->getResult() as $row) {
                                 min="<?= $tgltbterakhir; ?>"
                                 value="">
                         </div>
-                        <div class="form-group pembayaran">
-                            <input type="date"
-                                class="form-control"
-                                style="width:100px;"
-                                id="invpayment_date"
-                                name="invpayment_date"
-                                data-toggle="popover"
-                                data-content="Tanggal Bayar"
-                                data-trigger="hover"
-                                data-placement="top"
-                                min="<?= $tgltbterakhir; ?>"
-                                value="">
-                        </div>
                         <script>
                             $(function() {
                                 $('[data-toggle="popover"]').popover()
@@ -98,6 +85,19 @@ foreach ($tbukun->getResult() as $row) {
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control" style="width: 120px;" id="invpayment_total" name="invpayment_total" placeholder="Total">
+                        </div>
+                        <div class="form-group pembayaran">
+                            <input type="date"
+                                class="form-control"
+                                style="width:100px;"
+                                id="invpayment_date"
+                                name="invpayment_date"
+                                data-toggle="popover"
+                                data-content="Tanggal Bayar"
+                                data-trigger="hover"
+                                data-placement="top"
+                                min="<?= $tgltbterakhir; ?>"
+                                value="">
                         </div>
                         <div class="form-group pembayaran">
                             <select class="form-control" id="methodpayment_id" name="methodpayment_id">
