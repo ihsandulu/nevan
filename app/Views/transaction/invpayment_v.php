@@ -43,61 +43,35 @@ foreach ($tbukun->getResult() as $row) {
                         </div>
                     <?php } ?>
                     <form method="post" class="form-inline alert alert-info" action="">
-                        <div class="form-group">
-                            <input type="date"
-                                class="form-control"
-                                style="width:100px;"
-                                id="invpayment_tagihandate"
-                                name="invpayment_tagihandate"
-                                data-toggle="popover"
-                                data-content="Tanggal Tagihan"
-                                data-trigger="hover"
-                                data-placement="top"
-                                min="<?= $tgltbterakhir; ?>"
-                                value="">
+                        <div class="form-group mb-3">
+                            <input type="date" class="form-control" style="width:100px;" id="invpayment_tagihandate" name="invpayment_tagihandate" data-toggle="popover" data-content="Tanggal Tagihan" data-trigger="hover" data-placement="top" min="<?= $tgltbterakhir; ?>" value="">
                         </div>
-                        <div class="form-group">
-                            <input type="date"
-                                class="form-control"
-                                style="width:100px;"
-                                id="invpayment_duedate"
-                                name="invpayment_duedate"
-                                data-toggle="popover"
-                                data-content="Batas Akhir"
-                                data-trigger="hover"
-                                data-placement="top"
-                                min="<?= $tgltbterakhir; ?>"
-                                value="">
+                        <div class="form-group mb-3">
+                            <input type="date" class="form-control" style="width:100px;" id="invpayment_duedate" name="invpayment_duedate" data-toggle="popover" data-content="Batas Akhir" data-trigger="hover" data-placement="top" min="<?= $tgltbterakhir; ?>" value="">
                         </div>
                         <script>
                             $(function() {
                                 $('[data-toggle="popover"]').popover()
                             })
                         </script>
-                        <div class="form-group">
-                            <input type="text" class="form-control" style="width: 200px;" id="invpayment_keterangan" name="invpayment_keterangan" placeholder="Description">
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" style="width: 500px;" id="invpayment_keterangan" name="invpayment_keterangan" placeholder="Description" data-toggle="popover" data-content="Description" data-trigger="hover" data-placement="top">
                         </div>
-                        <div class="form-group">
-                            <input onkeyup="kali()" type="text" class="form-control" style="width: 80px;" id="invpayment_qty" name="invpayment_qty" placeholder="QTY">
+                        <div class="form-group mb-3">
+                            <input type="text" class="form-control" style="width: 150px;" id="invpayment_tagihan" name="invpayment_tagihan" placeholder="Nominal Tagihan" data-toggle="popover" data-content="Nominal Tagihan" data-trigger="hover" data-placement="top">
                         </div>
-                        <div class="form-group">
-                            <input onkeyup="kali()" type="text" class="form-control" style="width: 120px;" id="invpayment_price" name="invpayment_price" placeholder="Price">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" style="width: 120px;" id="invpayment_total" name="invpayment_total" placeholder="Total">
+                        <div class="w-100"></div> 
+                        <div class="form-group pembayaran">
+                            <input type="date" class="form-control" style="width:100px;" id="invpayment_date" name="invpayment_date" data-toggle="popover" data-content="Tanggal Bayar" data-trigger="hover" data-placement="top" min="<?= $tgltbterakhir; ?>" value="">
                         </div>
                         <div class="form-group pembayaran">
-                            <input type="date"
-                                class="form-control"
-                                style="width:100px;"
-                                id="invpayment_date"
-                                name="invpayment_date"
-                                data-toggle="popover"
-                                data-content="Tanggal Bayar"
-                                data-trigger="hover"
-                                data-placement="top"
-                                min="<?= $tgltbterakhir; ?>"
-                                value="">
+                            <input onkeyup="kali()" type="text" class="form-control" style="width: 80px;" id="invpayment_qty" name="invpayment_qty" placeholder="QTY" data-toggle="popover" data-content="QTY" data-trigger="hover" data-placement="top">
+                        </div>
+                        <div class="form-group pembayaran">
+                            <input onkeyup="kali()" type="text" class="form-control" style="width: 120px;" id="invpayment_price" name="invpayment_price" placeholder="Price" data-toggle="popover" data-content="Price" data-trigger="hover" data-placement="top">
+                        </div>
+                        <div class="form-group pembayaran">
+                            <input type="text" class="form-control" style="width: 120px;" id="invpayment_total" name="invpayment_total" placeholder="Total" data-toggle="popover" data-content="Total" data-trigger="hover" data-placement="top">
                         </div>
                         <div class="form-group pembayaran">
                             <select class="form-control" id="methodpayment_id" name="methodpayment_id">
@@ -189,6 +163,7 @@ foreach ($tbukun->getResult() as $row) {
                     </form>
                     <script>
                         function buatbaru() {
+                            $("#invpayment_tagihan").val("");
                             $("#invpayment_total").val("");
                             $("#invpayment_price").val("");
                             $("#invpayment_qty").val("");
@@ -221,8 +196,9 @@ foreach ($tbukun->getResult() as $row) {
                                     <!-- <th>No.</th> -->
                                     <th>Tagihan</th>
                                     <th>Batas Akhir</th>
-                                    <th>Bayar</th>
                                     <th>Description</th>
+                                    <th>Tagihan</th>
+                                    <th>Bayar</th>
                                     <th>QTY</th>
                                     <th>Price</th>
                                     <th>Total</th>
@@ -274,6 +250,7 @@ foreach ($tbukun->getResult() as $row) {
                                                             </button>
 
                                                             <input type="hidden" id="inv_temp<?= $usr->invpayment_id; ?>" name="inv_temp" value="<?= $usr->inv_temp; ?>" />
+                                                            <input type="hidden" id="invpayment_tagihan<?= $usr->invpayment_id; ?>" name="invpayment_tagihan" value="<?= number_format($usr->invpayment_tagihan, 0, ".", ""); ?>" />
                                                             <input type="hidden" id="invpayment_total<?= $usr->invpayment_id; ?>" name="invpayment_total" value="<?= number_format($usr->invpayment_total, 0, ".", ""); ?>" />
                                                             <input type="hidden" id="invpayment_price<?= $usr->invpayment_id; ?>" name="invpayment_price" value="<?= number_format($usr->invpayment_price, 0, ".", ""); ?>" />
                                                             <input type="hidden" id="invpayment_qty<?= $usr->invpayment_id; ?>" name="invpayment_qty" value="<?= number_format($usr->invpayment_qty, 0, ".", ""); ?>" />
@@ -312,6 +289,7 @@ foreach ($tbukun->getResult() as $row) {
 
                                                 <form method="get" target="_blank" class="btn-action" style="" action="<?= base_url("invprint"); ?>">
                                                     <button title="Print Invoice" data-bs-toggle="tooltip" class="btn btn-sm btn-success" name="print" value="OK"><span class="fa fa-print" style="color:white;"></span> </button>
+                                                    <input type="hidden" name="invpayment_id" value="<?= $usr->invpayment_id; ?>" />
                                                     <input type="hidden" name="inv_temp" value="<?= $inv_temp; ?>" />
                                                     <input type="hidden" name="inv_id" value="<?= $inv_id; ?>" />
                                                     <input type="hidden" name="inv_no" value="<?= $inv_no; ?>" />
@@ -323,8 +301,9 @@ foreach ($tbukun->getResult() as $row) {
                                         <!-- <td><?= $no++; ?></td> -->
                                         <td><?= $usr->invpayment_tagihandate; ?></td>
                                         <td><?= $usr->invpayment_duedate; ?></td>
-                                        <td><?= $usr->invpayment_date; ?></td>
                                         <td><?= $usr->invpayment_keterangan; ?></td>
+                                        <td><?= number_format($usr->invpayment_tagihan, 0, ",", "."); ?></td>
+                                        <td><?= $usr->invpayment_date; ?></td>
                                         <td><?= number_format($usr->invpayment_qty, 0, ",", "."); ?></td>
                                         <td><?= number_format($usr->invpayment_price, 0, ",", "."); ?></td>
                                         <td><?= number_format($usr->invpayment_total, 0, ",", "."); ?></td>
@@ -342,6 +321,7 @@ foreach ($tbukun->getResult() as $row) {
                                 let job_dano = $("#job_dano" + invpayment_id).val();
                                 let inv_temp = $("#inv_temp" + invpayment_id).val();
                                 let inv_id = $("#inv_id" + invpayment_id).val();
+                                let invpayment_tagihan = $("#invpayment_tagihan" + invpayment_id).val();
                                 let invpayment_total = $("#invpayment_total" + invpayment_id).val();
                                 let invpayment_price = $("#invpayment_price" + invpayment_id).val();
                                 let invpayment_satuan = $("#invpayment_satuan" + invpayment_id).val();
@@ -359,6 +339,7 @@ foreach ($tbukun->getResult() as $row) {
                                 $("#job_dano").val(job_dano);
                                 $("#inv_temp").val(inv_temp);
                                 $("#inv_id").val(inv_id);
+                                $("#invpayment_tagihan").val(invpayment_tagihan);
                                 $("#invpayment_total").val(invpayment_total);
                                 $("#invpayment_price").val(invpayment_price);
                                 $("#invpayment_satuan").val(invpayment_satuan);

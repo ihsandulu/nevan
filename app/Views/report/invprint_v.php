@@ -34,10 +34,10 @@ $tagihanduedate = $inv->inv_duedate;
 $status="Belum Lunas";
 $tglbayar="";
 if (isset($_GET["inv_temp"])) {
-    $invpayment = $this->db->table("invpayment")->where("inv_temp", $_GET["inv_temp"])->get();
+    $invpayment = $this->db->table("invpayment")->where("invpayment_id", $_GET["invpayment_id"])->get();
     foreach ($invpayment->getResult() as $row) {
         $namatagihan = $row->invpayment_keterangan;
-        $tagihan = $row->invpayment_total;
+        $tagihan = $row->invpayment_tagihan;
         $tagihandate = $row->invpayment_tagihandate;
         $tagihanduedate = $row->invpayment_duedate;
         $bayardate=$row->invpayment_date;
@@ -45,7 +45,7 @@ if (isset($_GET["inv_temp"])) {
             $tagihandate =$bayardate;
             $tagihanduedate =$bayardate;
         }
-        if($row->invpayment_date>"0000-00-00"){
+        if($row->invpayment_total>=$tagihan){
             $status="Lunas";
             $tglbayar="(".date("d/m/Y", strtotime($bayardate)).")";
         }
@@ -518,7 +518,7 @@ if (isset($_GET["inv_temp"])) {
 </div>
 <!-- <div class=" col-12 bg-primary p-3 text-center" style="border-radius:5px; border-top:grey solid 1px;"><div style="font-size:25px; font-weight:bold;"><?= $identity->identity_company; ?></div><?= $identity->identity_address; ?></div> -->
 <script>
-    $("#terbilang").html('<?= terbilang($sisa); ?> Rupiah');
+    $("#terbilang").html('<?= terbilang($tagihan); ?> Rupiah');
     $('.select').select2();
     var title = "Tarif <?= $this->session->get("identity_name"); ?>";
     $("title").text(title);
