@@ -33,7 +33,9 @@ $tagihandate = $inv->inv_date;
 $tagihanduedate = $inv->inv_duedate;
 $status="Belum Lunas";
 $tglbayar="";
+$invnotambahan="";
 if (isset($_GET["inv_temp"])) {
+    $invnotambahan="-".$_GET["invpayment_id"];
     $invpayment = $this->db->table("invpayment")->where("invpayment_id", $_GET["invpayment_id"])->get();
     foreach ($invpayment->getResult() as $row) {
         $namatagihan = $row->invpayment_keterangan;
@@ -285,7 +287,7 @@ if (isset($_GET["inv_temp"])) {
                             INV No.
                         </div>
                         <div class="col-9">
-                            : <?= $inv->inv_no; ?>
+                            : <?= $inv->inv_no; ?><?= $invnotambahan; ?>
                         </div>
                         <div class="col-3">
                             Date
@@ -518,7 +520,14 @@ if (isset($_GET["inv_temp"])) {
 </div>
 <!-- <div class=" col-12 bg-primary p-3 text-center" style="border-radius:5px; border-top:grey solid 1px;"><div style="font-size:25px; font-weight:bold;"><?= $identity->identity_company; ?></div><?= $identity->identity_address; ?></div> -->
 <script>
-    $("#terbilang").html('<?= terbilang($tagihan); ?> Rupiah');
+    <?php
+    if(isset($_GET["inv_temp"])){
+        $terbilang=$tagihan;
+    }else{
+        $terbilang=$grand;
+    }
+    ?>
+    $("#terbilang").html('<?= terbilang($terbilang); ?> Rupiah');
     $('.select').select2();
     var title = "Tarif <?= $this->session->get("identity_name"); ?>";
     $("title").text(title);
