@@ -346,7 +346,7 @@ if (isset($_GET["inv_temp"])) {
                                             <td class="text-left" rowspan="9" colspan="5" style="width: 300px; word-wrap: break-word; white-space: normal;">
                                                 <?php if (isset($_GET["inv_temp"])) { ?>
                                                     <div style="padding: 5px; font-weight: bold;">
-                                                        Tagihan Invoice <?= $namatagihan; ?> <?= $tglbayar; ?>
+                                                        <?= $namatagihan; ?> <?= $tglbayar; ?>
                                                     </div>
                                                     <div style="padding: 5px;">
                                                         Rp. <?= number_format($tagihan, 0, ",", "."); ?>,- **<?= $status; ?>
