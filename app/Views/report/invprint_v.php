@@ -345,8 +345,8 @@ if (isset($_GET["inv_temp"])) {
                                         <tr>
                                             <td class="text-left" rowspan="9" colspan="5">
                                                 <?php if (isset($_GET["inv_temp"])) { ?>
-                                                    <div class="row" style="width:100%!important;">
-                                                        <div class="text-left col-12" style="padding: 5px;  font-weight:bold;  ">
+                                                    <div class="row" style="">
+                                                        <div class="text-left col-11" style="padding: 5px;  font-weight:bold;  ">
                                                             Tagihan Invoice <?= $namatagihan; ?> <?= $tglbayar; ?>
                                                         </div>
                                                         <div class="tdkecil col-12" style=" padding: 5px;  ">

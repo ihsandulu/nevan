@@ -1,7 +1,6 @@
 <?php echo $this->include("template/header_v");
 $identity = $this->db->table("identity")->get()->getRow(); ?>
 <style>
-    body{padding-right: 20px!important;}
     td {
         white-space: nowrap;
     }
