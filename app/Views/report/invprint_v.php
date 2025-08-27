@@ -348,9 +348,6 @@ if (isset($_GET["inv_temp"])) {
                                                     <div style="padding: 5px; font-weight: bold;">
                                                         <?= $namatagihan; ?> <?= $tglbayar; ?>
                                                     </div>
-                                                    <div style="padding: 5px;">
-                                                        Rp. <?= number_format($tagihan, 0, ",", "."); ?>,- **<?= $status; ?>
-                                                    </div>
                                                 <?php } ?>
                                                 <i>Terbilang :</i><br />
                                                 <i id="terbilang" class="wraptext" style="margin-top:30px;"></i><br /><br />
