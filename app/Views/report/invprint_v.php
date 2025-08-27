@@ -31,25 +31,25 @@ $inv = $this->db->table("inv")
     ->where("inv_id", $_GET["inv_id"])->get()->getRow();
 $tagihandate = $inv->inv_date;
 $tagihanduedate = $inv->inv_duedate;
-$status = "Belum Lunas";
-$tglbayar = "";
-$invnotambahan = "";
+$status="Belum Lunas";
+$tglbayar="";
+$invnotambahan="";
 if (isset($_GET["inv_temp"])) {
-    $invnotambahan = "-" . $_GET["invpayment_id"];
+    $invnotambahan="-".$_GET["invpayment_id"];
     $invpayment = $this->db->table("invpayment")->where("invpayment_id", $_GET["invpayment_id"])->get();
     foreach ($invpayment->getResult() as $row) {
         $namatagihan = $row->invpayment_keterangan;
         $tagihan = $row->invpayment_tagihan;
         $tagihandate = $row->invpayment_tagihandate;
         $tagihanduedate = $row->invpayment_duedate;
-        $bayardate = $row->invpayment_date;
-        if ($tagihandate == "0000-00-00" || $tagihandate == "") {
-            $tagihandate = $bayardate;
-            $tagihanduedate = $bayardate;
+        $bayardate=$row->invpayment_date;
+        if($tagihandate=="0000-00-00"||$tagihandate==""){
+            $tagihandate =$bayardate;
+            $tagihanduedate =$bayardate;
         }
-        if ($row->invpayment_total >= $tagihan) {
-            $status = "Lunas";
-            $tglbayar = "(" . date("d/m/Y", strtotime($bayardate)) . ")";
+        if($row->invpayment_total>=$tagihan){
+            $status="Lunas";
+            $tglbayar="(".date("d/m/Y", strtotime($bayardate)).")";
         }
     }
 }
@@ -355,7 +355,7 @@ if (isset($_GET["inv_temp"])) {
                                                         </div>
                                                     </div>
                                                 <?php  } ?>
-                                                <i>Terbilang :</i> 
+                                                <i>Terbilang :</i><br />
                                                 <i id="terbilang" class="wraptext" style="margin-top:30px;"></i><br /><br />
                                                 <div id="norek" style="border-top:black solid 1px; border-bottom:black solid 1px; padding:10px; ">
                                                     <span style="font-weight: bold;" class="wraptext"> Tujuan Pembayaran :</span><br />
@@ -505,7 +505,16 @@ if (isset($_GET["inv_temp"])) {
                                             </td>
                                         </tr>
 
-
+                                        <?php if (isset($_GET["inv_temp"])) { ?>
+                                            <tr style="">
+                                                <td class="text-left" style="border-top: 3px double black; border-bottom: 3px double black; padding: 5px;  ">
+                                                    <span style="font-size:18px!important; font-weight:bold; ">TAGIHAN</span><br />** <?= $status; ?> <?= $tglbayar; ?>
+                                                </td>
+                                                <td class="tdkecil" style="border-top: 3px double black; border-bottom: 3px double black; padding: 5px;  font-weight:bold; font-size:18px!important;">
+                                                    <span class="uang"><span>IDR</span><span style="font-size:18px!important;"><?= number_format($tagihan, 0, ",", "."); ?></span></span>
+                                                </td>
+                                            </tr>
+                                        <?php  } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -519,10 +528,10 @@ if (isset($_GET["inv_temp"])) {
 <!-- <div class=" col-12 bg-primary p-3 text-center" style="border-radius:5px; border-top:grey solid 1px;"><div style="font-size:25px; font-weight:bold;"><?= $identity->identity_company; ?></div><?= $identity->identity_address; ?></div> -->
 <script>
     <?php
-    if (isset($_GET["inv_temp"])) {
-        $terbilang = $tagihan;
-    } else {
-        $terbilang = $grand;
+    if(isset($_GET["inv_temp"])){
+        $terbilang=$tagihan;
+    }else{
+        $terbilang=$grand;
     }
     ?>
     $("#terbilang").html('<?= terbilang($terbilang); ?> Rupiah');
