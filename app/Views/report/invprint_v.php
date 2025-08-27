@@ -345,11 +345,11 @@ if (isset($_GET["inv_temp"])) {
                                         <tr>
                                             <td class="text-left" rowspan="9" colspan="5">
                                                 <?php if (isset($_GET["inv_temp"])) { ?>
-                                                    <div class="">
-                                                        <div class="text-left" style="padding: 5px;  font-weight:bold;  ">
+                                                    <div class="row">
+                                                        <div class="text-left col-12" style="padding: 5px;  font-weight:bold;  ">
                                                             Tagihan Invoice <?= $namatagihan; ?> <?= $tglbayar; ?>
                                                         </div>
-                                                        <div class="tdkecil" style=" padding: 5px;  ">
+                                                        <div class="tdkecil col-12" style=" padding: 5px;  ">
                                                             Rp. <?= number_format($tagihan, 0, ",", "."); ?>,-
                                                              **<?= $status; ?>
                                                         </div>
