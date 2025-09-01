@@ -52,53 +52,53 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_address">Head Office:</label>
                                     <div class="col-sm-10">
-                                        <input type="text"  class="form-control" id="identity_address" name="identity_address" placeholder="" value="<?= $identity_address; ?>">
+                                        <input type="text" class="form-control" id="identity_address" name="identity_address" placeholder="" value="<?= $identity_address; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_branch">Branch Office:</label>
                                     <div class="col-sm-10">
-                                        <input type="text"  class="form-control" id="identity_branch" name="identity_branch" placeholder="" value="<?= $identity_branch; ?>">
+                                        <input type="text" class="form-control" id="identity_branch" name="identity_branch" placeholder="" value="<?= $identity_branch; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_email">Email:</label>
                                     <div class="col-sm-10">
-                                        <input type="text"  class="form-control" id="identity_email" name="identity_email" placeholder="" value="<?= $identity_email; ?>">
+                                        <input type="text" class="form-control" id="identity_email" name="identity_email" placeholder="" value="<?= $identity_email; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_website">Website:</label>
                                     <div class="col-sm-10">
-                                        <input type="text"  class="form-control" id="identity_website" name="identity_website" placeholder="" value="<?= $identity_website; ?>">
+                                        <input type="text" class="form-control" id="identity_website" name="identity_website" placeholder="" value="<?= $identity_website; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_owner">Owner:</label>
                                     <div class="col-sm-10">
-                                        <input type="text"  class="form-control" id="identity_owner" name="identity_owner" placeholder="" value="<?= $identity_owner; ?>">
+                                        <input type="text" class="form-control" id="identity_owner" name="identity_owner" placeholder="" value="<?= $identity_owner; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_phone">Phone:</label>
                                     <div class="col-sm-10">
-                                        <input type="text"  class="form-control" id="identity_phone" name="identity_phone" placeholder="" value="<?= $identity_phone; ?>">
+                                        <input type="text" class="form-control" id="identity_phone" name="identity_phone" placeholder="" value="<?= $identity_phone; ?>">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_wa">Whatsapp:</label>
                                     <div class="col-sm-10">
-                                        <input type="text"  class="form-control" id="identity_wa" name="identity_wa" placeholder="" value="<?= $identity_wa; ?>">
+                                        <input type="text" class="form-control" id="identity_wa" name="identity_wa" placeholder="" value="<?= $identity_wa; ?>">
                                     </div>
                                 </div>
 
-                                
+
 
                                 <div class="form-group">
                                     <label class="control-label col-sm-2" for="identity_payment">Payment:</label>
@@ -117,7 +117,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-12" for="identity_logo">Logo: (Max 134 X 134)</label>
                                     <div class="col-sm-12">
-                                        <input type="file"  class="form-control" id="identity_logo" name="identity_logo" placeholder="" value="<?= $identity_logo; ?>">
+                                        <input type="file" class="form-control" id="identity_logo" name="identity_logo" placeholder="" value="<?= $identity_logo; ?>">
                                         <?php if ($identity_logo != "") {
                                             $user_image = "images/identity_logo/" . $identity_logo;
                                         } else {
@@ -154,7 +154,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-12" for="identity_quotationsign">Quotation Stamp and Signature: (Max 134 X 134)</label>
                                     <div class="col-sm-12">
-                                        <input type="file"  class="form-control" id="identity_quotationsign" name="identity_quotationsign" placeholder="" value="<?= $identity_quotationsign; ?>">
+                                        <input type="file" class="form-control" id="identity_quotationsign" name="identity_quotationsign" placeholder="" value="<?= $identity_quotationsign; ?>">
                                         <?php if ($identity_quotationsign != "") {
                                             $user_image = "images/identity_quotationsign/" . $identity_quotationsign;
                                         } else {
@@ -184,7 +184,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-12" for="identity_stempelsj">Stempel SJ: (Max 134 X 134)</label>
                                     <div class="col-sm-12">
-                                        <input type="file"  class="form-control" id="identity_stempelsj" name="identity_stempelsj" placeholder="" value="<?= $identity_stempelsj; ?>">
+                                        <input type="file" class="form-control" id="identity_stempelsj" name="identity_stempelsj" placeholder="" value="<?= $identity_stempelsj; ?>">
                                         <?php if ($identity_stempelsj != "") {
                                             $user_image = "images/identity_stempelsj/" . $identity_stempelsj;
                                         } else {
@@ -221,7 +221,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-12" for="identity_financettd">Finance TTD (Print Invoice)</label>
                                     <div class="col-sm-12">
-                                        <input type="file"  class="form-control" id="identity_financettd" name="identity_financettd" placeholder="" value="<?= $identity_financettd; ?>">
+                                        <input type="file" class="form-control" id="identity_financettd" name="identity_financettd" placeholder="" value="<?= $identity_financettd; ?>">
                                         <?php if ($identity_financettd != "") {
                                             $user_image = "images/identity_financettd/" . $identity_financettd;
                                         } else {
@@ -245,6 +245,17 @@
                                                 readURL(this);
                                             });
                                         </script>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-sm-12" for="identity_invcpartial">Invoice Customer Partial :</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control" id="identity_invcpartial" name="identity_invcpartial">
+                                            <option value="0" <?= ($identity_invcpartial == 0) ? "selected" : ""; ?>>Tidak</option>
+                                            <option value="1" <?= ($identity_invcpartial == 1) ? "selected" : ""; ?>>Ya</option>
+                                        </select>
                                     </div>
                                 </div>
 
