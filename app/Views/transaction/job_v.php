@@ -983,6 +983,7 @@
                                         }
                                     }
                                     $jobb = $this->db->table("job")
+                                        ->join("inv", "inv.job_dano=job.job_dano", "left")
                                         ->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'")
                                         ->get();
                                     $arlunas = array();
@@ -991,13 +992,16 @@
                                         $job_dano = $row->job_dano;
                                         $dibayar = isset($jobpay[$job_dano]) ? $jobpay[$job_dano] : 0;
 
-                                        if ($dibayar >= $row->job_total) {
+                                        // if ($dibayar >= $row->job_total) {
+                                        if ($dibayar >= $row->inv_grand) {
                                             $arlunas[] = $job_dano;
+                                            $arlunasin[$job_dano] = $dibayar . " >= " . $row->inv_grand;
                                         } else {
                                             $arbelum[] = $job_dano;
+                                            $arlunasin[$job_dano] = $dibayar . " >= " . $row->inv_grand;
                                         }
                                     }
-
+                                    // print_r($arlunasin['250256']);
                                     $build = $this->db
                                         ->table("job")
                                         ->join("(SELECT user_id AS supervisi_id, user_nama as supervisi_name from user)AS supervisi", "supervisi.supervisi_id = job.job_supervisi", "left")
