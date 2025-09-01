@@ -395,7 +395,7 @@ foreach ($tbukun->getResult() as $row) {
                                 </select>
                             </div>
                             <div class="form-group ">
-                                <select style="width: 100px;" class="form-control" id="invpayment_from" name="invpayment_from" placeholder="From"
+                                <select style="width: 200px;" class="form-control" id="invpayment_from" name="invpayment_from" placeholder="From"
                                     data-toggle="popover"
                                     data-content="Asal"
                                     data-trigger="hover"
@@ -413,7 +413,7 @@ foreach ($tbukun->getResult() as $row) {
                                
                             </div>
                             <div class="form-group">
-                                <select style="width: 100px;" class="form-control" id="invpayment_to" name="invpayment_to" placeholder="To"
+                                <select style="width: 200px;" class="form-control" id="invpayment_to" name="invpayment_to" placeholder="To"
                                     data-toggle="popover"
                                     data-content="Tujuan"
                                     data-trigger="hover"
