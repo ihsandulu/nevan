@@ -797,10 +797,81 @@
                                 <strong><?= $message; ?></strong>
                             </div>
                         <?php } ?>
+                        <?php
+                        $spilihan = "";
+                        if (isset($_GET["spilihan"])) {
+                            $spilihan = $_GET["spilihan"];
+                        }
+                        ?>
+                        <script>
+                            function pilihan(isi) {
+                                $(".pilihan").hide();
+                                if (isi == "jobdano") {
+                                    $("#jobdano").show();
+                                    $(".spilih").val(isi);
+                                } else if (isi == "periode") {
+                                    $("#periode").show();
+                                    $(".spilih").val(isi);
+                                } else {
+                                    $("#pilih").show();
+                                    $(".spilih").val(isi);
+                                }
+                            }
 
-
-                        <form method="get">
+                            $(document).ready(function() {
+                                pilihan('<?= $spilihan; ?>');
+                            });
+                        </script>
+                        <form method="get" id="pilih" class="pilihan">
                             <div class="row alert alert-dark">
+                                <div class="col-3">
+                                    <select name="spilihan" class="form-control spilih" onchange="pilihan(this.value);">
+                                        <option value="" <?= ($spilihan == "") ? "selected" : ""; ?>>Pilih Pencarian</option>
+                                        <option value="jobdano" <?= ($spilihan == "jobdano") ? "selected" : ""; ?>>DA Number</option>
+                                        <option value="periode" <?= ($spilihan == "periode") ? "selected" : ""; ?>>Periode</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+
+
+                        <form method="get" id="jobdano" class="pilihan">
+                            <div class="row alert alert-dark">
+                                <?php
+                                $job_dano = "";
+                                if (isset($_GET["job_dano"])) {
+                                    $job_dano = $_GET["job_dano"];
+                                }
+                                ?>
+                                <div class="col-3">
+                                    <select name="spilihan" class="form-control spilih" onchange="pilihan(this.value);">
+                                        <option value="" <?= ($spilihan == "") ? "selected" : ""; ?>>Pilih Pencarian</option>
+                                        <option value="jobdano" <?= ($spilihan == "jobdano") ? "selected" : ""; ?>>DA Number</option>
+                                        <option value="periode" <?= ($spilihan == "periode") ? "selected" : ""; ?>>Periode</option>
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <input title="Da Number" type="text" class="form-control " placeholder="Da Number" name="job_dano" value="<?= $job_dano; ?>">
+
+                                </div>
+
+                                <div class="col-1">
+                                    <?php if (isset($_GET["report"])) { ?><input type="hidden" name="report" value="OK"><?php } ?>
+                                    <button type="submit" class="btn btn-block btn-primary"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <form method="get" id="periode" class="pilihan">
+                            <div class="row alert alert-dark">
+                                <div class="col-3">
+                                    <select name="spilihan" class="form-control spilih" onchange="pilihan(this.value);">
+                                        <option value="" <?= ($spilihan == "") ? "selected" : ""; ?>>Pilih Pencarian</option>
+                                        <option value="jobdano" <?= ($spilihan == "jobdano") ? "selected" : ""; ?>>DA Number</option>
+                                        <option value="periode" <?= ($spilihan == "periode") ? "selected" : ""; ?>>Periode</option>
+                                    </select>
+                                </div>
+
                                 <?php
                                 $dari = date("Y-m-d", strtotime("-5 days"));
                                 $ke = date("Y-m-d");
@@ -955,10 +1026,15 @@
                                 <tbody>
                                     <?php
                                     //cari job_dano yg sesuai tgl
-                                    $cari = $this->db
-                                        ->table("job")
-                                        ->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'")
-                                        ->get();
+                                    $build = $this->db
+                                        ->table("job");
+                                    if ($spilihan == "periode") {
+                                        $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                    }
+                                    if ($spilihan == "jobdano") {
+                                        $build->where("job.job_dano", $this->request->getGet("job_dano"));
+                                    }
+                                    $cari = $build->get();
                                     $arjob = array();
                                     $arjobprice = array();
                                     foreach ($cari->getResult() as $row) {
@@ -982,10 +1058,15 @@
                                             $jobpay[$row->job_dano] += $amount;
                                         }
                                     }
-                                    $jobb = $this->db->table("job")
-                                        ->join("inv", "inv.job_dano=job.job_dano", "left")
-                                        ->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'")
-                                        ->get();
+                                    $build = $this->db->table("job")
+                                        ->join("inv", "inv.job_dano=job.job_dano", "left");
+                                    if ($spilihan == "periode") {
+                                        $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                    }
+                                    if ($spilihan == "jobdano") {
+                                        $build->where("job.job_dano", $this->request->getGet("job_dano"));
+                                    }
+                                    $jobb = $build->get();
                                     $arlunas = array();
                                     $arbelum = array();
                                     foreach ($jobb->getResult() as $row) {
@@ -1039,9 +1120,18 @@
                                     if (isset($_GET["customer_id"]) && $_GET["customer_id"] != "") {
                                         $build->where("job.customer_id", $_GET["customer_id"]);
                                     }
-                                    $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                    if ($spilihan == "periode") {
+                                        $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                    }
+                                    if ($spilihan == "jobdano") {
+                                        $build->where("job.job_dano", $this->request->getGet("job_dano"));
+                                    }
                                     if (isset($_GET["job_sales"]) && $_GET["job_sales"] != "") {
                                         $build->where("job_sales", $_GET["job_sales"]);
+                                    }
+
+                                    if (isset($_GET["job_dano"]) && $_GET["job_dano"] != "") {
+                                        $build->where("job_dano", $_GET["job_dano"]);
                                     }
                                     $usr = $build
                                         ->orderBy("job_dano", "ASC")
@@ -1455,7 +1545,7 @@
             const tooltip = new bootstrap.Tooltip(tooltipTriggerEl);
 
             // Menampilkan tooltip secara manual
-            tooltip.show();
+            // tooltip.show();
         });
     });
     $(document).ready(function() {
