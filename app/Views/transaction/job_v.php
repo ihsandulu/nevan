@@ -977,8 +977,12 @@
                                         <?php if ($ppn != 2) { ?>
                                             <th>Origin</th>
                                             <th>Destination</th>
-                                            <th>Tujuan</th>
-                                            <th>Alamat Tujuan</th>
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108)) { ?>
+                                                <th>Description</th>
+                                            <?php } else { ?>
+                                                <th>Tujuan</th>
+                                                <th>Alamat Tujuan</th>
+                                            <?php } ?>
                                             <!-- <th>Description of Goods</th>
                                             <th>Qty</th>
                                             <th>Satuan</th>
@@ -1085,6 +1089,7 @@
                                     // print_r($arlunasin['250256']);
                                     $build = $this->db
                                         ->table("job")
+                                        ->select("*,GROUP_CONCAT(jobd.jobd_descgood SEPARATOR ', ') as jobd_list")
                                         ->join("(SELECT user_id AS supervisi_id, user_nama as supervisi_name from user)AS supervisi", "supervisi.supervisi_id = job.job_supervisi", "left")
                                         ->join("customer", "customer.customer_id = job.customer_id", "left")
                                         ->join("origin", "origin.origin_id = job.origin_id", "left")
@@ -1094,7 +1099,8 @@
                                         ->join("(SELECT vendor_id as vendor_id2, vendor_name AS vendor_name2 FROM vendor) AS v2", "v2.vendor_id2 = vendortruck.vendor_id", "left")
                                         ->join("(SELECT vendor_id as vendor_idd, vendor_name AS vendor_named FROM vendor) AS dooring", "dooring.vendor_idd = job.job_dooring", "left")
                                         ->join("service", "service.service_id = job.service_id", "left")
-                                        ->join("vessel", "vessel.vessel_id = job.vessel_id", "left");
+                                        ->join("vessel", "vessel.vessel_id = job.vessel_id", "left")
+                                        ->join("jobd", "jobd.job_temp = job.job_temp", "left");;
                                     if ($lunas == "lunas") {
                                         $build->whereIn("job.job_dano", $arlunas);
                                     } else if ($lunas == "belum") {
@@ -1134,6 +1140,7 @@
                                         $build->where("job_dano", $_GET["job_dano"]);
                                     }
                                     $usr = $build
+                                        ->groupBy("job.job_id") // WAJIB, biar GROUP_CONCAT jalan per job
                                         ->orderBy("job_dano", "ASC")
                                         ->get();
                                     // echo $this->db->getLastquery();
@@ -1400,8 +1407,13 @@
                                             <?php if ($ppn != 2) { ?>
                                                 <td class="<?= $textstatus; ?>"><?= $usr->origin_name; ?></td>
                                                 <td class="<?= $textstatus; ?>"><?= $usr->destination_name; ?></td>
-                                                <td class="<?= $textstatus; ?>"><?= $usr->job_tujuan; ?></td>
-                                                <td class="<?= $textstatus; ?>"><?= $usr->job_tujuanaddress; ?></td>
+
+                                                <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108)) { ?>
+                                                    <td class="<?= $textstatus; ?>"><?= $usr->jobd_list; ?></td>
+                                                <?php } else { ?>
+                                                    <td class="<?= $textstatus; ?>"><?= $usr->job_tujuan; ?></td>
+                                                    <td class="<?= $textstatus; ?>"><?= $usr->job_tujuanaddress; ?></td>
+                                                <?php } ?>
                                                 <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_descgood; ?></td>
                                                 <td class="<?= $textstatus; ?>"><?= number_format($usr->job_qty, 0, ",", "."); ?></td>
                                                 <td class="<?= $textstatus; ?>"><?= $usr->job_satuan; ?></td>
