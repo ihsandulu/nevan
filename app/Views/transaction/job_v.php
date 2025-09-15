@@ -990,7 +990,7 @@
                                             <th>Service</th>
                                             <th>Trucking</th>
                                             <th>Vessel</th>
-                                            <th>Pickup Address</th>
+                                            <!-- <th>Pickup Address</th> -->
                                             <th>Pickup Date</th>
                                             <th>Petugas</th>
                                             <th>Penyerah</th>
@@ -1421,7 +1421,7 @@
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->service_name; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name2; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->vessel_name; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td>
+                                                <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td> -->
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickup; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupusername; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
