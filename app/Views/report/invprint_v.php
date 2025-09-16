@@ -295,12 +295,14 @@ if (isset($_GET["inv_temp"])) {
                         <div class="col-9">
                             : <?= date("d/m/Y", strtotime($tagihandate)); ?>
                         </div>
-                        <div class="col-3">
-                            Due Date
-                        </div>
-                        <div class="col-9">
-                            : <?= date("d/m/Y", strtotime($tagihanduedate)); ?>
-                        </div>
+                        <?php if ($tagihanduedate) { ?>
+                            <div class="col-3">
+                                Due Date
+                            </div>
+                            <div class="col-9">
+                                : <?= date("d/m/Y", strtotime($tagihanduedate)); ?>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
                 <div class="col-12 mt-2">
