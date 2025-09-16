@@ -1119,7 +1119,7 @@
                                     // print_r($arbelum);
                                     $build = $this->db
                                         ->table("job")
-                                        ->select("*,GROUP_CONCAT(jobd.jobd_descgood SEPARATOR ', ') as jobd_list,GROUP_CONCAT(jobd.jobd_koli SEPARATOR ', ') as jobd_lkoli,GROUP_CONCAT(jobd.jobd_cbm SEPARATOR ', ') as jobd_lcbm")
+                                        ->select("*,job.job_temp as job_temp, GROUP_CONCAT(jobd.jobd_descgood SEPARATOR ', ') as jobd_list,GROUP_CONCAT(jobd.jobd_koli SEPARATOR ', ') as jobd_lkoli,GROUP_CONCAT(jobd.jobd_cbm SEPARATOR ', ') as jobd_lcbm")
                                         ->join("(SELECT user_id AS supervisi_id, user_nama as supervisi_name from user)AS supervisi", "supervisi.supervisi_id = job.job_supervisi", "left")
                                         ->join("customer", "customer.customer_id = job.customer_id", "left")
                                         ->join("origin", "origin.origin_id = job.origin_id", "left")
