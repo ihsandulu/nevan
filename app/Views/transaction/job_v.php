@@ -1472,7 +1472,7 @@
                                                 <td class="<?= $textstatus; ?>"><?= $usr->origin_name; ?></td>
                                                 <td class="<?= $textstatus; ?>"><?= $usr->destination_name; ?></td>
 
-                                                <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108)) { ?>
+                                                <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->jobd_list; ?></td>
                                                 <?php } else { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->job_tujuan; ?></td>
