@@ -1000,8 +1000,8 @@
                                             <th>CBM/KGS</th>
                                             <th>Supervisi</th>
                                             <th>Bukti</th>
-                                            <th>Nopol</th>
-                                            <th>Pengemudi</th>
+                                            <!-- <th>Nopol</th>
+                                            <th>Pengemudi</th> -->
                                             <?php if ($ppn == 0) { ?>
                                                 <th>Vendor/Pelayaran</th>
                                                 <th>Dooring</th>
@@ -1441,8 +1441,8 @@
                                                         Lihat Bukti
                                                     </button>
                                                 </td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_nopol; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pengemudi; ?></td>
+                                                <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_nopol; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pengemudi; ?></td> -->
                                                 <?php if ($ppn == 0) { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->vendor_name; ?></td>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->vendor_named; ?></td>
