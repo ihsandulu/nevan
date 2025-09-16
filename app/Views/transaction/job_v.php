@@ -1552,7 +1552,95 @@
                                             <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_explanation; ?></td> -->
                                         </tr>
                                     <?php } ?>
+
                                     <tr class="bold">
+                                        <?php if (!isset($_GET["report"])) { ?>
+                                            <td class="text-right"></td>
+                                        <?php } ?>
+                                        <!-- <td class="text-right"></td> -->
+                                        <?php if ($ppn == 0) { ?>
+                                            <!-- <td class="text-right"></td> -->
+                                        <?php } ?>
+                                        <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                        <?php } ?>
+
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <td class="text-right"></td>
+                                        <?php if ($ppn != 2) { ?>
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+                                                <td class="text-right"></td>
+                                            <?php } else { ?>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                            <?php } ?>
+                                            <!-- <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td> -->
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                           <td class="text-right"></td>
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) {
+                                            } else { ?>
+                                                <td class="text-right"></td>
+                                            <?php } ?>
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                            <?php } else { ?>
+                                                <td class="text-right"></td>
+                                               <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                            <?php } ?>
+
+
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+
+                                            <?php } else { ?>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                            <?php } ?>
+
+                                            <?php if ($ppn == 0) { ?>
+                                                <td class="text-right"></td>
+                                                <td class="text-right">TOTAL</td>
+                                            <?php } ?>
+                                            <?php if ($posisi != "operasional") { ?>
+                                                <!-- <td class="text-right"></td> -->
+                                                <td><?= number_format($job_total, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_cost, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_refund, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_fee, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_profit, 0, ",", "."); ?></td>
+                                        <td><?= number_format($job_gp, 0, ",", "."); ?></td>
+                                            <?php } ?>
+                                            <?php if ($ppn == 1) { ?>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                                <<td class="text-right"></td>
+                                            <?php } ?>
+                                        <?php } ?>
+
+                                        <?php if ($ppn == 1) { ?>
+                                            <td class="text-right"></td>
+                                            <td class="text-right"></td>
+                                        <?php } ?>
+                                        <!-- <td class="text-right"></td> -->
+                                    </tr>
+
+                                    <!-- <tr class="bold">
                                         <td class="text-right"></td>
                                         <td class="text-right"></td>
                                         <td class="text-right"></td>
@@ -1584,7 +1672,7 @@
                                         <td><?= number_format($job_fee, 0, ",", "."); ?></td>
                                         <td><?= number_format($job_profit, 0, ",", "."); ?></td>
                                         <td><?= number_format($job_gp, 0, ",", "."); ?></td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                             <!-- Modal Bootstrap -->
