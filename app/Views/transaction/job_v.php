@@ -993,9 +993,11 @@
                                             <!-- <th>Pickup Address</th> -->
                                             <th>Pickup Date</th>
                                             <th>Petugas</th>
-                                            <th>Penyerah</th>
+                                            <!-- <th>Penyerah</th>
                                             <th>Kepada (SJ)</th>
-                                            <th>Alamat Kepada</th>
+                                            <th>Alamat Kepada</th> -->
+                                            <th>Qty</th>
+                                            <th>CBM/KGS</th>
                                             <th>Supervisi</th>
                                             <th>Bukti</th>
                                             <th>Nopol</th>
@@ -1089,7 +1091,7 @@
                                     // print_r($arlunasin['250256']);
                                     $build = $this->db
                                         ->table("job")
-                                        ->select("*,GROUP_CONCAT(jobd.jobd_descgood SEPARATOR ', ') as jobd_list")
+                                        ->select("*,GROUP_CONCAT(jobd.jobd_descgood SEPARATOR ', ') as jobd_list,GROUP_CONCAT(jobd.jobd_koli SEPARATOR ', ') as jobd_lkoli,GROUP_CONCAT(jobd.jobd_cbm SEPARATOR ', ') as jobd_lcbm")
                                         ->join("(SELECT user_id AS supervisi_id, user_nama as supervisi_name from user)AS supervisi", "supervisi.supervisi_id = job.job_supervisi", "left")
                                         ->join("customer", "customer.customer_id = job.customer_id", "left")
                                         ->join("origin", "origin.origin_id = job.origin_id", "left")
@@ -1424,9 +1426,11 @@
                                                 <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td> -->
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickup; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupusername; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
+                                                <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepada; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepadaaddress; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepadaaddress; ?></td> -->
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->jobd_lkoli; ?></td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->jobd_lcbm; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->supervisi_name; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
                                                     <button
