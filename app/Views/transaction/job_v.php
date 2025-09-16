@@ -968,6 +968,8 @@
                                             <!-- <th>Methode</th> -->
                                         <?php } ?>
 
+                                        <th>Invoice</th>
+                                        <th>Lunas</th>
                                         <th>Shipment Date</th>
                                         <th>Status Job</th>
                                         <th>Pickup Status</th>
@@ -1065,30 +1067,41 @@
                                         }
                                     }
                                     $build = $this->db->table("job")
-                                        ->join("inv", "inv.job_dano=job.job_dano", "left");
+                                        ->select("*,job.job_dano as job_dano")
+                                        // ->join("inv", "inv.job_dano=job.job_dano", "left");
+                                         ->join("inv", "FIND_IN_SET(job.job_dano, REPLACE(inv.job_dano, ' ', ''))", "left");
+
                                     if ($spilihan == "periode") {
                                         $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     }
                                     if ($spilihan == "jobdano") {
                                         $build->where("job.job_dano", $this->request->getGet("job_dano"));
                                     }
+                                    // echo $build->getCompiledSelect();
+                                    // exit;
                                     $jobb = $build->get();
+                                    // echo $this->db->getLastQuery();
                                     $arlunas = array();
                                     $arbelum = array();
+                                    $arinvoice = array();
                                     foreach ($jobb->getResult() as $row) {
                                         $job_dano = $row->job_dano;
                                         $dibayar = isset($jobpay[$job_dano]) ? $jobpay[$job_dano] : 0;
-
+                                        $inv_grand = isset($row->inv_grand) ? $row->inv_grand : 0;
                                         // if ($dibayar >= $row->job_total) {
-                                        if ($dibayar >= $row->inv_grand) {
+                                        if (($dibayar >= $inv_grand) && $inv_grand > 0) {
                                             $arlunas[] = $job_dano;
                                             $arlunasin[$job_dano] = $dibayar . " >= " . $row->inv_grand;
                                         } else {
                                             $arbelum[] = $job_dano;
                                             $arlunasin[$job_dano] = $dibayar . " >= " . $row->inv_grand;
                                         }
+                                        // echo $dibayar . " >= " . $inv_grand . "<br/>";
+                                        if ($row->inv_id) {
+                                            $arinvoice[] = $job_dano;
+                                        }
                                     }
-                                    // print_r($arlunasin['250256']);
+                                    // print_r($arbelum);
                                     $build = $this->db
                                         ->table("job")
                                         ->select("*,GROUP_CONCAT(jobd.jobd_descgood SEPARATOR ', ') as jobd_list,GROUP_CONCAT(jobd.jobd_koli SEPARATOR ', ') as jobd_lkoli,GROUP_CONCAT(jobd.jobd_cbm SEPARATOR ', ') as jobd_lcbm")
@@ -1103,10 +1116,19 @@
                                         ->join("service", "service.service_id = job.service_id", "left")
                                         ->join("vessel", "vessel.vessel_id = job.vessel_id", "left")
                                         ->join("jobd", "jobd.job_temp = job.job_temp", "left");;
+
                                     if ($lunas == "lunas") {
-                                        $build->whereIn("job.job_dano", $arlunas);
+                                        if (!empty($arlunas)) {
+                                            $build->whereIn("job.job_dano", $arlunas);
+                                        } else {
+                                            $build->where("1=0"); // supaya hasil langsung kosong, tanpa error
+                                        }
                                     } else if ($lunas == "belum") {
-                                        $build->whereIn("job.job_dano", $arbelum);
+                                        if (!empty($arbelum)) {
+                                            $build->whereIn("job.job_dano", $arbelum);
+                                        } else {
+                                            $build->where("1=0"); // hasil kosong juga
+                                        }
                                     }
                                     if ($ppn != 0) {
                                         $build->where("job_ppntype", $ppn);
@@ -1141,6 +1163,8 @@
                                     if (isset($_GET["job_dano"]) && $_GET["job_dano"] != "") {
                                         $build->where("job_dano", $_GET["job_dano"]);
                                     }
+                                    // echo $build->getCompiledSelect();
+                                    // exit;
                                     $usr = $build
                                         ->groupBy("job.job_id") // WAJIB, biar GROUP_CONCAT jalan per job
                                         ->orderBy("job_dano", "ASC")
@@ -1399,6 +1423,20 @@
                                             <?php if ($ppn == 0) { ?>
                                                 <!-- <td class="<?= $textstatus; ?>"><?= $usr->job_methode; ?></td> -->
                                             <?php } ?>
+                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
+                                                <?php if (in_array($usr->job_dano, $arinvoice)) {
+                                                    echo "Invoice";
+                                                } else {
+                                                    echo "Belum";
+                                                } ?>
+                                            </td>
+                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
+                                                <?php if (in_array($usr->job_dano, $arlunas)) {
+                                                    echo "Lunas";
+                                                } else {
+                                                    echo "Belum";
+                                                } ?>
+                                            </td>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_shipmentdate; ?></td>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_status; ?></td>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>
