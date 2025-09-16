@@ -967,9 +967,11 @@
                                         <?php if ($ppn == 0) { ?>
                                             <!-- <th>Methode</th> -->
                                         <?php } ?>
+                                        <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+                                            <th>Invoice</th>
+                                            <th>Lunas</th>
+                                        <?php } ?>
 
-                                        <th>Invoice</th>
-                                        <th>Lunas</th>
                                         <th>Shipment Date</th>
                                         <th>Status Job</th>
                                         <th>Pickup Status</th>
@@ -979,7 +981,7 @@
                                         <?php if ($ppn != 2) { ?>
                                             <th>Origin</th>
                                             <th>Destination</th>
-                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108)) { ?>
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
                                                 <th>Description</th>
                                             <?php } else { ?>
                                                 <th>Tujuan</th>
@@ -992,18 +994,31 @@
                                             <th>Service</th>
                                             <th>Trucking</th>
                                             <th>Vessel</th>
-                                            <!-- <th>Pickup Address</th> -->
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) {
+                                            } else { ?>
+                                                <th>Pickup Address</th>
+                                            <?php } ?>
                                             <th>Pickup Date</th>
                                             <th>Petugas</th>
-                                            <!-- <th>Penyerah</th>
-                                            <th>Kepada (SJ)</th>
-                                            <th>Alamat Kepada</th> -->
-                                            <th>Qty</th>
-                                            <th>CBM/KGS</th>
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+                                                <th>Qty</th>
+                                                <th>CBM/KGS</th>
+                                            <?php } else { ?>
+                                                <th>Penyerah</th>
+                                                <th>Kepada (SJ)</th>
+                                                <th>Alamat Kepada</th>
+                                            <?php } ?>
+
+
                                             <th>Supervisi</th>
                                             <th>Bukti</th>
-                                            <!-- <th>Nopol</th>
-                                            <th>Pengemudi</th> -->
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+
+                                            <?php } else { ?>
+                                                <th>Nopol</th>
+                                                <th>Pengemudi</th>
+                                            <?php } ?>
+
                                             <?php if ($ppn == 0) { ?>
                                                 <th>Vendor/Pelayaran</th>
                                                 <th>Dooring</th>
@@ -1069,7 +1084,7 @@
                                     $build = $this->db->table("job")
                                         ->select("*,job.job_dano as job_dano")
                                         // ->join("inv", "inv.job_dano=job.job_dano", "left");
-                                         ->join("inv", "FIND_IN_SET(job.job_dano, REPLACE(inv.job_dano, ' ', ''))", "left");
+                                        ->join("inv", "FIND_IN_SET(job.job_dano, REPLACE(inv.job_dano, ' ', ''))", "left");
 
                                     if ($spilihan == "periode") {
                                         $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
@@ -1150,6 +1165,9 @@
                                     if (isset($_GET["customer_id"]) && $_GET["customer_id"] != "") {
                                         $build->where("job.customer_id", $_GET["customer_id"]);
                                     }
+                                    if (!isset($_GET["spilihan"])) {
+                                        $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                    }
                                     if ($spilihan == "periode") {
                                         $build->where("job_shipmentdate BETWEEN '" . $dari . "' AND '" . $ke . "'");
                                     }
@@ -1158,6 +1176,9 @@
                                     }
                                     if (isset($_GET["job_sales"]) && $_GET["job_sales"] != "") {
                                         $build->where("job_sales", $_GET["job_sales"]);
+                                    }
+                                    if (session()->get("position_id") == "102") {
+                                        $build->where("job_sales", session()->get("user_id"));
                                     }
 
                                     if (isset($_GET["job_dano"]) && $_GET["job_dano"] != "") {
@@ -1423,20 +1444,23 @@
                                             <?php if ($ppn == 0) { ?>
                                                 <!-- <td class="<?= $textstatus; ?>"><?= $usr->job_methode; ?></td> -->
                                             <?php } ?>
-                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
-                                                <?php if (in_array($usr->job_dano, $arinvoice)) {
-                                                    echo "Invoice";
-                                                } else {
-                                                    echo "Belum";
-                                                } ?>
-                                            </td>
-                                            <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
-                                                <?php if (in_array($usr->job_dano, $arlunas)) {
-                                                    echo "Lunas";
-                                                } else {
-                                                    echo "Belum";
-                                                } ?>
-                                            </td>
+                                            <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
+                                                    <?php if (in_array($usr->job_dano, $arinvoice)) {
+                                                        echo "Invoice";
+                                                    } else {
+                                                        echo "Belum";
+                                                    } ?>
+                                                </td>
+                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
+                                                    <?php if (in_array($usr->job_dano, $arlunas)) {
+                                                        echo "Lunas";
+                                                    } else {
+                                                        echo "Belum";
+                                                    } ?>
+                                                </td>
+                                            <?php } ?>
+
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_shipmentdate; ?></td>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_status; ?></td>
                                             <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $statuspickup[$usr->job_pickupstatus]; ?></td>
@@ -1461,14 +1485,23 @@
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->service_name; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name2; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->vessel_name; ?></td>
-                                                <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td> -->
+
+                                                <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) {
+                                                } else { ?>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupaddress; ?></td>
+                                                <?php } ?>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickup; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pickupusername; ?></td>
-                                                <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepada; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepadaaddress; ?></td> -->
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->jobd_lkoli; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->jobd_lcbm; ?></td>
+                                                <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->jobd_lkoli; ?></td>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->jobd_lcbm; ?></td>
+                                                <?php } else { ?>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_handover; ?></td>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepada; ?></td>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_kepadaaddress; ?></td>
+                                                <?php } ?>
+
+
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->supervisi_name; ?></td>
                                                 <td class="<?= $textstatus; ?>" style="white-space:nowrap;">
                                                     <button
@@ -1479,8 +1512,13 @@
                                                         Lihat Bukti
                                                     </button>
                                                 </td>
-                                                <!-- <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_nopol; ?></td>
-                                                <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pengemudi; ?></td> -->
+                                                <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
+
+                                                <?php } else { ?>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_nopol; ?></td>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->job_pengemudi; ?></td>
+                                                <?php } ?>
+
                                                 <?php if ($ppn == 0) { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->vendor_name; ?></td>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->vendor_named; ?></td>
