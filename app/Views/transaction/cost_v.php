@@ -119,6 +119,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     ->join("(SELECT rekening_id as fromid, rekening_no as fromrek, rekening_an as froman from rekening) AS dari", "dari.fromid = cost.cost_from", "left")
                                     ->join("(SELECT rekening_id as toid, rekening_no as torek, rekening_an as toan from rekening) AS ke", "ke.toid = cost.cost_to", "left");
                                 $build->where("job_temp", $job_temp);
+                                $build->where("job_temp !=", "");
                                 $usr = $build->get();
 
                                 //echo $this->db->getLastquery();
