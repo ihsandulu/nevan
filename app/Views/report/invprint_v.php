@@ -295,7 +295,7 @@ if (isset($_GET["inv_temp"])) {
                         <div class="col-9">
                             : <?= date("d/m/Y", strtotime($tagihandate)); ?>
                         </div>
-                        <?php if ($tagihanduedate) { ?>
+                        <?php if ($tagihanduedate > "0000-00-00") { ?>
                             <div class="col-3">
                                 Due Date
                             </div>
