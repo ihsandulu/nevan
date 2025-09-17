@@ -29,7 +29,11 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     .w300 {
         width: 300px;
     }
-    .wraptext{white-space: normal; word-break: break-word;}
+
+    .wraptext {
+        white-space: normal;
+        word-break: break-word;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -103,40 +107,34 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <strong><?= $message; ?></strong>
                         </div>
                     <?php } ?>
-                    <form method="get">
-                        <div class="row alert alert-dark">
-                            <?php
-                            $dari = date("Y-m-d", strtotime("-1 week", strtotime(date("Y-m-d"))));
-                            $ke = date("Y-m-d");
-                            $lunas = "";
-                            $customer_id = "";
-                            if (isset($_GET["dari"])) {
-                                $dari = $_GET["dari"];
-                            }
-                            if (isset($_GET["ke"])) {
-                                $ke = $_GET["ke"];
-                            }
-                            if (isset($_GET["lunas"])) {
-                                $lunas = $_GET["lunas"];
-                            }
-                            if (isset($_GET["customer_id"])) {
-                                $customer_id = $_GET["customer_id"];
-                            }
-                            ?>
-                            <div class="col-2 ">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Dari" type="date" class="form-control tooltip-statis" placeholder="Dari" name="dari" value="<?= $dari; ?>">
-                                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                            <form method="get" class="form-inline alert alert-dark">
+                                <?php
+                                $dari = date("Y-m-d", strtotime("-1 week", strtotime(date("Y-m-d"))));
+                                $ke = date("Y-m-d");
+                                $lunas = "";
+                                $customer_id = "";
+                                if (isset($_GET["dari"])) {
+                                    $dari = $_GET["dari"];
+                                }
+                                if (isset($_GET["ke"])) {
+                                    $ke = $_GET["ke"];
+                                }
+                                if (isset($_GET["lunas"])) {
+                                    $lunas = $_GET["lunas"];
+                                }
+                                if (isset($_GET["customer_id"])) {
+                                    $customer_id = $_GET["customer_id"];
+                                }
+                                ?>
+                                <div class="form-group">
+                                    <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Dari" type="date" class="form-control tooltip-statis" placeholder="Dari" name="dari" value="<?= $dari; ?>">
                                 </div>
-                            </div>
-                            <div class="col-2 row ">
-                                <div class="col-12">
+                                <div class="form-group">
                                     <input data-bs-toggle="tooltip" data-bs-placement="top" data-bs-trigger="manual" title="Ke" type="date" class="form-control tooltip-statis" placeholder="Ke" name="ke" value="<?= $ke; ?>">
                                 </div>
-                            </div>
-                            <div class="col-3 row ">
-                                <div class="col-12">
+                                <div class="form-group">
                                     <select class="form-control select" name="customer_id" value="<?= $customer_id; ?>">
                                         <option value="" <?= ($customer_id == "") ? "selected" : ""; ?>>All Customer</option>
                                         <?php $customer = $this->db->table("customer")->orderBy("customer_name", "ASC")->get();
@@ -145,21 +143,47 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <?php } ?>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-2 row">
-                                <div class="col-12">
+                                <div class="form-group">
                                     <select class="form-control" name="lunas" value="<?= $lunas; ?>">
                                         <option value="">Lunas/Belum</option>
                                         <option value="1" <?= ($lunas == "1") ? "selected" : ""; ?>>Lunas</option>
                                         <option value="0" <?= ($lunas == "0") ? "selected" : ""; ?>>Belum Lunas</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col-2">
-                                <button type="submit" class="btn btn-block btn-primary">Search</button>
-                            </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                </div>
+
+                            </form>
                         </div>
-                    </form>
+                        <div class="col-5">
+                            <form method="get" class="form-inline alert alert-dark">
+                                <?php
+                                $pilih = "";
+                                $ipilih = "";
+                                if (isset($_GET["pilih"])) {
+                                    $pilih = $_GET["pilih"];
+                                }
+                                if (isset($_GET["ipilih"])) {
+                                    $ipilih = $_GET["ipilih"];
+                                }
+                                ?>
+                                <div class="form-group">
+                                    <select class="form-control" name="pilih" value="<?= $pilih; ?>">
+                                        <option value="">Pilih Metode</option>
+                                        <option value="da" <?= ($pilih == "da") ? "selected" : ""; ?>>DA</option>
+                                        <option value="inv" <?= ($pilih == "inv") ? "selected" : ""; ?>>Invoice No.</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control tooltip-statis" name="ipilih" value="<?= $ipilih; ?>">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-block btn-primary">Search</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                     <div class="table-responsive m-t-40">
                         <table id="ex23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
@@ -181,19 +205,30 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             </thead>
                             <tbody>
                                 <?php
-                                $invd = $this->db->table("invd")
+                                /* $invd = $this->db->table("invd")
                                     ->where("invd_date BETWEEN '" . $dari . "' AND '" . $ke . "'")
                                     ->get();
                                 $ainvd = array();
                                 foreach ($invd->getResult() as $invd) {
                                     $ainvd[$invd->inv_id]["job_dano"][] = $invd->job_dano;
                                     $ainvd[$invd->inv_id]["invd_description"][] = $invd->invd_description;
-                                }
+                                } */
                                 // dd($ainvd);
                                 $build = $this->db
                                     ->table("inv")
-                                    ->join("customer", "customer.customer_id=inv.customer_id", "left");
-                                $build->where("inv_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                    ->select("inv.*, customer.customer_name, GROUP_CONCAT(invd.job_dano SEPARATOR ', ') as job_dano_list, GROUP_CONCAT(invd.invd_description SEPARATOR ', ') as invd_description_list")
+                                    ->join("customer", "customer.customer_id=inv.customer_id", "left")
+                                    ->join("invd", "invd.inv_temp = inv.inv_temp", "left");
+                                if (isset($_GET["pilih"])) {
+                                    if ($_GET["pilih"] == "da") {
+                                        $build->like("invd.job_dano", $_GET["ipilih"]);
+                                    }
+                                    if ($_GET["pilih"] == "inv") {
+                                        $build->like("inv_no", $_GET["ipilih"]);
+                                    }
+                                } else {
+                                    $build->where("inv_date BETWEEN '" . $dari . "' AND '" . $ke . "'");
+                                }
                                 if (isset($_GET["lunas"]) && $_GET["lunas"] != "") {
                                     if ($lunas == "1") {
                                         $build->where("inv_payment >= inv_grand");
@@ -204,8 +239,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 if (isset($_GET["customer_id"]) && $_GET["customer_id"] != "") {
                                     $build->where("inv.customer_id", $customer_id);
                                 }
+                                $build->groupBy("invd.inv_temp");
                                 $usr = $build->orderBy("inv.inv_id", "DESC")
-                                    ->get();
+                                ->get();
 
                                 // echo $this->db->getLastquery();
                                 $no = 1;
@@ -310,17 +346,20 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
 
                                         <td class="f12 wraptext">
-                                            <?=
+                                            <!-- <?=
                                             isset($ainvd[$usr->inv_id]["job_dano"]) && is_array($ainvd[$usr->inv_id]["job_dano"])
                                                 ? implode(', ', $ainvd[$usr->inv_id]["job_dano"])
                                                 : '-'
-                                            ?>
-                                        </td><td class="f12 wraptext">
-                                            <?=
+                                            ?> -->
+                                            <?=$usr->job_dano_list ;?>
+                                        </td>
+                                        <td class="f12 wraptext">
+                                            <!-- <?=
                                             isset($ainvd[$usr->inv_id]["invd_description"]) && is_array($ainvd[$usr->inv_id]["invd_description"])
                                                 ? implode(', ', $ainvd[$usr->inv_id]["invd_description"])
                                                 : '-'
-                                            ?>
+                                            ?> -->
+                                            <?=$usr->invd_description_list ;?>
                                         </td>
                                         <td class="text-left f12"><?= $usr->customer_name; ?></td>
                                         <td class="f12">
