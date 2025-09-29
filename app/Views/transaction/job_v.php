@@ -1473,7 +1473,7 @@
                                                 <td class="<?= $textstatus; ?>"><?= $usr->destination_name; ?></td>
 
                                                 <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
-                                                    <td class="<?= $textstatus; ?>"><?= $usr->jobd_list; ?></td>
+                                                    <td class="<?= $textstatus; ?>"  style="white-space:nowrap;"><?= $usr->jobd_list; ?></td>
                                                 <?php } else { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->job_tujuan; ?></td>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->job_tujuanaddress; ?></td>
@@ -1731,6 +1731,7 @@
     $(document).ready(function() {
         $('#e23').DataTable({
             dom: 'Bfrtip',
+            autoWidth: false,
             buttons: [{
                     extend: 'print',
                     exportOptions: {
