@@ -428,7 +428,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <td class="f12"><span class="uang">
                                                 <span></span>
                                                 <span><?php
-                                                        $sisahutang = $grand - $usr->inv_payment;
+                                                        $sisahutang = number_format($grand, 0, "", "") - $usr->inv_payment;
+                                                        // echo $grand." - ".$usr->inv_payment;
                                                         echo number_format($sisahutang, 0, ",", "."); ?></span>
                                             </span>
                                         </td>
