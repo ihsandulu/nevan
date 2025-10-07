@@ -8,6 +8,16 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    .select2-container {
+        width: 100% !important;
+    }
+
+    .select2-selection {
+        height: 38px !important;
+        /* biar sama tinggi dengan form-control Bootstrap */
+        line-height: 38px !important;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -919,7 +929,7 @@
                                     </select>
                                 </div>
                                 <div class="col-3">
-                                    <select class="form-control" name="customer_id">
+                                    <select class="form-control select" name="customer_id">
                                         <option value="" <?= ($customer_id == "") ? "selected" : ""; ?>>Customer</option>
                                         <?php $customer = $this->db->table("customer")->orderBy("customer_name")->get();
                                         foreach ($customer->getResult() as $row) { ?>
@@ -1473,7 +1483,7 @@
                                                 <td class="<?= $textstatus; ?>"><?= $usr->destination_name; ?></td>
 
                                                 <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) { ?>
-                                                    <td class="<?= $textstatus; ?>"  style="white-space:nowrap;"><?= $usr->jobd_list; ?></td>
+                                                    <td class="<?= $textstatus; ?>" style="white-space:nowrap;"><?= $usr->jobd_list; ?></td>
                                                 <?php } else { ?>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->job_tujuan; ?></td>
                                                     <td class="<?= $textstatus; ?>"><?= $usr->job_tujuanaddress; ?></td>
@@ -1587,7 +1597,7 @@
                                             <td class="text-right"></td> -->
                                             <td class="text-right"></td>
                                             <td class="text-right"></td>
-                                           <td class="text-right"></td>
+                                            <td class="text-right"></td>
                                             <?php if ((session()->get("position_id") == 96) || (session()->get("position_id") == 108) || (session()->get("position_id") == 99) || (session()->get("position_id") == 100) || (session()->get("position_id") == 101)) {
                                             } else { ?>
                                                 <td class="text-right"></td>
@@ -1599,7 +1609,7 @@
                                                 <td class="text-right"></td>
                                             <?php } else { ?>
                                                 <td class="text-right"></td>
-                                               <td class="text-right"></td>
+                                                <td class="text-right"></td>
                                                 <td class="text-right"></td>
                                             <?php } ?>
 
@@ -1620,24 +1630,25 @@
                                             <?php if ($posisi != "operasional") { ?>
                                                 <!-- <td class="text-right"></td> -->
                                                 <td><?= number_format($job_total, 0, ",", "."); ?></td>
-                                        <td><?= number_format($job_cost, 0, ",", "."); ?></td>
-                                        <td><?= number_format($job_refund, 0, ",", "."); ?></td>
-                                        <td><?= number_format($job_fee, 0, ",", "."); ?></td>
-                                        <td><?= number_format($job_profit, 0, ",", "."); ?></td>
-                                        <td><?= number_format($job_gp, 0, ",", "."); ?></td>
+                                                <td><?= number_format($job_cost, 0, ",", "."); ?></td>
+                                                <td><?= number_format($job_refund, 0, ",", "."); ?></td>
+                                                <td><?= number_format($job_fee, 0, ",", "."); ?></td>
+                                                <td><?= number_format($job_profit, 0, ",", "."); ?></td>
+                                                <td><?= number_format($job_gp, 0, ",", "."); ?></td>
                                             <?php } ?>
                                             <?php if ($ppn == 1) { ?>
                                                 <td class="text-right"></td>
                                                 <td class="text-right"></td>
-                                                <<td class="text-right"></td>
+                                                <<td class="text-right">
+                                                    </td>
+                                                <?php } ?>
                                             <?php } ?>
-                                        <?php } ?>
 
-                                        <?php if ($ppn == 1) { ?>
-                                            <td class="text-right"></td>
-                                            <td class="text-right"></td>
-                                        <?php } ?>
-                                        <!-- <td class="text-right"></td> -->
+                                            <?php if ($ppn == 1) { ?>
+                                                <td class="text-right"></td>
+                                                <td class="text-right"></td>
+                                            <?php } ?>
+                                            <!-- <td class="text-right"></td> -->
                                     </tr>
 
                                     <!-- <tr class="bold">
@@ -1710,7 +1721,10 @@
     </div>
 </div>
 <script>
-    $('.select').select2();
+    $('.select').select2({
+        width: '100%'
+    });
+
     var title = "<?= $title; ?>";
     $("title").text(title);
     $(".card-title").text(title);
