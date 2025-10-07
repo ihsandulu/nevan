@@ -235,6 +235,8 @@ if (isset($_GET["inv_temp"])) {
     .tdkecil2 {
         line-height: 0px !important;
     }
+
+    .tebel{font-weight: 600;}
 </style>
 
 <div class='container-fluid'>
@@ -267,39 +269,39 @@ if (isset($_GET["inv_temp"])) {
                 <div class="col-12 judul text-center">INVOICE</div>
                 <div class="col-7">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-3 tebel">
                             Customer
                         </div>
-                        <div class="col-9">
+                        <div class="col-9 tebel">
                             : <?= $inv->customer_name; ?>
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 tebel">
                             Address
                         </div>
-                        <div class="col-9">
+                        <div class="col-9 tebel">
                             : <?= $inv->customer_address; ?>
                         </div>
                     </div>
                 </div>
                 <div class="col-5">
                     <div class="row">
-                        <div class="col-3">
+                        <div class="col-3 tebel">
                             INV No.
                         </div>
-                        <div class="col-9">
+                        <div class="col-9 tebel">
                             : <?= $inv->inv_no; ?><?= $invnotambahan; ?>
                         </div>
-                        <div class="col-3">
+                        <div class="col-3 tebel">
                             Date
                         </div>
-                        <div class="col-9">
+                        <div class="col-9 tebel">
                             : <?= date("d/m/Y", strtotime($tagihandate)); ?>
                         </div>
                         <?php if ($tagihanduedate > "0000-00-00") { ?>
-                            <div class="col-3">
+                            <div class="col-3 tebel">
                                 Due Date
                             </div>
-                            <div class="col-9">
+                            <div class="col-9 tebel">
                                 : <?= date("d/m/Y", strtotime($tagihanduedate)); ?>
                             </div>
                         <?php } ?>
