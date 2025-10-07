@@ -236,7 +236,8 @@ if (isset($_GET["inv_temp"])) {
         line-height: 0px !important;
     }
 
-    .tebel{font-weight: 600;}
+    .tebel{font-weight: 600; color: #000;}
+    .duedated{font-size: 14px!important;}
 </style>
 
 <div class='container-fluid'>
@@ -298,7 +299,7 @@ if (isset($_GET["inv_temp"])) {
                             : <?= date("d/m/Y", strtotime($tagihandate)); ?>
                         </div>
                         <?php if ($tagihanduedate > "0000-00-00") { ?>
-                            <div class="col-3 tebel">
+                            <div class="col-3 tebel duedated">
                                 Due Date
                             </div>
                             <div class="col-9 tebel">
