@@ -205,7 +205,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             </div>
                         </div>
                     </form>
-                    <div id="table-wrapper">
+                    <div id="table-wrapper" style="overflow:auto; cursor: grab;">
                         <?php
                         $invvdrd = $this->db->table("invvdrd")
                             ->where("invvdrd_date BETWEEN '" . $dari . "' AND '" . $ke . "'")
@@ -547,52 +547,31 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     });
 </script>
 <script>
-    (function($) {
-        $(function() {
-            const wrapper = document.getElementById('table-wrapper');
-            if (!wrapper) return;
+    $(function() {
+        let isDown = false;
+        let startX, scrollLeft;
 
-            let isDown = false;
-            let startX = 0;
-            let scrollLeft = 0;
-            let activePointerId = null;
+        const slider = $('#table-wrapper');
 
-            wrapper.addEventListener('pointerdown', function(e) {
-                // hanya tombol kiri mouse atau touch
-                if (e.pointerType === 'mouse' && e.button !== 0) return;
-                isDown = true;
-                activePointerId = e.pointerId;
-                wrapper.setPointerCapture(activePointerId);
-
-                wrapper.style.cursor = 'grabbing';
-                // simpan posisi awal
-                startX = e.clientX;
-                scrollLeft = wrapper.scrollLeft;
-            });
-
-            wrapper.addEventListener('pointermove', function(e) {
-                if (!isDown || e.pointerId !== activePointerId) return;
-                e.preventDefault(); // cegah seleksi teks / native drag
-                const x = e.clientX;
-                const walk = (x - startX); // jarak gerak
-                // adjust scroll
-                wrapper.scrollLeft = scrollLeft - walk;
-            });
-
-            function endDrag(e) {
-                if (!isDown || (e && e.pointerId !== activePointerId)) return;
-                isDown = false;
-                try {
-                    wrapper.releasePointerCapture(activePointerId);
-                } catch (err) {}
-                activePointerId = null;
-                wrapper.style.cursor = 'grab';
-            }
-
-            wrapper.addEventListener('pointerup', endDrag);
-            wrapper.addEventListener('pointercancel', endDrag);
-            wrapper.addEventListener('pointerleave', endDrag);
+        slider.on('mousedown', function(e) {
+            isDown = true;
+            slider.css('cursor', 'grabbing');
+            startX = e.pageX - slider.offset().left;
+            scrollLeft = slider.scrollLeft();
         });
-    })(jQuery);
+
+        slider.on('mouseleave mouseup', function() {
+            isDown = false;
+            slider.css('cursor', 'grab');
+        });
+
+        slider.on('mousemove', function(e) {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offset().left;
+            const walk = (x - startX) * 1; // kecepatan drag
+            slider.scrollLeft(scrollLeft - walk);
+        });
+    });
 </script>
 <?php echo  $this->include("template/footer_v"); ?>
