@@ -40,6 +40,18 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         max-width: 200px;
     }
 
+    /* atur tinggi baris agar lebih rapat */
+    .wraptext {
+        white-space: normal;
+        /* agar teks bisa membungkus baris baru */
+        word-break: break-word;
+        line-height: 1.2 !important;
+        vertical-align: middle;
+    }
+
+
+
+
     /* styling wrapper */
     #table-wrapper {
         overflow: auto;
