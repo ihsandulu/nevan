@@ -39,6 +39,18 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         word-break: break-word;
         max-width: 200px;
     }
+
+    /* styling wrapper */
+    #table-wrapper {
+        overflow: auto;
+        cursor: grab;
+        -webkit-overflow-scrolling: touch;
+        /* smoother on iOS */
+        touch-action: pan-y;
+        /* biarkan vertical scroll tetap berfungsi, kita tangani horizontal drag */
+        user-select: none;
+        /* mencegah teks terseleksi saat drag */
+    }
 </style>
 
 <div class='container-fluid'>
@@ -158,7 +170,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             </div>
                         </div>
                     </form>
-                    <div class=" m-t-40">
+                    <div id="table-wrapper">
                         <?php
                         $invvdrd = $this->db->table("invvdrd")
                             ->where("invvdrd_date BETWEEN '" . $dari . "' AND '" . $ke . "'")
@@ -468,7 +480,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         format: {
                             body: function(data, row, column, node) {
                                 // Contoh: tambahkan kembali pemisah ribuan untuk kolom tertentu
-                                
+
 
                                 // Kolom 6 (jika mengandung <span class="uang">...) kita tangani secara khusus
                                 if (column === 5) {
@@ -499,5 +511,53 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         });
     });
 </script>
+<script>
+    (function($) {
+        $(function() {
+            const wrapper = document.getElementById('table-wrapper');
+            if (!wrapper) return;
 
+            let isDown = false;
+            let startX = 0;
+            let scrollLeft = 0;
+            let activePointerId = null;
+
+            wrapper.addEventListener('pointerdown', function(e) {
+                // hanya tombol kiri mouse atau touch
+                if (e.pointerType === 'mouse' && e.button !== 0) return;
+                isDown = true;
+                activePointerId = e.pointerId;
+                wrapper.setPointerCapture(activePointerId);
+
+                wrapper.style.cursor = 'grabbing';
+                // simpan posisi awal
+                startX = e.clientX;
+                scrollLeft = wrapper.scrollLeft;
+            });
+
+            wrapper.addEventListener('pointermove', function(e) {
+                if (!isDown || e.pointerId !== activePointerId) return;
+                e.preventDefault(); // cegah seleksi teks / native drag
+                const x = e.clientX;
+                const walk = (x - startX); // jarak gerak
+                // adjust scroll
+                wrapper.scrollLeft = scrollLeft - walk;
+            });
+
+            function endDrag(e) {
+                if (!isDown || (e && e.pointerId !== activePointerId)) return;
+                isDown = false;
+                try {
+                    wrapper.releasePointerCapture(activePointerId);
+                } catch (err) {}
+                activePointerId = null;
+                wrapper.style.cursor = 'grab';
+            }
+
+            wrapper.addEventListener('pointerup', endDrag);
+            wrapper.addEventListener('pointercancel', endDrag);
+            wrapper.addEventListener('pointerleave', endDrag);
+        });
+    })(jQuery);
+</script>
 <?php echo  $this->include("template/footer_v"); ?>
