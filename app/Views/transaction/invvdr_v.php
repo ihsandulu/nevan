@@ -51,6 +51,29 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         user-select: none;
         /* mencegah teks terseleksi saat drag */
     }
+
+
+    /* Tambahan styling agar proporsional */
+    .dataTables_wrapper .dataTables_scrollBody {
+        cursor: grab;
+        overflow-y: hidden !important;
+        /* cegah baris tinggi berlebihan */
+    }
+
+    table.dataTable {
+        border-collapse: collapse !important;
+        width: 100% !important;
+        table-layout: fixed;
+        /* penting agar kolom stabil */
+        white-space: nowrap;
+    }
+
+    table.dataTable td,
+    table.dataTable th {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        vertical-align: middle;
+    }
 </style>
 
 <div class='container-fluid'>
