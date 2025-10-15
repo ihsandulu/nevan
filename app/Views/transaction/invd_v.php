@@ -91,7 +91,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <input type="text" class="form-control" style="width: 100px;" id="inv_discount" name="inv_discount" placeholder="Discount" value="<?= $inv_discount; ?>">
                         </div>
                         <div class="form-group">
-                            <select required onchange="singkatan()" class="form-control" id="customer_id" name="customer_id">
+                            <select required onchange="singkatan()" class="form-control select" id="customer_id" name="customer_id">
                                 <option value="" data-singkatan="" <?= ($customer_id == "") ? "selected" : ""; ?>>Customer</option>
                                 <?php $customer = $this->db->table("customer")
                                     ->orderBy("customer_name", "ASC")
