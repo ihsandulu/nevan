@@ -38,7 +38,7 @@ class job_m extends core_m
             foreach ($this->db->getFieldNames('job') as $field) {
                 $data[$field] = "";
             }
-            $data["job_temp"] = date("YmdHis");
+            $data["job_temp"] = date("YmdHis") . $this->session->get("user_id");
             $data["job_shipmentdate"] = date("Y-m-d");
             $data["job_sell"] = 0;
             $data["job_total"] = 0;
@@ -53,7 +53,7 @@ class job_m extends core_m
         if (isset($_GET["temp"])) {
             $data["job_temp"] = $_GET["temp"];
         }
-        
+
         //total cost
         $us = $this->db
             ->table("cost")
@@ -112,7 +112,7 @@ class job_m extends core_m
 
             //$namabaru = $file->getRandomName();//define nama fiel yang baru secara acak
 
-            if ($type == 'image/jpg'||$type == 'image/jpeg'||$type == 'image/png') //cek mime file
+            if ($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png') //cek mime file
             {    // File Tipe Sesuai   
                 helper('filesystem'); // Load Helper File System
                 $direktori = 'images/job_picture'; //definisikan direktori upload            
@@ -139,7 +139,7 @@ class job_m extends core_m
                 // File Tipe Tidak Sesuai
                 $data['uploadjob_picture'] = "Format File Salah !";
             }
-        } 
+        }
 
         //insert
         if ($this->request->getPost("create") == "OK") {
