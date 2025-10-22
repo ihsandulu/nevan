@@ -1,5 +1,7 @@
 <?php echo $this->include("template/header_v");
-$identity = $this->db->table("identity")->get()->getRow(); ?>
+$identity = $this->db->table("identity")->get()->getRow(); 
+if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
+?>
 <style>
     td {
         white-space: nowrap;
@@ -316,7 +318,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     </div>
 </div>
 <script>
-    let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url($_GET["url"] . "?t=" . $_GET["t"] . "&temp=" . $job_temp); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
+    <?php if(isset($_GET["t"])&&$_GET["t"]=="jc"){
+        $urin = base_url($_GET["url"]);
+    }else{
+        $urin = base_url($_GET["url"] . "?t=" . $_GET["t"] . "&temp=" . $job_temp."&tbl=".$tbl);
+    }
+    ?>
+    let pagetitle = '&nbsp;&nbsp;<a href="<?= $urin; ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
     $(document).ready(function() {
         $("#page-title").append(pagetitle);
     });

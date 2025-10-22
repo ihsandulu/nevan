@@ -13,12 +13,12 @@ class job_m extends core_m
         //cek job
         if ($this->request->getPost("job_id")) {
             $jobd["job_id"] = $this->request->getPost("job_id");
+        } else if ($this->request->getPost("temp")) {
+            $jobd["job_temp"] = $this->request->getPost("temp");
+        } else if ($this->request->getGet("temp")) {
+            $jobd["job_temp"] = $this->request->getGet("temp");
         } else {
-            if ($this->request->getPost("temp")) {
-                $jobd["job_temp"] = $this->request->getPost("temp");
-            } else {
-                $jobd["job_id"] = -1;
-            }
+            $jobd["job_id"] = -1;
         }
         $us = $this->db
             ->table("job")
@@ -140,7 +140,7 @@ class job_m extends core_m
                 $data['uploadjob_picture'] = "Format File Salah !";
             }
         }
-
+        // dd($_POST);
         //insert
         if ($this->request->getPost("create") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {

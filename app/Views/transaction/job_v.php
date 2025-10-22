@@ -1,4 +1,7 @@
-<?php echo $this->include("template/header_v"); ?>
+<?php 
+echo $this->include("template/header_v"); 
+if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
+?>
 <style>
     #example23 th:nth-child(1),
     #example23 td:nth-child(1) {
@@ -123,7 +126,7 @@
                         isset($_POST['new']) || isset($_POST['edit']) || (isset($_GET["t"]) && $_GET["t"] == "ec")
                     ) { ?>
                         <div class="">
-                            <?php if (isset($_POST['edit'])) {
+                            <?php if (isset($_POST['edit'])||(isset($_GET['tbl'])||$_GET['tbl']=="edit")) {
                                 $namabutton = 'name="change"';
                                 $judul = "Update Job";
                             } else {
@@ -147,7 +150,7 @@
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                             <label class="control-label col-sm-12" for="">Cost:</label>
                                             <div class="col-sm-12">
-                                                <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp . "&url=" . $url); ?>" class="btn btn-warning">Cost List</a>
+                                                <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp . "&url=" . $url . "&tbl=" . $tbl); ?>" class="btn btn-warning">Cost List</a>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
@@ -162,7 +165,7 @@
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                             <label class="control-label col-sm-12" for="">Description of Goods:</label>
                                             <div class="col-sm-12">
-                                                <a target="_self" href="<?= base_url("jobd?t=ec&temp=" . $job_temp . "&url=" . $url); ?>" class="btn btn-success">Description of Goods List</a>
+                                                <a target="_self" href="<?= base_url("jobd?t=ec&temp=" . $job_temp . "&url=" . $url . "&tbl=" . $tbl); ?>" class="btn btn-success">Description of Goods List</a>
                                             </div>
                                         </div>
 
@@ -1311,7 +1314,7 @@
                                                                 && session()->get("halaman")['114']['act_update'] == "1"
                                                             )
                                                         ) { ?>
-                                                            <form method="post" class="btn-action" style="">
+                                                            <form method="post" class="btn-action" style="" action="<?= base_url(uri_string()) . '?tbl=edit'; ?>">
                                                                 <button title="Edit" data-bs-toggle="tooltip" class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
                                                                 <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                             </form>
