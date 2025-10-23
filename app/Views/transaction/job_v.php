@@ -126,7 +126,7 @@ if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
                         isset($_POST['new']) || isset($_POST['edit']) || (isset($_GET["t"]) && $_GET["t"] == "ec")
                     ) { ?>
                         <div class="">
-                            <?php if (isset($_POST['edit'])||(isset($_GET['tbl'])||$_GET['tbl']=="edit")) {
+                            <?php if (isset($_POST['edit'])||(isset($_GET['tbl'])&&$_GET['tbl']=="edit")) {
                                 $namabutton = 'name="change"';
                                 $judul = "Update Job";
                             } else {
