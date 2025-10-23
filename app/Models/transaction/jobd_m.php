@@ -71,7 +71,7 @@ class jobd_m extends core_m
                     $input[$e] = $this->request->getPost($e);
                 }
             }
-            dd($input);
+            // dd($input);
             $this->db->table('jobd')->insert($input);
             /* echo $this->db->getLastQuery();
             die; */
