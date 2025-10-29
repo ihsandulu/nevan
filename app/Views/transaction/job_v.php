@@ -1083,9 +1083,10 @@ if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
                                     if (!empty($arjob)) {
                                         $invpayment = $this->db
                                             ->table("invpayment")
-                                            ->join("inv", "inv.inv_temp = invpayment.inv_temp", "left")
-                                            ->whereIn("inv.job_dano", $arjob)
+                                            ->join("invd", "invd.inv_temp = invpayment.inv_temp", "left")
+                                            ->whereIn("invd.job_dano", $arjob)
                                             ->get();
+                                            // echo $this->db->getLastQuery();
                                         foreach ($invpayment->getResult() as $row) {
                                             $amount = $row->invpayment_total;
                                             if (!isset($jobpay[$row->job_dano])) {
@@ -1094,6 +1095,7 @@ if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
                                             $jobpay[$row->job_dano] += $amount;
                                         }
                                     }
+                                    // dd($jobpay);
                                     $build = $this->db->table("job")
                                         ->select("*,job.job_dano as job_dano")
                                         // ->join("inv", "inv.job_dano=job.job_dano", "left");
@@ -1125,6 +1127,7 @@ if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
                                             $arlunasin[$job_dano] = $dibayar . " >= " . $row->inv_grand;
                                         }
                                         // echo $dibayar . " >= " . $inv_grand . "<br/>";
+                                        // dd($arlunas);
                                         if ($row->inv_id) {
                                             $arinvoice[] = $job_dano;
                                         }
