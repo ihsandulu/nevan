@@ -1,6 +1,10 @@
-<?php 
-echo $this->include("template/header_v"); 
-if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
+<?php
+echo $this->include("template/header_v");
+if (isset($_GET["tbl"])) {
+    $tbl = $_GET["tbl"];
+} else {
+    $tbl = "";
+}
 ?>
 <style>
     #example23 th:nth-child(1),
@@ -126,7 +130,7 @@ if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
                         isset($_POST['new']) || isset($_POST['edit']) || (isset($_GET["t"]) && $_GET["t"] == "ec")
                     ) { ?>
                         <div class="">
-                            <?php if (isset($_POST['edit'])||(isset($_GET['tbl'])&&$_GET['tbl']=="edit")) {
+                            <?php if (isset($_POST['edit']) || (isset($_GET['tbl']) && $_GET['tbl'] == "edit")) {
                                 $namabutton = 'name="change"';
                                 $judul = "Update Job";
                             } else {
@@ -1086,7 +1090,7 @@ if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
                                             ->join("invd", "invd.inv_temp = invpayment.inv_temp", "left")
                                             ->whereIn("invd.job_dano", $arjob)
                                             ->get();
-                                            // echo $this->db->getLastQuery();
+                                        // echo $this->db->getLastQuery();
                                         foreach ($invpayment->getResult() as $row) {
                                             $amount = $row->invpayment_total;
                                             if (!isset($jobpay[$row->job_dano])) {
@@ -1239,7 +1243,10 @@ if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
                                         <tr class="<?= $linestatus; ?>">
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td class="<?= $textstatus; ?>" style="padding-left:0px; padding-right:0px;" class="<?= $textstatus; ?>">
-
+                                                    <form target="_blank" method="get" class="btn-action" style="" action="<?= base_url("jobcst"); ?>">
+                                                        <button title="Tracking" data-bs-toggle="tooltip" class="btn btn-sm btn-success "  value="OK"><span class="fa fa-link" style=""></span> </button>
+                                                        <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                    </form>
                                                     <?php
                                                     if ($posisi != "purchasing" && $posisi != "operasional") {
                                                         if (
