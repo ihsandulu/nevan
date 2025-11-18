@@ -359,14 +359,16 @@
                                     <div>DA Number : <?= $usr->job_dano; ?></div>
                                     <div class="alert alert-warning row mt-2">
                                         <div class="col-md-6 col-sm-12 col-xs-12 f-black  mt-1">
-                                            <b>Pengirim :</b> <br /><?= $usr->customer_name; ?>
+                                            <!-- <b>Pengirim :</b> <br /><?= $usr->customer_name; ?> -->
+                                            <b>Origin :</b> <br /><?= $usr->origin_name; ?>
                                         </div>
                                         <div class="col-md-6 col-sm-12 col-xs-12 f-black mt-1">
-                                            <b>Penerima :</b> <br /><?= $usr->job_kepada; ?>
+                                            <!-- <b>Penerima :</b> <br /><?= $usr->job_kepada; ?> -->
+                                            <b>Destination :</b> <br /><?= $usr->destination_name; ?>
                                         </div>
                                     </div>
 
-                                    <div class="row mt-2 judul fa fa-cubes"> INFO BARANG</div>
+                                    <div class="row mt-2 judul fa fa-cubes"> PRODUCT INFORMATION</div>
                                     <div class="row mt-2">
                                         <?php
                                         $build = $this->db
@@ -385,6 +387,26 @@
                                         <?php } ?>
                                     </div>
 
+                                    <div class="row mt-2 judul fa fa-plane"> TRACKING</div>
+                                    <div class="row mt-2">
+                                        <div class="deskripsi">
+                                            <?php
+                                            $build = $this->db
+                                                ->table("tracking");
+                                            $build->where("job_id", $_GET["job_id"])
+                                                ->orderBy("tracking_date", "ASC");
+                                            $tracking = $build->get();
+
+                                            //echo $this->db->getLastquery();
+                                            $no = 1;
+                                            foreach ($tracking->getResult() as $tracking) { ?>
+                                                <div class="deskripsisub"> <label class="label label-warning"><?= date("d-M-Y", strtotime($tracking->tracking_date)); ?></label> <br/><?= $tracking->tracking_desc; ?></div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+
+                                    <!-- 
+
                                     <div class="row mt-2 judul fa fa-hand-lizard-o"> INFO PICKUP</div>
                                     <div class="row mt-2">
                                         <div class="deskripsi">
@@ -402,8 +424,6 @@
                                         <div class="deskripsi">
                                             <div> Shipment Date : <?= $usr->job_shipmentdate; ?></div>
                                             <div> Shipment State : <?= $usr->job_status; ?></div>
-                                            <div>Origin : <?= $usr->origin_name; ?></div>
-                                            <div>Destination : <?= $usr->destination_name; ?></div>
                                             <div>Service : <?= $usr->service_name; ?></div>
                                             <div>Truck : <?= $usr->vendortruck_name; ?> - <?= $usr->vendor_name2; ?></div>
                                             <div>Vessel : <?= $usr->vessel_name; ?></div>
@@ -412,7 +432,7 @@
                                             <div><?= $usr->job_tujuan; ?></div>
                                             <div><?= $usr->job_tujuanaddress; ?></div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 <?php } ?>
                             </div>
                         </div>

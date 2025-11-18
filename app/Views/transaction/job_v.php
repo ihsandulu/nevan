@@ -25,6 +25,11 @@ if (isset($_GET["tbl"])) {
         /* biar sama tinggi dengan form-control Bootstrap */
         line-height: 38px !important;
     }
+
+    #e23 th,
+    #e23 td {
+        width: auto !important;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -972,13 +977,133 @@ if (isset($_GET["tbl"])) {
                             </div>
                         </form>
 
+                        <!-- Modal -->
+                        <div class="modal fade" id="tmodal" role="dialog">
+                            <div class="modal-dialog">
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Tracking DA No.<span id="ttitle"></span></h4>
+                                    </div>
+                                    <div id="tsuccess" class="alert alert-success" style="display:none;">
+                                        Data berhasil disimpan.
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="date">Date:</label>
+                                                <input type="date" class="form-control" id="date">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="desc">Description:</label>
+                                                <input type="text" class="form-control" id="desc">
+                                            </div>
+                                            <input type="hidden" id="jid">
+                                            <input type="hidden" id="jda">
+                                            <button onclick="tinput()" type="button" class="btn btn-default">Submit</button>
+                                        </form>
+                                        <table id="e231" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead class="">
+                                                <tr>
+                                                    <th class="col-4">Action</th>
+                                                    <th>Date</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="" id="ttable">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <script>
+                            function tkosong() {
+                                $("#ttitle").html("");
+                                $("#ttable").html("");
+                                $("#jid").val("");
+                                $("#jda").val("");
+                                $("#date").val("");
+                                $("#desc").val("");
+                            }
+                            function tfkosong() {
+                                $("#date").val("");
+                                $("#desc").val("");
+                            }
+                        </script>
+                        <script>
+                            function tinput() {
+                                let tdate = $("#date").val();
+                                let jdesc = $("#desc").val();
+                                let jid = $("#jid").val();
+                                let jda = $("#jda").val();
+                                // alert("<?= base_url("api/trackinginsert"); ?>?tdate="+tdate+"&jdesc="+jdesc+"&jid="+jid+"&jda="+jda);
+                                $.get("<?= base_url("api/trackinginsert"); ?>", {
+                                        tdate: tdate,
+                                        jdesc: jdesc,
+                                        jid: jid,
+                                        jda: jda
+                                    })
+                                    .done(function(data) {
+                                        tfkosong();
+                                        trackingtable(jid);
+                                        $("#tsuccess").html(data).fadeIn(200);
+                                        setTimeout(function() {
+                                            $("#tsuccess").fadeOut(300);
+                                        }, 1000);
+                                    });
+                            }
+                        </script>
+                        <script>
+                            function tdelete(id,jid) {
+                                $.get("<?= base_url("api/trackingdelete"); ?>",{tid:id})
+                                    .done(function(data) {
+                                        tfkosong();
+                                        trackingtable(jid);
+                                        $("#tsuccess").html(data).fadeIn(200);
+                                        setTimeout(function() {
+                                            $("#tsuccess").fadeOut(300);
+                                        }, 1000);
+                                    });
+                            }
+                        </script>
+                        <script>
+                            function trackingtable(jid) {
+                                // alert('<?= base_url("api/trackingtable"); ?>?jid=' + jid);
+                                $.get("<?= base_url("api/trackingtable"); ?>", {
+                                        jid: jid
+                                    })
+                                    .done(function(data) {
+                                        $("#ttable").html(data);
+                                    });
+                            }
+                        </script>
+                        <script>
+                            function tracking(jid, jda) {
+                                // alert(jid + ', ' + jda);
+                                tkosong();
+                                $("#ttitle").html(jda);
+                                $("#jid").val(jid);
+                                $("#jda").val(jda);
+                                trackingtable(jid);
+                                $("#tmodal").modal("show");
+                            }
+                        </script>
+
                         <div class="table-responsive m-t-40">
                             <table id="e23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                 <!-- <table id="dataTable" class="table table-condensed table-hover w-auto dtable"> -->
                                 <thead class="">
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
-                                            <th>Action</th>
+                                            <th class="col-4">Action</th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
                                         <?php if ($ppn == 0) { ?>
@@ -1242,9 +1367,13 @@ if (isset($_GET["tbl"])) {
                                     ?>
                                         <tr class="<?= $linestatus; ?>">
                                             <?php if (!isset($_GET["report"])) { ?>
-                                                <td class="<?= $textstatus; ?>" style="padding-left:0px; padding-right:0px;" class="<?= $textstatus; ?>">
+                                                <td class="<?= $textstatus; ?> col-4" style="padding-left:0px; padding-right:0px;" class="<?= $textstatus; ?>">
                                                     <form target="_blank" method="get" class="btn-action" style="" action="<?= base_url("jobcst"); ?>">
-                                                        <button title="Tracking" data-bs-toggle="tooltip" class="btn btn-sm btn-success "  value="OK"><span class="fa fa-link" style=""></span> </button>
+                                                        <button title="Tracking Customer" data-bs-toggle="tooltip" class="btn btn-sm btn-success " value="OK"><span class="fa fa-link" style=""></span> </button>
+                                                        <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                    </form>
+                                                    <form target="_blank" method="get" class="btn-action" style="" action="<?= base_url("jobcst"); ?>">
+                                                        <button onclick="tracking('<?= $usr->job_id; ?>','<?= $usr->job_dano; ?>')" type="button" title="Input Tracking" data-bs-toggle="tooltip" class="btn btn-sm btn-warning " value="OK"><span class="fa fa-plane" style=""></span> </button>
                                                         <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                     </form>
                                                     <?php

@@ -23,6 +23,57 @@ class api extends BaseController
     {
         echo "Page Not Found!";
     }
+
+    public function trackingtable()
+    {
+        $job_id = $this->request->getGet("jid");
+        $tracking = $this->db->table("tracking")->where("job_id", $job_id)->orderBy("tracking_date","asc")->get();
+        foreach ($tracking->getResult() as $usr) { ?>
+            <tr>
+                <td class="col-4">
+                    <form method="post" class="btn-action" style="">
+                        <button type="button" title="Delete" data-bs-toggle="tooltip" class="btn btn-sm btn-danger delete" onclick="if(confirm('You want to delete?')){ tdelete('<?= $usr->tracking_id; ?>','<?= $job_id; ?>'); }"
+                            name="delete" value="OK"><span class="fa fa-close" style="color:white;"></span> </button>
+                        <input type="hidden" name="tracking_id " value="<?= $usr->tracking_id; ?>" />
+                    </form>
+                </td>
+                <td><?= $usr->tracking_date; ?></td>
+                <td><?= $usr->tracking_desc; ?></td>
+            </tr>
+        <?php }
+    }
+
+    public function trackingdelete()
+    {
+        $tracking_id = $this->request->getGet("tid");
+        $this->db
+            ->table("tracking")
+            ->delete(array("tracking_id" =>  $tracking_id));
+            echo "Delete Data Success";
+    }
+
+    public function trackinginsert()
+    {
+        $tracking_date = $this->request->getGet("tdate");
+        $job_id = $this->request->getGet("jid");
+        $job_dano = $this->request->getGet("jda");
+        $tracking_desc = $this->request->getGet("jdesc");
+        $input["tracking_date"] = $tracking_date;
+        $input["job_id"] = $job_id;
+        $input["job_dano"] = $job_dano;
+        $input["tracking_desc"] = $tracking_desc;
+        $builder = $this->db->table('tracking');
+        $builder->insert($input);
+        /* echo $this->db->getLastQuery();
+            die; */
+        $job_id = $this->db->insertID();
+        if ($job_id > 0) {
+            echo "Insert Data Success";
+        } else {
+            echo "Insert Data Failed";
+        }
+    }
+
     public function saveinvno()
     {
         $where["inv_id"] = $this->request->getGET("inv_id");
@@ -38,7 +89,7 @@ class api extends BaseController
         $asal = $this->request->getGET("asal");
         $url = $this->request->getGET("url");
 
-?>
+        ?>
         <?php if ($asal == "from") { ?>
             <option value="" <?= ($kas_rekdari == "") ? "selected" : ""; ?>>Select Rekening</option>
             <?php if ($type == "Kredit" && $url == "pettycash") { ?>
