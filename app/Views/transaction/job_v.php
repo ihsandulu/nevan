@@ -992,19 +992,13 @@ if (isset($_GET["tbl"])) {
                                     </div>
                                     <div class="modal-body">
                                         <form>
-                                            <div class="form-group">
-                                                <label for="date">Date:</label>
-                                                <input type="date" class="form-control" id="date">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="desc">Description:</label>
-                                                <input type="text" class="form-control" id="desc">
-                                            </div>
+                                            <input type="date" class="form-control mb-2" id="date">
+                                            <input type="text" placeholder="Description" class="form-control mb-2" id="desc">
                                             <input type="hidden" id="jid">
                                             <input type="hidden" id="jda">
-                                            <button onclick="tinput()" type="button" class="btn btn-default">Submit</button>
+                                            <button onclick="tinput()" type="button" class="btn btn-primary">Submit</button>
                                         </form>
-                                        <table id="e231" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                        <table id="e231" class="mt-3 display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                                             <thead class="">
                                                 <tr>
                                                     <th class="col-4">Action</th>
@@ -1033,6 +1027,7 @@ if (isset($_GET["tbl"])) {
                                 $("#date").val("");
                                 $("#desc").val("");
                             }
+
                             function tfkosong() {
                                 $("#date").val("");
                                 $("#desc").val("");
@@ -1062,8 +1057,10 @@ if (isset($_GET["tbl"])) {
                             }
                         </script>
                         <script>
-                            function tdelete(id,jid) {
-                                $.get("<?= base_url("api/trackingdelete"); ?>",{tid:id})
+                            function tdelete(id, jid) {
+                                $.get("<?= base_url("api/trackingdelete"); ?>", {
+                                        tid: id
+                                    })
                                     .done(function(data) {
                                         tfkosong();
                                         trackingtable(jid);
