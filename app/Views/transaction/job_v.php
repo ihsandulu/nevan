@@ -5,6 +5,22 @@ if (isset($_GET["tbl"])) {
 } else {
     $tbl = "";
 }
+
+$key = getenv('encryptionKey');  // bebas asal panjang minimal 16
+$method = "AES-256-CBC";
+$iv = substr(hash('sha256', $key), 0, 16);
+
+
+function get_full_current_url()
+{
+    // scheme
+    $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    // host
+    $host = $_SERVER['HTTP_HOST'] ?? ($_SERVER['SERVER_NAME'] ?? 'localhost');
+    // request uri (termasuk query string jika ada)
+    $requestUri = $_SERVER['REQUEST_URI'] ?? '/';
+    return $scheme . '://' . $host . $requestUri;
+}
 ?>
 <style>
     #example23 th:nth-child(1),
@@ -145,7 +161,16 @@ if (isset($_GET["tbl"])) {
                             <div class="lead">
                                 <h3><?= $judul; ?></h3>
                             </div>
-                            <form class="form-horizontal row" method="post" enctype="multipart/form-data" action="<?= base_url($url); ?>">
+                            <?php
+                            $enc = $this->request->getGet('enc');
+                            $decrypted = base_url($url);
+                            if ($enc) {
+                                $cipher = base64_decode(urldecode($enc));
+                                $decrypted = openssl_decrypt($cipher, $method, $key, 0, $iv);
+                                // echo $decrypted; // hasil URL asli
+                            }
+                            ?>
+                            <form class="form-horizontal row" method="post" enctype="multipart/form-data" action="<?= $decrypted; ?>">
                                 <?php if ($posisi != "operasional") { ?>
                                     <!-- <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                             <label class="control-label col-sm-12" for="job_sell">SELL RPRICE:</label>
@@ -159,7 +184,7 @@ if (isset($_GET["tbl"])) {
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                             <label class="control-label col-sm-12" for="">Cost:</label>
                                             <div class="col-sm-12">
-                                                <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp . "&url=" . $url . "&tbl=" . $tbl); ?>" class="btn btn-warning">Cost List</a>
+                                                <a target="_self" href="<?= base_url("cost?t=ec&temp=" . $job_temp . "&url=" . $url . "&tbl=" . $tbl . "&enc=" . $enc); ?>" class="btn btn-warning">Cost List</a>
                                             </div>
                                         </div>
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
@@ -174,7 +199,7 @@ if (isset($_GET["tbl"])) {
                                         <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                             <label class="control-label col-sm-12" for="">Description of Goods:</label>
                                             <div class="col-sm-12">
-                                                <a target="_self" href="<?= base_url("jobd?t=ec&temp=" . $job_temp . "&url=" . $url . "&tbl=" . $tbl); ?>" class="btn btn-success">Description of Goods List</a>
+                                                <a target="_self" href="<?= base_url("jobd?t=ec&temp=" . $job_temp . "&url=" . $url . "&tbl=" . $tbl . "&enc=" . $enc); ?>" class="btn btn-success">Description of Goods List</a>
                                             </div>
                                         </div>
 
@@ -807,7 +832,18 @@ if (isset($_GET["tbl"])) {
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <div class="col-sm-offset-2 col-sm-12">
                                         <button type="submit" id="submit" class="btn btn-primary col-md-5" <?= $namabutton; ?> value="OK">Submit</button>
-                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= base_url($url); ?>">Back</a>
+                                        <?php
+                                        $enc = $this->request->getGet('enc');
+                                        $decrypted = base_url($url);
+                                        if ($enc) {
+                                            $cipher = base64_decode(urldecode($enc));
+                                            $decrypted = openssl_decrypt($cipher, $method, $key, 0, $iv);
+                                            // echo $decrypted; // hasil URL asli
+                                        } else {
+                                            $decrypted = base_url($url);
+                                        }
+                                        ?>
+                                        <a class="btn btn-warning col-md-offset-1 col-md-5" href="<?= $decrypted; ?>">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -1362,6 +1398,13 @@ if (isset($_GET["tbl"])) {
                                             $textstatus = "text-white";
                                         }
                                     ?>
+                                        <?php
+                                        $encrypted = openssl_encrypt(get_full_current_url(), $method, $key, 0, $iv);
+                                        $enc = urlencode(base64_encode($encrypted));
+                                        // echo $encrypted;
+                                        // $decrypted = openssl_decrypt($encrypted, $method, $key, 0, $iv);
+                                        // echo $decrypted;
+                                        ?>
                                         <tr class="<?= $linestatus; ?>">
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td class="<?= $textstatus; ?> col-4" style="padding-left:0px; padding-right:0px;" class="<?= $textstatus; ?>">
@@ -1450,7 +1493,7 @@ if (isset($_GET["tbl"])) {
                                                                 && session()->get("halaman")['114']['act_update'] == "1"
                                                             )
                                                         ) { ?>
-                                                            <form method="post" class="btn-action" style="" action="<?= base_url(uri_string()) . '?tbl=edit'; ?>">
+                                                            <form method="post" class="btn-action" style="" action="<?= base_url(uri_string()) . '?tbl=edit&enc=' . $enc; ?>">
                                                                 <button title="Edit" data-bs-toggle="tooltip" class="btn btn-sm btn-warning " name="edit" value="OK"><span class="fa fa-edit" style="color:white;"></span> </button>
                                                                 <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                             </form>
@@ -1491,12 +1534,14 @@ if (isset($_GET["tbl"])) {
                                                             && session()->get("halaman")['114']['act_update'] == "1"
                                                         )
                                                     ) { ?>
+
                                                         <form method="get" class="btn-action" style="" action="<?= base_url("jobd"); ?>">
                                                             <button title="Details" data-bs-toggle="tooltip" class="btn btn-sm btn-secondary " name="jobd" value="OK"><span class="fa fa-cubes" style=""></span> </button>
                                                             <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
                                                             <input type="hidden" name="t" value="jc" />
                                                             <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
                                                             <input type="hidden" name="url" value="<?= $url; ?>" />
+                                                            <input type="hidden" name="enc" value="<?= $enc; ?>" />
                                                         </form>
                                                     <?php } ?>
 
@@ -1540,6 +1585,7 @@ if (isset($_GET["tbl"])) {
                                                             <input type="hidden" name="t" value="jc" />
                                                             <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
                                                             <input type="hidden" name="url" value="<?= $url; ?>" />
+                                                            <input type="hidden" name="enc" value="<?= $enc; ?>" />
                                                         </form>
                                                     <?php } ?>
 

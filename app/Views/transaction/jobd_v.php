@@ -1,6 +1,14 @@
 <?php echo $this->include("template/header_v");
-$identity = $this->db->table("identity")->get()->getRow(); 
-if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
+$identity = $this->db->table("identity")->get()->getRow();
+if (isset($_GET["tbl"])) {
+    $tbl = $_GET["tbl"];
+} else {
+    $tbl = "";
+}
+
+$key = getenv('encryptionKey');  // bebas asal panjang minimal 16
+$method = "AES-256-CBC";
+$iv = substr(hash('sha256', $key), 0, 16);
 ?>
 <style>
     td {
@@ -318,10 +326,23 @@ if(isset($_GET["tbl"])){$tbl=$_GET["tbl"];}else{$tbl="";}
     </div>
 </div>
 <script>
-    <?php if(isset($_GET["t"])&&$_GET["t"]=="jc"){
+    <?php if (isset($_GET["t"]) && $_GET["t"] == "jc") {
         $urin = base_url($_GET["url"]);
-    }else{
-        $urin = base_url($_GET["url"] . "?t=" . $_GET["t"] . "&temp=" . $job_temp."&tbl=".$tbl);
+        $enc = $this->request->getGet('enc');
+        if ($enc) {
+            $cipher = base64_decode(urldecode($enc));
+            $enc = openssl_decrypt($cipher, $method, $key, 0, $iv);
+        }
+        $urin =$enc;
+    } else {
+        $urin = base_url($_GET["url"] . "?t=" . $_GET["t"] . "&temp=" . $job_temp . "&tbl=" . $tbl);
+        $enc = $this->request->getGet('enc');
+        if ($enc) {
+            $enc = $this->request->getGet("enc");
+        } else {
+            $enc = "";
+        }
+        $urin .= "&enc=" . $enc;
     }
     ?>
     let pagetitle = '&nbsp;&nbsp;<a href="<?= $urin; ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';

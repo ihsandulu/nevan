@@ -5,6 +5,10 @@ if (isset($_GET["tbl"])) {
 } else {
     $tbl = "";
 }
+
+$key = getenv('encryptionKey');  // bebas asal panjang minimal 16
+$method = "AES-256-CBC";
+$iv = substr(hash('sha256', $key), 0, 16);
 ?>
 <style>
     td {
@@ -264,8 +268,20 @@ if (isset($_GET["tbl"])) {
 <script>
     <?php if ($_GET["t"] == "jc") {
         $urln = base_url($_GET["url"]);
+        $enc = $this->request->getGet('enc');
+        if ($enc) {
+            $cipher = base64_decode(urldecode($enc));
+            $enc = openssl_decrypt($cipher, $method, $key, 0, $iv);
+        }
+        $urln =$enc;
     } else {
-        $urln = base_url($_GET["url"] . "?t=" . $_GET["t"] . "&temp=" . $job_temp . "&tbl=" . $tbl);
+        $enc = $this->request->getGet('enc');
+        if ($enc) {
+            $enc = $this->request->getGet("enc");
+        } else {
+            $enc = "";
+        }
+        $urln = base_url($_GET["url"] . "?t=" . $_GET["t"] . "&temp=" . $job_temp . "&tbl=" . $tbl . "&enc=" . $enc);
     }
     ?>
     let pagetitle = '&nbsp;&nbsp;<a href="<?= $urln;  ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
