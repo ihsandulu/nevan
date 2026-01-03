@@ -155,7 +155,14 @@ class job_m extends core_m
                 ->get();
             $dano = 250192;
             foreach ($cekdano->getResult() as $dano) {
-                $dano = $dano->job_dano + 1;
+                $angka = $dano->job_dano;
+                $tahun = date("y");
+                $duaDigitAwal = substr((string)$angka, 0, 2);
+                if (date("y") == $duaDigitAwal) {
+                    $dano = $dano->job_dano + 1;
+                } else {
+                     $dano = (int)($tahun . '001');
+                }
             }
             $input["job_dano"] = $dano;
 
