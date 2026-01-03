@@ -161,7 +161,7 @@ class job_m extends core_m
                 if (date("y") == $duaDigitAwal) {
                     $dano = $dano->job_dano + 1;
                 } else {
-                     $dano = (int)($tahun . '001');
+                     $dano = (int)($tahun . '0001');
                 }
             }
             $input["job_dano"] = $dano;
