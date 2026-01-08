@@ -1295,6 +1295,8 @@ function get_full_current_url()
                                         }
                                     }
                                     // print_r($arbelum);
+
+
                                     $build = $this->db
                                         ->table("job")
                                         ->select("*,job.job_temp as job_temp, GROUP_CONCAT(jobd.jobd_descgood SEPARATOR ', ') as jobd_list,GROUP_CONCAT(jobd.jobd_koli SEPARATOR ', ') as jobd_lkoli,GROUP_CONCAT(jobd.jobd_cbm SEPARATOR ', ') as jobd_lcbm")
@@ -1334,12 +1336,24 @@ function get_full_current_url()
                                         }
                                     }
                                     if (isset($_GET["sinvoice"]) && $_GET["sinvoice"] != "") {
+
                                         if ($sinvoice == "invoice") {
-                                            $build->where("inv_temp !=", "");
-                                        } else if ($sinvoice == "belum") {
-                                            $build->where("inv_temp", "");
+                                            $build->where("
+                                                EXISTS (
+                                                    SELECT 1 FROM inv
+                                                    WHERE FIND_IN_SET(job.job_dano, REPLACE(inv.job_dano,' ',''))
+                                                )
+                                            ", null, false);
+                                                                            } else if ($sinvoice == "belum") {
+                                                                                $build->where("
+                                                NOT EXISTS (
+                                                    SELECT 1 FROM inv
+                                                    WHERE FIND_IN_SET(job.job_dano, REPLACE(inv.job_dano,' ',''))
+                                                )
+                                            ", null, false);
                                         }
                                     }
+
                                     if (isset($_GET["customer_id"]) && $_GET["customer_id"] != "") {
                                         $build->where("job.customer_id", $_GET["customer_id"]);
                                     }
