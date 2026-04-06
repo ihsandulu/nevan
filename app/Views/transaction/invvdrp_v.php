@@ -196,7 +196,7 @@ foreach ($tbukun->getResult() as $row) {
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
-                                            <td style="padding-left:0px; padding-right:0px;"><?= $usr->invvdrp_date." > ".$tgltbterakhir; ?>
+                                            <td style="padding-left:0px; padding-right:0px;">
                                                 <?php if ($usr->invvdrp_date > $tgltbterakhir) { ?>
                                                     <?php
                                                     if (
