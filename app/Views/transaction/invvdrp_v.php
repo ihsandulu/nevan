@@ -44,7 +44,7 @@ foreach ($tbukun->getResult() as $row) {
                     <?php } ?>
                     <form method="post" class="form-inline alert alert-info" action="">
                         <div class="form-group">
-                            <input type="date"
+                            <input type="date" required
                                 class="form-control"
                                 style="width:100px;"
                                 id="invvdrp_date"
@@ -196,7 +196,7 @@ foreach ($tbukun->getResult() as $row) {
                                 foreach ($usr->getResult() as $usr) { ?>
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
-                                            <td style="padding-left:0px; padding-right:0px;">
+                                            <td style="padding-left:0px; padding-right:0px;"><?= $usr->invvdrp_date." > ".$tgltbterakhir; ?>
                                                 <?php if ($usr->invvdrp_date > $tgltbterakhir) { ?>
                                                     <?php
                                                     if (
