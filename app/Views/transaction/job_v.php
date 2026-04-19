@@ -1685,7 +1685,7 @@ function get_full_current_url()
                                                         ?>
 
                                                         <input type="hidden" name="url" value="<?= $currentUrl ?>#tr<?= $usr->job_id; ?>">
-                                                        
+
 
                                                     </form>
 
@@ -1717,7 +1717,14 @@ function get_full_current_url()
                                                         <input type="hidden" name="lunas" value="<?= (isset($_GET['lunas'])) ? $_GET['lunas'] : ''; ?>">
                                                         <input type="hidden" name="status" value="<?= (isset($_GET['status'])) ? $_GET['status'] : ''; ?>">
 
-                                                        <input type="hidden" name="url" value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>#tr<?= $usr->job_id; ?>">
+                                                        <?php
+                                                        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                                                        $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+                                                        $uri = $_SERVER['REQUEST_URI'] ?? '';
+                                                        $currentUrl = $scheme . '://' . $host . $uri;
+                                                        ?>
+
+                                                        <input type="hidden" name="url" value="<?= $currentUrl; ?>#tr<?= $usr->job_id; ?>">
 
                                                     </form>
                                                 </td>
