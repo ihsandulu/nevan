@@ -20,7 +20,7 @@ class invvdr extends BaseController
     {
         $data = new \App\Models\transaction\invvdr_m();
         $data = $data->data();
-        $data["title"]="Invoice Vendor";
+        $data["title"]="Hutang";
         return view('transaction/invvdr_v', $data);
     }
 }

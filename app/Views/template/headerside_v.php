@@ -524,7 +524,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == ('inv'||'invd') ? 'active' : ''; ?>" href="<?= base_url("inv"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Invoice Customer</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == ('inv'||'invd') ? 'active' : ''; ?>" href="<?= base_url("inv"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Piutang</span></a>
                         </li>
                     <?php } ?>
 
@@ -545,7 +545,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == ('invvdr'||'invvdrd') ? 'active' : ''; ?>" href="<?= base_url("invvdr"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Invoice Vendor</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == ('invvdr'||'invvdrd') ? 'active' : ''; ?>" href="<?= base_url("invvdr"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Hutang</span></a>
                         </li>
                     <?php } ?>
 
@@ -564,7 +564,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'bigcash' ? 'active' : ''; ?>" href="<?= base_url("bigcash"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Big Cash</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'bigcash' ? 'active' : ''; ?>" href="<?= base_url("bigcash"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Kas Bank</span></a>
                         </li>
                     <?php } ?>
 
@@ -583,7 +583,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'pettycash' ? 'active' : ''; ?>" href="<?= base_url("pettycash"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Petty Cash</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'pettycash' ? 'active' : ''; ?>" href="<?= base_url("pettycash"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Tetap</span></a>
                         </li>
                     <?php } ?>
 
