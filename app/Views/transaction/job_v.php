@@ -1653,7 +1653,7 @@ function get_full_current_url()
                                                     } ?>
                                                     <form method="get" class="col-md-2" action="<?= base_url("invd") ?>" style="float: left;">
 
-                                                        <button title="Invoice Customer" data-bs-toggle="tooltip" class="btn btn-sm btn-primary" ><span class="fa fa-superpowers" style="color:white;"></span> </button>                                                       
+                                                        <button title="Invoice Customer" data-bs-toggle="tooltip" class="btn btn-sm btn-primary"><span class="fa fa-superpowers" style="color:white;"></span> </button>
                                                         <?php
                                                         if ($usr->invo_temp > 0) {
                                                             $inv_temp = $usr->invo_temp;
@@ -1679,13 +1679,18 @@ function get_full_current_url()
                                                         <input type="hidden" name="sinvoice" value="<?= (isset($_GET['sinvoice'])) ? $_GET['sinvoice'] : ''; ?>">
                                                         <input type="hidden" name="lunas" value="<?= (isset($_GET['lunas'])) ? $_GET['lunas'] : ''; ?>">
                                                         <input type="hidden" name="status" value="<?= (isset($_GET['status'])) ? $_GET['status'] : ''; ?>">
+                                                        <?php
+                                                        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+                                                        $currentUrl = $scheme . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                                                        ?>
 
-                                                        <input type="hidden" name="url" value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>#tr<?= $usr->job_id; ?>">
+                                                        <input type="hidden" name="url" value="<?= $currentUrl ?>#tr<?= $usr->job_id; ?>">
+                                                        <!-- <input type="hidden" name="url" value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>#tr<?= $usr->job_id; ?>"> -->
 
                                                     </form>
-                                                    
+
                                                     <form method="get" class="col-md-2" action="<?= base_url("invvdrd") ?>">
-                                                        <button title="Tagihan Vendor" data-bs-toggle="tooltip" class="btn btn-sm btn-info" ><span class="fa fa-snowflake-o" style="color:white;"></span> </button>
+                                                        <button title="Tagihan Vendor" data-bs-toggle="tooltip" class="btn btn-sm btn-info"><span class="fa fa-snowflake-o" style="color:white;"></span> </button>
                                                         <?php
                                                         if ($usr->invvdro_temp > 0) {
                                                             $invvdr_temp = $usr->invvdro_temp;
