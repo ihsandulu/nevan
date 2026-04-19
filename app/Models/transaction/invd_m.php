@@ -206,7 +206,7 @@ class invd_m extends core_m
         //insert inv
         if ($this->request->getPost("createinv") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'create' && $e != 'inv_id' && $e != 'customer_singkatan' && $e != 'createinv') {
+                if ($e != 'create' && $e != 'inv_id' && $e != 'customer_singkatan' && $e != 'createinv' && $e != 'url') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
@@ -314,7 +314,11 @@ class invd_m extends core_m
             }
 
             $data["message"] = "Insert Data Success";
-            header('Location: ' . base_url('inv'));
+            if (isset($_POST["url"]) && $_POST["url"] != "") {
+                header('Location: ' . $_POST["url"]);
+            } else {
+                header('Location: ' . base_url('inv'));
+            }
             exit;
         }
         //echo $_POST["create"];die;
@@ -394,7 +398,7 @@ class invd_m extends core_m
             $input["inv_ppn12"] = 0;
             $input["inv_pph"] = 0;
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'changeinv' && $e != 'customer_singkatan') {
+                if ($e != 'changeinv' && $e != 'customer_singkatan' && $e != 'url') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
@@ -416,7 +420,9 @@ class invd_m extends core_m
             $jobdanos      = implode(', ', $jobdano);
             $input["job_dano"] = $jobdanos;
             $input["inv_tagihan"] = $total;
-            $dtagihan = $input["inv_tagihan"] - $input["inv_discount"];
+            $tagihan = (int) preg_replace('/[^0-9]/', '', $input["inv_tagihan"]);
+            $discount = (int) preg_replace('/[^0-9]/', '', $input["inv_discount"]);
+            $dtagihan = $tagihan - $discount;
             $ppn1k1 = 0;
             $ppn11 = 0;
             $ppn12 = 0;
@@ -461,7 +467,12 @@ class invd_m extends core_m
             }
 
             $data["message"] = "Insert Data Success";
-            header('Location: ' . base_url('inv'));
+            if (isset($_POST["url"]) && $_POST["url"] != "") {
+                header('Location: ' . $_POST["url"]);
+            } else {
+                header('Location: ' . base_url('inv'));
+            }
+
             exit;
         }
         return $data;

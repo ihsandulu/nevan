@@ -129,7 +129,9 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <input type="hidden" id="inv_temp" name="inv_temp" value="<?= $inv_temp; ?>" />
                         <input type="hidden" id="inv_id" name="inv_id" value="<?= $inv_id; ?>" />
                         <input type="hidden" id="customer_singkatan" name="customer_singkatan" value="" />
-
+                        <?php if (isset($_GET['job_id'])) { ?>
+                            <input type="hidden" id="url" name="url" value="<?php echo $_GET["url"]; ?>" />
+                        <?php } ?>
                         <?php
                         if (isset($_GET["editinv"])) {
                             $namebtninv = 'name="changeinv"';
@@ -143,14 +145,17 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <div class="form-group">
                             <select onchange="pilihdano()" class="form-control select" id="job_id" name="job_id">
                                 <option value="">Pilih Da Number</option>
-                                <?php $job = $this->db->table("job")
-                                    // ->where("inv_temp", "")
-                                    // ->orWhere("inv_temp", $inv_temp)
-                                    ->orderBy("job_dano", "ASC")
+                                <?php $builder = $this->db->table("job");
+                                if (isset($_GET['job_id'])) {
+                                    $builder->where("job_id", $_GET['job_id']);
+                                }
+                                // ->where("inv_temp", "")
+                                // ->orWhere("inv_temp", $inv_temp)
+                                $job = $builder->orderBy("job_dano", "ASC")
                                     ->get();
                                 foreach ($job->getResult() as $job) {
                                 ?>
-                                    <option value="<?= $job->job_id; ?>" data-temp="<?= $job->job_temp; ?>" data-des="<?= $job->job_descgood; ?>" data-dano="<?= $job->job_dano; ?>" data-qty="<?= $job->job_qty; ?>" data-satuan="<?= $job->job_satuan; ?>" data-price="<?= $job->job_sell; ?>"><?= $job->job_dano; ?></option>
+                                    <option <?= (isset($_GET['job_id']) && $_GET['job_id'] == $job->job_id) ? 'selected' : ''; ?> value="<?= $job->job_id; ?>" data-temp="<?= $job->job_temp; ?>" data-des="<?= $job->job_descgood; ?>" data-dano="<?= $job->job_dano; ?>" data-qty="<?= $job->job_qty; ?>" data-satuan="<?= $job->job_satuan; ?>" data-price="<?= $job->job_sell; ?>"><?= $job->job_dano; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -202,6 +207,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 let total = qty * price;
                                 $("#invd_total").val(total);
                             }
+
+                            $(document).ready(function() {
+                                pilihdano();
+                            });
                         </script>
                         <input type="hidden" id="job_temp" name="job_temp" value="" />
                         <input type="hidden" id="job_dano" name="job_dano" value="" />
@@ -236,7 +245,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <tbody>
                                 <?php
                                 $build = $this->db
-                                    ->table("invd");
+                                    ->table("invd")
+                                    ->join("(SELECT job_id AS jobid, job_dano FROM job) AS job", "job.jobid = invd.job_id", "left");
                                 if (isset($_GET["inv_temp"])) {
                                     $build->where("inv_temp", $inv_temp);
                                 }
@@ -249,19 +259,19 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                         <?php if (!isset($_GET["report"])) { ?>
                                             <td style="padding-left:0px; padding-right:0px;">
                                                 <!-- <?php
-                                                if (
-                                                    (
-                                                        isset(session()->get("position_administrator")[0][0])
-                                                        && (
-                                                            session()->get("position_administrator") == "1"
-                                                            || session()->get("position_administrator") == "2"
-                                                        )
-                                                    ) ||
-                                                    (
-                                                        isset(session()->get("halaman")['111']['act_update'])
-                                                        && session()->get("halaman")['111']['act_update'] == "1"
-                                                    )
-                                                ) { ?>
+                                                        if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['111']['act_update'])
+                                                                && session()->get("halaman")['111']['act_update'] == "1"
+                                                            )
+                                                        ) { ?>
                                                     <form method="post" class="btn-action" >
                                                         <button type="button" onclick="editinvd('<?= $usr->invd_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
                                                             <span class="fa fa-edit" style="color:white;"></span>
@@ -349,7 +359,20 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     </div>
 </div>
 <script>
-    let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("inv"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Invoice</a>';
+    <?php if (isset($_GET["job_id"])) { ?>
+        <?php
+        if (isset($_GET["spilihan"]) && $_GET["spilihan"] == "periode") {
+            $pagetitle = $_GET["segment2"] . "?spilihan=periode&dari=" . $_GET["dari"] . "&ke=" . $_GET["ke"] . "&job_sales=" . $_GET["job_sales"] . "&customer_id=" . $_GET["customer_id"] . "&sinvoice=" . $_GET["sinvoice"] . "&lunas=" . $_GET["lunas"] . "&status=" . $_GET["status"] . "#tr" . $_GET["job_id"];
+        } elseif(isset($_GET["spilihan"]) && $_GET["spilihan"] == "jobdano") {
+            $pagetitle = $_GET["segment2"] . "?spilihan=jobdano&job_dano=" . $_GET["job_dano"] . "#tr" . $_GET["job_id"];
+        }else{
+            $pagetitle = $_GET["segment2"] . "#tr" . $_GET["job_id"];
+        }
+        ?>
+        let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url($pagetitle); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
+    <?php } else { ?>
+        let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("inv"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Invoice</a>';
+    <?php } ?>
     $(document).ready(function() {
         $("#page-title").append(pagetitle);
     });

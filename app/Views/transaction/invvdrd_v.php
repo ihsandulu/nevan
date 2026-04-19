@@ -175,6 +175,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <input type="hidden" id="invvdr_id" name="invvdr_id" value="<?= $invvdr_id; ?>" />
                         <input type="hidden" id="invvdr_temp" name="invvdr_temp" value="<?= $invvdr_temp; ?>" />
 
+                        <?php if (isset($_GET['job_id'])) { ?>
+                            <input type="hidden" id="url" name="url" value="<?php echo $_GET["url"]; ?>" />
+                        <?php } ?>
+
                         <?php
                         if (isset($_GET["editinvvdr"])) {
                             $namebtninvvdr = 'name="changeinvvdr"';
@@ -188,16 +192,24 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                         <div class="form-group">
                             <select onchange="pilihdano()" class="form-control select" id="job_id" name="job_id">
                                 <option value="">Pilih Da Number</option>
-                                <?php $job = $this->db->table("job")
+                                <?php $builder = $this->db->table("job");
+                                 if (isset($_GET['job_id'])) {
+                                    $builder->where("job_id", $_GET['job_id']);
+                                }
                                     // ->where("invvdr_no", "")
                                     // ->orWhere("invvdr_no", $invvdr_no)
-                                    ->orderBy("job_dano", "ASC")
+                                    $job = $builder->orderBy("job_dano", "ASC")
                                     ->get();
                                 foreach ($job->getResult() as $job) {
                                 ?>
-                                    <option value="<?= $job->job_id; ?>" data-des="<?= $job->job_descgood; ?>" data-dano="<?= $job->job_dano; ?>" data-qty="<?= $job->job_qty; ?>" data-satuan="<?= $job->job_satuan; ?>" data-price="<?= $job->job_sell; ?>"><?= $job->job_dano; ?></option>
+                                    <option value="<?= $job->job_id; ?>" <?= (isset($_GET['job_id']) && $_GET['job_id'] == $job->job_id) ? 'selected' : ''; ?> data-des="<?= $job->job_descgood; ?>" data-dano="<?= $job->job_dano; ?>" data-qty="<?= $job->job_qty; ?>" data-satuan="<?= $job->job_satuan; ?>" data-price="<?= $job->job_sell; ?>"><?= $job->job_dano; ?></option>
                                 <?php } ?>
                             </select>
+                            <script>
+                                $(document).ready(function(){
+                                        pilihdano();
+                                });
+                            </script>
                         </div>
                         <div class="form-group">
                             <input type="text" class="form-control" style="width: 200px;" id="invvdrd_description" name="invvdrd_description" placeholder="Description">
@@ -277,7 +289,8 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                             <tbody>
                                 <?php
                                 $build = $this->db
-                                    ->table("invvdrd");
+                                    ->table("invvdrd")
+                                    ->join("(SELECT job_id AS jobid, job_dano FROM job) AS job", "job.jobid = invvdrd.job_id", "left");
                                 if (isset($_GET["invvdr_temp"])) {
                                     $build->where("invvdr_temp", $_GET["invvdr_temp"]);
                                 }
@@ -391,7 +404,21 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     </div>
 </div>
 <script>
-    let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("invvdr"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Invoice Vendor</a>';
+     <?php if (isset($_GET["job_id"])) { ?>
+        <?php
+        if (isset($_GET["spilihan"]) && $_GET["spilihan"] == "periode") {
+            $pagetitle = $_GET["segment2"] . "?spilihan=periode&dari=" . $_GET["dari"] . "&ke=" . $_GET["ke"] . "&job_sales=" . $_GET["job_sales"] . "&customer_id=" . $_GET["customer_id"] . "&sinvoice=" . $_GET["sinvoice"] . "&lunas=" . $_GET["lunas"] . "&status=" . $_GET["status"] . "#tr" . $_GET["job_id"];
+        } elseif(isset($_GET["spilihan"]) && $_GET["spilihan"] == "jobdano") {
+            $pagetitle = $_GET["segment2"] . "?spilihan=jobdano&job_dano=" . $_GET["job_dano"] . "#tr" . $_GET["job_id"];
+        }else{
+            $pagetitle = $_GET["segment2"] . "#tr" . $_GET["job_id"];
+        }
+        ?>
+        let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url($pagetitle); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
+    <?php } else { ?>
+        let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("invvdr"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Invoice Vendor</a>';
+    <?php } ?>
+    
     $(document).ready(function() {
         $("#page-title").append(pagetitle);
     });

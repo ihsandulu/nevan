@@ -42,10 +42,10 @@ function get_full_current_url()
         line-height: 38px !important;
     }
 
-    #e23 th,
+    /*  #e23 th,
     #e23 td {
         width: auto !important;
-    }
+    } */
 </style>
 
 <div class='container-fluid'>
@@ -1136,7 +1136,9 @@ function get_full_current_url()
                                 <thead class="">
                                     <tr>
                                         <?php if (!isset($_GET["report"])) { ?>
-                                            <th class="col-4">Action</th>
+                                            <th class="col-4">
+                                                <<<<<<(Action)>>>>>
+                                            </th>
                                         <?php } ?>
                                         <!-- <th>No.</th> -->
                                         <?php if ($ppn == 0) { ?>
@@ -1310,7 +1312,9 @@ function get_full_current_url()
                                         ->join("(SELECT vendor_id as vendor_idd, vendor_name AS vendor_named FROM vendor) AS dooring", "dooring.vendor_idd = job.job_dooring", "left")
                                         ->join("service", "service.service_id = job.service_id", "left")
                                         ->join("vessel", "vessel.vessel_id = job.vessel_id", "left")
-                                        ->join("jobd", "jobd.job_temp = job.job_temp", "left");;
+                                        ->join("jobd", "jobd.job_temp = job.job_temp", "left")
+                                        ->join("(SELECT inv_temp as invo_temp, inv_id FROM inv) AS inv", "inv.invo_temp = job.inv_temp", "left")
+                                        ->join("(SELECT invvdr_temp as invvdro_temp, invvdr_id FROM invvdr) AS invvdr", "invvdr.invvdro_temp = job.invvdr_temp", "left");
 
                                     if ($lunas == "lunas") {
                                         if (!empty($arlunas)) {
@@ -1344,8 +1348,8 @@ function get_full_current_url()
                                                     WHERE FIND_IN_SET(job.job_dano, REPLACE(inv.job_dano,' ',''))
                                                 )
                                             ", null, false);
-                                                                            } else if ($sinvoice == "belum") {
-                                                                                $build->where("
+                                        } else if ($sinvoice == "belum") {
+                                            $build->where("
                                                 NOT EXISTS (
                                                     SELECT 1 FROM inv
                                                     WHERE FIND_IN_SET(job.job_dano, REPLACE(inv.job_dano,' ',''))
@@ -1419,7 +1423,7 @@ function get_full_current_url()
                                         // $decrypted = openssl_decrypt($encrypted, $method, $key, 0, $iv);
                                         // echo $decrypted;
                                         ?>
-                                        <tr class="<?= $linestatus; ?>">
+                                        <tr class="<?= $linestatus; ?>" id="tr<?= $usr->job_id; ?>">
                                             <?php if (!isset($_GET["report"])) { ?>
                                                 <td class="<?= $textstatus; ?> col-4" style="padding-left:0px; padding-right:0px;" class="<?= $textstatus; ?>">
                                                     <form target="_blank" method="get" class="btn-action" style="" action="<?= base_url("jobcst"); ?>">
@@ -1647,6 +1651,70 @@ function get_full_current_url()
                                                             </form>
                                                     <?php }
                                                     } ?>
+                                                    <form method="get" class="col-md-2" action="<?= base_url("invd") ?>" style="float: left;">
+
+                                                        <button title="Invoice Customer" data-bs-toggle="tooltip" class="btn btn-sm btn-primary" ><span class="fa fa-superpowers" style="color:white;"></span> </button>                                                       
+                                                        <?php
+                                                        if ($usr->invo_temp > 0) {
+                                                            $inv_temp = $usr->invo_temp;
+                                                            $tombol = "editinv";
+                                                        } else {
+                                                            $inv_temp = date("dmyhis") .  $usr->job_id;
+                                                            $tombol = "new";
+                                                        }
+                                                        ?>
+                                                        <input type="hidden" name="<?= $tombol; ?>" value="OK">
+                                                        <input type="hidden" name="inv_id" value="<?= $usr->inv_id; ?>">
+                                                        <input type="hidden" name="inv_temp" value="<?= $inv_temp; ?>">
+                                                        <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>">
+                                                        <input type="hidden" name="job_dano" value="<?= $usr->job_dano; ?>">
+                                                        <?php
+                                                        $segment2 = $this->request->getUri()->getSegment(1); ?>
+                                                        <input type="hidden" name="segment2" value="<?= $segment2; ?>">
+                                                        <input type="hidden" name="spilihan" value="<?= (isset($_GET['spilihan'])) ? $_GET['spilihan'] : ''; ?>">
+                                                        <input type="hidden" name="dari" value="<?= (isset($_GET['dari'])) ? $_GET['dari'] : ''; ?>">
+                                                        <input type="hidden" name="ke" value="<?= (isset($_GET['ke'])) ? $_GET['ke'] : ''; ?>">
+                                                        <input type="hidden" name="job_sales" value="<?= (isset($_GET['job_sales'])) ? $_GET['job_sales'] : ''; ?>">
+                                                        <input type="hidden" name="customer_id" value="<?= (isset($_GET['customer_id'])) ? $_GET['customer_id'] : ''; ?>">
+                                                        <input type="hidden" name="sinvoice" value="<?= (isset($_GET['sinvoice'])) ? $_GET['sinvoice'] : ''; ?>">
+                                                        <input type="hidden" name="lunas" value="<?= (isset($_GET['lunas'])) ? $_GET['lunas'] : ''; ?>">
+                                                        <input type="hidden" name="status" value="<?= (isset($_GET['status'])) ? $_GET['status'] : ''; ?>">
+
+                                                        <input type="hidden" name="url" value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>#tr<?= $usr->job_id; ?>">
+
+                                                    </form>
+                                                    
+                                                    <form method="get" class="col-md-2" action="<?= base_url("invvdrd") ?>">
+                                                        <button title="Tagihan Vendor" data-bs-toggle="tooltip" class="btn btn-sm btn-info" ><span class="fa fa-snowflake-o" style="color:white;"></span> </button>
+                                                        <?php
+                                                        if ($usr->invvdro_temp > 0) {
+                                                            $invvdr_temp = $usr->invvdro_temp;
+                                                            $tombol = "editinvvdr";
+                                                        } else {
+                                                            $invvdr_temp = date("dmyhis") .  $usr->job_id;
+                                                            $tombol = "new";
+                                                        }
+                                                        ?>
+                                                        <input type="hidden" name="<?= $tombol; ?>" value="OK">
+                                                        <input type="hidden" name="invvdr_id" value="<?= $usr->invvdr_id; ?>">
+                                                        <input type="hidden" name="invvdr_temp" value="<?= $invvdr_temp; ?>">
+                                                        <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>">
+                                                        <input type="hidden" name="job_dano" value="<?= $usr->job_dano; ?>">
+                                                        <?php
+                                                        $segment2 = $this->request->getUri()->getSegment(1); ?>
+                                                        <input type="hidden" name="segment2" value="<?= $segment2; ?>">
+                                                        <input type="hidden" name="spilihan" value="<?= (isset($_GET['spilihan'])) ? $_GET['spilihan'] : ''; ?>">
+                                                        <input type="hidden" name="dari" value="<?= (isset($_GET['dari'])) ? $_GET['dari'] : ''; ?>">
+                                                        <input type="hidden" name="ke" value="<?= (isset($_GET['ke'])) ? $_GET['ke'] : ''; ?>">
+                                                        <input type="hidden" name="job_sales" value="<?= (isset($_GET['job_sales'])) ? $_GET['job_sales'] : ''; ?>">
+                                                        <input type="hidden" name="customer_id" value="<?= (isset($_GET['customer_id'])) ? $_GET['customer_id'] : ''; ?>">
+                                                        <input type="hidden" name="sinvoice" value="<?= (isset($_GET['sinvoice'])) ? $_GET['sinvoice'] : ''; ?>">
+                                                        <input type="hidden" name="lunas" value="<?= (isset($_GET['lunas'])) ? $_GET['lunas'] : ''; ?>">
+                                                        <input type="hidden" name="status" value="<?= (isset($_GET['status'])) ? $_GET['status'] : ''; ?>">
+
+                                                        <input type="hidden" name="url" value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>#tr<?= $usr->job_id; ?>">
+
+                                                    </form>
                                                 </td>
                                             <?php } ?>
                                             <!-- <td class="<?= $textstatus; ?>"><?= $no++; ?></td> -->

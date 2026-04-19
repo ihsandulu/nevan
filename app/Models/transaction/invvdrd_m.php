@@ -138,7 +138,7 @@ class invvdrd_m extends core_m
         //insert invvdr
         if ($this->request->getPost("createinvvdr") == "OK") {
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'create' && $e != 'invvdr_id' && $e != 'customer_singkatan' && $e != 'createinvvdr') {
+                if ($e != 'create' && $e != 'invvdr_id' && $e != 'customer_singkatan' && $e != 'createinvvdr' && $e != 'url') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
@@ -194,8 +194,23 @@ class invvdrd_m extends core_m
                 ->update($inputad);
             // echo $this->db->getLastQuery(); die;          
 
+             //tambahkan nomor invoice di job
+            $inputjob["invvdr_temp"] = $input["invvdr_temp"];
+            // dd($jobdano);
+            if (!empty($jobdano)) {
+                $this->db
+                    ->table('job')
+                    ->whereIn('job_dano', $jobdano)
+                    ->update($inputjob);
+                // echo $this->db->getLastQuery(); die;
+            }
+
             $data["message"] = "Insert Data Success";
-            header('Location: ' . base_url('invvdr'));
+            if (isset($_POST["url"]) && $_POST["url"] != "") {
+                header('Location: ' . $_POST["url"]);
+            } else {
+                header('Location: ' . base_url('invvdr'));
+            }
             exit;
         }
         //echo $_POST["create"];die;
@@ -267,7 +282,7 @@ class invvdrd_m extends core_m
             $input["invvdr_ppn12"] = 0;
             $input["invvdr_pph"] = 0;
             foreach ($this->request->getPost() as $e => $f) {
-                if ($e != 'changeinvvdr' && $e != 'customer_singkatan') {
+                if ($e != 'changeinvvdr' && $e != 'customer_singkatan' && $e != 'url') {
                     $input[$e] = $this->request->getPost($e);
                 }
             }
@@ -320,7 +335,12 @@ class invvdrd_m extends core_m
             // echo $this->db->getLastQuery(); die;
 
             $data["message"] = "Insert Data Success";
-            header('Location: ' . base_url('invvdr'));
+             if (isset($_POST["url"]) && $_POST["url"] != "") {
+                header('Location: ' . $_POST["url"]);
+            } else {
+                header('Location: ' . base_url('invvdr'));
+            }
+            
             exit;
         }
 
