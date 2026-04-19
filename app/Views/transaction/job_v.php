@@ -1685,7 +1685,7 @@ function get_full_current_url()
                                                         ?>
 
                                                         <input type="hidden" name="url" value="<?= $currentUrl ?>#tr<?= $usr->job_id; ?>">
-                                                        <!-- <input type="hidden" name="url" value="<?= $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>#tr<?= $usr->job_id; ?>"> -->
+                                                        
 
                                                     </form>
 
