@@ -371,7 +371,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         ?>
         let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url($pagetitle); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
     <?php } else { ?>
-        let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("inv"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Invoice</a>';
+        let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("inv"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Piutang</a>';
     <?php } ?>
     $(document).ready(function() {
         $("#page-title").append(pagetitle);

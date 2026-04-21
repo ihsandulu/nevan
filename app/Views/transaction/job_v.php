@@ -1651,7 +1651,7 @@ function get_full_current_url()
                                                             </form>
                                                     <?php }
                                                     } ?>
-                                                    <form method="get" class="col-md-2" action="<?= base_url("invd") ?>" style="float: left;">
+                                                    <form method="get" class="btn-action" action="<?= base_url("invd") ?>" style="">
 
                                                         <button title="Invoice Customer" data-bs-toggle="tooltip" class="btn btn-sm btn-primary"><span class="fa fa-superpowers" style="color:white;"></span> </button>
                                                         <?php
@@ -1689,7 +1689,7 @@ function get_full_current_url()
 
                                                     </form>
 
-                                                    <form method="get" class="col-md-2" action="<?= base_url("invvdrd") ?>">
+                                                    <form method="get" class="btn-action" action="<?= base_url("invvdrd") ?>">
                                                         <button title="Tagihan Vendor" data-bs-toggle="tooltip" class="btn btn-sm btn-info"><span class="fa fa-snowflake-o" style="color:white;"></span> </button>
                                                         <?php
                                                         if ($usr->invvdro_temp > 0) {

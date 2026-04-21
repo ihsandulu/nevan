@@ -416,7 +416,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         ?>
         let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url($pagetitle); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Job</a>';
     <?php } else { ?>
-        let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("invvdr"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Invoice Vendor</a>';
+        let pagetitle = '&nbsp;&nbsp;<a href="<?= base_url("invvdr"); ?>" class="btn btn-warning"><i class="fa fa-undo"></i> Back to Hutang</a>';
     <?php } ?>
     
     $(document).ready(function() {

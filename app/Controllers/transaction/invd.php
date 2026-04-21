@@ -20,7 +20,7 @@ class invd extends BaseController
     {
         $data = new \App\Models\transaction\invd_m();
         $data = $data->data();
-        $data["title"]="Detail Invoice Customer";
+        $data["title"]="Detail Piutang";
         return view('transaction/invd_v', $data);
     }
 }
