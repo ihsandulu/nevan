@@ -60,7 +60,7 @@ class kas extends BaseController
     {
         $data = new \App\Models\transaction\kas_m();
         $data = $data->data();
-        $data["title"]="Tetap";
+        $data["title"]="Petty Cash";
         $data["url"]="pettycash";
         $kas=$this->db->table("kas")
         ->where("kas_debettype","pettycash")

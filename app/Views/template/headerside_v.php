@@ -583,7 +583,7 @@
                         )
                     ) { ?>
                         <li>
-                            <a class="<?= current_url(true)->getSegment(1) == 'pettycash' ? 'active' : ''; ?>" href="<?= base_url("pettycash"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Tetap</span></a>
+                            <a class="<?= current_url(true)->getSegment(1) == 'pettycash' ? 'active' : ''; ?>" href="<?= base_url("pettycash"); ?>" aria-expanded="false"><i class="fa fa-money"></i><span class="hide-menu">Petty Cash</span></a>
                         </li>
                     <?php } ?>
 
