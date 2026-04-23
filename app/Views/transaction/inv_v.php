@@ -34,6 +34,18 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         white-space: normal;
         word-break: break-word;
     }
+
+    #ex23 td:nth-child(3),
+    #ex23 th:nth-child(3) {
+        min-width: 500px !important;
+        width: 500px !important;
+    }
+
+    #ex23 td:nth-child(5),
+    #ex23 th:nth-child(5) {
+        min-width: 500px !important;
+        width: 500px !important;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -248,7 +260,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                 }
                                 $build->groupBy("invd.inv_temp");
                                 $usr = $build->orderBy("inv.inv_id", "DESC")
-                                ->get();
+                                    ->get();
 
                                 // echo $this->db->getLastquery();
                                 $no = 1;
@@ -354,19 +366,19 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
                                         <td class="f12 wraptext">
                                             <!-- <?=
-                                            isset($ainvd[$usr->inv_id]["job_dano"]) && is_array($ainvd[$usr->inv_id]["job_dano"])
-                                                ? implode(', ', $ainvd[$usr->inv_id]["job_dano"])
-                                                : '-'
-                                            ?> -->
-                                            <?=$usr->job_dano_list ;?>
+                                                    isset($ainvd[$usr->inv_id]["job_dano"]) && is_array($ainvd[$usr->inv_id]["job_dano"])
+                                                        ? implode(', ', $ainvd[$usr->inv_id]["job_dano"])
+                                                        : '-'
+                                                    ?> -->
+                                            <?= $usr->job_dano_list; ?>
                                         </td>
                                         <td class="f12 wraptext">
                                             <!-- <?=
-                                            isset($ainvd[$usr->inv_id]["invd_description"]) && is_array($ainvd[$usr->inv_id]["invd_description"])
-                                                ? implode(', ', $ainvd[$usr->inv_id]["invd_description"])
-                                                : '-'
-                                            ?> -->
-                                            <?=$usr->invd_description_list ;?>
+                                                    isset($ainvd[$usr->inv_id]["invd_description"]) && is_array($ainvd[$usr->inv_id]["invd_description"])
+                                                        ? implode(', ', $ainvd[$usr->inv_id]["invd_description"])
+                                                        : '-'
+                                                    ?> -->
+                                            <?= $usr->invd_description_list; ?>
                                         </td>
                                         <td class="text-left f12"><?= $usr->customer_name; ?></td>
                                         <td class="f12">
@@ -381,10 +393,10 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                 <span></span>
                                                 <span><?= number_format($usr->inv_tagihan, 0, ",", "."); ?></span>
                                             </span>
-                                            
+
                                         </td>
                                         <td class="f12">
-                                           <span class="uang">
+                                            <span class="uang">
                                                 <span></span>
                                                 <span><?= number_format($usr->inv_discount, 0, ",", "."); ?></span>
                                             </span>
@@ -405,7 +417,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                             <?php } ?>
                                         </td>
                                         <td class="f12">
-                                            
+
                                             <?php if ($usr->inv_ppn11 > 0) {
                                                 $ppn11 = $dtagihan * 11 / 100; ?>
                                                 <span class="uang">
@@ -414,7 +426,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                 </span>
                                             <?php } ?>
                                         </td>
-                                        <td class="f12">                                            
+                                        <td class="f12">
                                             <?php if ($usr->inv_ppn12 > 0) {
                                                 $ppn12 = $dtagihan * 12 / 100; ?>
                                                 <span class="uang">
@@ -423,7 +435,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                 </span>
                                             <?php } ?>
                                         </td>
-                                        <td class="f12">                                           
+                                        <td class="f12">
                                             <?php if ($usr->inv_pph > 0) {
                                                 $pph = $dtagihan * 2 / 100; ?>
                                                 <span class="uang">
@@ -442,7 +454,7 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                                 <span><?= number_format($grand, 0, ",", "."); ?></span>
                                             </span>
                                         </td>
-                                       
+
                                         <td class="f12">
                                             <span class="uang">
                                                 <span></span>
@@ -511,48 +523,145 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
             // paging: false,
             dom: 'Bfrtip',
             buttons: [{
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':not(:first-child)'
-                    }
-                },
-                {
                     extend: 'pdfHtml5',
                     exportOptions: {
                         columns: ':not(:first-child)'
                     },
+
                     orientation: 'landscape',
-                    pageSize: 'A4',
+                    pageSize: 'A3',
+
                     customize: function(doc) {
-                        // Tampilkan data khusus ekspor, sembunyikan elemen tampilan
+
+                        // tampilkan field khusus export
                         $('.export-data').css('display', 'block');
                         $('.screen-only').css('display', 'none');
 
-                        // Atur margin dan lebar
-                        doc.content[1].margin = [0, 20, 0, 0];
-                        doc.content[1].table.widths =
-                            Array(doc.content[1].table.body[0].length + 1).join('*').split('');
+                        // margin kecil supaya area tabel lebih luas
+                        doc.pageMargins = [10, 10, 10, 10];
 
-                        // Kembalikan tampilan normal setelah render
+                        // kecilkan font
+                        doc.defaultStyle.fontSize = 7;
+                        doc.styles.tableHeader.fontSize = 8;
+
+                        // index tabel biasanya content[1]
+                        var tableNode = doc.content[1];
+
+                        // jika ada title/heading tambahan kadang index bisa bergeser
+                        if (!tableNode.table) {
+                            for (var i = 0; i < doc.content.length; i++) {
+                                if (doc.content[i].table) {
+                                    tableNode = doc.content[i];
+                                    break;
+                                }
+                            }
+                        }
+
+                        // semua kolom bagi rata otomatis
+                        var colCount = tableNode.table.body[0].length;
+                        tableNode.table.widths = Array(colCount).fill('*');
+
+                        // garis tabel (optional biar rapi)
+                        tableNode.layout = {
+                            hLineWidth: function() {
+                                return 0.5;
+                            },
+                            vLineWidth: function() {
+                                return 0.5;
+                            }
+                        };
+
+                        // kembalikan tampilan normal
                         setTimeout(function() {
                             $('.export-data').css('display', 'none');
                             $('.screen-only').css('display', 'block');
                         }, 10);
+
                     }
                 },
                 {
-                    extend: 'excel',
+                    extend: 'excelHtml5',
+
                     exportOptions: {
-                        columns: ':not(:first-child)'
+                        columns: ':not(:first-child)',
+
+                        format: {
+                            body: function(data, row, column, node) {
+
+                                data = $('<div>').html(data).text();
+
+                                // buang pemisah ribuan
+                                data = data.replace(/\./g, '');
+
+                                return data;
+                            }
+                        }
+                    },
+
+                    customize: function(xlsx) {
+
+                        var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                        // hitung panjang isi tiap kolom
+                        var colLengths = [];
+
+                        $('row c', sheet).each(function() {
+
+                            var cell = $(this);
+                            var ref = cell.attr('r'); // contoh A1, B2
+
+                            var col = ref.replace(/[0-9]/g, '');
+
+                            var text = cell.text();
+                            var len = text ? text.length : 8;
+
+                            if (!colLengths[col] || len > colLengths[col]) {
+                                colLengths[col] = len;
+                            }
+
+                        });
+
+                        // buat tag cols kalau belum ada
+                        if ($('cols', sheet).length === 0) {
+                            $('worksheet', sheet).prepend('<cols/>');
+                        }
+
+                        // hapus default cols lama
+                        $('cols', sheet).empty();
+
+                        // set width berdasarkan isi
+                        var i = 1;
+
+                        for (var col in colLengths) {
+
+                            // padding sedikit, min 8 max 25
+                            var width = Math.min(
+                                Math.max(colLengths[col] + 2, 8),
+                                25
+                            );
+
+                            $('cols', sheet).append(
+                                '<col min="' + i +
+                                '" max="' + i +
+                                '" width="' + width +
+                                '" customWidth="1"/>'
+                            );
+
+                            i++;
+                        }
+
                     }
                 }
             ],
+            autoWidth: false,
+
+         
             ordering: false, // Mencegah DataTables mengatur order by
             lengthMenu: [
                 [10, 25, 50, -1],
                 [10, 25, 50, "Semua"]
             ],
-            pageLength: 10 // Default jumlah baris per halaman
+            pageLength: 100 // Default jumlah baris per halaman
         });
     });
     $('.select').select2();

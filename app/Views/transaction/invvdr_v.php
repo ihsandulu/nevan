@@ -86,6 +86,28 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
         overflow: hidden;
         vertical-align: middle;
     }
+
+
+
+    #ex23 {
+        width: 200% !important;
+    }
+
+    #ex23 th,
+    #ex23 td {
+        white-space: nowrap;
+        padding: 8px 12px;
+    }
+
+    .dataTables_wrapper {
+        overflow-x: auto;
+    }
+
+    #ex23 td:nth-child(5),
+    #ex23 th:nth-child(5) {
+        min-width: 500px !important;
+        width: 500px !important;
+    }
 </style>
 
 <div class='container-fluid'>
@@ -231,6 +253,13 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <th style="width:200px;">Description</th>
                                     <th>Vendor</th>
                                     <th>Tagihan</th>
+                                    <th>Diskon</th>
+                                    <th>Stlh Diskon</th>
+                                    <th>PPN 1,1</th>
+                                    <th>PPN 11</th>
+                                    <th>PPN 12</th>
+                                    <th>PPH</th>
+                                    <th>Grand Total</th>
                                     <th>Pembayaran</th>
                                     <th>Sisa Hutang</th>
                                 </tr>
@@ -373,61 +402,75 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                             $pph = 0;
                                             ?>
                                             <span class="uang">
-                                                <span>Tagihan:</span>
-                                                <span><?= number_format($usr->invvdr_tagihan, 2, ".", ","); ?></span>
+                                                <span></span>
+                                                <span><?= number_format($usr->invvdr_tagihan, 2, ",", "."); ?></span>
                                             </span>
+                                        </td>
+                                        <td class="text-right">
                                             <span class="uang">
-                                                <span>Diskon:</span>
-                                                <span><?= number_format($usr->invvdr_discount, 2, ".", ","); ?></span>
+                                                <span></span>
+                                                <span><?= number_format($usr->invvdr_discount, 2, ",", "."); ?></span>
                                             </span>
+                                        </td>
+                                        <td class="text-right">
                                             <span class="uang">
-                                                <span>Stlh Diskon:</span>
-                                                <span><?= number_format($usr->invvdr_dtagihan, 2, ".", ","); ?></span>
+                                                <span></span>
+                                                <span><?= number_format($usr->invvdr_dtagihan, 2, ",", "."); ?></span>
                                             </span>
+                                        </td>
+                                        <td class="text-right">
                                             <?php if ($usr->invvdr_ppn1k1 > 0) {
                                                 $ppn1k1 = $dtagihan * 1.1 / 100; ?>
                                                 <span class="uang">
-                                                    <span>PPN1,1:</span>
-                                                    <span><?= number_format($ppn1k1, 2, ".", ","); ?></span>
+                                                    <span></span>
+                                                    <span><?= number_format($ppn1k1, 2, ",", "."); ?></span>
                                                 </span>
                                             <?php } ?>
+                                        </td>
+                                        <td class="text-right">
                                             <?php if ($usr->invvdr_ppn11 > 0) {
                                                 $ppn11 = $dtagihan * 11 / 100; ?>
                                                 <span class="uang">
-                                                    <span>PPN11:</span>
-                                                    <span><?= number_format($ppn11, 2, ".", ","); ?></span>
+                                                    <span></span>
+                                                    <span><?= number_format($ppn11, 2, ",", "."); ?></span>
                                                 </span>
                                             <?php } ?>
+                                        </td>
+                                        <td class="text-right">
                                             <?php if ($usr->invvdr_ppn12 > 0) {
                                                 $ppn12 = $dtagihan * 12 / 100; ?>
                                                 <span class="uang">
-                                                    <span>PPN12:</span>
-                                                    <span><?= number_format($ppn12, 2, ".", ","); ?></span>
+                                                    <span></span>
+                                                    <span><?= number_format($ppn12, 2, ",", "."); ?></span>
                                                 </span>
                                             <?php } ?>
+                                        </td>
+                                        <td class="text-right">
                                             <?php if ($usr->invvdr_pph > 0) {
                                                 $pph = $dtagihan * 2 / 100; ?>
                                                 <span class="uang">
-                                                    <span>PPH:</span>
-                                                    <span><?= number_format($pph, 2, ".", ","); ?></span>
+                                                    <span></span>
+                                                    <span><?= number_format($pph, 2, ",", "."); ?></span>
                                                 </span>
                                             <?php } ?>
+                                        </td>
+                                        <td class="text-right">
                                             <?php
                                             $tharga = $dtagihan + $ppn1k1 + $ppn11 + $ppn12;
                                             $grand = $tharga - $pph;
                                             ?>
                                             <span class="uang">
-                                                <span>Grand Total</span>
-                                                <span><?= number_format($grand, 2, ".", ","); ?></span>
+                                                <span></span>
+                                                <span><?= number_format($grand, 2, ",", "."); ?></span>
                                             </span>
                                         </td>
                                         <td class="text-right">
-                                            <?= number_format($usr->invvdr_payment, 2, ".", ","); ?>
+                                            <?= number_format($usr->invvdr_payment, 2, ",", "."); ?>
                                         </td>
                                         <td class="text-right">
                                             <?php
                                             $sisahutang = $grand - $usr->invvdr_payment;
-                                            echo number_format($sisahutang, 0, ".", ","); ?>
+                                            echo number_format($sisahutang, 0, ",", "."); ?>
                                         </td>
                                     </tr>
                                 <?php $bayar += $usr->invvdr_payment;
@@ -445,11 +488,18 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
                                     <td class="f12 bold">
                                         Total :
                                     </td>
-                                    <td class="f12 bold"><?= number_format($bayar, 0, ".", ","); ?></td>
-                                    <td class="f12 bold"><?= number_format($hutang, 0, ".", ","); ?></td>
+                                    <td class="f12 bold"><?= number_format($bayar, 0, ",", "."); ?></td>
+                                    <td class="f12 bold"><?= number_format($hutang, 0, ",", "."); ?></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -460,9 +510,181 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
     </div>
 </div>
 <script>
+    $(document).ready(function() {
+
+        $('#ex23').DataTable({
+
+            dom: 'Bfrtip',
+
+            // PERBAIKAN TAMPILAN WEB
+            autoWidth: false,
+            scrollX: true,
+            responsive: false,
+
+            buttons: [
+
+                {
+                    extend: 'pdfHtml5',
+
+                    exportOptions: {
+                        columns: ':not(:first-child)'
+                    },
+
+                    orientation: 'landscape',
+                    pageSize: 'A3',
+
+                    customize: function(doc) {
+
+                        $('.export-data').show();
+                        $('.screen-only').hide();
+
+                        doc.pageMargins = [10, 10, 10, 10];
+
+                        doc.defaultStyle.fontSize = 7;
+                        doc.styles.tableHeader.fontSize = 8;
+
+                        var tableNode = doc.content[1];
+
+                        if (!tableNode.table) {
+                            for (var i = 0; i < doc.content.length; i++) {
+                                if (doc.content[i].table) {
+                                    tableNode = doc.content[i];
+                                    break;
+                                }
+                            }
+                        }
+
+                        var colCount = tableNode.table.body[0].length;
+
+                        // buat semua auto
+                        var widths = Array(colCount).fill('auto');
+
+                        // kolom Description (kolom ke-5 di tampilan,
+                        // setelah Action di-export jadi index 3 atau 4 tergantung export)
+                        widths[3] = 180; // coba 180-250
+
+                        tableNode.table.widths = widths;
+
+                        tableNode.layout = {
+                            hLineWidth: function() {
+                                return .5;
+                            },
+                            vLineWidth: function() {
+                                return .5;
+                            }
+                        };
+
+                        setTimeout(function() {
+
+                            $('.export-data').hide();
+                            $('.screen-only').show();
+
+                            // recalc lebar kolom setelah export
+                            $('#ex23').DataTable().columns.adjust();
+
+                        }, 10);
+
+                    }
+                },
+
+                {
+                    extend: 'excelHtml5',
+
+                    exportOptions: {
+                        columns: ':not(:first-child)',
+
+                        format: {
+                            body: function(data) {
+
+                                data = $('<div>')
+                                    .html(data)
+                                    .text();
+
+                                data = data.replace(/\./g, '');
+
+                                return data;
+                            }
+                        }
+                    },
+
+                    customize: function(xlsx) {
+
+                        var sheet =
+                            xlsx.xl.worksheets['sheet1.xml'];
+
+                        var colLengths = [];
+
+                        $('row c', sheet).each(function() {
+
+                            var cell = $(this);
+
+                            var ref = cell.attr('r');
+
+                            var col =
+                                ref.replace(/[0-9]/g, '');
+
+                            var text = cell.text();
+
+                            var len = text ?
+                                text.length : 8;
+
+                            if (!colLengths[col] ||
+                                len > colLengths[col]) {
+
+                                colLengths[col] = len;
+                            }
+
+                        });
+
+                        if ($('cols', sheet).length === 0) {
+                            $('worksheet', sheet)
+                                .prepend('<cols/>');
+                        }
+
+                        $('cols', sheet).empty();
+
+                        var i = 1;
+
+                        for (var col in colLengths) {
+
+                            var width = Math.min(
+                                Math.max(
+                                    colLengths[col] + 2,
+                                    10
+                                ),
+                                30
+                            );
+
+                            $('cols', sheet).append(
+                                '<col min="' + i +
+                                '" max="' + i +
+                                '" width="' + width +
+                                '" customWidth="1"/>'
+                            );
+
+                            i++;
+                        }
+
+                    }
+                }
+
+            ],
+
+            ordering: false,
+
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "Semua"]
+            ],
+
+            pageLength: 100
+
+        });
+
+    });
     $('.select').select2();
     var title = "<?= $title; ?>";
-    let pembayaran = ". Pembayaran : <?= number_format($bayar, 0, ".", ","); ?> , Sisa Hutang : <?= number_format($hutang, 0, ".", ","); ?>";
+    let pembayaran = ". Pembayaran : <?= number_format($bayar, 0, ",", "."); ?> , Sisa Hutang : <?= number_format($hutang, 0, ",", "."); ?>";
     $("title").text(title);
     $(".card-title").text(title + pembayaran);
     $("#page-title").text(title);
@@ -477,72 +699,6 @@ $identity = $this->db->table("identity")->get()->getRow(); ?>
 
             // Menampilkan tooltip secara manual
             tooltip.show();
-        });
-    });
-    $(document).ready(function() {
-        $('#ex23').DataTable({
-            dom: 'Bfrtip',
-            buttons: [{
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':not(:first-child)'
-                    }
-                },
-                {
-                    extend: 'pdfHtml5',
-                    exportOptions: {
-                        columns: ':not(:first-child)'
-                    },
-                    orientation: 'landscape',
-                    pageSize: 'A4',
-                    customize: function(doc) {
-                        // Tambah jarak antara title dan tabel
-                        doc.content[1].margin = [0, 20, 0, 0]; // [left, top, right, bottom]
-
-                        // Biar kolom rata dan memenuhi lebar
-                        doc.content[1].table.widths =
-                            Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-                    }
-                },
-                {
-                    extend: 'excelHtml5',
-                    text: 'Export Excel',
-                    exportOptions: {
-                        // Ekspor semua kolom KECUALI kolom pertama (indeks 0)
-                        columns: [1, 2, 3, 4, 5, 6, 7, 8], // sesuaikan dengan jumlah kolom kamu
-
-                        // Format data untuk hilangkan pemisah ribuan
-                        format: {
-                            body: function(data, row, column, node) {
-                                // Contoh: tambahkan kembali pemisah ribuan untuk kolom tertentu
-
-
-                                // Kolom 6 (jika mengandung <span class="uang">...) kita tangani secara khusus
-                                if (column === 5) {
-                                    const temp = $('<div>').html(data);
-                                    let result = [];
-
-                                    temp.find('span.uang').each(function() {
-                                        const label = $(this).find('span').eq(0).text().trim();
-                                        const value = $(this).find('span').eq(1).text().trim();
-                                        result.push(`${label} ${value}`);
-                                    });
-
-                                    return result.join(', ');
-                                }
-
-                                return data;
-                            }
-                        }
-                    }
-                }
-            ],
-            ordering: false, // Mencegah DataTables mengatur order by
-            lengthMenu: [
-                [10, 25, 50, -1],
-                [10, 25, 50, "Semua"]
-            ],
-            pageLength: 10 // Default jumlah baris per halaman
         });
     });
 </script>
