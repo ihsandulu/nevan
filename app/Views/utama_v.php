@@ -1,6 +1,6 @@
 <?php echo $this->include("template/header_v"); ?>
 
-<div class='container'>
+<div class='container' style="background-image:url('images/background/<?= session()->get("background"); ?>');background-size:cover;">
 	<div class='row'>
 		<div class='col'>
 			<div class="row">
@@ -11,7 +11,7 @@
 							<div class="card-two">
 								<header>
 									<div class="avatar">
-										<img src="images/user_picture/<?=(session()->get("user_picture"))?session()->get("user_picture"):"no_image.png";?>" alt="<?= session()->get("user_name"); ?>" />
+										<img src="images/global/user.png" />
 									</div>
 								</header>
 								<h3><?= ucfirst(session()->get("position_name")); ?></h3>

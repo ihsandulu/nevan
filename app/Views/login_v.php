@@ -86,7 +86,7 @@ foreach($identity->getResult() as $identity){
             min-height: 100px;
         }
         .container-login100 {
-            background-image: url('images/sgibackground.png'); /* Gantilah 'nama_gambar.jpg' dengan nama dan path file gambar Anda */
+            background-image: url('images/global/background_nkl.png'); /* Gantilah 'nama_gambar.jpg' dengan nama dan path file gambar Anda */
             background-attachment: fixed;
             background-size: cover; /* Opsional: Sesuaikan dengan kebutuhan Anda, bisa diganti dengan 'contain' atau nilai lainnya */
             background-position: center; /* Opsional: Sesuaikan dengan kebutuhan Anda */

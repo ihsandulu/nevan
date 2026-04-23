@@ -166,7 +166,7 @@ foreach($identity->getResult() as $identity){
             transform: translate(10px,-50%); 
         }
         #logotop{height: 50px; width: auto;}
-        .table-responsive{overflow-x: auto; cursor: grab;}
+        .container-fluid{background-image: url('image/global/background_nkl_buram.png'); background-size: cover;}
     </style>
     
 
