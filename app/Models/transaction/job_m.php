@@ -101,6 +101,8 @@ class job_m extends core_m
         if (isset($_FILES['job_picture']) && $_FILES['job_picture']['name'] != "") {
             // $request = \Config\Services::request();
             $file = $this->request->getFile('job_picture');
+            echo $file->getError();
+die;
             $name = $file->getName(); // Mengetahui Nama File
             $originalName = $file->getClientName(); // Mengetahui Nama Asli
             $tempfile = $file->getTempName(); // Mengetahui Nama TMP File name
