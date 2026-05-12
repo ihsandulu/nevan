@@ -852,7 +852,7 @@ function get_full_current_url()
                         <?php if ($message != "") { ?>
                             <div class="alert alert-info alert-dismissable">
                                 <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <strong><?= $message; ?></strong>
+                                <strong><?= $message; ?></strong> <?= $uploadjob_picture; ?>
                             </div>
                         <?php } ?>
                         <?php

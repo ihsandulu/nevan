@@ -5,3 +5,4 @@ writable/debugbar/
 writable/session/*
 !writable/session/index.html
 app/Config/App.php
+images/job_picture/
