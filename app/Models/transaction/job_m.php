@@ -101,8 +101,6 @@ class job_m extends core_m
         if (isset($_FILES['job_picture']) && $_FILES['job_picture']['name'] != "") {
             // $request = \Config\Services::request();
             $file = $this->request->getFile('job_picture');
-            echo $file->getError();
-die;
             $name = $file->getName(); // Mengetahui Nama File
             $originalName = $file->getClientName(); // Mengetahui Nama Asli
             $tempfile = $file->getTempName(); // Mengetahui Nama TMP File name
@@ -113,14 +111,9 @@ die;
 
 
             //$namabaru = $file->getRandomName();//define nama fiel yang baru secara acak
-            $allowedExt = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'];
 
-           /*  if (
-                $file->isValid() &&
-                in_array(strtolower($ext), $allowedExt)
-            )
-            // if ($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png') //cek mime file
-            {  */   // File Tipe Sesuai   
+            if ($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png') //cek mime file
+            {    // File Tipe Sesuai   
                 helper('filesystem'); // Load Helper File System
                 $direktori = 'images/job_picture'; //definisikan direktori upload            
                 $job_picture = str_replace(' ', '_', $name);
@@ -142,11 +135,10 @@ die;
                 } else {
                     $data['uploadjob_picture'] = "Upload Gagal !";
                 }
-           /*  } else {
+            } else {
                 // File Tipe Tidak Sesuai
-                // $data['uploadjob_picture'] = "Format File Salah Ya !".$type;
-                $data['uploadjob_picture'] = "Format =" . $type;
-            } */
+                $data['uploadjob_picture'] = "Format File Salah !";
+            }
         }
         // dd($_POST);
         //insert
@@ -169,7 +161,7 @@ die;
                 if (date("y") == $duaDigitAwal) {
                     $dano = $dano->job_dano + 1;
                 } else {
-                    $dano = (int)($tahun . '0001');
+                     $dano = (int)($tahun . '0001');
                 }
             }
             $input["job_dano"] = $dano;
