@@ -113,12 +113,12 @@ class job_m extends core_m
             //$namabaru = $file->getRandomName();//define nama fiel yang baru secara acak
             $allowedExt = ['jpg', 'jpeg', 'png', 'webp', 'heic', 'heif'];
 
-            if (
+           /*  if (
                 $file->isValid() &&
                 in_array(strtolower($ext), $allowedExt)
             )
             // if ($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png') //cek mime file
-            {    // File Tipe Sesuai   
+            {  */   // File Tipe Sesuai   
                 helper('filesystem'); // Load Helper File System
                 $direktori = 'images/job_picture'; //definisikan direktori upload            
                 $job_picture = str_replace(' ', '_', $name);
@@ -140,11 +140,11 @@ class job_m extends core_m
                 } else {
                     $data['uploadjob_picture'] = "Upload Gagal !";
                 }
-            } else {
+           /*  } else {
                 // File Tipe Tidak Sesuai
                 // $data['uploadjob_picture'] = "Format File Salah Ya !".$type;
                 $data['uploadjob_picture'] = "Format =" . $type;
-            }
+            } */
         }
         // dd($_POST);
         //insert
