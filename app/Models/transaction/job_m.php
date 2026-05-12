@@ -111,8 +111,17 @@ class job_m extends core_m
 
 
             //$namabaru = $file->getRandomName();//define nama fiel yang baru secara acak
+            $allowed = [
+                'image/jpg',
+                'image/jpeg',
+                'image/png',
+                'image/webp',
+                'image/heic',
+                'image/heif'
+            ];
 
-            if ($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png') //cek mime file
+            if (in_array($type, $allowed))
+            // if ($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png') //cek mime file
             {    // File Tipe Sesuai   
                 helper('filesystem'); // Load Helper File System
                 $direktori = 'images/job_picture'; //definisikan direktori upload            
@@ -161,7 +170,7 @@ class job_m extends core_m
                 if (date("y") == $duaDigitAwal) {
                     $dano = $dano->job_dano + 1;
                 } else {
-                     $dano = (int)($tahun . '0001');
+                    $dano = (int)($tahun . '0001');
                 }
             }
             $input["job_dano"] = $dano;
