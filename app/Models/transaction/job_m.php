@@ -146,7 +146,7 @@ class job_m extends core_m
                 }
             } else {
                 // File Tipe Tidak Sesuai
-                $data['uploadjob_picture'] = "Format File Salah !";
+                $data['uploadjob_picture'] = "Format File Salah !".$type;
             }
         }
         // dd($_POST);
