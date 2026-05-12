@@ -111,16 +111,7 @@ class job_m extends core_m
 
 
             //$namabaru = $file->getRandomName();//define nama fiel yang baru secara acak
-            $allowed = [
-                'image/jpg',
-                'image/jpeg',
-                'image/png',
-                'image/webp',
-                'image/heic',
-                'image/heif'
-            ];
-
-            if (in_array($type, $allowed))
+            if (strpos($type, 'image/') === 0)
             // if ($type == 'image/jpg' || $type == 'image/jpeg' || $type == 'image/png') //cek mime file
             {    // File Tipe Sesuai   
                 helper('filesystem'); // Load Helper File System
