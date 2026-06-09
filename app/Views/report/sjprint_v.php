@@ -258,28 +258,29 @@ function terbilang($angka)
                                             <th>Methode</th>
                                             <th>Qty</th>
                                             <th>Satuan</th>
-                                            <th>Price</th>
-                                            <th>Total</th>
+                                            <!-- <th>Price</th>
+                                            <th>Total</th> -->
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
-                                        $jobd = $this->db->table("jobd")
+                                        $sjd = $this->db->table("sjd")
                                             ->where("job_temp", $_GET["temp"])->get();
                                         // echo $this->db->getLastQuery();
                                         $no = 1;
-                                        foreach ($jobd->getResult() as $jobd) { ?>
+                                        foreach ($sjd->getResult() as $sjd) { ?>
                                             <tr>
-                                                <td class="text-left"><?= $no++; ?></td>
-                                                <td class="text-left"><?= $jobd->jobd_descgood; ?></td>
-                                                <td class="text-left"><?= $jobd->jobd_methode; ?></td>
-                                                <td class="text-center"><?= number_format($jobd->jobd_qty, 3, ",", "."); ?> <?= $jobd->jobd_satuan; ?></td>
-                                                <td>
-                                                    <span class="uang"><span>IDR</span><span><?= number_format($jobd->jobd_sell, 2, ",", "."); ?></span></span>
+                                                <td class="text-center"><?= $no++; ?></td>
+                                                <td class="text-left"><?= $sjd->sjd_descgood; ?>s</td>
+                                                <td class="text-center"><?= $sjd->sjd_methode; ?></td>
+                                                <td class="text-center"><?= number_format($sjd->sjd_qty, 3, ",", "."); ?></td>
+                                                <td><?= $sjd->sjd_satuan; ?></td>
+                                                <!-- <td>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($sjd->sjd_sell, 2, ",", "."); ?></span></span>
                                                 </td>
                                                 <td>
-                                                    <span class="uang"><span>IDR</span><span><?= number_format($jobd->jobd_total, 2, ",", "."); ?></span></span>
-                                                </td>
+                                                    <span class="uang"><span>IDR</span><span><?= number_format($sjd->sjd_total, 2, ",", "."); ?></span></span>
+                                                </td> -->
                                             </tr>
                                         <?php } ?>
                                     </tbody>

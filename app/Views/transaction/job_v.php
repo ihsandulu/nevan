@@ -606,6 +606,14 @@ function get_full_current_url()
                                 <div class="form-group col-12 label label-success">
                                     <h2 class="text-white">Surat Jalan</h2>
                                 </div>
+
+                                <div class="form-group col-md-4 col-sm-6 col-xs-12">
+                                    <label class="control-label col-sm-12" for="">List Surat Jalan:</label>
+                                    <div class="col-sm-12">
+                                        <a target="_self" href="<?= base_url("sjd?t=ec&temp=" . $job_temp . "&url=" . $url . "&tbl=" . $tbl . "&enc=" . $enc); ?>" class="btn btn-success">List Surat Jalan</a>
+                                    </div>
+                                </div>
+
                                 <div class="form-group col-md-4 col-sm-6 col-xs-12">
                                     <label class="control-label col-sm-12" for="job_pickupaddress">PICKUP ADDRESS:</label>
                                     <div class="col-sm-12">
@@ -1608,8 +1616,52 @@ function get_full_current_url()
                                                     <?php } ?>
 
                                                     <?php
-                                                    if ($posisi == "operasional" || $posisi == "finance") {
+                                                    if ($posisi == "operasional" || $posisi == "finance") { ?>
+                                                        <?php
                                                         if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['102']['act_update'])
+                                                                && session()->get("halaman")['102']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['115']['act_update'])
+                                                                && session()->get("halaman")['115']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['116']['act_update'])
+                                                                && session()->get("halaman")['116']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['118']['act_update'])
+                                                                && session()->get("halaman")['118']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['119']['act_update'])
+                                                                && session()->get("halaman")['119']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['114']['act_update'])
+                                                                && session()->get("halaman")['114']['act_update'] == "1"
+                                                            )
+                                                        ) { ?>
+
+                                                            <form method="get" class="btn-action" style="" action="<?= base_url("sjd"); ?>">
+                                                                <button title="Details" data-bs-toggle="tooltip" class="btn btn-sm btn-success " name="sjd" value="OK"><span class="fa fa-cubes" style=""></span> </button>
+                                                                <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                                <input type="hidden" name="t" value="jc" />
+                                                                <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
+                                                                <input type="hidden" name="url" value="<?= $url; ?>" />
+                                                                <input type="hidden" name="enc" value="<?= $enc; ?>" />
+                                                            </form>
+                                                        <?php } ?>
+                                                        <?php if (
                                                             (
                                                                 isset(session()->get("position_administrator")[0][0])
                                                                 && (

@@ -38,7 +38,8 @@ class job_m extends core_m
             foreach ($this->db->getFieldNames('job') as $field) {
                 $data[$field] = "";
             }
-            $data["job_temp"] = date("YmdHis") . $this->session->get("user_id");
+            // $data["job_temp"] = date("YmdHis") . $this->session->get("user_id");
+            $data["job_temp"] = "";
             $data["job_shipmentdate"] = date("Y-m-d");
             $data["job_sell"] = 0;
             $data["job_total"] = 0;

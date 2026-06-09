@@ -42,6 +42,7 @@ $routes->add('/jobsales', 'transaction\job::sales');
 $routes->add('/joboperasional', 'transaction\job::operasional');
 $routes->add('/jobpurchasing', 'transaction\job::purchasing');
 $routes->add('/jobd', 'transaction\jobd::index');
+$routes->add('/sjd', 'transaction\sjd::index');
 $routes->add('/quotation', 'transaction\quotation::index');
 $routes->add('/quotationd', 'transaction\quotationd::index');
 $routes->add('/cppn', 'transaction\job::ppn');
