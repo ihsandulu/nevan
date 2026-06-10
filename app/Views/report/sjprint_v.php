@@ -307,7 +307,7 @@ function terbilang($angka)
                         </div>
                         <div class="col-12 text-center">
                             <?= $job->customer_name; ?><br/>
-                            <?= $job->customer_phone ? "(".$job->customer_phone.")" : ""; ?>
+                            <!-- <?= $job->customer_phone ? "(".$job->customer_phone.")" : ""; ?> -->
                         </div>
                     </div>
                     <div class="col-3 text-center">
@@ -319,7 +319,7 @@ function terbilang($angka)
                         </div>
                         <div class="col-12 text-center">
                             <?= $job->job_pengemudi; ?><br/>
-                            <?= $job->job_pengemudiphone ? "(".$job->job_pengemudiphone.")" : ""; ?>
+                            <!-- <?= $job->job_pengemudiphone ? "(".$job->job_pengemudiphone.")" : ""; ?> -->
                         </div>
                     </div>
                     <div class="col-3 text-center">
@@ -331,7 +331,7 @@ function terbilang($angka)
                         </div>
                         <div class="col-12 text-center">
                             <?= $job->job_tujuan; ?><br/>
-                            <?= $job->job_tujuanphone ? "(".$job->job_tujuanphone.")" : ""; ?>
+                            <!-- <?= $job->job_tujuanphone ? "(".$job->job_tujuanphone.")" : ""; ?> -->
                         </div>
                     </div>
                     <div class="col-3 text-center">
@@ -343,7 +343,7 @@ function terbilang($angka)
                         </div>
                         <div class="col-12 text-center">
                             <?= $identity_company;//$job->supervisi_name; ?><br/>
-                            (<?= $identity_phone; ?>)
+                            <!-- (<?= $identity_phone; ?>) -->
                         </div>
                     </div>
                 </div>
