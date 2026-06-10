@@ -47,11 +47,12 @@ class job_m extends core_m
             $data["job_profit"] = 0;
             $data["job_fee"] = 0;
             $data["job_gp"] = 0;
+            // dd($data);
         }
 
 
 
-        if (isset($_GET["temp"])) {
+        if (isset($_GET["temp"])&& $_GET["temp"] != "") {
             $data["job_temp"] = $_GET["temp"];
         }
 
