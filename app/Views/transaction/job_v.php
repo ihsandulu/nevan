@@ -1703,6 +1703,50 @@ function get_full_current_url()
                                                             </form>
                                                     <?php }
                                                     } ?>
+                                                    <?php
+                                                    if ($posisi == "sales") { ?>
+                                                        <?php if (
+                                                            (
+                                                                isset(session()->get("position_administrator")[0][0])
+                                                                && (
+                                                                    session()->get("position_administrator") == "1"
+                                                                    || session()->get("position_administrator") == "2"
+                                                                )
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['102']['act_update'])
+                                                                && session()->get("halaman")['102']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['115']['act_update'])
+                                                                && session()->get("halaman")['115']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['116']['act_update'])
+                                                                && session()->get("halaman")['116']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['118']['act_update'])
+                                                                && session()->get("halaman")['118']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['119']['act_update'])
+                                                                && session()->get("halaman")['119']['act_update'] == "1"
+                                                            ) ||
+                                                            (
+                                                                isset(session()->get("halaman")['114']['act_update'])
+                                                                && session()->get("halaman")['114']['act_update'] == "1"
+                                                            )
+                                                        ) { ?>
+                                                            <form target="_blank" method="get" class="btn-action" style="" action="<?= base_url("sjprint"); ?>">
+                                                                <button title="Surat Jalan" data-bs-toggle="tooltip" class="btn btn-sm btn-primary" name="sj" value="OK"><span class="fa fa-address-card-o" style="color:white;"></span> </button>
+                                                                <input type="hidden" name="job_id" value="<?= $usr->job_id; ?>" />
+                                                                <input type="hidden" name="t" value="jc" />
+                                                                <input type="hidden" name="temp" value="<?= $usr->job_temp; ?>" />
+                                                                <input type="hidden" name="url" value="<?= $url; ?>" />
+                                                            </form>
+                                                        <?php } ?>
+                                                    <?php } ?>
                                                     <form method="get" class="btn-action" action="<?= base_url("invd") ?>" style="">
 
                                                         <button title="Invoice Customer" data-bs-toggle="tooltip" class="btn btn-sm btn-primary"><span class="fa fa-superpowers" style="color:white;"></span> </button>
