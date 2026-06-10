@@ -186,6 +186,8 @@ function terbilang($angka)
                     $identity = $this->db->table("identity")->get()->getRow();
                     $identitypicture = $identity->identity_logo;
                     $identity_company = $identity->identity_company;
+                    $identity_phone = $identity->identity_phone;
+                    $identity_stempelsj = $identity->identity_stempelsj;
                     if ($identitypicture != "") {
                         $user_image = "images/identity_logo/" . $identitypicture . "?" . time();
                     } else {
@@ -305,7 +307,7 @@ function terbilang($angka)
                         </div>
                         <div class="col-12 text-center">
                             <?= $job->customer_name; ?><br/>
-                            (<?= $job->customer_phone; ?>)
+                            <?= $job->customer_phone ? "(".$job->customer_phone.")" : ""; ?>
                         </div>
                     </div>
                     <div class="col-3 text-center">
@@ -317,7 +319,7 @@ function terbilang($angka)
                         </div>
                         <div class="col-12 text-center">
                             <?= $job->job_pengemudi; ?><br/>
-                            (<?= $job->job_pengemudiphone; ?>)
+                            <?= $job->job_pengemudiphone ? "(".$job->job_pengemudiphone.")" : ""; ?>
                         </div>
                     </div>
                     <div class="col-3 text-center">
@@ -329,7 +331,7 @@ function terbilang($angka)
                         </div>
                         <div class="col-12 text-center">
                             <?= $job->job_tujuan; ?><br/>
-                            (<?= $job->job_tujuanphone; ?>)
+                            <?= $job->job_tujuanphone ? "(".$job->job_tujuanphone.")" : ""; ?>
                         </div>
                     </div>
                     <div class="col-3 text-center">
@@ -337,11 +339,11 @@ function terbilang($angka)
                             Supervisi
                         </div>
                         <div class="col-12 text-center">
-                            <img style="width:auto;height:70px;" src="<?= base_url("images/identity_stempelsj/" . $this->session->get("identity_stempelsj")); ?>" />
+                            <img style="width:auto;height:70px;" src="<?= base_url("images/identity_stempelsj/" . $identity_stempelsj); ?>" />
                         </div>
                         <div class="col-12 text-center">
-                            <?= $job->supervisi_name; ?><br/>
-                            (<?= $job->supervisi_phone; ?>)
+                            <?= $identity_company;//$job->supervisi_name; ?><br/>
+                            (<?= $identity_phone; ?>)
                         </div>
                     </div>
                 </div>
