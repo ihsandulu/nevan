@@ -294,7 +294,7 @@ foreach ($tbukun->getResult() as $row) {
                                 $("#kas_id").val(kas_id);
                                 $("#invvdrp_date").val(invvdrp_date);
                                 $("#invvdrp_from").val(invvdrp_from);
-                                $("#invvdrp_to").val(invvdrp_to);
+                                $("#invvdrp_to").val(invvdrp_to).trigger('change');
                                 $("#methodpayment_id").val(methodpayment_id);
 
                                 $("#btninvvdrp").attr("name", "change");
