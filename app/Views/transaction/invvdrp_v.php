@@ -115,7 +115,7 @@ foreach ($tbukun->getResult() as $row) {
                             </script>
                         </div>
                         <div class="form-group">
-                            <select style="width: 100px;" class="form-control" id="invvdrp_to" name="invvdrp_to" placeholder="To"
+                            <select class="select" style="width: 300px;" class="form-control" id="invvdrp_to" name="invvdrp_to" placeholder="To"
                                 data-bs-toggle="popover"
                                 data-bs-content="Tujuan"
                                 data-bs-trigger="manual"
