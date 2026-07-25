@@ -318,7 +318,7 @@ foreach ($tbukun->getResult() as $row) {
                             </table>
 
                             <script>
-                                function editinvpayment(invpayment_id) {
+                                function editinvpayment(invpayment_id) {alert();
                                     let job_dano = $("#job_dano" + invpayment_id).val();
                                     let inv_temp = $("#inv_temp" + invpayment_id).val();
                                     let inv_id = $("#inv_id" + invpayment_id).val();
@@ -351,9 +351,7 @@ foreach ($tbukun->getResult() as $row) {
                                     $("#invpayment_date").val(invpayment_date);
                                     $("#invpayment_tagihandate").val(invpayment_tagihandate);
                                     $("#invpayment_duedate").val(invpayment_duedate);
-                                    alert(1);
                                     $("#invpayment_from").val(invpayment_from).trigger('change');
-                                    alert(2);
                                     $("#invpayment_to").val(invpayment_to);
                                     $("#methodpayment_id").val(methodpayment_id);
                                     $("#btninvpayment").attr("name", "change");
