@@ -333,7 +333,8 @@ foreach ($tbukun->getResult() as $row) {
                                     let invpayment_date = $("#invpayment_date" + invpayment_id).val();
                                     let invpayment_tagihandate = $("#invpayment_tagihandate" + invpayment_id).val();
                                     let invpayment_duedate = $("#invpayment_duedate" + invpayment_id).val();
-                                    let invpayment_from = $("#invpayment_from" + invpayment_id).val();
+                                    let invpayment_from = $("#invpayment_from" + invpayment_id).val().trigger('change');
+                                    alert(invpayment_from);
                                     let invpayment_to = $("#invpayment_to" + invpayment_id).val();
                                     let methodpayment_id = $("#methodpayment_id" + invpayment_id).val();
 
@@ -351,7 +352,7 @@ foreach ($tbukun->getResult() as $row) {
                                     $("#invpayment_date").val(invpayment_date);
                                     $("#invpayment_tagihandate").val(invpayment_tagihandate);
                                     $("#invpayment_duedate").val(invpayment_duedate);
-                                    $("#invpayment_from").val(invpayment_from).trigger('change');
+                                    $("#invpayment_from").val(invpayment_from);
                                     $("#invpayment_to").val(invpayment_to);
                                     $("#methodpayment_id").val(methodpayment_id);
                                     $("#btninvpayment").attr("name", "change");
