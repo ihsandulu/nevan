@@ -87,7 +87,7 @@ foreach ($tbukun->getResult() as $row) {
                                 </select>
                             </div>
                             <div class="form-group pembayaran">
-                                <select style="width: 100px;" class="form-control" id="invpayment_from" name="invpayment_from" placeholder="From"
+                                <select style="width: 400px;" class="select form-control" id="invpayment_from" name="invpayment_from" placeholder="From"
                                     data-bs-toggle="popover"
                                     data-bs-content="Asal"
                                     data-bs-trigger="manual"
@@ -351,7 +351,7 @@ foreach ($tbukun->getResult() as $row) {
                                     $("#invpayment_date").val(invpayment_date);
                                     $("#invpayment_tagihandate").val(invpayment_tagihandate);
                                     $("#invpayment_duedate").val(invpayment_duedate);
-                                    $("#invpayment_from").val(invpayment_from);
+                                    $("#invpayment_from").val(invpayment_from).trigger('change');
                                     $("#invpayment_to").val(invpayment_to);
                                     $("#methodpayment_id").val(methodpayment_id);
                                     $("#btninvpayment").attr("name", "change");
@@ -395,7 +395,7 @@ foreach ($tbukun->getResult() as $row) {
                                 </select>
                             </div>
                             <div class="form-group ">
-                                <select style="width: 200px;" class="form-control" id="invpayment_from" name="invpayment_from" placeholder="From"
+                                <select style="width: 400px;" class="select form-control" id="invpayment_from" name="invpayment_from" placeholder="From"
                                     data-toggle="popover"
                                     data-content="Asal"
                                     data-trigger="hover"
