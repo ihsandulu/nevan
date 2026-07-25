@@ -229,7 +229,7 @@ foreach ($tbukun->getResult() as $row) {
                                     foreach ($usr->getResult() as $usr) { ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
-                                                <td style="padding-left:0px; padding-right:0px;">1
+                                                <td style="padding-left:0px; padding-right:0px;">
                                                     <?php if ($usr->invpayment_date > $tgltbterakhir || $usr->invpayment_date == "0000-00-00") { ?>
                                                         <?php
                                                         if (
@@ -510,10 +510,10 @@ foreach ($tbukun->getResult() as $row) {
                                     foreach ($usr->getResult() as $usr) { ?>
                                         <tr>
                                             <?php if (!isset($_GET["report"])) { ?>
-                                                <td style="padding-left:0px; padding-right:0px;">2
-                                                    <?php /* if ($usr->invpayment_date > $tgltbterakhir || $usr->invpayment_date == "0000-00-00") { */ ?>
+                                                <td style="padding-left:0px; padding-right:0px;">
+                                                    <?php if ($usr->invpayment_date > $tgltbterakhir || $usr->invpayment_date == "0000-00-00") { ?>
                                                         <?php
-                                                        /* if (
+                                                        if (
                                                             (
                                                                 isset(session()->get("position_administrator")[0][0])
                                                                 && (
@@ -525,7 +525,7 @@ foreach ($tbukun->getResult() as $row) {
                                                                 isset(session()->get("halaman")['111']['act_update'])
                                                                 && session()->get("halaman")['111']['act_update'] == "1"
                                                             )
-                                                        ) { */ ?>
+                                                        ) { ?>
                                                             <form method="post" class="btn-action">
                                                                 <button type="button" onclick="editinvpayment('<?= $usr->invpayment_id; ?>')" class="btn btn-sm btn-warning " name="edit" value="OK">
                                                                     <span class="fa fa-edit" style="color:white;"></span>
@@ -545,7 +545,7 @@ foreach ($tbukun->getResult() as $row) {
                                                                 <input type="hidden" id="invpayment_to<?= $usr->invpayment_id; ?>" name="invpayment_to" value="<?= $usr->invpayment_to; ?>" />
                                                                 <input type="hidden" id="methodpayment_id<?= $usr->invpayment_id; ?>" name="methodpayment_id" value="<?= $usr->methodpayment_id; ?>" />
                                                             </form>
-                                                        <?php //} ?>
+                                                        <?php } ?>
 
                                                         <?php
                                                         if (
@@ -567,7 +567,7 @@ foreach ($tbukun->getResult() as $row) {
                                                                 <input type="hidden" name="inv_temp" value="<?= $inv_temp; ?>" />
                                                             </form>
                                                         <?php } ?>
-                                                    <?php //} ?>
+                                                    <?php } ?>
 
                                                 </td>
                                             <?php } ?>
@@ -619,7 +619,7 @@ foreach ($tbukun->getResult() as $row) {
                                     $("#invpayment_date").val(invpayment_date);
                                     $("#invpayment_tagihandate").val(invpayment_tagihandate);
                                     $("#invpayment_duedate").val(invpayment_duedate);
-                                    $("#invpayment_from").val(invpayment_from);
+                                    $("#invpayment_from").val(invpayment_from).trigger('change');
                                     $("#invpayment_to").val(invpayment_to);
                                     $("#methodpayment_id").val(methodpayment_id);
                                     $("#btninvpayment").attr("name", "change");
