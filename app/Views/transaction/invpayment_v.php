@@ -351,8 +351,9 @@ foreach ($tbukun->getResult() as $row) {
                                     $("#invpayment_date").val(invpayment_date);
                                     $("#invpayment_tagihandate").val(invpayment_tagihandate);
                                     $("#invpayment_duedate").val(invpayment_duedate);
-                                    alert(invpayment_from);
+                                    alert(1);
                                     $("#invpayment_from").val(invpayment_from).trigger('change');
+                                    alert(2);
                                     $("#invpayment_to").val(invpayment_to);
                                     $("#methodpayment_id").val(methodpayment_id);
                                     $("#btninvpayment").attr("name", "change");
